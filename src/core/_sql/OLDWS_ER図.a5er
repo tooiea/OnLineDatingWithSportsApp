@@ -1,0 +1,622 @@
+﻿# A5:ER FORMAT:16
+# A5:ER ENCODING:UTF8
+# A5:ER Mk-1 Copyright © 2007 m.matsubara
+# A5:SQL Mk-2 Version 2.17.4 Copyright © 1997 - 2022 m.matsubara
+#  https://a5m2.mmatsubara.com
+
+[Manager]
+ProjectName=sports_invitation_app
+Author=watanabe
+MaxEntityRowShow=1000
+ReadOnlyRecommend=0
+Page=Main
+PageInfo="Main",2,"A3Landscape",$FFFFFF
+LogicalView=1
+DecodeDomain=0
+ViewModePageIndividually=1
+ViewMode=2
+ViewFormat=0
+UseNondependenceDashLine=0
+FontName=メイリオ
+FontSize=6
+PaperSize=A4Landscape
+HeaderLeft=
+HeaderCenter=
+HeaderRight=
+FooterLeft=
+FooterCenter=
+FooterRight=
+ShowPageoutRelation=1
+RDBMSType=5
+RDBMSTypeName=MySQL
+DefaultPkName=%0:s_PKC
+DefaultPkIndexName=%0:s_PKI
+DefaultIndexName=%0:s_IX%1:d
+DefaultFkName=%0:s_FK%1:d
+SqlSeparator=0
+UpperCaseKeyword=0
+ShowTag=1
+ShowCommonAttributes=0
+BugFixEntityWidth=1
+
+[Entity]
+PName=管理者テーブル
+LName=administrators
+Comment=
+TableOption=
+Page=MAIN
+Left=50
+Top=50
+Field="id","id","INT","NOT NULL",0,"","",$FFFFFFFF,""
+Field="email","email","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="admins_name","admins_name","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="salt","salt","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="password","password","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="reset_token","reset_token","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"Current_timestamp","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Index=email_unique=2,email 
+EffectMode=Gradation
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221006225721
+Position="MAIN",50,50,172,259
+ZOrder=1
+
+[Entity]
+PName=仮ユーザテーブル
+LName=temp_users
+Comment=
+TableOption=
+Page=MAIN
+Left=50
+Top=450
+Field="id","id","INT","NOT NULL",0,"","",$FFFFFFFF,"UNSIGNED"
+Field="email","email","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="token","token","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="expiration_date","expiration_date","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221006230033
+Position="MAIN",50,450
+ZOrder=2
+
+[Entity]
+PName=ユーザ
+LName=users
+Comment=
+TableOption=
+Page=MAIN
+Left=300
+Top=450
+Field="id","id","INT","NOT NULL",0,"","",$00FFCC66,""
+Field="visitor_id","visitor_id","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="name1","name1","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="name2","name2","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="ruby1","ruby1","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="ruby2","ruby2","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="birthday","birthday","DATE","NOT NULL",,"","",$FFFFFFFF,""
+Field="email","email","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="salt","salt","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="password","password","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="reset_token","reset_token","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="expiration_date","expiration_date","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Index=email_unique=2,email
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221023221342
+Position="MAIN",300,450,186,409
+ZOrder=3
+
+[Entity]
+PName=チーム住所
+LName=team_addresses
+Comment=
+TableOption=
+Page=MAIN
+Left=600
+Top=50
+Field="id","id","INT","NOT NULL",0,"","",$000099FF,"UNSIGNED"
+Field="prefecture","prefecture","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="address","address","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221006232840
+Position="MAIN",600,50,296,144
+ZOrder=4
+
+[Entity]
+PName=スポーツ所属マスタ
+LName=sport_affiliation_mst
+Comment=
+TableOption=
+Page=MAIN
+Left=1150
+Top=50
+Field="id","id","INT","NOT NULL",0,"","",$006BA135,""
+Field="name","name","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221006232127
+Position="MAIN",1150,50,294,142
+ZOrder=5
+
+[Entity]
+PName=チーム
+LName=teams
+Comment=
+TableOption=
+Page=MAIN
+Left=850
+Top=450
+Field="id","id","INT","NOT NULL",0,"","",$00FF4100,"UNSIGNED"
+Field="team_name","team_name","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="invitation_code","invitation_code","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="team_address_id","team_address_id","BIGINT","NOT NULL",,"","",$000099FF,""
+Field="sport_affiliation_mst_id","sport_affiliation_mst_id","INT","NOT NULL",,"","",$006BA135,""
+Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","VARCHAR(255)","NOT NULL",,"CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221022215734
+Position="MAIN",850,450,337,224
+ZOrder=6
+
+[Relation]
+Entity1=スポーツ所属マスタ
+Entity2=チーム
+RelationType1=2
+RelationType2=2
+Fields1=id
+Fields2=sport_affiliation_mst_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,4070,5910,6880,R,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20221023221750
+LineMode=0
+Bar1=407
+Bar2=591
+Bar3=688
+TermPos1=R
+TermPos2=R
+ZOrder=8
+
+[Entity]
+PName=チームメンバー
+LName=team_members
+Comment=
+TableOption=
+Page=MAIN
+Left=600
+Top=450
+Field="id","id","BIGINT","NOT NULL",0,"","",$FFFFFFFF,"UNSIGNED"
+Field="team_id","team_id","INT","NOT NULL",,"","",$00FF4100,""
+Field="user_id","user_id","INT","NOT NULL",,"","",$00FFCC66,""
+Field="role","role","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="number","number","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221023221350
+Position="MAIN",600,450,169,228
+ZOrder=13
+
+[Relation]
+Entity1=チームメンバー
+Entity2=チーム
+RelationType1=4
+RelationType2=2
+Fields1=team_id
+Fields2=id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,6552,4078,2212,R,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20221023221629
+LineMode=0
+Bar1=655
+Bar2=408
+Bar3=221
+TermPos1=R
+TermPos2=R
+ZOrder=14
+
+[Entity]
+PName=試合選手情報
+LName=game_players
+Comment=
+TableOption=
+Page=MAIN
+Left=450
+Top=1100
+Field="id","id","BIGINT","NOT NULL",0,"","",$00003366,"UNSIGNED"
+Field="game_id","game_id","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="team_id","team_id","INT","NOT NULL",,"","",$00FF4100,""
+Field="team_member_id","team_member_id","INT","NOT NULL",,"","",$00FFCC66,""
+Field="position_mst_id","position_mst_id","INT","NOT NULL",,"","",$0079009A,""
+Field="batting_order","batting_order","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="start_inning","start_inning","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="end_inning","end_inning","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="start_inning_out_score","start_inning_out_score","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="end_inning_out_score","end_inning_out_score","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","updated_at","NOT NULL",,"CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221023224942
+Position="MAIN",450,1100,301,358
+ZOrder=16
+
+[Relation]
+Entity1=試合選手情報
+Entity2=チーム
+RelationType1=4
+RelationType2=2
+Fields1=team_id
+Fields2=id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,8903,5441,1238,R,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20221023221618
+LineMode=0
+Bar1=890
+Bar2=544
+Bar3=124
+TermPos1=R
+TermPos2=R
+ZOrder=17
+
+[Entity]
+PName=選手ポジション
+LName=position_mst
+Comment=
+TableOption=
+Page=MAIN
+Left=1900
+Top=100
+Field="id","id","INT","NOT NULL",0,"","",$0079009A,"UNSIGNED"
+Field="sport_affiliation_mst_id","sport_affiliation_mst_id","INT","NOT NULL",,"","",$006BA135,""
+Field="position_name","position_name","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="position_code","position_code","VARCHAR(10)","NOT NULL",,"","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221007000416
+Position="MAIN",1900,100,322,227
+ZOrder=19
+
+[Relation]
+Entity1=選手ポジション
+Entity2=スポーツ所属マスタ
+RelationType1=4
+RelationType2=2
+Fields1=sport_affiliation_mst_id
+Fields2=id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,3839,5546,5298,R,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20221007001443
+LineMode=0
+Bar1=384
+Bar2=555
+Bar3=530
+TermPos1=R
+TermPos2=R
+ZOrder=20
+
+[Relation]
+Entity1=試合選手情報
+Entity2=選手ポジション
+RelationType1=4
+RelationType2=2
+Fields1=id
+Fields2=sport_affiliation_mst_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,8592,9614,7284,R,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20221023221701
+LineMode=0
+Bar1=859
+Bar2=961
+Bar3=728
+TermPos1=R
+TermPos2=R
+ZOrder=21
+
+[Relation]
+Entity1=チームメンバー
+Entity2=試合選手情報
+RelationType1=2
+RelationType2=4
+Fields1=id
+Fields2=team_member_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,1862,4739,2563,R,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20221023224833
+LineMode=0
+Bar1=186
+Bar2=474
+Bar3=256
+TermPos1=R
+TermPos2=R
+ZOrder=22
+
+[Relation]
+Entity1=チームメンバー
+Entity2=ユーザ
+RelationType1=2
+RelationType2=4
+Fields1=user_id
+Fields2=visitor_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,3279,6721,2121,R,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20221023221312
+LineMode=0
+Bar1=328
+Bar2=672
+Bar3=212
+TermPos1=R
+TermPos2=R
+ZOrder=23
+
+[Entity]
+PName=対戦相手
+LName=opponent_teams
+Comment=
+TableOption=
+Page=MAIN
+Left=1350
+Top=450
+Field="id","id","INT","NOT NULL",0,"","",$FFFFFFFF,""
+Field="team_id","team_id","INT","NOT NULL",,"","",$00FF4100,""
+Field="team_name","team_name","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221023223428
+Position="MAIN",1350,450,201,231
+ZOrder=24
+
+[Relation]
+Entity1=対戦相手
+Entity2=チーム
+RelationType1=4
+RelationType2=2
+Fields1=team_id
+Fields2=id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",10,2071,7929,2107,L,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20221023223546
+LineMode=10
+Bar1=207
+Bar2=793
+Bar3=211
+TermPos1=L
+TermPos2=R
+ZOrder=25
+
+[Entity]
+PName=試合の招待
+LName=consent_games
+Comment=
+TableOption=
+Page=MAIN
+Left=1350
+Top=850
+Field="id","id","INT","NOT NULL",0,"","",$FFFFFFFF,""
+Field="invitee_id","invitee_id","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="guest_id","guest_id","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="consent_status_id","consent_status_id","INT","NOT NULL",,"","",$0079009A,""
+Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221023223130
+Position="MAIN",1350,850,268,212
+ZOrder=26
+
+[Entity]
+PName=招待ステータスマスタ
+LName=consent_status_mst
+Comment=
+TableOption=
+Page=MAIN
+Left=1600
+Top=450
+Field="id","id","INT","NOT NULL",0,"","",$0079009A,""
+Field="label","label","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221023223123
+Position="MAIN",1600,450,219,159
+ZOrder=27
+
+[Relation]
+Entity1=招待ステータスマスタ
+Entity2=試合の招待
+RelationType1=2
+RelationType2=4
+Fields1=id
+Fields2=consent_status_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,3173,6827,4833,R,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20221023223205
+LineMode=0
+Bar1=317
+Bar2=683
+Bar3=483
+TermPos1=R
+TermPos2=R
+ZOrder=28
+
+[Relation]
+Entity1=試合の招待
+Entity2=チーム
+RelationType1=5
+RelationType2=2
+Fields1=invitee_id
+Fields2=id
+Cardinarity1=2
+Cardinarity2=
+Position="MAIN",0,3140,6860,7917,R,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20221023223336
+LineMode=0
+Bar1=314
+Bar2=686
+Bar3=792
+TermPos1=R
+TermPos2=R
+ZOrder=29
+
+[Entity]
+PName=大会名
+LName=tournaments
+Comment=
+TableOption=
+Page=MAIN
+Left=1350
+Top=1150
+Field="id","id","INT","NOT NULL",0,"","",$FFFFFFFF,""
+Field="tournament_name","tournament_name","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="team_id","team_id","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="year","year","YEAR","NOT NULL",,"","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221023223746
+Position="MAIN",1350,1150,216,228
+ZOrder=30
+
+[Entity]
+PName=試合シーズン
+LName=seasons
+Comment=
+TableOption=
+Page=MAIN
+Left=800
+Top=1100
+Field="id","id","INT","NOT NULL",0,"","",$FFFFFFFF,""
+Field="team_id","team_id","INT","NOT NULL",,"","",$00FF4100,""
+Field="start_date","start_date","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
+Field="end_date","end_date","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","INT","NOT NULL",,"","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
+Field="updated_at","updated_at","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20221023225240
+Position="MAIN",800,1100,249,208
+ZOrder=31
+
+[Relation]
+Entity1=試合シーズン
+Entity2=チーム
+RelationType1=1
+RelationType2=3
+Fields1=id
+Fields2=
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,3140,6860,3359,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=314
+Bar2=686
+Bar3=336
+TermPos1=R
+TermPos2=R
+ZOrder=32
+
+[Relation]
+Entity1=チーム住所
+Entity2=チーム
+RelationType1=2
+RelationType2=3
+Fields1=id
+Fields2=team_address_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,1775,7520,1576,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=178
+Bar2=752
+Bar3=158
+TermPos1=R
+TermPos2=R
+ZOrder=33
