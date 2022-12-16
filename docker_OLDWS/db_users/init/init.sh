@@ -2,7 +2,7 @@
 
 CLIENT="/tmp/client.cnf"
 SQL_PATH="/tmp/sql"
-DB="ptp_jleague"
+DB="t_users"
 
 mysql --defaults-extra-file=${CLIENT} < ${SQL_PATH}/create_database/ptp_jleague.sql
 

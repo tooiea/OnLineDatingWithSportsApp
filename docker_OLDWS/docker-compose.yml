@@ -14,6 +14,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: 't_baseball'
       MYSQL_USER: tooiea
       MYSQL_PASSWORD: touya1008
     networks:
@@ -28,10 +29,11 @@ services:
       - ./db_users/init:/docker-entrypoint-initdb.d
       # - ../src/_sql:/tmp/sql
     ports:
-      - "3307:3307"
+      - "3307:3306"
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: 't_users'
       MYSQL_USER: user_admin
       MYSQL_PASSWORD: user_admin
     networks:
