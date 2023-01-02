@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\TempUsersController;
+use App\Http\Controllers\TestController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// 仮ユーザ登録
+Route::get('tmp/user/register', [TempUsersController::class, 'index'])->name('tmp_user.index');
+Route::post('tmp/user/register/complete', [TempUsersController::class, 'complete'])->name('tmp_user.registered');
+
+// 本登録
+Route::get('veryfy/user/{token}', [UsersController::class, 'index'])->name('user.index');

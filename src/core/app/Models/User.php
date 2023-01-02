@@ -12,15 +12,24 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $connection = 't_users';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'visitor_id',
+        'name1',
+        'name2',
+        'ruby1',
+        'ruby2',
+        'birthday',
         'email',
         'password',
+        'expiration_date',
+        'is_deleted',
     ];
 
     /**
@@ -30,7 +39,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'reset_token',
     ];
 
     /**

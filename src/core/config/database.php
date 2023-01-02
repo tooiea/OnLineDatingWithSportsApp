@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 't_baseball'),
 
     /*
     |--------------------------------------------------------------------------
@@ -46,8 +46,8 @@ return [
         't_users' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST_USER', 'db_users'),
-            'port' => env('DB_PORT_USER', '3307'),
+            'host' => env('DB_HOST_USER', 'db_baseball'),
+            'port' => env('DB_PORT_USER', '3306'),
             'database' => env('DB_DATABASE_USER', 't_users'),
             'username' => env('DB_USERNAME_USER', 'root'),
             'password' => env('DB_PASSWORD_USER', 'root'),
