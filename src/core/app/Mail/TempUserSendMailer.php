@@ -12,6 +12,8 @@ class TempUserSendMailer extends Mailable
 {
     use Queueable, SerializesModels;
 
+    private $token;
+
     /**
      * Create a new message instance.
      *

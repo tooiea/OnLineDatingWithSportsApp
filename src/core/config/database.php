@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 't_baseball'),
+    'default' => env('DB_CONNECTION_BB', 't_baseball'),
 
     /*
     |--------------------------------------------------------------------------

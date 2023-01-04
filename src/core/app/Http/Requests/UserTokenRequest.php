@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Constants\ErrorMessagesConstant;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TempUserRequest extends FormRequest
+class UserTokenRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,6 +17,8 @@ class TempUserRequest extends FormRequest
         return true;
     }
 
+    protected $redirectRoute = 'users.failed';
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,13 +27,23 @@ class TempUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => [
-                'bail',
-                'required',
-                'email:strict',
-                'unique:App\Models\TempUser,email'
+            'token' => [
+                'exists:App\Models\TempUser,token'
             ],
         ];
+    }
+
+    /**
+     * URLのトークンをバリデーション用でセット
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $token = $this->route('token');
+        $this->merge([
+            'token' => $token
+        ]);
     }
 
     /**
@@ -42,9 +54,7 @@ class TempUserRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => ErrorMessagesConstant::REQUEST_MESSAGE_TEMP_USER['email.required'],
-            'email.email' => ErrorMessagesConstant::REQUEST_MESSAGE_TEMP_USER['email.email'],
-            'email.unique' => ErrorMessagesConstant::REQUEST_MESSAGE_TEMP_USER['email.unique']
+            'token.exists' => ErrorMessagesConstant::TEMPLATE_LOST_TOKEN,
         ];
     }
 }

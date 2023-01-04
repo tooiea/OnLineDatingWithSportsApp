@@ -1,0 +1,6 @@
+{
+    "phpsab.standard": "PSR12",
+    "files.associations": {
+        "*.blade.php":"html"
+    }
+}
