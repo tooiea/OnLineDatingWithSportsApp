@@ -4,5 +4,5 @@ namespace App\Constants;
 
 class CommonConstant
 {
-    public const VERIFY_USERS_ROOT = '/veryfy/user/';
+    public const VERIFY_USERS_ROOT = '/register/user/';
 }

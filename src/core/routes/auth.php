@@ -8,25 +8,9 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\TempUsersController;
-use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-// ログイン不要
 Route::middleware('guest')->group(function () {
-    // 仮ユーザ登録
-    Route::get('tmp/user/register', [TempUsersController::class, 'index'])->name('tmp_user.index');
-    Route::post('tmp/user/register/complete', [TempUsersController::class, 'complete'])->name('tmp_user.registered');
-
-    // 本登録
-    Route::get('register/user/{token}', [UsersController::class, 'index'])->name('user.index');
-
-
     Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');
 
@@ -50,7 +34,6 @@ Route::middleware('guest')->group(function () {
                 ->name('password.update');
 });
 
-// ログイン認証必須
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
                 ->name('verification.notice');
