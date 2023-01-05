@@ -24,12 +24,13 @@ class TempUserRequest extends FormRequest
      */
     public function rules()
     {
+        // TODO Usersテーブルへ登録する内容へ修正
         return [
             'email' => [
                 'bail',
                 'required',
                 'email:strict',
-                'unique:App\Models\TempUser,email'
+                'unique:App\Models\User,email'
             ],
         ];
     }
@@ -41,6 +42,7 @@ class TempUserRequest extends FormRequest
      */
     public function messages()
     {
+        // TODO Usersテーブルへ登録する内容へ修正
         return [
             'email.required' => ErrorMessagesConstant::REQUEST_MESSAGE_TEMP_USER['email.required'],
             'email.email' => ErrorMessagesConstant::REQUEST_MESSAGE_TEMP_USER['email.email'],

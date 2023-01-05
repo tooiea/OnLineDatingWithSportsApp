@@ -21,7 +21,13 @@ class TempUsersController extends BasesController
      */
     public function index()
     {
+        // TODO ユーザ情報を入力するように変更
         return view('tempUsers.index');
+    }
+
+    public function confirm()
+    {
+        // TODO 入力内容をチェック後に、表示
     }
 
     /**
@@ -33,6 +39,8 @@ class TempUsersController extends BasesController
     public function complete(TempUserRequest $request)
     {
         $values['email'] = $request->input('email');
+
+        // TODO 仮登録として、Usersテーブルに登録し、仮登録フラグをテーブルのカラムに追加
 
         // トランザクション内で、DB登録とメール送信を実行
         DB::transaction(
