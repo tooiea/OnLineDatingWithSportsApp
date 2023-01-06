@@ -7,9 +7,11 @@ use App\Http\Requests\TempUserRequest;
 use App\Http\Requests\UserFormRequest;
 use App\Mail\TempUserSendMailer;
 use App\Models\TempUser;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class TempUsersController extends BasesController
@@ -54,19 +56,43 @@ class TempUsersController extends BasesController
         DB::transaction(
             function () use ($values) {
                 $now = Carbon::now();
-                $expireDate = $now->addHour();
+                $values['expireDate'] = $now->addHour();
                 $tempUser = new TempUser();
-                $values['token'] = $this->createUuid();
-                $tempUser->insert(
+                $token = $this->createUuid();
+                $tempUser->updateOrInsert(
                     [
+                        // 同一メールアドレスが存在するか
                         'email' => $values['email'],
-                        'token' => $values['token'],
-                        'expiration_date' => $now,
+                    ],
+                    [
+                        // 挿入データ
+                        'email' => $values['email'],
+                        'token' => $token,
+                        'expiration_date' => $values['expireDate'],
                     ]
                 );
-                Mail::to($values['email'])->send(new TempUserSendMailer($values['token']));
+                $user = new User();
+                $user->updateOrInsert(
+                    [
+                        // 同一メールアドレスが存在するか
+                        'email' => $values['email'],
+                    ],
+                    [
+                        // 挿入データ
+                        'name1' => $values['name1'],
+                        'name2' => $values['name2'],
+                        'ruby1' => $values['ruby1'],
+                        'ruby2' => $values['ruby2'],
+                        'birthday' => $values['birthday'],
+                        'email' => $values['email'],
+                        'password' => Hash::make($values['password']),
+                        'expiration_date' => $values['expireDate']
+                    ],
+                );
+                Mail::to($values['email'])->send(new TempUserSendMailer($token));
             }
         );
+        $request->session()->flush();
 
         return view('tempUsers.complete');
     }

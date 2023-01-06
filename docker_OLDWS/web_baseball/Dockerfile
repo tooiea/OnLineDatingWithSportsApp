@@ -3,36 +3,37 @@ FROM alpine:3.16
 ### Install packages ###
 RUN apk update && \
     apk add --no-cache \
-        openssl tzdata \
-        apache2 apache2-ssl \
-        curl \
-        php81 \
-        php81-apache2 \
-        php81-phpdbg \
-        php81-session \
-        php81-mbstring \
-        php81-gd \
-        php81-mysqli \
-        php81-pdo \
-        php81-pdo_sqlite \
-        php81-curl \
-        php81-json \
-        php81-bcmath \
-        php81-ctype \
-        php81-fileinfo \
-        php81-openssl \
-        php81-tokenizer \
-        php81-xml \
-        php81-pdo_mysql \
-        php81-phar \
-        php81-intl \
-        php81-dom \
-        php81-xmlwriter \
-        php81-simplexml \
-        php81-zip \
-        php81-exif \
-        php81-pecl-imagick \
-        php81-iconv
+    openssl tzdata \
+    apache2 apache2-ssl \
+    unzip \
+    curl \
+    php81 \
+    php81-apache2 \
+    php81-phpdbg \
+    php81-session \
+    php81-mbstring \
+    php81-gd \
+    php81-mysqli \
+    php81-pdo \
+    php81-pdo_sqlite \
+    php81-curl \
+    php81-json \
+    php81-bcmath \
+    php81-ctype \
+    php81-fileinfo \
+    php81-openssl \
+    php81-tokenizer \
+    php81-xml \
+    php81-pdo_mysql \
+    php81-phar \
+    php81-intl \
+    php81-dom \
+    php81-xmlwriter \
+    php81-simplexml \
+    php81-zip \
+    php81-exif \
+    php81-pecl-imagick \
+    php81-iconv
 
 RUN ln -s /usr/bin/php81 /usr/bin/php
 
@@ -61,7 +62,7 @@ RUN chmod +x /tmp/composer.sh && \
     /tmp/composer.sh && \
     mv composer.phar /usr/local/bin/composer && \
     rm /tmp/composer.sh
- 
+
 WORKDIR /var/www/src/
 CMD ["sh", "-c", "/usr/sbin/httpd; tail -f /dev/null;"]
 # CMD ["sh", "-c", "postfix start; /usr/sbin/httpd; tail -f /dev/null;"]

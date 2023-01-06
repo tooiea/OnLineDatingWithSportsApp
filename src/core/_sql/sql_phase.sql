@@ -1,5 +1,5 @@
 -- Project Name : t_users
--- Date/Time    : 2023/01/02 17:42:19
+-- Date/Time    : 2023/01/06 21:09:09
 -- Author       : twatanabe
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -19,7 +19,7 @@ CREATE TABLE t_users.administrators (
 ) ;
 
 -- 試合出場選手
-CREATE TABLE game_players (
+CREATE TABLE t_baseball.game_players (
   id BIGINT NOT NULL AUTO_INCREMENT
   , game_id BIGINT NOT NULL
   , team_id INT NOT NULL
@@ -37,7 +37,7 @@ CREATE TABLE game_players (
 ) ;
 
 -- ポジションマスタ
-CREATE TABLE position_mst (
+CREATE TABLE t_baseball.position_mst (
   id INT NOT NULL AUTO_INCREMENT
   , sport_affiliation_mst_id INT NOT NULL
   , position_name VARCHAR(50) NOT NULL
@@ -49,7 +49,7 @@ CREATE TABLE position_mst (
 ) ;
 
 -- 球場
-CREATE TABLE stadiums (
+CREATE TABLE t_baseball.stadiums (
   id INT NOT NULL AUTO_INCREMENT
   , team_id INT NOT NULL
   , stadium_name VARCHAR(50) NOT NULL
@@ -60,7 +60,7 @@ CREATE TABLE stadiums (
 ) ;
 
 -- チームメンバ
-CREATE TABLE team_members (
+CREATE TABLE t_baseball.team_members (
   id BIGINT NOT NULL AUTO_INCREMENT
   , team_id INT NOT NULL
   , user_id INT NOT NULL
@@ -73,7 +73,7 @@ CREATE TABLE team_members (
 ) ;
 
 -- チーム役割マスタ
-CREATE TABLE team_role_mst (
+CREATE TABLE t_baseball.team_role_mst (
   id INT NOT NULL AUTO_INCREMENT
   , label VARCHAR(20) NOT NULL
   , is_deleted INT DEFAULT 0 NOT NULL
@@ -115,7 +115,7 @@ CREATE TABLE t_users.users (
 ) ;
 
 -- 試合
-CREATE TABLE games (
+CREATE TABLE t_baseball.games (
   id BIGINT NOT NULL AUTO_INCREMENT
   , my_team_id INT NOT NULL
   , consent_game_id INT
@@ -133,7 +133,7 @@ CREATE TABLE games (
 ) ;
 
 -- 対戦相手チーム
-CREATE TABLE opponent_teams (
+CREATE TABLE t_baseball.opponent_teams (
   id INT NOT NULL AUTO_INCREMENT
   , team_id INT NOT NULL
   , team_name VARCHAR(50) NOT NULL
@@ -144,7 +144,7 @@ CREATE TABLE opponent_teams (
 ) ;
 
 -- 大会
-CREATE TABLE tournaments (
+CREATE TABLE t_baseball.tournaments (
   id INT NOT NULL AUTO_INCREMENT
   , tournament_name VARCHAR(50) NOT NULL
   , team_id INT NOT NULL
@@ -156,7 +156,7 @@ CREATE TABLE tournaments (
 ) ;
 
 -- 試合招待
-CREATE TABLE consent_games (
+CREATE TABLE t_baseball.consent_games (
   id INT NOT NULL AUTO_INCREMENT
   , invitee_id INT NOT NULL
   , guest_id INT NOT NULL
@@ -168,7 +168,7 @@ CREATE TABLE consent_games (
 ) ;
 
 -- 招待ステータスマスタ
-CREATE TABLE consent_status_mst (
+CREATE TABLE t_baseball.consent_status_mst (
   id INT NOT NULL AUTO_INCREMENT
   , label VARCHAR(10) NOT NULL
   , is_deleted INT DEFAULT 0 NOT NULL
@@ -178,7 +178,7 @@ CREATE TABLE consent_status_mst (
 ) ;
 
 -- チーム
-CREATE TABLE teams (
+CREATE TABLE t_baseball.teams (
   id INT NOT NULL AUTO_INCREMENT
   , team_name VARCHAR(255) NOT NULL
   , invitation_code VARCHAR(255) NOT NULL
@@ -191,7 +191,7 @@ CREATE TABLE teams (
 ) ;
 
 -- スポーツ種類
-CREATE TABLE sport_affiliation_mst (
+CREATE TABLE t_baseball.sport_affiliation_mst (
   id INT NOT NULL AUTO_INCREMENT
   , name VARCHAR(255) NOT NULL
   , is_deleted INT DEFAULT 0 NOT NULL
@@ -201,7 +201,7 @@ CREATE TABLE sport_affiliation_mst (
 ) ;
 
 -- チーム住所
-CREATE TABLE team_addresses (
+CREATE TABLE t_baseball.team_addresses (
   id BIGINT NOT NULL AUTO_INCREMENT
   , prefecture INT NOT NULL
   , address VARCHAR(255) NOT NULL
@@ -210,68 +210,68 @@ CREATE TABLE team_addresses (
   , CONSTRAINT team_addresses_PKC PRIMARY KEY (id)
 ) ;
 
-ALTER TABLE consent_games
-  ADD CONSTRAINT consent_games_FK1 FOREIGN KEY (guest_id) REFERENCES teams(id)
+ALTER TABLE t_baseball.consent_games
+  ADD CONSTRAINT consent_games_FK1 FOREIGN KEY (guest_id) REFERENCES t_baseball.teams(id)
   on delete cascade
   on update cascade;
 
-ALTER TABLE consent_games
-  ADD CONSTRAINT consent_games_FK2 FOREIGN KEY (invitee_id) REFERENCES teams(id)
+ALTER TABLE t_baseball.consent_games
+  ADD CONSTRAINT consent_games_FK2 FOREIGN KEY (invitee_id) REFERENCES t_baseball.teams(id)
   on delete cascade
   on update cascade;
 
-ALTER TABLE consent_games
-  ADD CONSTRAINT consent_games_FK3 FOREIGN KEY (consent_status_id) REFERENCES consent_status_mst(id)
+ALTER TABLE t_baseball.consent_games
+  ADD CONSTRAINT consent_games_FK3 FOREIGN KEY (consent_status_id) REFERENCES t_baseball.consent_status_mst(id)
   on delete cascade
   on update cascade;
 
-ALTER TABLE game_players
-  ADD CONSTRAINT game_players_FK1 FOREIGN KEY (position_mst_id) REFERENCES position_mst(id)
+ALTER TABLE t_baseball.game_players
+  ADD CONSTRAINT game_players_FK1 FOREIGN KEY (position_mst_id) REFERENCES t_baseball.position_mst(id)
   on delete cascade
   on update cascade;
 
-ALTER TABLE game_players
-  ADD CONSTRAINT game_players_FK2 FOREIGN KEY (game_id) REFERENCES games(id)
+ALTER TABLE t_baseball.game_players
+  ADD CONSTRAINT game_players_FK2 FOREIGN KEY (game_id) REFERENCES t_baseball.games(id)
   on delete cascade
   on update cascade;
 
-ALTER TABLE games
-  ADD CONSTRAINT games_FK1 FOREIGN KEY (opponent_team_id) REFERENCES opponent_teams(id)
+ALTER TABLE t_baseball.games
+  ADD CONSTRAINT games_FK1 FOREIGN KEY (opponent_team_id) REFERENCES t_baseball.opponent_teams(id)
   on delete cascade
   on update cascade;
 
-ALTER TABLE games
-  ADD CONSTRAINT games_FK2 FOREIGN KEY (tournament_id) REFERENCES tournaments(id)
+ALTER TABLE t_baseball.games
+  ADD CONSTRAINT games_FK2 FOREIGN KEY (tournament_id) REFERENCES t_baseball.tournaments(id)
   on delete cascade
   on update cascade;
 
-ALTER TABLE games
-  ADD CONSTRAINT games_FK3 FOREIGN KEY (consent_game_id) REFERENCES consent_games(id)
+ALTER TABLE t_baseball.games
+  ADD CONSTRAINT games_FK3 FOREIGN KEY (consent_game_id) REFERENCES t_baseball.consent_games(id)
   on delete cascade
   on update cascade;
 
-ALTER TABLE team_members
+ALTER TABLE t_baseball.team_members
   ADD CONSTRAINT team_members_FK1 FOREIGN KEY (user_id) REFERENCES t_users.users(id)
   on delete cascade
   on update cascade;
 
-ALTER TABLE team_members
-  ADD CONSTRAINT team_members_FK2 FOREIGN KEY (role) REFERENCES team_role_mst(id)
+ALTER TABLE t_baseball.team_members
+  ADD CONSTRAINT team_members_FK2 FOREIGN KEY (role) REFERENCES t_baseball.team_role_mst(id)
   on delete cascade
   on update cascade;
 
-ALTER TABLE team_members
-  ADD CONSTRAINT team_members_FK3 FOREIGN KEY (team_id) REFERENCES teams(id)
+ALTER TABLE t_baseball.team_members
+  ADD CONSTRAINT team_members_FK3 FOREIGN KEY (team_id) REFERENCES t_baseball.teams(id)
   on delete cascade
   on update cascade;
 
-ALTER TABLE teams
-  ADD CONSTRAINT teams_FK1 FOREIGN KEY (sport_affiliation_mst_id) REFERENCES sport_affiliation_mst(id)
+ALTER TABLE t_baseball.teams
+  ADD CONSTRAINT teams_FK1 FOREIGN KEY (sport_affiliation_mst_id) REFERENCES t_baseball.sport_affiliation_mst(id)
   on delete cascade
   on update cascade;
 
-ALTER TABLE teams
-  ADD CONSTRAINT teams_FK2 FOREIGN KEY (team_address_id) REFERENCES team_addresses(id)
+ALTER TABLE t_baseball.teams
+  ADD CONSTRAINT teams_FK2 FOREIGN KEY (team_address_id) REFERENCES t_baseball.team_addresses(id)
   on delete cascade
   on update cascade;
 

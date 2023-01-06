@@ -112,13 +112,14 @@ Field="salt","salt","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
 Field="password","password","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
 Field="reset_token","reset_token","VARCHAR(255)",,,"","",$FFFFFFFF,""
 Field="expiration_date","expiration_date","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
+Field="is_enableld","is_enabled","INT","NOT NULL",,"0","",$FFFFFFFF,""
 Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
 Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
 Field="updated_at","updated_at","DATETIME",,,"CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230102174037
+ModifiedDateTime=20230106210855
 Position="MAIN",1500,200,405,778
 ZOrder=3
 

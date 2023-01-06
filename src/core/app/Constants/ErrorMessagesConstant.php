@@ -12,10 +12,12 @@ class ErrorMessagesConstant
         'email.email' => 'メールアドレスを正しく入力してください',
         'email.unique' => '入力されたメールアドレスはすでに登録済みです'
     ];
-    public const TEMPLATE_LOST_TOKEN = '不正な入力がありました。再度、URLをご確認ください。';
+    public const NOT_VALID_TOKEN = '不正な入力がありました。再度、URLをご確認ください。';
+    public const EXPIRED_TOKEN = 'トークンの有効期限切れです。再度、仮登録フォームより登録してください。';
+    public const ALREADY_REGISTERED = 'すでに本登録済みです。';
 
     /**
-     * ユーザ本登録フォーム
+     * 仮登録フォーム
      */
     public const USER_FORM = [
         'name1.required' => 'お名前(姓)を入力してください。',
