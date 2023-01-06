@@ -3,11 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Constants\ErrorMessagesConstant;
+use App\Models\User;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Log;
 
-class UserFormRequest extends UserTokenRequest
+class UserFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,21 +20,13 @@ class UserFormRequest extends UserTokenRequest
     }
 
     /**
-     * バリデーションNG時のリダイレクト先のオーバーライド
-     *
-     * @var string
-     */
-    // protected $redirectRoute = 'users.index';
-
-    /**
      * 継承ルールに追加
      *
      * @return array
      */
     public function rules()
     {
-        $rules = parent::rules(); // tokenルールを取得
-        $addRules = [
+        $rules = [
             'name1' => [
                 'bail',
                 'required',
@@ -66,7 +58,13 @@ class UserFormRequest extends UserTokenRequest
                 'bail',
                 'required',
                 'email:rfc,strict',
-                'unique:App\Models\User,email'
+                function ($attribute, $value, $fail) {
+                    $userModel = new User();
+                    $activeUser = $userModel->getByEmail($value);
+                    if (!empty($activeUser)) {
+                        $fail(ErrorMessagesConstant::USER_FORM['email.unique']);
+                    }
+                },
             ],
             'password' => [
                 'bail',
@@ -84,20 +82,7 @@ class UserFormRequest extends UserTokenRequest
                 'exists:App\Models\Team,invitation_code'
             ],
         ];
-        $merges = array_merge($rules, $addRules);
-        return $merges;
-    }
-
-    /**
-     * リダイレクト時に、トークンを再セット
-     *
-     * @return void
-     */
-    protected function getRedirectUrl()
-    {
-        $url = $this->redirector->getUrlGenerator();
-        $token = $this->route('token');
-        return $url->route('users.index', ['token' => $token]);
+        return $rules;
     }
 
     /**
@@ -107,8 +92,7 @@ class UserFormRequest extends UserTokenRequest
      */
     public function messages()
     {
-        $messages = parent::messages();
-        $addMessage = [
+        $messages = [
             'name1.required' => ErrorMessagesConstant::USER_FORM['name1.required'],
             'name1.max' => ErrorMessagesConstant::USER_FORM['name1.max'],
             'name2.required' => ErrorMessagesConstant::USER_FORM['name2.required'],
@@ -123,14 +107,12 @@ class UserFormRequest extends UserTokenRequest
             'birthday.date' => ErrorMessagesConstant::USER_FORM['birthday.date'],
             'email.required' => ErrorMessagesConstant::USER_FORM['email.required'],
             'email.regex' => ErrorMessagesConstant::USER_FORM['email.regex'],
-            'email.unique' => ErrorMessagesConstant::USER_FORM['email.unique'],
             'password.required' => ErrorMessagesConstant::USER_FORM['password.required'],
             'password.regex' => ErrorMessagesConstant::USER_FORM['password.regex'],
             'password2.required' => ErrorMessagesConstant::USER_FORM['password2.required'],
             'password2.same' => ErrorMessagesConstant::USER_FORM['password2.same'],
             'invitationCode.exists' => ErrorMessagesConstant::USER_FORM['invitationCode.exists'],
         ];
-        $messages = array_merge($messages, $addMessage);
         return $messages;
     }
 }

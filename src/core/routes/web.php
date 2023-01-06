@@ -21,12 +21,13 @@ Route::get('/dashboard', function () {
 Route::middleware('guest')->group(function () {
     // 仮ユーザ登録
     Route::get('tmp/user/register', [TempUsersController::class, 'index'])->name('tmp_user.index');
+    Route::post('tmp/user/register/confirm', [TempUsersController::class, 'confirm'])->name('tmp_user.confirm');
     Route::post('tmp/user/register/complete', [TempUsersController::class, 'complete'])->name('tmp_user.registered');
 
     // 本登録
     Route::get('notvalid/token', [UsersController::class, 'failedToken'])->name('users.failed'); // トークンなし
     Route::get('register/user/{token}', [UsersController::class, 'index'])->name('users.index');
-    Route::post('register/user/{token}/confirm', [UsersController::class, 'confirm'])->name('users.confirm');
+
 
     Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');

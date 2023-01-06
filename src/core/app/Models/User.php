@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\CommonConstant;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -50,4 +51,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * メールアドレスで本登録すみのユーザを取得
+     *
+     * @param string $email
+     * @return void
+     */
+    public function getByEmail($email)
+    {
+        $user = $this->where([
+            'email' => $email,
+            'is_enabled' => CommonConstant::FLAG_ON,
+        ])->first();
+
+        return $user;
+    }
 }
