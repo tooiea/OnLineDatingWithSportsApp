@@ -27,4 +27,19 @@ class TempUser extends Model
         ])->first();
         return $activeUser;
     }
+
+    /**
+     * トークンからユーザのメールアドレスを取得
+     *
+     * @param string $token
+     * @return object
+     */
+    public function getUserByToken($token)
+    {
+        $tmpUser = $this->where([
+            'token' => $token,
+        ])->select(['email'])->first();
+
+        return $tmpUser;
+    }
 }

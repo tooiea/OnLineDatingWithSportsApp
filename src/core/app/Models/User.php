@@ -11,7 +11,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     protected $connection = 't_users';
 
@@ -21,7 +23,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'visitor_id',
         'name1',
         'name2',
         'ruby1',
@@ -29,6 +30,7 @@ class User extends Authenticatable
         'birthday',
         'email',
         'password',
+        'invitation_code',
         'expiration_date',
         'is_deleted',
     ];

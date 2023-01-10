@@ -96,15 +96,14 @@ CREATE TABLE t_users.temp_users (
 -- ユーザ
 CREATE TABLE t_users.users (
   id INT NOT NULL AUTO_INCREMENT
-  , visitor_id INT NOT NULL
   , name1 VARCHAR(20) NOT NULL
   , name2 VARCHAR(20) NOT NULL
   , ruby1 VARCHAR(20) NOT NULL
   , ruby2 VARCHAR(20) NOT NULL
   , birthday DATE NOT NULL
   , email VARCHAR(255) NOT NULL
-  , salt VARCHAR(255) NOT NULL
   , password VARCHAR(255) NOT NULL
+  , invitation_code VARCHAR(255)
   , reset_token VARCHAR(255)
   , expiration_date DATETIME NOT NULL
   , is_enabled INT DEFAULT 0 NOT NULL

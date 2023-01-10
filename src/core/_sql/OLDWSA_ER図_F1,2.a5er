@@ -101,15 +101,14 @@ Page=MAIN
 Left=1500
 Top=200
 Field="id","id","INT","NOT NULL",0,"","",$00FF0000,"AUTO_INCREMENT"
-Field="visitor_id","visitor_id","INT","NOT NULL",,"","",$FFFFFFFF,""
 Field="name1","name1","VARCHAR(20)","NOT NULL",,"","",$FFFFFFFF,""
 Field="name2","name2","VARCHAR(20)","NOT NULL",,"","",$FFFFFFFF,""
 Field="ruby1","ruby1","VARCHAR(20)","NOT NULL",,"","",$FFFFFFFF,""
 Field="ruby2","ruby2","VARCHAR(20)","NOT NULL",,"","",$FFFFFFFF,""
 Field="birthday","birthday","DATE","NOT NULL",,"","",$FFFFFFFF,""
 Field="email","email","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
-Field="salt","salt","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
 Field="password","password","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="invitation_code","invitation_code","VARCHAR(255)",,,"","",$FFFFFFFF,""
 Field="reset_token","reset_token","VARCHAR(255)",,,"","",$FFFFFFFF,""
 Field="expiration_date","expiration_date","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
 Field="is_enableld","is_enabled","INT","NOT NULL",,"0","",$FFFFFFFF,""
@@ -119,8 +118,8 @@ Field="updated_at","updated_at","DATETIME",,,"CURRENT_TIMESTAMP  ON UPDATE CURRE
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230106210855
-Position="MAIN",1500,200,405,778
+ModifiedDateTime=20230110221519
+Position="MAIN",1500,200,405,741
 ZOrder=3
 
 [Entity]
