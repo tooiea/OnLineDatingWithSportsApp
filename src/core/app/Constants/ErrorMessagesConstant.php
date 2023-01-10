@@ -4,14 +4,6 @@ namespace App\Constants;
 
 class ErrorMessagesConstant
 {
-    /**
-     * 仮登録
-     */
-    public const REQUEST_MESSAGE_TEMP_USER = [
-        'email.required' => 'メールアドレスを入力してください',
-        'email.email' => 'メールアドレスを正しく入力してください',
-        'email.unique' => '入力されたメールアドレスはすでに登録済みです'
-    ];
     public const NOT_VALID_TOKEN = '不正な入力がありました。再度、URLをご確認ください。';
     public const EXPIRED_TOKEN = 'トークンの有効期限切れです。再度、仮登録フォームより登録してください。';
     public const ALREADY_REGISTERED = 'すでに本登録済みです。';
@@ -36,9 +28,9 @@ class ErrorMessagesConstant
         'email.regex' => 'メールアドレスを正しく入力してください。',
         'email.unique' => 'このメールアドレスはすでに登録されています。',
         'password.required' => 'パスワードを入力してください。',
-        'password.regex' => 'パスワードを半角英数(大文字を含み)8文字以上で入力してください。',
-        'password2.required' => 'パスワード(を入力してください。',
+        'password.regex' => '半角英数で大文字・小文字すべてを含み、8文字以上で入力してください。',
+        'password2.required' => 'パスワード(再入力)を入力してください。',
         'password2.same' => '同じパスワードを入力してください。',
-        'invitationCode.exists' => '招待コードが存在しません。'
+        'invitationCode.exists' => 'チームの招待コードが存在しません。'
     ];
 }

@@ -12,7 +12,6 @@ use App\Http\Controllers\TempUsersController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
@@ -27,17 +26,19 @@ Route::middleware('guest')->group(function () {
     // 本登録
     Route::get('notvalid/token', [UsersController::class, 'failedToken'])->name('users.failed'); // トークンなし
     Route::get('register/user/{token}', [UsersController::class, 'index'])->name('users.index');
-
+    Route::get('login', [UsersController::class, 'login'])->name('users.login');
+    Route::post('login', [UsersController::class, 'login'])
+                ->name('login');
 
     Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-                ->name('login');
+    // Route::get('login', [AuthenticatedSessionController::class, 'create'])
+    //             ->name('login');
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    // Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
                 ->name('password.request');

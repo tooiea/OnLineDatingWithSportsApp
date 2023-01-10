@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\CommonConstant;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\UserFormRequest;
 use App\Http\Requests\UserTokenRequest;
+use App\Models\TempUser;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends BasesController
 {
@@ -17,13 +23,26 @@ class UsersController extends BasesController
      */
     public function index(UserTokenRequest $request, $token)
     {
-        return view('users.index', compact('token'));
+        $tmpUserModel = new TempUser();
+        $tmpUser = $tmpUserModel->getUserByToken($token);
+
+        $user = new User();
+        $user->where(['email' => $tmpUser->email])->update([
+            'is_enabled' => CommonConstant::FLAG_ON,
+        ]);
+
+        // TODO チーム招待コードから、チームメンバーとして登録する
+
+        return redirect()->route('users.complete');
     }
 
-    public function confirm(UserFormRequest $request)
+    /**
+     * ユーザ本登録後の表示
+     *
+     * @return void
+     */
+    public function complete()
     {
-        $values = $request->all();
-        var_dump($values);
-        return view('users.confirm');
+        return view('users.index');
     }
 }

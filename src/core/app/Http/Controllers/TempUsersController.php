@@ -23,7 +23,6 @@ class TempUsersController extends BasesController
      */
     public function index()
     {
-        // TODO ユーザ情報を入力するように変更
         return view('tempUsers.index');
     }
 
@@ -49,51 +48,62 @@ class TempUsersController extends BasesController
     public function complete(Request $request)
     {
         $values = $request ->session()->all();
-
-        // TODO 仮登録として、Usersテーブルに登録し、仮登録フラグをテーブルのカラムに追加
-
-        // トランザクション内で、DB登録とメール送信を実行
-        DB::transaction(
-            function () use ($values) {
-                $now = Carbon::now();
-                $values['expireDate'] = $now->addHour();
-                $tempUser = new TempUser();
-                $token = $this->createUuid();
-                $tempUser->updateOrInsert(
-                    [
-                        // 同一メールアドレスが存在するか
-                        'email' => $values['email'],
-                    ],
-                    [
-                        // 挿入データ
-                        'email' => $values['email'],
-                        'token' => $token,
-                        'expiration_date' => $values['expireDate'],
-                    ]
-                );
-                $user = new User();
-                $user->updateOrInsert(
-                    [
-                        // 同一メールアドレスが存在するか
-                        'email' => $values['email'],
-                    ],
-                    [
-                        // 挿入データ
-                        'name1' => $values['name1'],
-                        'name2' => $values['name2'],
-                        'ruby1' => $values['ruby1'],
-                        'ruby2' => $values['ruby2'],
-                        'birthday' => $values['birthday'],
-                        'email' => $values['email'],
-                        'password' => Hash::make($values['password']),
-                        'expiration_date' => $values['expireDate']
-                    ],
-                );
-                Mail::to($values['email'])->send(new TempUserSendMailer($token));
-            }
-        );
+        $button = $request->input();
         $request->session()->flush();
 
-        return view('tempUsers.complete');
+        // TODO 登録前に、同一メールアドレスが有効化されていないかをチェック
+
+        if (isset($button['back'])) {
+            // 戻るボタン
+            return redirect()->route('tmp_user.index')->withInput($values);
+        }
+
+        if (isset($button['next'])) {
+            // 送信するボタン
+            // トランザクション内で、DB登録とメール送信を実行
+            DB::transaction(
+                function () use ($values) {
+                    $now = Carbon::now();
+                    $values['expireDate'] = $now->addHour();
+                    $tempUser = new TempUser();
+                    $token = $this->createUuid();
+                    $tempUser->updateOrInsert(
+                        [
+                            // 同一メールアドレスが存在するか
+                            'email' => $values['email'],
+                        ],
+                        [
+                            // 挿入データ
+                            'email' => $values['email'],
+                            'token' => $token,
+                            'expiration_date' => $values['expireDate'],
+                        ]
+                    );
+                    $user = new User();
+                    $user->updateOrInsert(
+                        [
+                            // 同一メールアドレスが存在するか
+                            'email' => $values['email'],
+                        ],
+                        [
+                            // 挿入データ
+                            'name1' => $values['name1'],
+                            'name2' => $values['name2'],
+                            'ruby1' => $values['ruby1'],
+                            'ruby2' => $values['ruby2'],
+                            'birthday' => $values['birthday'],
+                            'email' => $values['email'],
+                            'password' => Hash::make($values['password']),
+                            'expiration_date' => $values['expireDate']
+                        ],
+                    );
+                    Mail::to($values['email'])->send(new TempUserSendMailer($token));
+                }
+            );
+        } else {
+            // 不正アクセス
+            return redirect()->route('tmp_user.index');
+        }
+            return view('tempUsers.complete');
     }
 }
