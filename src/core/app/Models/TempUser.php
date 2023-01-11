@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\CommonConstant;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -41,5 +42,21 @@ class TempUser extends Model
         ])->select(['email'])->first();
 
         return $tmpUser;
+    }
+
+    /**
+     * メールアドレスで本登録済み(有効化済み)のユーザをチェック
+     *
+     * @param string $email
+     * @return object
+     */
+    public function getUserIsEnabled($email)
+    {
+        $user = $this->where('email', $email)
+            ->where('is_enabled', CommonConstant::FLAG_OFF)
+            ->join('temp_users', 'users.email', '=', 'temp_users.email')
+            ->first();
+
+        return $user;
     }
 }

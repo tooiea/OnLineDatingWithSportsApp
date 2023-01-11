@@ -4,6 +4,7 @@ namespace App\Constants;
 
 class CommonConstant
 {
+    public const FLAG_OFF = 0;
     public const FLAG_ON = 1;
     public const VERIFY_USERS_ROOT = '/register/user/';
 

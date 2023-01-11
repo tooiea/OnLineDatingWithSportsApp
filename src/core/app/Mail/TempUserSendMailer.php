@@ -34,7 +34,7 @@ class TempUserSendMailer extends Mailable
         $url = sprintf(url(CommonConstant::VERIFY_USERS_ROOT . "%s"), $this->token);
         return $this
             ->text('tempUserSendMailer.mail')
-            ->subject('OLDWSへの仮登録いただきありがとうございます')
+            ->subject('OLDWsへの仮登録いただきありがとうございます')
             ->with(
                 [
                     'url' => $url,

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Constants\CommonConstant;
+use App\Constants\ErrorMessagesConstant;
 use App\Http\Requests\TempUserRequest;
 use App\Http\Requests\UserFormRequest;
 use App\Mail\TempUserSendMailer;
+use App\Models\Team;
+use App\Models\TeamMebmer;
 use App\Models\TempUser;
 use App\Models\User;
 use Carbon\Carbon;
@@ -50,14 +53,23 @@ class TempUsersController extends BasesController
         $values = $request ->session()->all();
         $button = $request->input();
         $request->session()->flush();
+        $tempUser = new TempUser();
+        $activatedUser = $tempUser->getUserIsEnabled($values['email']);
 
-        // TODO 登録前に、同一メールアドレスが有効化されていないかをチェック
+        // 登録前に、同一メールアドレスが有効化されていないかをチェック
+        if (is_null($activatedUser)) {
+            return redirect()->route('tmp_user.index')
+                ->withInput($values)
+                ->withError('email', ErrorMessagesConstant::ALREADY_REGISTERED);
+        }
 
+        // フォームへ遷移
         if (isset($button['back'])) {
             // 戻るボタン
             return redirect()->route('tmp_user.index')->withInput($values);
         }
 
+        // 完了処理
         if (isset($button['next'])) {
             // 送信するボタン
             // トランザクション内で、DB登録とメール送信を実行
@@ -67,11 +79,12 @@ class TempUsersController extends BasesController
                     $values['expireDate'] = $now->addHour();
                     $tempUser = new TempUser();
                     $token = $this->createUuid();
+                    $teamId = $this->getTeamId($values);
+
+                    // temp_usersテーブルへ登録
                     $tempUser->updateOrInsert(
-                        [
-                            // 同一メールアドレスが存在するか
-                            'email' => $values['email'],
-                        ],
+                        // 同一メールアドレスが存在するか
+                        ['email' => $values['email']],
                         [
                             // 挿入データ
                             'email' => $values['email'],
@@ -79,12 +92,12 @@ class TempUsersController extends BasesController
                             'expiration_date' => $values['expireDate'],
                         ]
                     );
+
+                    // usersテーブルへ登録
                     $user = new User();
-                    $user->updateOrInsert(
-                        [
-                            // 同一メールアドレスが存在するか
-                            'email' => $values['email'],
-                        ],
+                    $registeredUser = $user->updateOrInsert(
+                        // 同一メールアドレスが存在するか
+                        ['email' => $values['email']],
                         [
                             // 挿入データ
                             'name1' => $values['name1'],
@@ -97,6 +110,20 @@ class TempUsersController extends BasesController
                             'expiration_date' => $values['expireDate']
                         ],
                     );
+
+                    // 招待コードが入力されている場合
+                    if (!empty($teamId)) {
+                        // team_membersテーブルへ登録
+                        $teamMember = new TeamMebmer();
+                        $teamMember->updateOrInser(
+                            ['user_id'],
+                            [
+                                'team_id' => $teamId,
+                                'user_id' => $registeredUser->lastInsertId(),
+                            ]
+                        );
+                    }
+
                     Mail::to($values['email'])->send(new TempUserSendMailer($token));
                 }
             );
@@ -105,5 +132,23 @@ class TempUsersController extends BasesController
             return redirect()->route('tmp_user.index');
         }
             return view('tempUsers.complete');
+    }
+
+    /**
+     * 招待コードからチームコードを取得
+     *
+     * @param array $values
+     * @return string
+     */
+    private function getTeamId($values)
+    {
+        $team = new Team();
+        $teamId = '';
+
+        if (isset($values['invitationCode'])) {
+            $teamId = $team->getTeamIdByInvitationCode($values['invitationCode']);
+        }
+
+        return $teamId;
     }
 }
