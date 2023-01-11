@@ -8,13 +8,14 @@ use App\Http\Requests\TempUserRequest;
 use App\Http\Requests\UserFormRequest;
 use App\Mail\TempUserSendMailer;
 use App\Models\Team;
-use App\Models\TeamMebmer;
+use App\Models\TeamMember;
 use App\Models\TempUser;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class TempUsersController extends BasesController
@@ -52,15 +53,15 @@ class TempUsersController extends BasesController
     {
         $values = $request ->session()->all();
         $button = $request->input();
-        $request->session()->flush();
-        $tempUser = new TempUser();
-        $activatedUser = $tempUser->getUserIsEnabled($values['email']);
+        // $request->session()->flush();
+        $user = new User();
+        $activatedUser = $user->getByEmail($values['email']);
 
         // 登録前に、同一メールアドレスが有効化されていないかをチェック
-        if (is_null($activatedUser)) {
+        if (!is_null($activatedUser)) {
             return redirect()->route('tmp_user.index')
                 ->withInput($values)
-                ->withError('email', ErrorMessagesConstant::ALREADY_REGISTERED);
+                ->withErrors(['email' => ErrorMessagesConstant::ALREADY_REGISTERED]);
         }
 
         // フォームへ遷移
@@ -74,7 +75,7 @@ class TempUsersController extends BasesController
             // 送信するボタン
             // トランザクション内で、DB登録とメール送信を実行
             DB::transaction(
-                function () use ($values) {
+                function () use ($values, $user) {
                     $now = Carbon::now();
                     $values['expireDate'] = $now->addHour();
                     $tempUser = new TempUser();
@@ -94,8 +95,7 @@ class TempUsersController extends BasesController
                     );
 
                     // usersテーブルへ登録
-                    $user = new User();
-                    $registeredUser = $user->updateOrInsert(
+                    $registeredUser = $user->updateOrCreate(
                         // 同一メールアドレスが存在するか
                         ['email' => $values['email']],
                         [
@@ -114,12 +114,12 @@ class TempUsersController extends BasesController
                     // 招待コードが入力されている場合
                     if (!empty($teamId)) {
                         // team_membersテーブルへ登録
-                        $teamMember = new TeamMebmer();
-                        $teamMember->updateOrInser(
-                            ['user_id'],
+                        $teamMember = new TeamMember();
+                        $teamMember->updateOrInsert(
+                            ['user_id' => $registeredUser->id],
                             [
-                                'team_id' => $teamId,
-                                'user_id' => $registeredUser->lastInsertId(),
+                                'team_id' => $teamId->id,
+                                'user_id' => $registeredUser->id,
                             ]
                         );
                     }
