@@ -14,6 +14,17 @@ class TempUser extends Model
     protected $connection = 't_users';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'email',
+        'token',
+        'expiration_date',
+    ];
+
+    /**
      * 仮登録中のトークンの有効期限をチェック
      *
      * @param string $token

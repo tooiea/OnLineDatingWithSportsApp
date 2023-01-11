@@ -83,7 +83,7 @@ class TempUsersController extends BasesController
                     $teamId = $this->getTeamId($values);
 
                     // temp_usersテーブルへ登録
-                    $tempUser->updateOrInsert(
+                    $tempUser->updateOrCreate(
                         // 同一メールアドレスが存在するか
                         ['email' => $values['email']],
                         [
@@ -115,7 +115,7 @@ class TempUsersController extends BasesController
                     if (!empty($teamId)) {
                         // team_membersテーブルへ登録
                         $teamMember = new TeamMember();
-                        $teamMember->updateOrInsert(
+                        $teamMember->updateOrCreate(
                             ['user_id' => $registeredUser->id],
                             [
                                 'team_id' => $teamId->id,
