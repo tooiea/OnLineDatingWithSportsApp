@@ -51,9 +51,9 @@ class TempUsersController extends BasesController
      */
     public function complete(Request $request)
     {
-        $values = $request ->session()->all();
+        $values = $request->session()->all();
         $button = $request->input();
-        // $request->session()->flush();
+        $request->session()->flush();
         $user = new User();
         $activatedUser = $user->getByEmail($values['email']);
 
