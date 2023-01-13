@@ -5,10 +5,6 @@ services:
     build: ./db_baseball
     image: db_baseball
     container_name: db_baseball
-    # volumes:
-    #   - db_baseball:/var/lib/mysql
-    #   - ./db_baseball/init:/docker-entrypoint-initdb.d
-    # - ../src/_sql:/tmp/sql
     ports:
       - "3306:3306"
     restart: always
@@ -19,25 +15,6 @@ services:
       MYSQL_PASSWORD: touya1008
     networks:
       - br0
-
-  # db_users:
-  #   build: ./db_users
-  #   image: db_users
-  #   container_name: db_users
-  #   volumes:
-  #     - db_users:/var/lib/mysql
-  #     - ./db_users/init:/docker-entrypoint-initdb.d
-  #     # - ../src/_sql:/tmp/sql
-  #   ports:
-  #     - "3307:3306"
-  #   restart: always
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: root
-  #     MYSQL_DATABASE: 't_users'
-  #     MYSQL_USER: user_admin
-  #     MYSQL_PASSWORD: user_admin
-  #   networks:
-  #     - br0
 
   web_baseball:
     build: ./web_baseball
@@ -50,7 +27,6 @@ services:
       - ../src:/var/www/src
     depends_on:
       - db_baseball
-      # - db_users
     tty: true
     stdin_open: true
     networks:
@@ -68,8 +44,6 @@ services:
 
 volumes:
   db_baseball:
-  db_users:
-
 
 networks:
   br0:

@@ -64,30 +64,24 @@ CREATE TABLE t_baseball.team_members (
   id BIGINT NOT NULL AUTO_INCREMENT
   , team_id INT NOT NULL
   , user_id INT NOT NULL
-  , role INT DEFAULT 4
-  , number INT
-  , is_deleted INT DEFAULT 0 NOT NULL
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
   , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
   , CONSTRAINT team_members_PKC PRIMARY KEY (id)
 ) ;
 
--- チーム役割マスタ
-CREATE TABLE t_baseball.team_role_mst (
-  id INT NOT NULL AUTO_INCREMENT
-  , label VARCHAR(20) NOT NULL
-  , is_deleted INT DEFAULT 0 NOT NULL
-  , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
-  , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
-  , CONSTRAINT team_role_mst_PKC PRIMARY KEY (id)
-) ;
-
 -- 仮ユーザ
 CREATE TABLE t_users.temp_users (
   id INT NOT NULL AUTO_INCREMENT
+  , name VARCHAR(20) NOT NULL
   , email VARCHAR(255) NOT NULL
+  , password VARCHAR(255) NOT NULL
   , token VARCHAR(255) NOT NULL
   , expiration_date DATETIME NOT NULL
+  , team_name VARCHAR(255) NULL
+  , sport_affiliation_type INT NULL
+  , prefecture INT NULL
+  , address VARCHAR(255) NULL
+  , invitation_code VARCHAR(255) NULL
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
   , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP NOT NULL
   , CONSTRAINT temp_users_PKC PRIMARY KEY (id)
@@ -96,18 +90,9 @@ CREATE TABLE t_users.temp_users (
 -- ユーザ
 CREATE TABLE t_users.users (
   id INT NOT NULL AUTO_INCREMENT
-  , name1 VARCHAR(20) NOT NULL
-  , name2 VARCHAR(20) NOT NULL
-  , ruby1 VARCHAR(20) NOT NULL
-  , ruby2 VARCHAR(20) NOT NULL
-  , birthday DATE NOT NULL
+  , name VARCHAR(20) NOT NULL
   , email VARCHAR(255) NOT NULL
   , password VARCHAR(255) NOT NULL
-  , invitation_code VARCHAR(255)
-  , reset_token VARCHAR(255)
-  , expiration_date DATETIME NOT NULL
-  , is_enabled INT DEFAULT 0 NOT NULL
-  , is_deleted INT DEFAULT 0 NOT NULL
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
   , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP
   , CONSTRAINT users_PKC PRIMARY KEY (id)
@@ -159,7 +144,7 @@ CREATE TABLE t_baseball.consent_games (
   id INT NOT NULL AUTO_INCREMENT
   , invitee_id INT NOT NULL
   , guest_id INT NOT NULL
-  , consent_status_id INT NOT NULL
+  , consent_status INT NOT NULL
   , possible_date DATE NOT NULL
   , is_deleted INT DEFAULT 0 NOT NULL
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
@@ -167,47 +152,18 @@ CREATE TABLE t_baseball.consent_games (
   , CONSTRAINT consent_games_PKC PRIMARY KEY (id)
 ) ;
 
--- 招待ステータスマスタ
-CREATE TABLE t_baseball.consent_status_mst (
-  id INT NOT NULL AUTO_INCREMENT
-  , label VARCHAR(10) NOT NULL
-  , is_deleted INT DEFAULT 0 NOT NULL
-  , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
-  , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
-  , CONSTRAINT consent_status_mst_PKC PRIMARY KEY (id)
-) ;
-
 -- チーム
 CREATE TABLE t_baseball.teams (
   id INT NOT NULL AUTO_INCREMENT
   , team_name VARCHAR(255) NOT NULL
+  , sport_affiliation_type INT NOT NULL
   , invitation_code VARCHAR(255) NOT NULL
-  , team_address_id BIGINT NOT NULL
-  , sport_affiliation_mst_id INT NOT NULL
+  , prefecture INT NOT NULL
+  , address VARCHAR(255) NOT NULL
   , is_deleted INT DEFAULT 0 NOT NULL
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
   , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP NOT NULL
   , CONSTRAINT teams_PKC PRIMARY KEY (id)
-) ;
-
--- スポーツ種類
-CREATE TABLE t_baseball.sport_affiliation_mst (
-  id INT NOT NULL AUTO_INCREMENT
-  , name VARCHAR(255) NOT NULL
-  , is_deleted INT DEFAULT 0 NOT NULL
-  , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
-  , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP NOT NULL
-  , CONSTRAINT sport_affiliation_mst_PKC PRIMARY KEY (id)
-) ;
-
--- チーム住所
-CREATE TABLE t_baseball.team_addresses (
-  id BIGINT NOT NULL AUTO_INCREMENT
-  , prefecture INT NOT NULL
-  , address VARCHAR(255) NOT NULL
-  , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
-  , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP NOT NULL
-  , CONSTRAINT team_addresses_PKC PRIMARY KEY (id)
 ) ;
 
 ALTER TABLE t_baseball.consent_games
@@ -217,11 +173,6 @@ ALTER TABLE t_baseball.consent_games
 
 ALTER TABLE t_baseball.consent_games
   ADD CONSTRAINT consent_games_FK2 FOREIGN KEY (invitee_id) REFERENCES t_baseball.teams(id)
-  on delete cascade
-  on update cascade;
-
-ALTER TABLE t_baseball.consent_games
-  ADD CONSTRAINT consent_games_FK3 FOREIGN KEY (consent_status_id) REFERENCES t_baseball.consent_status_mst(id)
   on delete cascade
   on update cascade;
 
@@ -256,22 +207,8 @@ ALTER TABLE t_baseball.team_members
   on update cascade;
 
 ALTER TABLE t_baseball.team_members
-  ADD CONSTRAINT team_members_FK2 FOREIGN KEY (role) REFERENCES t_baseball.team_role_mst(id)
-  on delete cascade
-  on update cascade;
-
-ALTER TABLE t_baseball.team_members
   ADD CONSTRAINT team_members_FK3 FOREIGN KEY (team_id) REFERENCES t_baseball.teams(id)
   on delete cascade
   on update cascade;
 
-ALTER TABLE t_baseball.teams
-  ADD CONSTRAINT teams_FK1 FOREIGN KEY (sport_affiliation_mst_id) REFERENCES t_baseball.sport_affiliation_mst(id)
-  on delete cascade
-  on update cascade;
-
-ALTER TABLE t_baseball.teams
-  ADD CONSTRAINT teams_FK2 FOREIGN KEY (team_address_id) REFERENCES t_baseball.team_addresses(id)
-  on delete cascade
-  on update cascade;
 

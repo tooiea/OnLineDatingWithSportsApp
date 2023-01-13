@@ -12,16 +12,14 @@ class TempUserSendMailer extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $token;
-
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($token)
+    public function __construct()
     {
-        $this->token = $token;
+        // 
     }
 
     /**
@@ -31,14 +29,6 @@ class TempUserSendMailer extends Mailable
      */
     public function build()
     {
-        $url = sprintf(url(CommonConstant::VERIFY_USERS_ROOT . "%s"), $this->token);
-        return $this
-            ->text('tempUserSendMailer.mail')
-            ->subject('OLDWsへの仮登録いただきありがとうございます')
-            ->with(
-                [
-                    'url' => $url,
-                ]
-            );
+        return $this;
     }
 }

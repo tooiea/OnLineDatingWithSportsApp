@@ -27,6 +27,7 @@ class TempUsersController extends BasesController
      */
     public function index()
     {
+        var_dump();
         return view('tempUsers.index');
     }
 
@@ -52,22 +53,22 @@ class TempUsersController extends BasesController
     public function complete(Request $request)
     {
         $values = $request->session()->all();
-        $button = $request->input();
-        $request->session()->flush();
+        $button = $request->input(); // TODO
+        $request->session()->flush(); // TODO
         $user = new User();
-        $activatedUser = $user->getByEmail($values['email']);
+        $activatedUser = $user->getByEmail($values['email']); // TODO
 
-        // 登録前に、同一メールアドレスが有効化されていないかをチェック
+        // TODO フォームへ遷移
+        if (isset($button['back'])) {
+            // 戻るボタン
+            return redirect()->route('tmp_user.index')->withInput($values);
+        }
+
+        // TODO 登録前に、同一メールアドレスが有効化されていないかをチェック
         if (!is_null($activatedUser)) {
             return redirect()->route('tmp_user.index')
                 ->withInput($values)
                 ->withErrors(['email' => ErrorMessagesConstant::ALREADY_REGISTERED]);
-        }
-
-        // フォームへ遷移
-        if (isset($button['back'])) {
-            // 戻るボタン
-            return redirect()->route('tmp_user.index')->withInput($values);
         }
 
         // 完了処理
@@ -80,7 +81,6 @@ class TempUsersController extends BasesController
                     $values['expireDate'] = $now->addHour();
                     $tempUser = new TempUser();
                     $token = $this->createUuid();
-                    $teamId = $this->getTeamId($values);
 
                     // temp_usersテーブルへ登録
                     $tempUser->updateOrCreate(
@@ -111,6 +111,7 @@ class TempUsersController extends BasesController
                         ],
                     );
 
+                    $teamId = $this->getTeamId($values);
                     // 招待コードが入力されている場合
                     if (!empty($teamId)) {
                         // team_membersテーブルへ登録
@@ -124,7 +125,7 @@ class TempUsersController extends BasesController
                         );
                     }
 
-                    Mail::to($values['email'])->send(new TempUserSendMailer($token));
+                    $tempUser->temporaryRegistrationNotification($token);
                 }
             );
         } else {

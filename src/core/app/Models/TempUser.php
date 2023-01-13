@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Constants\CommonConstant;
+use App\Mail\TempUserSendMailer;
+use App\Notifications\TempUserNotification;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -53,5 +55,16 @@ class TempUser extends Model
         ])->select(['email'])->first();
 
         return $tmpUser;
+    }
+
+    /**
+     * 仮登録メール送信
+     *
+     * @param string $token
+     * @return void
+     */
+    public function temporaryRegistrationNotification($token)
+    {
+        $this->notify(new TempUserNotification($token, new TempUserSendMailer()));
     }
 }
