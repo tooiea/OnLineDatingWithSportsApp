@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -55,18 +56,20 @@ class User extends Authenticatable
     ];
 
     /**
-     * メールアドレスで本登録すみのユーザを取得
+     * メールアドレスで本登録済みのユーザを取得
      *
      * @param string $email
-     * @return void
+     * @return boolean
      */
     public function getByEmail($email)
     {
-        $user = $this->where([
-            'email' => $email,
-            'is_enabled' => CommonConstant::FLAG_ON,
-        ])->first();
+        $user = $this->where(['email' => $email])->first();
+        $isRegisterUser = false;
 
-        return $user;
+        if (!is_null($user)) {
+            $isRegisterUser = true;
+        }
+
+        return $isRegisterUser;
     }
 }

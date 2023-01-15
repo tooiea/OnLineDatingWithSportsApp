@@ -21,7 +21,15 @@ class TempUser extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'sport_affiliation_type',
+        'team_name',
+        'team_logo',
+        'team_url',
+        'prefecture',
+        'address',
+        'name',
         'email',
+        'password',
         'token',
         'expiration_date',
     ];

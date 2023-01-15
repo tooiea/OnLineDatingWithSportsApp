@@ -77,8 +77,10 @@ CREATE TABLE t_users.temp_users (
   , password VARCHAR(255) NOT NULL
   , token VARCHAR(255) NOT NULL
   , expiration_date DATETIME NOT NULL
-  , team_name VARCHAR(255) NULL
   , sport_affiliation_type INT NULL
+  , team_name VARCHAR(255) NULL
+  , team_logo VARCHAR(255) NULL
+  , team_url VARCHAR(255) NULL
   , prefecture INT NULL
   , address VARCHAR(255) NULL
   , invitation_code VARCHAR(255) NULL

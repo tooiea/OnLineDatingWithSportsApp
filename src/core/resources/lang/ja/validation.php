@@ -64,7 +64,7 @@ return [
         'array' => 'The :attribute must have :value items or more.',
     ],
     'image' => 'The :attribute must be an image.',
-    'in' => 'The selected :attribute is invalid.',
+    'in' => ':attribute を正しく選択してください。',
     'in_array' => 'The :attribute field does not exist in :other.',
     'integer' => 'The :attribute must be an integer.',
     'ip' => 'The :attribute must be a valid IP address.',
@@ -90,7 +90,7 @@ return [
         'string' => ':attribute を :max 文字以内で入力してください。',
         'array' => 'The :attribute must not have more than :max items.',
     ],
-    'mimes' => 'The :attribute must be a file of type: :values.',
+    'mimes' => ':attribute を :values の形式でアップロードしてください。',
     'mimetypes' => 'The :attribute must be a file of type: :values.',
     'min' => [
         'numeric' => 'The :attribute must be at least :min.',
@@ -129,7 +129,7 @@ return [
     'timezone' => 'The :attribute must be a valid timezone.',
     'unique' => ':attribute はすでに本登録済みです。',
     'uploaded' => 'The :attribute failed to upload.',
-    'url' => 'The :attribute must be a valid URL.',
+    'url' => ':attribute URL形式で入力してください。',
     'uuid' => 'The :attribute must be a valid UUID.',
 
     /*
@@ -144,24 +144,7 @@ return [
     */
 
     'custom' => [
-        'name1.required' => ErrorMessagesConstant::USER_FORM['name1.required'],
-        'name1.max' => ErrorMessagesConstant::USER_FORM['name1.max'],
-        'name2.required' => ErrorMessagesConstant::USER_FORM['name2.required'],
-        'name2.max' => ErrorMessagesConstant::USER_FORM['name2.max'],
-        'ruby1.required' => ErrorMessagesConstant::USER_FORM['ruby1.required'],
-        'ruby1.max' => ErrorMessagesConstant::USER_FORM['ruby1.max'],
-        'ruby1.regex' => ErrorMessagesConstant::USER_FORM['ruby1.regex'],
-        'ruby2.required' => ErrorMessagesConstant::USER_FORM['ruby2.required'],
-        'ruby2.max' => ErrorMessagesConstant::USER_FORM['ruby2.max'],
-        'ruby2.regex' => ErrorMessagesConstant::USER_FORM['ruby2.regex'],
-        'birthday.required' => ErrorMessagesConstant::USER_FORM['birthday.required'],
-        'birthday.date' => ErrorMessagesConstant::USER_FORM['birthday.date'],
-        'email.required' => ErrorMessagesConstant::USER_FORM['email.required'],
-        'email.regex' => ErrorMessagesConstant::USER_FORM['email.regex'],
-        'password.required' => ErrorMessagesConstant::USER_FORM['password.required'],
-        'password.regex' => ErrorMessagesConstant::USER_FORM['password.regex'],
-        'password2.required' => ErrorMessagesConstant::USER_FORM['password2.required'],
-        'password2.same' => ErrorMessagesConstant::USER_FORM['password2.same'],
+        'teamLogo.required' => ':attribute を1点アップロードしてください。',
         'invitationCode.exists' => ErrorMessagesConstant::USER_FORM['invitationCode.exists'],
     ],
 
@@ -177,16 +160,18 @@ return [
     */
 
     'attributes' => [
-        'name1' => 'お名前(姓)',
-        'name2' => 'お名前(名)',
-        'ruby1' => '',
-        'ruby2' => '',
-        'birthday' => '誕生日',
+        'name' => 'お名前(ニックネーム)',
         'email' => 'メールアドレス',
         'password' => 'パスワード',
         'password2' => 'パスワード(再入力)',
         'invitationCode' => '招待コード',
-        'token' => 'トークン'
+        'token' => 'トークン',
+        'sportAffiliationType' => 'スポーツ種別',
+        'teamName' => 'チーム名',
+        'teamLogo' => 'チームロゴ画像',
+        'teamUrl' => 'チーム紹介サイトなど',
+        'prefecture' => '都道府県',
+        'address' => '市町村区',
     ],
 
 ];

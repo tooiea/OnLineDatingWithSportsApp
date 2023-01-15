@@ -27,7 +27,6 @@ class TempUsersController extends BasesController
      */
     public function index()
     {
-        var_dump();
         return view('tempUsers.index');
     }
 

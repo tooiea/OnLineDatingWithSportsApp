@@ -8,4 +8,8 @@ use Illuminate\Http\Request;
 class LoginController extends AuthenticatedSessionController
 {
     //
+    public function login()
+    {
+        return view('users.index');
+    }
 }

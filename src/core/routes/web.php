@@ -8,8 +8,12 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TempTeamUsersController;
 use App\Http\Controllers\TempUsersController;
 use App\Http\Controllers\UsersController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', function () {
@@ -18,7 +22,17 @@ Route::get('/dashboard', function () {
 
 // ログイン不要
 Route::middleware('guest')->group(function () {
-    // 仮ユーザ登録
+    // 仮登録(チーム作成)
+    Route::get('tmp/team/user/register', [TempTeamUsersController::class, 'index'])->name('tmp_team_user.index');
+    Route::post('tmp/team/user/register/confirm', [TempTeamUsersController::class, 'confirm'])->name('tmp_team_user.confirm');
+    Route::post('tmp/team/user/register/back', function (Request $request) {
+
+        $formInputs = $request->session()->pull('temp_team_users');
+        return redirect()->route('tmp_team_user.index')->withInput($formInputs);
+    })->name('tmp_team_user.back');
+    Route::post('tmp/team/user/register/complete', [TempTeamUsersController::class, 'complete'])->name('tmp_team_user.complete');
+
+    // 仮登録(チーム招待)
     Route::get('tmp/user/register', [TempUsersController::class, 'index'])->name('tmp_user.index');
     Route::post('tmp/user/register/confirm', [TempUsersController::class, 'confirm'])->name('tmp_user.confirm');
     Route::post('tmp/user/register/complete', [TempUsersController::class, 'complete'])->name('tmp_user.registered');
@@ -26,8 +40,8 @@ Route::middleware('guest')->group(function () {
     // 本登録
     Route::get('notvalid/token', [UsersController::class, 'failedToken'])->name('users.failed'); // トークンなし
     Route::get('register/user/{token}', [UsersController::class, 'index'])->name('users.index');
-    Route::get('login', [UsersController::class, 'login'])->name('users.login');
-    Route::post('login', [UsersController::class, 'login'])
+    Route::get('login', [LoginController::class, 'login'])->name('users.login');
+    Route::post('login', [LoginController::class, 'login'])
                 ->name('login');
 
     Route::get('register', [RegisteredUserController::class, 'create'])
