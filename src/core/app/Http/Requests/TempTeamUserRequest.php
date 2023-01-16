@@ -2,8 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Constants\CommonConstant;
-use App\Constants\ErrorMessagesConstant;
+use App\Constants\FormConstant;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
@@ -48,15 +47,15 @@ class TempTeamUserRequest extends FormRequest
                 'mimetypes:image/jpeg,image/jpg,image/png',
             ],
             'teamUrl' => [
+                'nullable',
                 'bail',
-                'required',
                 'url',
                 'max:255'
             ],
             'prefecture' => [
                 'bail',
                 'required',
-                Rule::in(array_keys(CommonConstant::PREFECTURES)),
+                Rule::in(array_keys(FormConstant::PREFECTURES)),
             ],
             'address' => [
                 'bail',
@@ -72,12 +71,11 @@ class TempTeamUserRequest extends FormRequest
                 'bail',
                 'required',
                 'email:rfc,strict',
-                // TODO users.emailに存在しているかチェックに変更
                 function ($attribute, $value, $fail) {
                     $userModel = new User();
                     $activeUser = $userModel->getByEmail($value);
                     if ($activeUser) {
-                        $fail(ErrorMessagesConstant::USER_FORM['email.unique']);
+                        $fail(__('validation.unique'));
                     }
                 },
             ],

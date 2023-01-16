@@ -8,10 +8,14 @@ use App\Notifications\TempUserNotification;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 
 class TempUser extends Model
 {
     use HasFactory;
+    use Notifiable;
 
     protected $connection = 't_users';
 
@@ -71,8 +75,35 @@ class TempUser extends Model
      * @param string $token
      * @return void
      */
-    public function temporaryRegistrationNotification($token)
+    public function temporaryRegistrationNotification($token, $email)
     {
-        $this->notify(new TempUserNotification($token, new TempUserSendMailer()));
+        $this->notify(new TempUserNotification($token, $email, new TempUserSendMailer()));
+    }
+
+    public function registrationTempUser($customValues, $token)
+    {
+        $now = Carbon::now();
+
+        // temp_usersテーブルへ登録
+        $this->updateOrCreate(
+            // 同一メールアドレスが存在するか
+            ['email' => $customValues['email']],
+            [
+                // 挿入データ
+                'sport_affiliation_type' => $customValues['sportAffiliationType'],
+                'team_name' => $customValues['teamName'],
+                'team_logo' => $customValues['teamLogo'],
+                'team_url' => (isset($customValues['teamUrl'])) ? $customValues['teamUrl'] : null,
+                'prefecture' => $customValues['prefecture'],
+                'address' => $customValues['address'],
+                'name' => $customValues['name'],
+                'password' => Hash::make($customValues['password']),
+                'email' => $customValues['email'],
+                'token' => $token,
+                'expiration_date' => $now->addHour(),
+            ]
+        );
+
+        $this->temporaryRegistrationNotification($token, $customValues['email']);
     }
 }

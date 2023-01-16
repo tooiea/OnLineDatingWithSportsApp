@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Constants\CommonConstant;
-use App\Constants\ErrorMessagesConstant;
 use App\Models\TempUser;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
@@ -38,7 +37,7 @@ class UserTokenRequest extends FormRequest
                     $activeUser = $tempUser->checkExpiration($value);
                     if (empty($activeUser)) {
                         // トークン有効期限切れ
-                        $fail(ErrorMessagesConstant::EXPIRED_TOKEN);
+                        $fail(__('validation.custom.token.expired'));
                     }
                 },
                 function ($attribute, $value, $fail) {
@@ -49,10 +48,10 @@ class UserTokenRequest extends FormRequest
 
                      // 不正アクセス
                     if (is_null($activedUser)) {
-                        $fail(ErrorMessagesConstant::NOT_VALID_TOKEN);
+                        $fail(__('validation.custom.token.notvalid'));
                     } // 本登録済み
                     elseif ($activedUser->is_enabled === CommonConstant::FLAG_ON) {
-                        $fail(ErrorMessagesConstant::ALREADY_REGISTERED);
+                        $fail(__('validation.custom.token.expired'));
                     }
                 },
             ],
@@ -80,7 +79,7 @@ class UserTokenRequest extends FormRequest
     public function messages()
     {
         return [
-            'token.exists' => ErrorMessagesConstant::NOT_VALID_TOKEN,
+            'token.exists' => __('validation.custom.token.exists'),
         ];
     }
 }

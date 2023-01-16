@@ -27,8 +27,8 @@ Route::middleware('guest')->group(function () {
     Route::post('tmp/team/user/register/confirm', [TempTeamUsersController::class, 'confirm'])->name('tmp_team_user.confirm');
     Route::post('tmp/team/user/register/back', function (Request $request) {
 
-        $formInputs = $request->session()->pull('temp_team_users');
-        return redirect()->route('tmp_team_user.index')->withInput($formInputs);
+        $specifyFormRequestInputs = $request->session()->pull('temp_team_users');
+        return redirect()->route('tmp_team_user.index')->withInput($specifyFormRequestInputs->getAll());
     })->name('tmp_team_user.back');
     Route::post('tmp/team/user/register/complete', [TempTeamUsersController::class, 'complete'])->name('tmp_team_user.complete');
 

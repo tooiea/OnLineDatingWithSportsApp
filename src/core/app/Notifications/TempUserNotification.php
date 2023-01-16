@@ -13,6 +13,7 @@ class TempUserNotification extends Notification
     use Queueable;
 
     private $token;
+    private $email;
     private $mail;
 
     /**
@@ -20,9 +21,10 @@ class TempUserNotification extends Notification
      *
      * @return void
      */
-    public function __construct(string $token, TempUserSendMailer $mail)
+    public function __construct(string $token, string $email, TempUserSendMailer $mail)
     {
         $this->token = $token;
+        $this->email = $email;
         $this->mail = $mail;
     }
 
@@ -45,10 +47,12 @@ class TempUserNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $url = sprintf(url(route('web.VERIFY_USERS_ROOT') . "%s"), $this->token);
+        $url = sprintf(url(__('route_const.temp_mail.register') . "%s"), $this->token);
         return $this->mail
+            ->from(config('mail.from.address'))
+            ->to($this->email)
             ->text('tempUserSendMailer.mail')
-            ->subject('OLDWsへの仮登録いただきありがとうございます')
+            ->subject(__('tmp_mail_messages.subject'))
             ->with(
                 [
                     'url' => $url,

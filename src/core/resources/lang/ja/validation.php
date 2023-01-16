@@ -35,7 +35,7 @@ return [
     'boolean' => 'The :attribute field must be true or false.',
     'confirmed' => 'The :attribute confirmation does not match.',
     'current_password' => 'The password is incorrect.',
-    'date' => ':attributeを正しく入力してください。',
+    'date' => ':attribute を正しく入力してください。',
     'date_equals' => 'The :attribute must be a date equal to :date.',
     'date_format' => 'The :attribute does not match the format :format.',
     'declined' => 'The :attribute must be declined.',
@@ -47,8 +47,8 @@ return [
     'distinct' => 'The :attribute field has a duplicate value.',
     'email' => 'The :attribute must be a valid email address.',
     'ends_with' => 'The :attribute must end with one of the following: :values.',
-    'enum' => 'The selected :attribute is invalid.',
-    'exists' => 'The selected :attribute is invalid.',
+    'enum' => ':attribute を正しく選択してください。',
+    'exists' => ':attribute が存在しません。',
     'file' => 'The :attribute must be a file.',
     'filled' => 'The :attribute field must have a value.',
     'gt' => [
@@ -108,7 +108,7 @@ return [
     'prohibited_if' => 'The :attribute field is prohibited when :other is :value.',
     'prohibited_unless' => 'The :attribute field is prohibited unless :other is in :values.',
     'prohibits' => 'The :attribute field prohibits :other from being present.',
-    'regex' => ':attributeを正しく入力してください。',
+    'regex' => ':attribute を正しく入力してください。',
     'required' => ':attribute を入力してください。',
     'required_array_keys' => 'The :attribute field must contain entries for: :values.',
     'required_if' => 'The :attribute field is required when :other is :value.',
@@ -144,8 +144,16 @@ return [
     */
 
     'custom' => [
-        'teamLogo.required' => ':attribute を1点アップロードしてください。',
-        'invitationCode.exists' => ErrorMessagesConstant::USER_FORM['invitationCode.exists'],
+        'teamLogo' => [
+            'required' => ':attribute を1点アップロードしてください。'
+        ],
+        'invitationCode' => [
+            'exists' => 'チームの招待コードが存在しません。'
+        ],
+        'token' => [
+            'expired' => 'トークンの有効期限切れです。再度、仮登録フォームより登録してください。',
+            'notvalid' => '不正な入力がありました。再度、URLをご確認ください。'
+        ],
     ],
 
     /*
@@ -169,7 +177,7 @@ return [
         'sportAffiliationType' => 'スポーツ種別',
         'teamName' => 'チーム名',
         'teamLogo' => 'チームロゴ画像',
-        'teamUrl' => 'チーム紹介サイトなど',
+        'teamUrl' => 'チーム紹介サイトのURL',
         'prefecture' => '都道府県',
         'address' => '市町村区',
     ],
