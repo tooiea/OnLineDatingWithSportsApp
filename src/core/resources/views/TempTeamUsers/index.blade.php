@@ -73,7 +73,7 @@
                         <select name="prefecture" class="form-control @error('prefecture') is-invalid @enderror"
                             id="prefecture" aria-describedby="nameHelp">
                             <option value="" disabled selected>選択してください</option>
-                            @foreach (\App\Constants\CommonConstant::PREFECTURES as $key => $value)
+                            @foreach (\App\Constants\FormConstant::PREFECTURES as $key => $value)
                             <option value="{{ $key }}" @if(old('prefecture')==$key)) selected @endif>{{ $value }}
                             </option>
                             @endforeach

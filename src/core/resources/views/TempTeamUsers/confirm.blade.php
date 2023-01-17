@@ -16,30 +16,42 @@
             <h4 class="pl-5">チーム登録</h4>
             <div class="row m-5">
                 <div class="col text-center">スポーツ種別</div>
-                <div class="col text-center">test</div>
+                <div class="col text-center">{{
+                    \App\Enums\SportAffiliationTypeEnum::from($values['sportAffiliationType'])->label() }}</div>
             </div>
             <div class="row m-5">
-                <div class="col text-center">パスワード</div>
-                <div class="col text-center">********</div>
+                <div class="col text-center">チーム名</div>
+                <div class="col text-center">{{ $values['teamName'] }}</div>
             </div>
             <div class="row m-5">
-                <div class="col text-center">招待コード</div>
-                <div class="col text-center"></div>
+                <div class="col text-center">チームロゴ画像</div>
+                <div class="col text-center"><img src="{{ asset($values['teamLogo']) }}" alt=""></div>
+            </div>
+            <div class="row m-5">
+                <div class="col text-center">チーム紹介サイト</div>
+                <div class="col text-center">@if(!empty($values['teamUrl'])){{ $values['teamUrl'] }}@enderror</div>
             </div>
         </div>
         <div class="container">
             <h4 class="pl-5">チーム登録</h4>
             <div class="row m-5">
-                <div class="col text-center">スポーツ種別</div>
-                <div class="col text-center">test</div>
+                <div class="col text-center">都道府県</div>
+                <div class="col text-center">{{ \App\Constants\FormConstant::PREFECTURES[$values['prefecture']] }}</div>
             </div>
             <div class="row m-5">
-                <div class="col text-center">パスワード</div>
-                <div class="col text-center">********</div>
+                <div class="col text-center">市町村区</div>
+                <div class="col text-center">{{ $values['address'] }}</div>
+            </div>
+        </div>
+        <div class="container">
+            <h4 class="pl-5">ユーザ情報</h4>
+            <div class="row m-5">
+                <div class="col text-center">ニックネーム</div>
+                <div class="col text-center">{{ $values['name'] }}</div>
             </div>
             <div class="row m-5">
-                <div class="col text-center">招待コード</div>
-                <div class="col text-center"></div>
+                <div class="col text-center">メールアドレス</div>
+                <div class="col text-center">{{ $values['email'] }}</div>
             </div>
         </div>
         <div class="row m-5">

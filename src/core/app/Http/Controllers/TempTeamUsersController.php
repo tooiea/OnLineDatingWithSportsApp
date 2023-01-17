@@ -33,13 +33,15 @@ class TempTeamUsersController extends BasesController
     {
         $image = $request->file('teamLogo');
         //　画像をtempディレクトリに保存
-        $tempPath = $image->store('public/upload/images');
-        $filePath = str_replace('public/', 'storage/', $tempPath);
+        $filePath = $image->store('public/upload/images');
+        // $filePath = str_replace('public/', 'storage/', $tempPath);
         $specifyFormRequestInputs = new SpecifyFormRequestInputsController();
         $specifyFormRequestInputs->setAll($request->input(), FormConstant::TEMP_TEAM_FORM_KEYS, ['teamLogo' => $filePath]); // インスタンスをセッションへ
         session(['temp_team_users' => $specifyFormRequestInputs]);
 
-        return view('tempTeamUsers.confirm');
+        $values = $specifyFormRequestInputs->getAll();
+
+        return view('tempTeamUsers.confirm', compact('values'));
     }
 
     /**
