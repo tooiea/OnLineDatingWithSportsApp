@@ -6,14 +6,33 @@ use App\Constants\CommonConstant;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\UserFormRequest;
 use App\Http\Requests\UserTokenRequest;
+use App\Models\Team;
+use App\Models\TeamMember;
 use App\Models\TempUser;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UsersController extends BasesController
 {
+    private $userModel;
+    private $tempUserModel;
+    private $teamModel;
+    private $teamMemberModel;
+
+    public function __construct(
+        User $userModel,
+        TempUser $tempUserModel,
+        Team $teamModel,
+        TeamMember $teamMemberModel
+    ) {
+        $this->userModel = $userModel;
+        $this->tempUserModel = $tempUserModel;
+        $this->teamModel = $teamModel;
+        $this->teamMemberModel = $teamMemberModel;
+    }
     /**
      * 仮ユーザ登録後のフォーム
      *
@@ -23,17 +42,16 @@ class UsersController extends BasesController
      */
     public function index(UserTokenRequest $request, $token)
     {
-        $tmpUserModel = new TempUser();
-        $tmpUser = $tmpUserModel->getUserByToken($token);
+        DB::transaction(function () use ($token) {
+            $tempUser = $this->tempUserModel->getUserByToken($token);
+            $userId = $this->userModel->registerUser($tempUser);
+            $invitationCode = $this->createUuid();
+            $teamId = $this->teamModel->registerTeam($tempUser, $invitationCode);
+            $this->teamMemberModel->registerTeamMember($userId, $teamId);
+            // TODO temp_usersのデータを削除
+        });
 
-        $user = new User();
-        $user->where(['email' => $tmpUser->email])->update([
-            'is_enabled' => CommonConstant::FLAG_ON,
-        ]);
-
-        // TODO チーム招待コードから、チームメンバーとして登録する
-
-        return redirect()->route('users.complete');
+        // return redirect()->route('users.complete');
     }
 
     /**

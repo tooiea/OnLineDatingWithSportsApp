@@ -21,4 +21,17 @@ class Team extends Model
                 ->select(['id'])->first();
         return $teamId;
     }
+
+    public function registerTeam($tempUser, $invitationCode)
+    {
+        $teamId = $this->insertGetId([
+            'team_name' => $tempUser->name,
+            'sport_affiliation_type' => $tempUser->sport_affiliation_type,
+            'invitation_code' => $invitationCode,
+            'prefecture' => $tempUser->prefecture,
+            'address' => $tempUser->address,
+        ]);
+
+        return $teamId;
+    }
 }

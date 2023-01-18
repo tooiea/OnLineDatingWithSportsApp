@@ -64,7 +64,7 @@ class TempUser extends Model
     {
         $tmpUser = $this->where([
             'token' => $token,
-        ])->select(['email'])->first();
+        ])->first();
 
         return $tmpUser;
     }

@@ -33,8 +33,8 @@ class TempTeamUsersController extends BasesController
     {
         $image = $request->file('teamLogo');
         //　画像をtempディレクトリに保存
-        $filePath = $image->store('public/upload/images');
-        // $filePath = str_replace('public/', 'storage/', $tempPath);
+        $tempPath = $image->store('public/upload/images');
+        $filePath = str_replace('public/', 'storage/', $tempPath);
         $specifyFormRequestInputs = new SpecifyFormRequestInputsController();
         $specifyFormRequestInputs->setAll($request->input(), FormConstant::TEMP_TEAM_FORM_KEYS, ['teamLogo' => $filePath]); // インスタンスをセッションへ
         session(['temp_team_users' => $specifyFormRequestInputs]);
@@ -64,8 +64,8 @@ class TempTeamUsersController extends BasesController
 
         // temp_usersモデルでDB登録とメール送信
         DB::transaction(function () use ($customValues) {
-            $tempUsers = new TempUser();
-            $tempUsers->registrationTempUser($customValues, $this->createUuid());
+            $tempUserModel = new TempUser();
+            $tempUserModel->registrationTempUser($customValues, $this->createUuid());
         });
         return view('tempTeamUsers.complete');
     }
@@ -78,8 +78,8 @@ class TempTeamUsersController extends BasesController
      */
     private function checkIsRegistered($email)
     {
-        $user = new User();
-        $activatedUser = $user->getByEmail($email);
+        $userModel = new User();
+        $activatedUser = $userModel->getByEmail($email);
         $isRegistered = false;
 
         // 登録前に、同一メールアドレスが本登録されていないかをチェック

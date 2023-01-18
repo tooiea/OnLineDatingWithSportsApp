@@ -7,7 +7,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -71,5 +70,22 @@ class User extends Authenticatable
         }
 
         return $isRegisterUser;
+    }
+
+    /**
+     * 仮ユーザ情報を元に本登録テーブルへ登録し、idを返却
+     *
+     * @param object $tempUser
+     * @return string
+     */
+    public function registerUser($tempUser)
+    {
+        $userId = $this->insertGetId([
+            'name' => $tempUser->name,
+            'email' => $tempUser->email,
+            'password' => $tempUser->password
+        ]);
+
+        return $userId;
     }
 }

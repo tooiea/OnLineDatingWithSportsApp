@@ -6,6 +6,7 @@ use App\Constants\CommonConstant;
 use App\Models\TempUser;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class UserTokenRequest extends FormRequest
 {
@@ -33,25 +34,20 @@ class UserTokenRequest extends FormRequest
                 'bail',
                 'exists:App\Models\TempUser,token',
                 function ($attribute, $value, $fail) {
-                    $tempUser = new TempUser();
-                    $activeUser = $tempUser->checkExpiration($value);
-                    if (empty($activeUser)) {
-                        // トークン有効期限切れ
-                        $fail(__('validation.custom.token.expired'));
-                    }
-                },
-                function ($attribute, $value, $fail) {
-                    $user = new User();
-                    $activedUser = $user->join('temp_users', 'users.email', '=', 'temp_users.email')
-                        ->select(['users.is_enabled'])
-                        ->first();
+                    $tempUserModel = new TempUser();
+                    $tempUser = $tempUserModel->checkExpiration($value);
 
-                     // 不正アクセス
-                    if (is_null($activedUser)) {
-                        $fail(__('validation.custom.token.notvalid'));
-                    } // 本登録済み
-                    elseif ($activedUser->is_enabled === CommonConstant::FLAG_ON) {
-                        $fail(__('validation.custom.token.expired'));
+                    // トークン有効期限切れ
+                    if (is_null($tempUser)) {
+                        return $fail(__('validation.custom.token.expired'));
+                    }
+
+                    $userModel = new User();
+                    $registeredUser = $userModel->where('email', '=', $tempUser->email)->first();
+
+                    // 本登録済み
+                    if (!is_null($registeredUser)) {
+                        $fail(__('validation.custom.token.registered'));
                     }
                 },
             ],
@@ -79,7 +75,7 @@ class UserTokenRequest extends FormRequest
     public function messages()
     {
         return [
-            'token.exists' => __('validation.custom.token.exists'),
+            'token.exists' => __('validation.custom.token.notvalid'),
         ];
     }
 }

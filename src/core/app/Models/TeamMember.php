@@ -18,4 +18,12 @@ class TeamMember extends Model
         'user_id',
         'team_id',
     ];
+
+    public function registerTeamMember($userId, $teamId)
+    {
+        $this->insert([
+            'user_id' => $userId,
+            'team_id' => $teamId,
+        ]);
+    }
 }
