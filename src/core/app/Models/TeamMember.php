@@ -21,7 +21,7 @@ class TeamMember extends Model
 
     public function registerTeamMember($userId, $teamId)
     {
-        $this->insert([
+        $this->create([
             'user_id' => $userId,
             'team_id' => $teamId,
         ]);

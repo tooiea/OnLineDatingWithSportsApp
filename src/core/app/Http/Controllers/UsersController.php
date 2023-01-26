@@ -34,7 +34,7 @@ class UsersController extends BasesController
         $this->teamMemberModel = $teamMemberModel;
     }
     /**
-     * 仮ユーザ登録後のフォーム
+     * 本登録
      *
      * @param UserTokenRequest $request
      * @param string $token
@@ -49,6 +49,7 @@ class UsersController extends BasesController
             $teamId = $this->teamModel->registerTeam($tempUser, $invitationCode);
             $this->teamMemberModel->registerTeamMember($userId, $teamId);
             // TODO temp_usersのデータを削除
+            $this->tempUserModel->deleteTempUserData($tempUser);
         });
 
         // return redirect()->route('users.complete');

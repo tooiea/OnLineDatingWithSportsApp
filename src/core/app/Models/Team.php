@@ -22,10 +22,17 @@ class Team extends Model
         return $teamId;
     }
 
+    /**
+     * 仮登録されたユーザ情報から本登録後のユーザとしてチームを登録
+     *
+     * @param object $tempUser
+     * @param string $invitationCode
+     * @return int
+     */
     public function registerTeam($tempUser, $invitationCode)
     {
         $teamId = $this->insertGetId([
-            'team_name' => $tempUser->name,
+            'team_name' => $tempUser->team_name,
             'sport_affiliation_type' => $tempUser->sport_affiliation_type,
             'invitation_code' => $invitationCode,
             'prefecture' => $tempUser->prefecture,

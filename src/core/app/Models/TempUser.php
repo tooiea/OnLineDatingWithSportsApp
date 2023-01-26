@@ -80,6 +80,13 @@ class TempUser extends Model
         $this->notify(new TempUserNotification($token, $email, new TempUserSendMailer()));
     }
 
+    /**
+     * 仮登録フォームで入力されたユーザとして登録
+     *
+     * @param array $customValues
+     * @param string $token
+     * @return void
+     */
     public function registrationTempUser($customValues, $token)
     {
         $now = Carbon::now();
@@ -105,5 +112,17 @@ class TempUser extends Model
         );
 
         $this->temporaryRegistrationNotification($token, $customValues['email']);
+    }
+
+
+    /**
+     * 本登録済のユーザ情報を仮登録テーブルから削除
+     *
+     * @param object $tempUser
+     * @return void
+     */
+    public function deleteTempUserData($tempUser)
+    {
+        $this->where('email', '=', $tempUser->email)->delete();
     }
 }
