@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Constants\CommonConstant;
+use App\Mail\SendMailer;
+use App\Notifications\UserNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -87,5 +89,16 @@ class User extends Authenticatable
         ]);
 
         return $userId;
+    }
+
+    /**
+     * 本登録メール送信
+     *
+     * @param object $user
+     * @return void
+     */
+    public function registrationNotification($user)
+    {
+        $this->notify(new UserNotification($user, new SendMailer()));
     }
 }

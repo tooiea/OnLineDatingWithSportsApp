@@ -8,12 +8,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TempUserNotification extends Notification
+class UserNotification extends Notification
 {
     use Queueable;
 
-    private $token;
-    private $email;
+    private $user;
     private $mail;
 
     /**
@@ -21,10 +20,9 @@ class TempUserNotification extends Notification
      *
      * @return void
      */
-    public function __construct(string $token, string $email, SendMailer $mail)
+    public function __construct(object $user, SendMailer $mail)
     {
-        $this->token = $token;
-        $this->email = $email;
+        $this->user = $user;
         $this->mail = $mail;
     }
 
@@ -47,18 +45,16 @@ class TempUserNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $url = sprintf(url(__('route_const.temp_mail.register') . "%s"), $this->token);
         return $this->mail
                     ->from(config('mail.from.address'))
-                    ->to($this->email)
-                    ->text('mail.temp_user_register')
-                    ->subject(__('mail_messages.subject.temp_user_register'))
-                    ->with(
-                        [
-                            'admin' => config('mail.from.address'),
-                            'url' => $url,
-                        ]
-                    );
+                    ->to($this->user->user->email)
+                    ->text('mail.user_register')
+                    ->subject(__('mail_messages.subject.user_register'))
+                    ->with([
+                        'name' => $this->user->user->name,
+                        'teamName' => $this->user->team->team_name,
+                        'admin' => config('mail.from.address')
+                    ]);
     }
 
     /**

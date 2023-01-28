@@ -26,7 +26,7 @@
             <div class="row m-5">
                 <div class="col text-center">チームロゴ画像</div>
                 <div class="col text-center">
-                    <img src="{{ asset('public/' . $values['teamLogo']) }}" alt="" width="300" height="300">
+                    <img src="{{ asset($values['teamLogo']) }}" alt="" width="150" height="150">
                 </div>
             </div>
             <div class="row m-5">

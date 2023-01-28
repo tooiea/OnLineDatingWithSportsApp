@@ -32,6 +32,7 @@ class TempUsersController extends BasesController
 
     public function confirm(UserFormRequest $request)
     {
+        // FIXME 全体的に要修正
         // 必要情報のみをセット
         foreach (CommonConstant::USER_FORM_DATA as $key) {
             if (!is_null($request->input($key))) {
@@ -51,19 +52,20 @@ class TempUsersController extends BasesController
      */
     public function complete(Request $request)
     {
+        // FIXME 全体的に要修正
         $values = $request->session()->all();
-        $button = $request->input(); // TODO
-        $request->session()->flush(); // TODO
+        $button = $request->input(); // FIXME
+        $request->session()->flush(); // FIXME
         $user = new User();
-        $activatedUser = $user->getByEmail($values['email']); // TODO
+        $activatedUser = $user->getByEmail($values['email']); // FIXME
 
-        // TODO フォームへ遷移
+        // FIXME フォームへ遷移
         if (isset($button['back'])) {
             // 戻るボタン
             return redirect()->route('tmp_user.index')->withInput($values);
         }
 
-        // TODO 登録前に、同一メールアドレスが有効化されていないかをチェック
+        // FIXME 登録前に、同一メールアドレスが有効化されていないかをチェック
         if (!is_null($activatedUser)) {
             return redirect()->route('tmp_user.index')
                 ->withInput($values)

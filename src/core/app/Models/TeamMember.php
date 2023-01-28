@@ -19,11 +19,43 @@ class TeamMember extends Model
         'team_id',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class, 'team_id');
+    }
+
+    /**
+     * チームメンバ登録
+     *
+     * @param int $userId
+     * @param int $teamId
+     * @return void
+     */
     public function registerTeamMember($userId, $teamId)
     {
-        $this->create([
+        return $this->create([
             'user_id' => $userId,
             'team_id' => $teamId,
         ]);
+    }
+
+    /**
+     * 登録後のユーザ情報を取得
+     *
+     * @param object $teamMember
+     * @return object
+     */
+    public function getUserByTeamIdAndUserId($teamMember)
+    {
+        $query = $this->where([
+            'user_id' => $teamMember->user_id,
+            'team_id' => $teamMember->team_id,
+        ]);
+        return $query->with(['user', 'team'])->first();
     }
 }

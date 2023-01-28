@@ -2,15 +2,15 @@
 
 namespace App\Mail;
 
-use App\Constants\CommonConstant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class TempUserSendMailer extends Mailable
+class SendMailer extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
@@ -19,7 +19,7 @@ class TempUserSendMailer extends Mailable
      */
     public function __construct()
     {
-        // 
+        //
     }
 
     /**

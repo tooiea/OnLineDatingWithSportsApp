@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use App\Constants\CommonConstant;
-use App\Mail\TempUserSendMailer;
-use App\Notifications\TempUserNotification;
+use App\Mail\SendMailer;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Log;
 
 class TempUser extends Model
 {
@@ -77,7 +74,7 @@ class TempUser extends Model
      */
     public function temporaryRegistrationNotification($token, $email)
     {
-        $this->notify(new TempUserNotification($token, $email, new TempUserSendMailer()));
+        $this->notify(new TempUserNotification($token, $email, new SendMailer()));
     }
 
     /**

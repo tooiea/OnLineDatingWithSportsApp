@@ -113,6 +113,6 @@ class UserFormRequest extends FormRequest
             'password2.same' => ErrorMessagesConstant::USER_FORM['password2.same'],
             'invitationCode.exists' => ErrorMessagesConstant::USER_FORM['invitationCode.exists'],
         ];
-        return $messages;
+        // return $messages;
     }
 }

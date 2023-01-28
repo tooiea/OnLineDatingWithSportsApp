@@ -47,12 +47,15 @@ class UsersController extends BasesController
             $userId = $this->userModel->registerUser($tempUser);
             $invitationCode = $this->createUuid();
             $teamId = $this->teamModel->registerTeam($tempUser, $invitationCode);
-            $this->teamMemberModel->registerTeamMember($userId, $teamId);
-            // TODO temp_usersのデータを削除
+            $teamMember = $this->teamMemberModel->registerTeamMember($userId, $teamId);
             $this->tempUserModel->deleteTempUserData($tempUser);
+
+            // メール送信
+            $user = $this->teamMemberModel->getUserByTeamIdAndUserId($teamMember);
+            $this->userModel->registrationNotification($user);
         });
 
-        // return redirect()->route('users.complete');
+        return redirect()->route('users.complete');
     }
 
     /**

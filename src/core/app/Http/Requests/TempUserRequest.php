@@ -24,7 +24,7 @@ class TempUserRequest extends FormRequest
      */
     public function rules()
     {
-        // TODO Usersテーブルへ登録する内容へ修正
+        // FIXME Usersテーブルへ登録する内容へ修正
         return [
             'email' => [
                 'bail',
@@ -42,7 +42,7 @@ class TempUserRequest extends FormRequest
      */
     public function messages()
     {
-        // TODO Usersテーブルへ登録する内容へ修正
+        // FIXME Usersテーブルへ登録する内容へ修正
         return [
             'email.required' => ErrorMessagesConstant::REQUEST_MESSAGE_TEMP_USER['email.required'],
             'email.email' => ErrorMessagesConstant::REQUEST_MESSAGE_TEMP_USER['email.email'],
