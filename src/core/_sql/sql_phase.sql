@@ -147,7 +147,10 @@ CREATE TABLE t_baseball.consent_games (
   , invitee_id INT NOT NULL
   , guest_id INT NOT NULL
   , consent_status INT NOT NULL
-  , possible_date DATE NOT NULL
+  , game_date DATETIME NULL DEFAULT NULL
+  , first_preferered_date DATETIME NOT NULL
+  , second_preferered_date DATETIME NOT NULL
+  , third_preferered_date DATETIME NULL
   , is_deleted INT DEFAULT 0 NOT NULL
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
   , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
