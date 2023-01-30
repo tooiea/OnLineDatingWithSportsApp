@@ -38,11 +38,11 @@ class TempTeamUsersController extends BasesController
         $specifyFormRequestInputs->setAll($request->input(), FormConstant::TEMP_TEAM_FORM_KEYS, ['teamLogo' => $filePath]); // インスタンスをセッションへ
         session(['temp_team_users' => $specifyFormRequestInputs]);
 
-        $values = $specifyFormRequestInputs->getAll();
+        $values = $specifyFormRequestInputs->getAll();  // 画面用
 
         // FIXME base64で表示
-        // $values['img'] = 'data:' . $image->getMimeType() . ';base64,' . base64_encode($filePath);
-        // var_dump($values);
+        // $values['img'] = 'data:' . $image->getMimeType() . ';base64,' . base64_encode(asset($values['teamLogo']));
+        // var_dump($values['img']);
 
         return view('tempTeamUsers.confirm', compact('values'));
     }

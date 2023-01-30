@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SearchTeamController;
 use App\Http\Controllers\TempTeamUsersController;
 use App\Http\Controllers\TempUsersController;
 use App\Http\Controllers\UsersController;
@@ -44,15 +45,15 @@ Route::middleware('guest')->group(function () {
         // 本登録
         Route::get('notvalid/token', [UsersController::class, 'failedToken'])->name('users.failed'); // トークンなし
         Route::get('register/user/{token}', [UsersController::class, 'index'])->name('users.index');
-        Route::get('login', [LoginController::class, 'login'])->name('users.login');
+        Route::get('login', [LoginController::class, 'index'])->name('login.index');
         Route::post('login', [LoginController::class, 'login'])
                 ->name('login');
     });
 
-    Route::get('register', [RegisteredUserController::class, 'create'])
-                ->name('register');
+    // Route::get('register', [RegisteredUserController::class, 'create'])
+    //             ->name('register');
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    // Route::post('register', [RegisteredUserController::class, 'store']);
 
     // Route::get('login', [AuthenticatedSessionController::class, 'create'])
     //             ->name('login');
@@ -74,6 +75,10 @@ Route::middleware('guest')->group(function () {
 
 // ログイン認証必須
 Route::middleware('auth')->group(function () {
+
+    // ログイン後の検索画面
+    Route::get('search/team', [SearchTeamController::class, 'index'])->name('search.index');
+
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
                 ->name('verification.notice');
 

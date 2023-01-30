@@ -12,6 +12,7 @@
 <body>
     <div>
         <form action="{{ route('login') }}" method="post">
+            @csrf
             <div>
                 <div><label>メールアドレス<input type="email" name="email"></label></div>
                 <div>@error('email') {{ $message }} @enderror</div>

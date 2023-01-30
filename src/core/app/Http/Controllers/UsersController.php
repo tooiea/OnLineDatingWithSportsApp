@@ -55,16 +55,8 @@ class UsersController extends BasesController
             $this->userModel->registrationNotification($user);
         });
 
-        return redirect()->route('users.complete');
-    }
+        // TODO 登録完了後のセッションメッセージをセット
 
-    /**
-     * ユーザ本登録後の表示
-     *
-     * @return void
-     */
-    public function complete()
-    {
-        return view('users.index');
+        return redirect()->route('login.index');
     }
 }

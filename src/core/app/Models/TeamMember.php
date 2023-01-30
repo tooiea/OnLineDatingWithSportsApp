@@ -58,4 +58,18 @@ class TeamMember extends Model
         ]);
         return $query->with(['user', 'team'])->first();
     }
+
+    /**
+     * ユーザidから自チーム情報を取得
+     *
+     * @param int $userId
+     * @return object
+     */
+    public function getTeamByUserId($userId)
+    {
+        $query = $this->where('user_id', '=', $userId);
+        $team = $query->with('team')->first();
+
+        return $team;
+    }
 }

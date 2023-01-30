@@ -41,4 +41,27 @@ class Team extends Model
 
         return $teamId;
     }
+
+    /**
+     * チーム情報を取得
+     *
+     * @param object $myTeam
+     * @param array $values
+     * @return object
+     */
+    public function getTeamBySearchQuery($myTeam, $values)
+    {
+        if (!empty($values['prefecture'])) {
+            $query = $this->where('prefecture', '=', $values['prefecture']);
+        } else {
+            $query = $this->where('prefecture', '=', $myTeam->team->prefecture);
+        }
+
+        if (!empty($values['address'])) {
+            $query->where('address', 'like', '%' . $values['address'] . '%');
+        }
+        $teams = $query->paginate(10);
+
+        return $teams;
+    }
 }
