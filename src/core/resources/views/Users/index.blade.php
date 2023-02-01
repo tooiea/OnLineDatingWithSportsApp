@@ -19,6 +19,7 @@
                 <div><label>パスワード<input type="password" name="password"></label></div>
                 <div>@error('password') {{ $message }} @enderror</div>
                 <div><input type="submit" value="ログイン"></div>
+                @if (session('user.registered')) <div> {{ session('user.registered') }} </div> @endif
             </div>
         </form>
     </div>

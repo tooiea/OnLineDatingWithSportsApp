@@ -55,7 +55,7 @@ class UsersController extends BasesController
             $this->userModel->registrationNotification($user);
         });
 
-        // TODO 登録完了後のセッションメッセージをセット
+        $request->session()->flash('user.registered', __('user_messages.success.registered'));
 
         return redirect()->route('login.index');
     }
