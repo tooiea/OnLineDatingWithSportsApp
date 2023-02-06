@@ -67,8 +67,7 @@ class TeamMember extends Model
      */
     public function getTeamByUserId($userId)
     {
-        $query = $this->where('user_id', '=', $userId);
-        $team = $query->with('team')->first();
+        $team = $this->where('user_id', '=', $userId)->first();
 
         return $team;
     }

@@ -59,4 +59,14 @@ class UsersController extends BasesController
 
         return redirect()->route('login.index');
     }
+
+    /**
+     * トークンチェック後のエラー画面
+     *
+     * @return void
+     */
+    public function failedToken()
+    {
+        return view('failed.lost_token');
+    }
 }

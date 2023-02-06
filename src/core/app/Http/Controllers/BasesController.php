@@ -17,9 +17,4 @@ class BasesController extends Controller
         $uuid = Str::uuid();
         return $uuid;
     }
-
-    public function failedToken()
-    {
-        return view('failed.lost_token');
-    }
 }

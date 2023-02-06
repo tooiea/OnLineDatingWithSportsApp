@@ -16,7 +16,6 @@ class LoginController extends AuthenticatedSessionController
      */
     public function index()
     {
-        // TODO 本登録後のセッションメッセージを取得し、表示
         return view('users.index');
     }
 

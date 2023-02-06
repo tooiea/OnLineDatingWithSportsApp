@@ -23,7 +23,7 @@ Route::get('/dashboard', function () {
 
 // ログイン不要
 Route::middleware('guest')->group(function () {
-    Route::middleware('custom.cache.headers')->group(function () {
+    Route::middleware('custom.cache.headers:no_store')->group(function () {
 
         // エラー画面(直アクセス等)
 
