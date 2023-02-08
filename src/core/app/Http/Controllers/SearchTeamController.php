@@ -28,10 +28,23 @@ class SearchTeamController extends Controller
     public function index(Request $request)
     {
         $values = $request->only(['prefecture', 'address']);
+        $prefecture = "";
+        $address = "";
+
         $userId = Auth::user()->id;
         $myTeam = $this->teamMember->getTeamByUserId($userId);
         $teams = $this->team->getTeamBySearchQuery($myTeam, $values);
 
-        return view('searchTeam.index', compact('teams'));
+        if (isset($values['prefecture'])) {
+            $teams->appends(['prefecture' => $values['prefecture']]);
+            $prefecture = $values['prefecture'];
+        }
+
+        if (isset($values['address'])) {
+            $teams->appends(['address' => $values['address']]);
+            $address = $values['address'];
+        }
+
+        return view('searchTeam.index', compact('teams', 'prefecture', 'address', 'myTeam'));
     }
 }

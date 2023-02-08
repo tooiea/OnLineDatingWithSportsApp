@@ -12,7 +12,7 @@
 
 <body>
     <div class="container">
-        <h3 class="pb-3">検索画面</h3>
+        <h3 class="pb-3">招待チーム検索</h3>
         <div class="container">
             <h4 class="pb-3">気になる拠点</h4>
             <div>
@@ -25,7 +25,8 @@
                                     id="prefecture" aria-describedby="nameHelp">
                                     <option value="" disabled selected>選択してください</option>
                                     @foreach (\App\Constants\FormConstant::PREFECTURES as $key => $value)
-                                    <option value="{{ $key }}" @if(old('prefecture')==$key)) selected @endif>{{ $value
+                                    <option value="{{ $key }}" @if(old('prefecture')==$key || $prefecture==$key)
+                                        selected @endif>{{ $value
                                         }}
                                     </option>
                                     @endforeach
@@ -38,7 +39,7 @@
                         <div class="form-group row d-flex justify-content-around">
                             <label for="address" class="col-sm-3 col-form-label">市町村区</label>
                             <div class="col-sm-7">
-                                <input type="text" name="address" value="{{ old('address') }}" id="address"
+                                <input type="text" name="address" value="{{ old('address')  . $address }}" id="address"
                                     aria-describedby="nameHelp"
                                     class="form-control @error('address') is-invalid @enderror" placeholder="例：宮崎市">
                                 <small id="nameHelp" class="form-text text-muted">市町村区を入力してください。</small>

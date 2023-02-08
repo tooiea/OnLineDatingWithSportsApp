@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Mockery\Matcher\Not;
 
 class Team extends Model
 {
@@ -60,6 +61,7 @@ class Team extends Model
         if (!empty($values['address'])) {
             $query->where('address', 'like', '%' . $values['address'] . '%');
         }
+        $query->whereRaw("Not(id=$myTeam->team_id)"); // 自チームを除外
         $teams = $query->paginate(10);
 
         return $teams;
