@@ -148,7 +148,7 @@ return [
             'required' => ':attribute を1点アップロードしてください。'
         ],
         'invitationCode' => [
-            'exists' => 'チームの招待コードが存在しません。'
+            'exists' => '入力されたチームが存在しません。<br>再度、URLをご確認ください。'
         ],
         'token' => [
             'expired' => 'トークンの有効期限切れです。再度、仮登録フォームより登録してください。',
@@ -173,7 +173,7 @@ return [
         'email' => 'メールアドレス',
         'password' => 'パスワード',
         'password2' => 'パスワード(再入力)',
-        'invitationCode' => '招待コード',
+        'invitation_code' => '招待コード',
         'token' => 'トークン',
         'sportAffiliationType' => 'スポーツ種別',
         'teamName' => 'チーム名',

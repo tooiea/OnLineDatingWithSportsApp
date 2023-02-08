@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Constants\CommonConstant;
 use App\Constants\ErrorMessagesConstant;
-use App\Http\Requests\TempUserRequest;
+use App\Http\Requests\TempUserFormRequest;
+use App\Http\Requests\TempUserInvitationCodeRequest;
 use App\Http\Requests\UserFormRequest;
 use App\Mail\TempUserSendMailer;
 use App\Models\Team;
@@ -25,12 +26,12 @@ class TempUsersController extends BasesController
      *
      * @return void
      */
-    public function index()
+    public function index(TempUserInvitationCodeRequest $request)
     {
         return view('tempUsers.index');
     }
 
-    public function confirm(UserFormRequest $request)
+    public function confirm(TempUserFormRequest $request)
     {
         // FIXME 全体的に要修正
         // 必要情報のみをセット
@@ -152,5 +153,15 @@ class TempUsersController extends BasesController
         }
 
         return $teamId;
+    }
+
+    /**
+     * 存在しないチーム招待コードでのアクセス
+     *
+     * @return void
+     */
+    public function failedInvitationCode()
+    {
+        return view('failed.invalid_invitation_code');
     }
 }

@@ -38,7 +38,8 @@ Route::middleware('guest')->group(function () {
         Route::post('tmp/team/user/register/complete', [TempTeamUsersController::class, 'complete'])->name('tmp_team_user.complete');
 
         // 仮登録(チーム招待)
-        Route::get('tmp/user/register', [TempUsersController::class, 'index'])->name('tmp_user.index');
+        Route::get('notvalid', [TempUsersController::class, 'failedInvitationCode'])->name('tempUsers.failed'); // 招待コードなし
+        Route::get('tmp/user/register/{invitation_code}', [TempUsersController::class, 'index'])->name('tmp_user.index');
         Route::post('tmp/user/register/confirm', [TempUsersController::class, 'confirm'])->name('tmp_user.confirm');
         Route::post('tmp/user/register/complete', [TempUsersController::class, 'complete'])->name('tmp_user.registered');
 

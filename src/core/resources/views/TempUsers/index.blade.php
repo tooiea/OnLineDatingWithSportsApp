@@ -12,21 +12,20 @@
 </head>
 
 <body>
-    <div class="form-group">
+    <div class="container w-50">
         <form action="{{ route('tmp_user.confirm') }}" method="post">
             @csrf
             <div class="form-group row">
-                <label for="name" class="col-sm-3 col-form-label">お名前(ニックネーム)</label>
+                <label for="name" class="col-sm-4 col-form-label">お名前(ニックネーム)</label>
                 <div class="col-sm-8">
                     <input type="text" name="name" value="{{ old('name') }}" id="name" aria-describedby="nameHelp"
                         class="form-control @error('name') is-invalid @enderror" placeholder="例：nickname">
                     <small id="nameHelp" class="form-text text-muted">ニックネームでの登録可</small>
-                    <!--   classをエラー時に付与 -->
-                    @error('name')<div class="alert alert-danger" role="alert">{{ $message }}</div>@enderror
+                    @error('name')<div class="invalid-feedback" role="alert">{{ $message }}</div>@enderror
                 </div>
             </div>
             <div class="form-group row">
-                <label for="email" class="col-sm-3 col-form-label">メールアドレス</label>
+                <label for="email" class="col-sm-4 col-form-label">メールアドレス</label>
                 <div class="col-sm-8">
                     <input type="email" name="email" value="{{ old('email') }}"
                         class="form-control @error('email') is-invalid @enderror" id="email"
@@ -36,7 +35,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="password" class="col-sm-3 col-form-label">パスワード</label>
+                <label for="password" class="col-sm-4 col-form-label">パスワード</label>
                 <div class="col-sm-8">
                     <input type="password" name="password" class="form-control @error('email') is-invalid @enderror"
                         id="password" aria-describedby="passwordHelp" placeholder="例：passW0rd">
@@ -45,7 +44,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="password2" class="col-sm-3 col-form-label">パスワード(再入力)</label>
+                <label for="password2" class="col-sm-4 col-form-label">パスワード(再入力)</label>
                 <div class="col-sm-8">
                     <input type="password" name="password2" class="form-control @error('email') is-invalid @enderror"
                         id="password2" aria-describedby="passwordHelp" placeholder="例：passW0rd">
@@ -53,17 +52,7 @@
                     @error('password2')<div class="invalid-feedback" role="alert">{{ $message }}</div>@enderror
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="invitationCode" class="col-sm-3 col-form-label">チーム招待コード</label>
-                <div class="col-sm-8">
-                    <input type="text" name="invitationCode" value="{{ old('invitationCode') }}"
-                        aria-describedby="invitationCodeHelp"
-                        class="form-control @error('invitationCode') is-invalid @enderror" id="invitationCode">
-                    <small id="invitationCodeHelp" class="form-text text-muted">同じチームの方にもらった招待コードを入力してください</small>
-                    @error('invitationCode')<div class="invalid-feedback" role="alert">{{ $message }}</div>@enderror
-                </div>
-            </div>
-            <div class="form-group">
+            <div class="form-group mt-5">
                 <input type="submit" value="送信する" class="btn btn-primary btn-lg btn-block">
             </div>
         </form>

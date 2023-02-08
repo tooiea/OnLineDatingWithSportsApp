@@ -61,7 +61,7 @@ class Team extends Model
         if (!empty($values['address'])) {
             $query->where('address', 'like', '%' . $values['address'] . '%');
         }
-        $query->whereRaw("Not(id=$myTeam->team_id)"); // 自チームを除外
+        $query->where('id', '<>', $myTeam->team_id); // 自チームを除外
         $teams = $query->paginate(10);
 
         return $teams;

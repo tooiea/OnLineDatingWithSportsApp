@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Constants\FormConstant;
-use App\Http\Requests\TempTeamUserRequest;
+use App\Http\Requests\TempTeamUserFormRequest;
 use App\Models\TempUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class TempTeamUsersController extends BasesController
@@ -26,10 +25,10 @@ class TempTeamUsersController extends BasesController
     /**
      * 入力値をセッションに保存
      *
-     * @param TempTeamUserRequest $request
+     * @param TempTeamUserFormRequest $request
      * @return void
      */
-    public function confirm(TempTeamUserRequest $request)
+    public function confirm(TempTeamUserFormRequest $request)
     {
         $image = $request->file('teamLogo');
         $tempPath = $image->store('public/upload/images');

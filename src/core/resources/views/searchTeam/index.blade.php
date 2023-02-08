@@ -69,8 +69,10 @@
                                 <td>{{ $value->team_name }}</td>
                                 <td>{{ \App\Constants\FormConstant::PREFECTURES[$value->prefecture] . $value->address }}
                                 </td>
-                                <td><a href="{{ sprintf(url(__('route_const.consent_link') . " %s"), $value->id)
-                                        }}">{{ sprintf(url(__('route_const.consent_link') . "%s"), $value->id) }}</a>
+                                <td><a href="{{ sprintf(url(__('route_const.consent_link') . " %s"),
+                                        $value->invitation_code)
+                                        }}">{{ sprintf(url(__('route_const.consent_link') . "%s"),
+                                        $value->invitation_code) }}</a>
                                 </td>
                             </tr>
                             @endforeach
