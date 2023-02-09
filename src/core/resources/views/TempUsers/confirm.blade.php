@@ -7,38 +7,30 @@
     <title>Document</title>
 </head>
 <body>
-    <div>
-        <div>お名前(姓)</div>
-        <div>{{ $values['name1'] }}</div>
+    <div class="container">
+        <h4 class="pl-5">ユーザ情報</h4>
+        <div class="row m-5">
+            <div class="col text-center">ニックネーム</div>
+            <div class="col text-center">{{ $values['name'] }}</div>
+        </div>
+        <div class="row m-5">
+            <div class="col text-center">メールアドレス</div>
+            <div class="col text-center">{{ $values['email'] }}</div>
+        </div>
     </div>
-    <div>
-        <div>お名前(名)</div>
-        <div>{{ $values['name2'] }}</div>
+    <div class="row m-5">
+        <div class="col">
+            <form action="{{route('tmp_user.back')}}" method="post">
+                @csrf
+                <input type="submit" value="入力内容を修正" class="form-control btn btn-secondary">
+            </form>
+        </div>
+        <div class="col">
+            <form action="{{route('tmp_user.registered')}}" method="post">
+                @csrf
+                <input type="submit" value="仮登録メールを送信" class="form-control btn btn-success">
+            </form>
+        </div>
     </div>
-    <div>
-        <div>フリガナ(姓)</div>
-        <div>{{ $values['ruby1'] }}</div>
-    </div>
-    <div>
-        <div>フリガナ(名)</div>
-        <div>{{ $values['ruby2'] }}</div>
-    </div>
-    <div>
-        <div>誕生日</div>
-        <div>{{ \Carbon\Carbon::parse($values['birthday'])->format("Y年m月d日") }}</div>
-    </div>
-    <div>
-        <div>パスワード</div>
-        <div>********</div>
-    </div>
-    <div>
-        <div>招待コード</div>
-        <div>@if(isset($values['invitationCode'])) {{ $values['invitationCode'] }} @endif</div>
-    </div>
-    <form action="{{route('tmp_user.registered')}}" method="post">
-        @csrf
-        <input type="submit" value="戻る" name="back">
-        <input type="submit" value="送信する" name="next">
-    </form>
 </body>
 </html>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\CommonConstant;
 use App\Constants\ErrorMessagesConstant;
+use App\Constants\FormConstant;
 use App\Http\Requests\TempUserFormRequest;
 use App\Http\Requests\TempUserInvitationCodeRequest;
 use App\Http\Requests\UserFormRequest;
@@ -21,26 +22,41 @@ use Illuminate\Support\Facades\Mail;
 
 class TempUsersController extends BasesController
 {
+    private $tempUser;
+    private $user;
+
+    public function __construct(TempUser $tempUser, User $user)
+    {
+        $this->user = $user;
+        $this->tempUser = $tempUser;
+    }
+
     /**
      * 仮登録フォーム
      *
      * @return void
      */
-    public function index(TempUserInvitationCodeRequest $request)
+    public function index(TempUserInvitationCodeRequest $request, $invitation_code)
     {
+        session(['temp_user_invitaion_code' => $invitation_code]);
         return view('tempUsers.index');
     }
 
+    /**
+     * 確認画面
+     *
+     * @param TempUserFormRequest $request
+     * @return void
+     */
     public function confirm(TempUserFormRequest $request)
     {
-        // FIXME 全体的に要修正
-        // 必要情報のみをセット
-        foreach (CommonConstant::USER_FORM_DATA as $key) {
-            if (!is_null($request->input($key))) {
-                $values[$key] = $request->input($key); // 表示用
-            }
-        }
-        session($values); // セッションに保存
+        $values['invitation_code'] = $request->session()->pull('temp_user_invitaion_code');
+        $values = array_merge($values, $request->input());
+        $specifyFormRequestInputs = new SpecifyFormRequestInputsController();
+        $specifyFormRequestInputs->setAll($values, FormConstant::TEMP_FORM_KEYS); // インスタンスをセッションへ
+        session(['temp_user' => $specifyFormRequestInputs]);
+
+        $values = $specifyFormRequestInputs->getAll();  // 画面用
 
         return view('tempUsers.confirm', compact('values'));
     }
@@ -54,87 +70,22 @@ class TempUsersController extends BasesController
     public function complete(Request $request)
     {
         // FIXME 全体的に要修正
-        $values = $request->session()->all();
-        $button = $request->input(); // FIXME
-        $request->session()->flush(); // FIXME
-        $user = new User();
-        $activatedUser = $user->getByEmail($values['email']); // FIXME
+        $specifyFormRequestInputs = $request->session()->pull('temp_user');
+        $customValues = $specifyFormRequestInputs->getAll();
 
-        // FIXME フォームへ遷移
-        if (isset($button['back'])) {
-            // 戻るボタン
-            return redirect()->route('tmp_user.index')->withInput($values);
-        }
-
-        // FIXME 登録前に、同一メールアドレスが有効化されていないかをチェック
-        if (!is_null($activatedUser)) {
+        // 本登録済みかチェック
+        if ($this->checkIsRegistered($customValues['email'])) {
             return redirect()->route('tmp_user.index')
-                ->withInput($values)
-                ->withErrors(['email' => ErrorMessagesConstant::ALREADY_REGISTERED]);
+                ->withInput($customValues)
+                ->withErrors(['email' => __('validation.unique')]);
         }
 
-        // 完了処理
-        if (isset($button['next'])) {
-            // 送信するボタン
-            // トランザクション内で、DB登録とメール送信を実行
-            DB::transaction(
-                function () use ($values, $user) {
-                    $now = Carbon::now();
-                    $values['expireDate'] = $now->addHour();
-                    $tempUser = new TempUser();
-                    $token = $this->createUuid();
-
-                    // temp_usersテーブルへ登録
-                    $tempUser->updateOrCreate(
-                        // 同一メールアドレスが存在するか
-                        ['email' => $values['email']],
-                        [
-                            // 挿入データ
-                            'email' => $values['email'],
-                            'token' => $token,
-                            'expiration_date' => $values['expireDate'],
-                        ]
-                    );
-
-                    // usersテーブルへ登録
-                    $registeredUser = $user->updateOrCreate(
-                        // 同一メールアドレスが存在するか
-                        ['email' => $values['email']],
-                        [
-                            // 挿入データ
-                            'name1' => $values['name1'],
-                            'name2' => $values['name2'],
-                            'ruby1' => $values['ruby1'],
-                            'ruby2' => $values['ruby2'],
-                            'birthday' => $values['birthday'],
-                            'email' => $values['email'],
-                            'password' => Hash::make($values['password']),
-                            'expiration_date' => $values['expireDate']
-                        ],
-                    );
-
-                    $teamId = $this->getTeamId($values);
-                    // 招待コードが入力されている場合
-                    if (!empty($teamId)) {
-                        // team_membersテーブルへ登録
-                        $teamMember = new TeamMember();
-                        $teamMember->updateOrCreate(
-                            ['user_id' => $registeredUser->id],
-                            [
-                                'team_id' => $teamId->id,
-                                'user_id' => $registeredUser->id,
-                            ]
-                        );
-                    }
-
-                    $tempUser->temporaryRegistrationNotification($token);
-                }
-            );
-        } else {
-            // 不正アクセス
-            return redirect()->route('tmp_user.index');
-        }
-            return view('tempUsers.complete');
+        // トランザクション内で、DB登録とメール送信を実行
+        DB::transaction(function () use ($customValues) {
+            // temp_usersモデルでDB登録とメール送信
+            $this->tempUser->registrationTempUserByInvitationCode($customValues, $this->createUuid());
+        });
+        return view('tempUsers.complete');
     }
 
     /**
@@ -163,5 +114,24 @@ class TempUsersController extends BasesController
     public function failedInvitationCode()
     {
         return view('failed.invalid_invitation_code');
+    }
+
+    /**
+     * 登録処理前にユーザが本登録されていないかをチェック
+     *
+     * @param string $customValues
+     * @return boolean
+     */
+    private function checkIsRegistered($email)
+    {
+        $userModel = new User();
+        $activatedUser = $userModel->getByEmail($email);
+        $isRegistered = false;
+
+        // 登録前に、同一メールアドレスが本登録されていないかをチェック
+        if ($activatedUser) {
+            $isRegistered = true;
+        }
+        return $isRegistered;
     }
 }

@@ -35,7 +35,7 @@ class TempTeamUsersController extends BasesController
         $filePath = 'public/' . str_replace('public/', 'storage/', $tempPath);
         $specifyFormRequestInputs = new SpecifyFormRequestInputsController();
         $specifyFormRequestInputs->setAll($request->input(), FormConstant::TEMP_TEAM_FORM_KEYS, ['teamLogo' => $filePath]); // インスタンスをセッションへ
-        session(['temp_team_users' => $specifyFormRequestInputs]);
+        session(['temp_team_user' => $specifyFormRequestInputs]);
 
         $values = $specifyFormRequestInputs->getAll();  // 画面用
 
@@ -54,12 +54,12 @@ class TempTeamUsersController extends BasesController
      */
     public function complete(Request $request)
     {
-        $specifyFormRequestInputs = $request->session()->pull('temp_team_users');
+        $specifyFormRequestInputs = $request->session()->pull('temp_team_user');
         $customValues = $specifyFormRequestInputs->getAll();
 
         // 本登録済みかチェック
         if ($this->checkIsRegistered($customValues['email'])) {
-            return redirect()->route('tmp_user.index')
+            return redirect()->route('tmp_team_user.index')
                 ->withInput($customValues)
                 ->withErrors(['email' => __('validation.unique')]);
         }

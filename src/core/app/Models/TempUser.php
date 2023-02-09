@@ -23,17 +23,18 @@ class TempUser extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'token',
+        'expiration_date',
         'sport_affiliation_type',
         'team_name',
         'team_logo',
         'team_url',
         'prefecture',
         'address',
-        'name',
-        'email',
-        'password',
-        'token',
-        'expiration_date',
+        'invitation_code',
     ];
 
     /**
@@ -112,7 +113,6 @@ class TempUser extends Model
         $this->temporaryRegistrationNotification($token, $customValues['email']);
     }
 
-
     /**
      * 本登録済のユーザ情報を仮登録テーブルから削除
      *
@@ -122,5 +122,28 @@ class TempUser extends Model
     public function deleteTempUserData($tempUser)
     {
         $this->where('email', '=', $tempUser->email)->delete();
+    }
+
+    public function registrationTempUserByInvitationCode($customValues, $token)
+    {
+        // invitation_codeを登録
+        $now = Carbon::now();
+
+        // temp_usersテーブルへ登録
+        $this->updateOrCreate(
+            // 同一メールアドレスが存在するか
+            ['email' => $customValues['email']],
+            [
+                // 挿入データ
+                'name' => $customValues['name'],
+                'password' => Hash::make($customValues['password']),
+                'email' => $customValues['email'],
+                'invitation_code' => $customValues['invitation_code'],
+                'token' => $token,
+                'expiration_date' => $now->addHour(),
+            ]
+        );
+
+        $this->temporaryRegistrationNotification($token, $customValues['email']);
     }
 }

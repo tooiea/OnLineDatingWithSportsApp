@@ -32,7 +32,7 @@ Route::middleware('guest')->group(function () {
         Route::get('tmp/team/user/register', [TempTeamUsersController::class, 'index'])->name('tmp_team_user.index');
         Route::post('tmp/team/user/register/confirm', [TempTeamUsersController::class, 'confirm'])->name('tmp_team_user.confirm');
         Route::post('tmp/team/user/register/back', function (Request $request) {
-            $specifyFormRequestInputs = $request->session()->pull('temp_team_users');
+            $specifyFormRequestInputs = $request->session()->pull('temp_team_user');
             return redirect()->route('tmp_team_user.index')->withInput($specifyFormRequestInputs->getAll());
         })->name('tmp_team_user.back');
         Route::post('tmp/team/user/register/complete', [TempTeamUsersController::class, 'complete'])->name('tmp_team_user.complete');
@@ -41,6 +41,12 @@ Route::middleware('guest')->group(function () {
         Route::get('notvalid', [TempUsersController::class, 'failedInvitationCode'])->name('tempUsers.failed'); // 招待コードなし
         Route::get('tmp/user/register/{invitation_code}', [TempUsersController::class, 'index'])->name('tmp_user.index');
         Route::post('tmp/user/register/confirm', [TempUsersController::class, 'confirm'])->name('tmp_user.confirm');
+        Route::post('tmp/user/register/back', function (Request $request) {
+            $specifyFormRequestInputs = $request->session()->pull('temp_user');
+            $values = $specifyFormRequestInputs->getAll();
+            $invitation_code = $values['invitation_code'];  // url再セット用に取得
+            return redirect()->route('tmp_user.index', $invitation_code)->withInput($values);
+        })->name('tmp_user.back');
         Route::post('tmp/user/register/complete', [TempUsersController::class, 'complete'])->name('tmp_user.registered');
 
         // 本登録

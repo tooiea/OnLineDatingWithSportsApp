@@ -16,6 +16,9 @@ class FormConstant
         43 => '熊本県', 44 => '大分県', 45 => '宮崎県', 46 => '鹿児島県', 47 => '沖縄県'
     ];
 
+    /**
+     * チーム登録用
+     */
     public const TEMP_TEAM_FORM_KEYS = [
         'sportAffiliationType',
         'teamName',
@@ -26,5 +29,15 @@ class FormConstant
         'name',
         'email',
         'password',
+    ];
+
+    /**
+     * チーム招待用
+     */
+    public const TEMP_FORM_KEYS = [
+        'name',
+        'email',
+        'password',
+        'invitation_code'
     ];
 }
