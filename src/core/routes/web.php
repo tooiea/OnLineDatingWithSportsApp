@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SearchTeamController;
 use App\Http\Controllers\TempTeamUsersController;
@@ -31,7 +32,6 @@ Route::middleware('guest')->group(function () {
         Route::get('tmp/team/user/register', [TempTeamUsersController::class, 'index'])->name('tmp_team_user.index');
         Route::post('tmp/team/user/register/confirm', [TempTeamUsersController::class, 'confirm'])->name('tmp_team_user.confirm');
         Route::post('tmp/team/user/register/back', function (Request $request) {
-
             $specifyFormRequestInputs = $request->session()->pull('temp_team_users');
             return redirect()->route('tmp_team_user.index')->withInput($specifyFormRequestInputs->getAll());
         })->name('tmp_team_user.back');
@@ -49,6 +49,10 @@ Route::middleware('guest')->group(function () {
         Route::get('login', [LoginController::class, 'index'])->name('login.index');
         Route::post('login', [LoginController::class, 'login'])
                 ->name('login');
+
+        // googleログイン
+        Route::get('google/login', [GoogleLoginController::class, 'redirectToGoogle'])->name('google.login');
+        Route::get('google/login/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
     });
 
     // Route::get('register', [RegisteredUserController::class, 'create'])
@@ -96,6 +100,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
 });

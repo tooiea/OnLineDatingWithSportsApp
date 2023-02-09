@@ -52,18 +52,24 @@ class Team extends Model
      */
     public function getTeamBySearchQuery($myTeam, $values)
     {
+        $query = $this; // 全件取得(初期値)
+
+        // 都道府県
         if (!empty($values['prefecture'])) {
-            $query = $this->where('prefecture', '=', $values['prefecture']);
-        } else {
-            $query = $this->where('prefecture', '=', $myTeam->team->prefecture);
+            $query = $query->where('prefecture', '=', $values['prefecture']);
+        } else if (!empty($myTeam)) {
+            $query = $query->where('prefecture', '=', $myTeam->team->prefecture);
         }
 
+        // 住所
         if (!empty($values['address'])) {
             $query->where('address', 'like', '%' . $values['address'] . '%');
         }
-        $query->where('id', '<>', $myTeam->team_id); // 自チームを除外
-        $teams = $query->paginate(10);
 
-        return $teams;
+        // 自チーム登録なし
+        if (!is_null($myTeam)) {
+            $query->where('id', '<>', $myTeam->team_id); // 自チームを除外
+        }
+        return $query->paginate(10);
     }
 }

@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    <div><button><a href="{{ route('logout') }}">ログアウト</a></button></div>
     <div class="container">
         <h3 class="pb-3">招待チーム検索</h3>
         <div class="container">
@@ -23,7 +24,7 @@
                             <div class="col-sm-7">
                                 <select name="prefecture" class="form-control @error('prefecture') is-invalid @enderror"
                                     id="prefecture" aria-describedby="nameHelp">
-                                    <option value="" disabled selected>選択してください</option>
+                                    <option value="">選択してください</option>
                                     @foreach (\App\Constants\FormConstant::PREFECTURES as $key => $value)
                                     <option value="{{ $key }}" @if(old('prefecture')==$key || $prefecture==$key)
                                         selected @endif>{{ $value
@@ -79,7 +80,9 @@
                         </tbody>
                     </table>
                     <div>
+                        @if (!empty($teams))
                         {{ $teams->onEachSide(5)->links() }}
+                        @endif
                     </div>
                 </div>
             </div>
