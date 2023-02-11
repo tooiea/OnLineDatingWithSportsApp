@@ -31,7 +31,8 @@ return [
     |
     */
 
-    'lifetime' => env('SESSION_LIFETIME', 120),
+    // .envで管理するためメモ
+    'lifetime' => env('SESSION_LIFETIME', 45),
 
     'expire_on_close' => false,
 

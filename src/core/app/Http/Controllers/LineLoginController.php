@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
@@ -23,9 +23,9 @@ class LineLoginController extends Controller
      *
      * @return void
      */
-    public function redirectToGoogle()
+    public function redirectToLine()
     {
-        return Socialite::driver('ling')->redirect();
+        return Socialite::driver('line')->redirect();
     }
 
     /**
@@ -33,26 +33,28 @@ class LineLoginController extends Controller
      *
      * @return void
      */
-    public function handleGoogleCallback()
+    public function handleLineCallback()
     {
         try {
             $loggeInUserByLine = Socialite::driver('line')->user();
             $user = $this->user->where('email', $loggeInUserByLine->email)->first();
-            // dd($loggeInUserByGoogle);
+            $now = Carbon::now();
 
-            // googleログインで新規登録
+            // Lineログインで新規登録
             if (is_null($user)) {
                 $user = $this->user->create([
                     'name' => $loggeInUserByLine->name,
                     'email' => $loggeInUserByLine->email,
-                    'google_id' => $loggeInUserByLine->id,
+                    'line_login_id' => $loggeInUserByLine->id,
+                    'last_login_time' => $now,
                 ]);
             } else {
                 // 既に登録されている
                 if (is_null($user->line_login_id)) {
                     $user->line_login_id = $loggeInUserByLine->id;
-                    $user->save();
                 }
+                $user->last_login_time = $now;
+                $user->save();
             }
             Auth::login($user);
             return redirect()->route('search.index');

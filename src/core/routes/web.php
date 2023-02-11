@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\GoogleLoginController;
+use App\Http\Controllers\LineLoginController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SearchTeamController;
 use App\Http\Controllers\TempTeamUsersController;
@@ -59,17 +60,11 @@ Route::middleware('guest')->group(function () {
         // googleログイン
         Route::get('google/login', [GoogleLoginController::class, 'redirectToGoogle'])->name('google.login');
         Route::get('google/login/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
+
+        // googleログイン
+        Route::get('line/login', [LineLoginController::class, 'redirectToLine'])->name('line.login');
+        Route::get('line/login/callback', [LineLoginController::class, 'handleLineCallback']);
     });
-
-    // Route::get('register', [RegisteredUserController::class, 'create'])
-    //             ->name('register');
-
-    // Route::post('register', [RegisteredUserController::class, 'store']);
-
-    // Route::get('login', [AuthenticatedSessionController::class, 'create'])
-    //             ->name('login');
-
-    // Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
                 ->name('password.request');
