@@ -48,11 +48,14 @@
                             @if (session('user.registered')) <div class="alert alert-light" role="alert"> {{
                                 session('user.registered')
                                 }} </div> @endif
-                            <div class="flex items-center justify-end mt-4">
-                                <a href="{{ route('google.login') }}">
-                                    <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" style="margin-left: 3em;">
+                            <div class="btn-group-vertical float-right">
+                                <a href="{{ route('google.login') }}" class="btn">
+                                    <img src="/public/images/btn_google_signin_dark_normal_web.png">
                                 </a>
-                            </div>
+                                <a href="{{ route('line.login') }}">
+                                    <img src="/public/images/btn_login_base.png" alt="" class="btn">
+                                </a>
+                              </div>
                         </form>
                     </div>
                 </div>

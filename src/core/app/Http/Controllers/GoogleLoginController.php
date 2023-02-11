@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -37,21 +38,23 @@ class GoogleLoginController extends Controller
         try {
             $loggeInUserByGoogle = Socialite::driver('google')->user();
             $user = $this->user->where('email', $loggeInUserByGoogle->email)->first();
-            // dd($loggeInUserByGoogle);
+            $now = Carbon::now();
 
             // googleログインで新規登録
             if (is_null($user)) {
                 $user = $this->user->create([
                     'name' => $loggeInUserByGoogle->name,
                     'email' => $loggeInUserByGoogle->email,
-                    'google_id' => $loggeInUserByGoogle->id,
+                    'google_login_id' => $loggeInUserByGoogle->id,
+                    'last_login_time' => $now,
                 ]);
             } else {
                 // 既に登録されている
                 if (is_null($user->google_login_id)) {
                     $user->google_login_id = $loggeInUserByGoogle->id;
-                    $user->save();
                 }
+                $user->last_login_time = $now;
+                $user->save();
             }
             Auth::login($user);
             return redirect()->route('search.index');
