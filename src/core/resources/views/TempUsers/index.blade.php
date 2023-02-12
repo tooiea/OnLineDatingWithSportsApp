@@ -1,62 +1,57 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Team Registration Form</title>
 </head>
-
 <body>
-    <div class="container w-50">
+  <div class="container mt-5">
+    <div class="card">
+      <div class="card-header">
+        チームに登録をしましょう！
+      </div>
+      <div class="card-body">
         <form action="{{ route('tmp_user.confirm') }}" method="post">
             @csrf
-            <div class="form-group row">
-                <label for="name" class="col-sm-4 col-form-label">お名前(ニックネーム)</label>
-                <div class="col-sm-8">
-                    <input type="text" name="name" value="{{ old('name') }}" id="name" aria-describedby="nameHelp"
-                        class="form-control @error('name') is-invalid @enderror" placeholder="例：nickname">
-                    <small id="nameHelp" class="form-text text-muted">ニックネームでの登録可</small>
-                    @error('name')<div class="invalid-feedback" role="alert">{{ $message }}</div>@enderror
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="email" class="col-sm-4 col-form-label">メールアドレス</label>
-                <div class="col-sm-8">
-                    <input type="email" name="email" value="{{ old('email') }}"
-                        class="form-control @error('email') is-invalid @enderror" id="email"
-                        aria-describedby="emailHelp" placeholder="例：oldws@gmail.com">
-                    <small id="emailHelp" class="form-text text-muted">使用可能なメールアドレスを入力してください</small>
-                    @error('email')<div class="invalid-feedback" role="alert">{{ $message }}</div>@enderror
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="password" class="col-sm-4 col-form-label">パスワード</label>
-                <div class="col-sm-8">
-                    <input type="password" name="password" class="form-control @error('email') is-invalid @enderror"
-                        id="password" aria-describedby="passwordHelp" placeholder="例：passW0rd">
-                    <small id="passwordHelp" class="form-text text-muted">半角英数字の小文字・大文字を最低1字含み、8文字以上で入力してください</small>
-                    @error('password')<div class="invalid-feedback" role="alert">{{ $message }}</div>@enderror
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="password2" class="col-sm-4 col-form-label">パスワード(再入力)</label>
-                <div class="col-sm-8">
-                    <input type="password" name="password2" class="form-control @error('email') is-invalid @enderror"
-                        id="password2" aria-describedby="passwordHelp" placeholder="例：passW0rd">
-                    <small id="passwordHelp" class="form-text text-muted">上記のパスワードと同じ入力をしてください</small>
-                    @error('password2')<div class="invalid-feedback" role="alert">{{ $message }}</div>@enderror
-                </div>
-            </div>
-            <div class="form-group mt-5">
-                <input type="submit" value="送信する" class="btn btn-primary btn-lg btn-block">
-            </div>
+          <h5 class="card-title mb-4 mt-5">ユーザ情報</h5>
+          <div class="form-group">
+            <label for="name">ニックネーム</label>
+            <input type="text" name="name" value="{{ old('name') }}" id="name" aria-describedby="nameHelp"
+                    class="form-control @error('name') is-invalid @enderror" placeholder="例：nickname">
+            <small id="nameHelp" class="form-text text-muted">※本名での登録はご遠慮願います</small>
+            @error('name')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
+          </div>
+          <div class="form-group">
+            <label for="email">メールアドレス</label>
+            <input type="email" name="email" value="{{ old('email') }}"
+                    class="form-control @error('email') is-invalid @enderror" id="email"
+                    aria-describedby="emailHelp" placeholder="例：oldws@gmail.com">
+            <small id="emailHelp" class="form-text text-muted">使用可能なメールアドレスを入力してください</small>
+            @error('email')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
+          </div>
+          <div class="form-group">
+            <label for="password">パスワード</label>
+            <input type="password" name="password"
+                    class="form-control @error('password') is-invalid @enderror" id="password"
+                    aria-describedby="passwordHelp" placeholder="例：passW0rd">
+            <small id="passwordHelp"
+                    class="form-text text-muted">半角英数字の小文字・大文字を最低1字含み、8文字以上で入力してください</small>
+            @error('password')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
+          </div>
+          <div class="form-group">
+            <label for="password2">パスワード：再入力</label>
+            <input type="password" name="password2"
+                    class="form-control @error('password2') is-invalid @enderror" id="password2"
+                    aria-describedby="passwordHelp" placeholder="例：passW0rd">
+            <small id="passwordHelp" class="form-text text-muted">上記のパスワードと同じ入力をしてください</small>
+            @error('password2')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
+          </div>
+          <button type="submit" class="btn btn-primary">確認する</button>
         </form>
-    </div>
+      </div>
+  </div>
 </body>
-
 </html>
