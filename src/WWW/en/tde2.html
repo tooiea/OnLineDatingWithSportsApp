@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>チーム編集画面</title>
+</head>
+<body>
+
+<div class="container my-5">
+  <h2 class="text-center">チーム編集画面</h2>
+  <form>
+    <div class="card">
+      <div class="card-body">
+        <div class="form-group">
+          <label for="teamName">チーム名</label>
+          <input type="text" class="form-control" id="teamName" placeholder="チーム名を入力">
+        </div>
+        <div class="form-group">
+          <label for="teamLogo">チームロゴ</label>
+          <input type="file" class="form-control-file" id="teamLogo">
+          <small class="form-text text-muted">ロゴ画像を削除、更新登録することができます。</small>
+        </div>
+        <div class="form-group">
+          <label for="teamURL">チーム紹介URL</label>
+          <input type="text" class="form-control" id="teamURL" placeholder="チーム紹介URLを入力">
+        </div>
+        <div class="form-group">
+          <label for="teamAlbum">チームアルバム</label>
+          <input type="file" class="form-control-file" id="teamAlbum">
+          <small class="form-text text-muted">アルバム画像を登録、削除することができます。</small>
+        </div>
+        <div class="form-group">
+          <label for="registrationURL">チームへの登録URL</label>
+          <input type="text" class="form-control" id="registrationURL" value="生成されたURL" readonly>
+        </div>
+        <button type="submit" class="btn btn-primary">更新する</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- <script src="https -->
+</body>
+</html>

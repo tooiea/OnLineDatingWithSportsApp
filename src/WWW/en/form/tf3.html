@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <title>Team Search Form</title>
+  </head>
+  <body>
+    <div class="card mx-auto" style="width: 400px;">
+        <div class="card-header bg-primary text-white text-center">
+          <h3>チーム登録</h3>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="form-group">
+              <label for="teamName">チーム名</label>
+              <input type="text" class="form-control" id="teamName" placeholder="チーム名を入力">
+            </div>
+            <div class="form-group">
+              <label for="teamLogo">チームロゴ</label>
+              <input type="file" class="form-control-file" id="teamLogo">
+            </div>
+            <div class="form-group">
+              <label for="teamURL">チームURL</label>
+              <input type="text" class="form-control" id="teamURL" placeholder="チームURLを入力">
+            </div>
+            <hr>
+            <div class="form-group">
+              <label for="teamLocation">チーム拠点</label>
+              <select class="form-control" id="teamLocation">
+                <option selected>都道府県を選択</option>
+                <option>北海道</option>
+                <option>青森県</option>
+                <option>岩手県</option>
+                <option>宮城県</option>
+                <option>秋田県</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="teamAddress">住所</label>
+              <input type="text" class="form-control" id="teamAddress" placeholder="住所を入力">
+            </div>
+            <hr>
+            <div class="form-group">
+              <label for="userName">名前</label>
+              <input type="text" class="form-control" id="userName" placeholder="名前を入力">
+            </div>
+            <div class="form-group">
+              <label for="userEmail">メールアドレス</label>
+              <input type="email" class="form-control" id="userEmail" placeholder="メールアドレスを入力">
+            </div>
+            <div class="form-group">
+              <label for="userPassword">パスワード</label>
+              <input type="password" class="form-control" id="userPassword" placeholder="パスワードを入力">
+            </div>
+            <div class="form-group">
+              <label for="userPasswordConfirm">パスワード再入力</label>
+              <input type="password" class="form-control" id="userPasswordConfirm" placeholder="パスワードを再入力">
+            </div>
+            <button type="submit" class="btn btn-primary">確認する</button>
+          </form>
+        </div>
+    </div>
+  </body>
+</html>

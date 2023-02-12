@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <title>Team Search Form</title>
+  </head>
+  <body>
+    <div class="card" style="width: 100%;">
+        <div class="card-header">
+          チーム登録
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="form-group">
+              <label for="teamName">チーム名</label>
+              <input type="text" class="form-control" id="teamName" aria-describedby="teamNameHelp" placeholder="Enter team name">
+              <small id="teamNameHelp" class="form-text text-muted">チーム名を入力してください。</small>
+            </div>
+            <div class="form-group">
+              <label for="teamLogo">チームロゴ</label>
+              <input type="file" class="form-control-file" id="teamLogo">
+            </div>
+            <div class="form-group">
+              <label for="teamURL">チームURL</label>
+              <input type="text" class="form-control" id="teamURL" placeholder="Enter team URL">
+            </div>
+            <div class="form-group">
+              <label for="teamLocation">チーム拠点</label>
+              <div class="form-row">
+                <div class="col-md-6">
+                  <select class="form-control" id="teamLocation">
+                    <option>都道府県</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" id="teamAddress" placeholder="Enter address">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userName">ユーザ情報</label>
+              <div class="form-row">
+                <div class="col-md-4">
+                  <input type="text" class="form-control" id="userName" placeholder="Enter name">
+                </div>
+                <div class="col-md-4">
+                  <input type="email" class="form-control" id="userEmail" placeholder="Enter email">
+                </div>
+                <div class="col-md-4">
+                  <input type="password" class="form-control" id="userPassword" placeholder="Password">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="passwordReenter">パスワード再入力</label>
+              <input type="password" class="form-control" id="passwordReenter" placeholder="Re-enter password">
+            </div>
+            <button type="submit" class="btn btn-primary">登録</button>
+          </form>
+        </div>
+      </div>
+  </body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Team Editing Page</title>
+</head>
+<body>
+    <div class="container my-5">
+        <div class="card">
+          <div class="card-header">
+            <h3>チームの編集</h3>
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="form-group">
+                <label for="team-name">チーム名</label>
+                <input type="text" class="form-control" id="team-name" placeholder="チーム名を入力">
+              </div>
+              <div class="form-group">
+                <label for="team-members">チームの登録人数</label>
+                <input type="text" class="form-control" id="team-members" placeholder="チームの登録人数を入力">
+              </div>
+              <div class="form-group">
+                <label for="team-logo">チームのロゴ画像</label>
+                <input type="file" class="form-control-file" id="team-logo">
+              </div>
+              <div class="form-group">
+                <label for="team-url">チームの紹介URL</label>
+                <input type="text" class="form-control" id="team-url" placeholder="チームの紹介URLを入力">
+              </div>
+              <div class="form-group">
+                <label for="team-album">チームのアルバム画像</label>
+                <input type="file" class="form-control-file" id="team-album">
+                <button type="button" class="btn btn-danger mt-2">削除</button>
+              </div>
+              <div class="form-group">
+                <label for="team-join-url">チームへの登録用URL</label>
+                <input type="text" class="form-control" id="team-join-url" placeholder="チームへの登録用URLを表示">
+                <button type="button" class="btn btn-secondary mt-2">コピー</button>
+              </div>
+              <button type="submit" class="btn btn-primary">保存</button>
+            </form>
+          </div>
+        </div>
+      </div>
+          
+</body>
+</html>

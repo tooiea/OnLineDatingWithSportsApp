@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <title>招待検索チーム</title>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="text-center mb-5">招待検索チーム</h1>
+      <form>
+        <div class="form-group row">
+          <label for="inputState" class="col-sm-2 col-form-label">
+            都道府県
+          </label>
+          <div class="col-sm-10">
+            <select id="inputState" class="form-control">
+              <option selected>都道府県を選択</option>
+              <option>東京都</option>
+              <option>大阪府</option>
+              <option>福岡県</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputAddress" class="col-sm-2 col-form-label">
+            住所
+          </label>
+          <div class="col-sm-10">
+            <input
+              type="text"
+              class="form-control"
+              id="inputAddress"
+              placeholder="住所を入力"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">検索</button>
+          </div>
+        </div>
+      </form>
+      <div class="row mt-5">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>チーム名</th>
+              <th>チームの拠点</th>
+              <th>URL</th>
+              <th>ロゴ画像</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>team1</td>
+              <td>東京都</td>
+              <td><a href="#">
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

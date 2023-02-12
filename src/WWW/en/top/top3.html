@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap">
+  <style>
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50vh;
+      font-family: 'Russo One', sans-serif;
+      font-size: 36px;
+    }
+
+    .btn-login,
+    .btn-register {
+      width: 45%;
+      margin: 20px 2.5%;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 40px;
+      background-color: #f4511e;
+      color: #fff;
+      border: none;
+      box-shadow: 0 5px #666;
+    }
+
+    .btn-login:active,
+    .btn-register:active {
+      background-color: #3e8e41;
+      box-shadow: 0 5px #666;
+      transform: translateY(5px);
+    }
+  </style>
+  <title>Responsive Top Page</title>
+</head>
+
+<body>
+  <div class="container-fluid p-0">
+    <div class="logo text-center text-white bg-dark">
+      <img src="logo.png" alt="Logo" height="80">
+      <div class="d-inline-block text-center mt-3">スポーツアプリ</div>
+    </div>
+    <div class="text-center mt-5">
+      <button class="btn btn-login">ログイン</button>
+      <button class="btn btn-register">新規登録</button>
+    </div>
+  </div>
+</body>
+
+</html>

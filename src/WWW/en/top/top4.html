@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      .logo {
+        margin-bottom: 30px;
+      }
+      .btn-login,
+      .btn-register {
+        margin: 15px;
+        width: 200px;
+        font-size: 1.2em;
+        padding: 10px;
+        border-radius: 30px;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+      }
+      .btn-login {
+        background-color: #2196f3;
+        color: white;
+      }
+      .btn-register {
+        background-color: white;
+        color: #2196f3;
+        border: 2px solid #2196f3;
+      }
+      .btn-login:hover,
+      .btn-register:hover {
+        transform: translateY(-5px);
+        box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img src="logo.png" alt="Logo" class="logo" />
+      <button class="btn btn-login">ログイン</button>
+      <button class="btn btn-register">新規登録</button>
+    </div>
+  </body>
+</html>
