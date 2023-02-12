@@ -15,8 +15,8 @@
     <nav class="navbar navbar-light bg-light">
       <a href="#" class="navbar-brand">Search Teams</a>
       <div class="navbar-nav">
-        <a href="#" class="nav-item nav-link">トップ</a>
-        <a href="#" class="nav-item nav-link">ログアウト</a>
+        <a href="/" class="nav-item nav-link">トップ</a>
+        <a href="{{ route('logout') }}" class="nav-item nav-link">ログアウト</a>
       </div>
     </nav>
     <div class="container mt-5">
@@ -81,7 +81,7 @@
               <td>{{ $value->team_name }}</td>
               <td>{{ \App\Constants\FormConstant::PREFECTURES[$value->prefecture] . $value->address }}
               </td>
-              <td></td>
+              <td><img src="{{ asset($value->team_logo) }}" id="team-logo" width="50" height="50"></td>
               <td>
                 <a href="{{ sprintf(url(__('route_const.consent_link') . " %s"),
                       $value->invitation_code)

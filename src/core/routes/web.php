@@ -51,6 +51,7 @@ Route::middleware('guest')->group(function () {
         Route::post('tmp/user/register/complete', [TempUsersController::class, 'complete'])->name('tmp_user.registered');
 
         // 本登録
+        Route::get('error', [UsersController::class, 'errorRegister'])->name('users.error'); // エラー発生時
         Route::get('notvalid/token', [UsersController::class, 'failedToken'])->name('users.failed'); // トークンなし
         Route::get('register/user/{token}', [UsersController::class, 'index'])->name('users.index');
         Route::get('login', [LoginController::class, 'index'])->name('login.index');

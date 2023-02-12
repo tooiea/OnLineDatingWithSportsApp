@@ -35,7 +35,7 @@ class Team extends Model
     {
         $teamId = $this->where('invitation_code', $invitationCode)
                 ->select(['id'])->first();
-        return $teamId;
+        return $teamId->id;
     }
 
     /**

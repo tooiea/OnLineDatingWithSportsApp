@@ -22,6 +22,7 @@
             <div class="card-body">
               <form action="{{ route('login') }}" method="post">
                 @csrf
+                @if (session('user.register.error')) <div class="alert alert-danger" role="alert"> {!! session('user.register.error') !!} </div> @endif
                 <div class="form-group">
                   <label for="email">メールアドレス</label>
                   <input type="email" name="email"
@@ -36,6 +37,7 @@
                     required autocomplete="password" placeholder="パスワード">
                     @error('password') <small id="passwordHelp" class="invalid-feedback" role="alert"> {{ $message }} </small> @enderror
                 </div>
+                @if (session('user.registered')) <div class="alert alert-light" role="alert"> {!! session('user.registered') !!} </div> @endif
                 <button type="submit" class="btn btn-primary btn-block">
                   ログインする
                 </button>
