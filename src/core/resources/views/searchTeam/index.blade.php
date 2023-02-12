@@ -9,16 +9,13 @@
       integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
       crossorigin="anonymous"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <title>Search Team</title>
   </head>
   <body>
-    <nav class="navbar navbar-light bg-light">
-      <a href="#" class="navbar-brand">Search Teams</a>
-      <div class="navbar-nav">
-        <a href="/" class="nav-item nav-link">トップ</a>
-        <a href="{{ route('logout') }}" class="nav-item nav-link">ログアウト</a>
-      </div>
-    </nav>
+    @include('layouts.nav')
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-sm-6">
