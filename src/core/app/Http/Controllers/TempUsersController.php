@@ -69,7 +69,6 @@ class TempUsersController extends BasesController
      */
     public function complete(Request $request)
     {
-        // FIXME 全体的に要修正
         $specifyFormRequestInputs = $request->session()->pull('temp_user');
         $customValues = $specifyFormRequestInputs->getAll();
 

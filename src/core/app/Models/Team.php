@@ -22,6 +22,7 @@ class Team extends Model
         'prefecture',
         'address',
         'team_logo',
+        'image_extension',
         'is_deleted',
     ];
 
@@ -73,7 +74,7 @@ class Team extends Model
         // 都道府県
         if (!empty($values['prefecture'])) {
             $query = $query->where('prefecture', '=', $values['prefecture']);
-        } else if (!empty($myTeam)) {
+        } elseif (!empty($myTeam)) {
             $query = $query->where('prefecture', '=', $myTeam->team->prefecture);
         }
 

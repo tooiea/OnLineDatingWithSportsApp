@@ -80,6 +80,7 @@ CREATE TABLE t_users.temp_users (
   , sport_affiliation_type INT NULL
   , team_name VARCHAR(255) NULL
   , team_logo VARCHAR(255) NULL
+  , image_extension VARCHAR(255) NULL
   , team_url VARCHAR(255) NULL
   , prefecture INT NULL
   , address VARCHAR(255) NULL
@@ -169,6 +170,7 @@ CREATE TABLE t_baseball.teams (
   , prefecture INT NOT NULL
   , address VARCHAR(255) NOT NULL
   , team_logo VARCHAR(255) NOT NULL
+  , image_extension VARCHAR(255) NOT NULL
   , is_deleted INT DEFAULT 0 NOT NULL
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
   , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP NOT NULL

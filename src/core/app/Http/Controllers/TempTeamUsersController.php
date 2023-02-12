@@ -31,19 +31,29 @@ class TempTeamUsersController extends BasesController
     public function confirm(TempTeamUserFormRequest $request)
     {
         $image = $request->file('teamLogo');
-        $tempPath = $image->store('public/upload/images');
-        $filePath = 'public/' . str_replace('public/', 'storage/', $tempPath);
-        $specifyFormRequestInputs = new SpecifyFormRequestInputsController();
-        $specifyFormRequestInputs->setAll($request->input(), FormConstant::TEMP_TEAM_FORM_KEYS, ['teamLogo' => $filePath]); // インスタンスをセッションへ
-        session(['temp_team_user' => $specifyFormRequestInputs]);
+        $files = $this->getImageDetail($image);
 
+        $specifyFormRequestInputs = new SpecifyFormRequestInputsController();
+        $specifyFormRequestInputs->setAll($request->input(), FormConstant::TEMP_TEAM_FORM_KEYS, $files); // インスタンスをセッションへ
+        session(['temp_team_user' => $specifyFormRequestInputs]);
         $values = $specifyFormRequestInputs->getAll();  // 画面用
 
-        // FIXME base64で表示
-        // $values['img'] = 'data:' . $image->getMimeType() . ';base64,' . base64_encode(asset($values['teamLogo']));
-        // var_dump($values['img']);
-
         return view('tempTeamUsers.confirm', compact('values'));
+    }
+
+    /**
+     *  画像からMIME TYPEとパスを取得
+     *
+     * @param object $image
+     * @return array
+     */
+    private function getImageDetail($image)
+    {
+        $tempPath = $image->store('public/upload/images');
+        $files['teamLogo'] = 'public/' . str_replace('public/', 'storage/', $tempPath);
+        $files['image_extension'] = $image->getMimeType();
+
+        return $files;
     }
 
     /**
