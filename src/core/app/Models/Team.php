@@ -11,6 +11,21 @@ class Team extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'team_name',
+        'sport_affiliation_type',
+        'invitation_code',
+        'prefecture',
+        'address',
+        'team_logo',
+        'is_deleted',
+    ];
+
+    /**
      * 招待コードから存在しているteamのidを取得
      *
      * @param string $invitationCode
@@ -38,6 +53,7 @@ class Team extends Model
             'invitation_code' => $invitationCode,
             'prefecture' => $tempUser->prefecture,
             'address' => $tempUser->address,
+            'team_logo' => $tempUser->team_logo,
         ]);
 
         return $teamId;

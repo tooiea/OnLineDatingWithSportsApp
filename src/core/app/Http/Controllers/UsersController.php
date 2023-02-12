@@ -42,6 +42,7 @@ class UsersController extends BasesController
      */
     public function index(UserTokenRequest $request, $token)
     {
+        // FIXME DB違いだとロールバックされない
         DB::transaction(function () use ($token) {
             $tempUser = $this->tempUserModel->getUserByToken($token);
             $userId = $this->userModel->registerUser($tempUser);
