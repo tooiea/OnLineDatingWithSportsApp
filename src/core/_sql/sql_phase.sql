@@ -1,22 +1,8 @@
 -- Project Name : t_users
--- Date/Time    : 2023/01/10 22:16:01
+-- Date/Time    : 2023/02/14 7:48:48
 -- Author       : twatanabe
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
-
--- 管理者
-CREATE TABLE t_users.administrators (
-  id INT NOT NULL AUTO_INCREMENT
-  , email VARCHAR(255) NOT NULL
-  , admins_name VARCHAR(255) NOT NULL
-  , salt VARCHAR(100) NOT NULL
-  , password VARCHAR(255) NOT NULL
-  , reset_token VARCHAR(255) NOT NULL
-  , is_deleted INT DEFAULT 0 NOT NULL
-  , created_at DATETIME DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP NOT NULL
-  , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
-  , CONSTRAINT administrators_PKC PRIMARY KEY (id)
-) ;
 
 -- 試合出場選手
 CREATE TABLE t_baseball.game_players (
@@ -48,6 +34,16 @@ CREATE TABLE t_baseball.position_mst (
   , CONSTRAINT position_mst_PKC PRIMARY KEY (id)
 ) ;
 
+-- 返信
+CREATE TABLE t_baseball.replies (
+  id BIGINT NOT NULL
+  , consent_game_id BIGINT NOT NULL
+  , message TEXT NOT NULL
+  , created_at DATETIME NOT NULL
+  , updated_at DATETIME NOT NULL
+  , CONSTRAINT replies_PKC PRIMARY KEY (id)
+) ;
+
 -- 球場
 CREATE TABLE t_baseball.stadiums (
   id INT NOT NULL AUTO_INCREMENT
@@ -69,6 +65,20 @@ CREATE TABLE t_baseball.team_members (
   , CONSTRAINT team_members_PKC PRIMARY KEY (id)
 ) ;
 
+-- 管理者
+CREATE TABLE t_users.administrators (
+  id INT NOT NULL AUTO_INCREMENT
+  , email VARCHAR(255) NOT NULL
+  , admins_name VARCHAR(255) NOT NULL
+  , salt VARCHAR(100) NOT NULL
+  , password VARCHAR(255) NOT NULL
+  , reset_token VARCHAR(255) NOT NULL
+  , is_deleted INT DEFAULT 0 NOT NULL
+  , created_at DATETIME DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP NOT NULL
+  , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+  , CONSTRAINT administrators_PKC PRIMARY KEY (id)
+) ;
+
 -- 仮ユーザ
 CREATE TABLE t_users.temp_users (
   id INT NOT NULL AUTO_INCREMENT
@@ -77,14 +87,14 @@ CREATE TABLE t_users.temp_users (
   , password VARCHAR(255) NOT NULL
   , token VARCHAR(255) NOT NULL
   , expiration_date DATETIME NOT NULL
-  , sport_affiliation_type INT NULL
-  , team_name VARCHAR(255) NULL
-  , team_logo VARCHAR(255) NULL
-  , image_extension VARCHAR(255) NULL
-  , team_url VARCHAR(255) NULL
-  , prefecture INT NULL
-  , address VARCHAR(255) NULL
-  , invitation_code VARCHAR(255) NULL
+  , sport_affiliation_type INT NOT NULL
+  , team_name VARCHAR(255)
+  , team_logo VARCHAR(255)
+  , image_extension VARCHAR(255)
+  , team_url VARCHAR(255)
+  , prefecture INT
+  , address VARCHAR(255)
+  , invitation_code VARCHAR(255)
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
   , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP NOT NULL
   , CONSTRAINT temp_users_PKC PRIMARY KEY (id)
@@ -93,12 +103,12 @@ CREATE TABLE t_users.temp_users (
 -- ユーザ
 CREATE TABLE t_users.users (
   id INT NOT NULL AUTO_INCREMENT
-  , name VARCHAR(20) NOT NULL
+  , name1 VARCHAR(20) NOT NULL
   , email VARCHAR(255) NOT NULL
-  , password VARCHAR(255) NOT NULL
-  , google_login_id VARCHAR(255) NULL
-  , line_login_id VARCHAR(255) NULL
-  , last_login_time DATETIME NULL
+  , password VARCHAR(255)
+  , google_login_id VARCHAR(255)
+  , line_login_id VARCHAR(255)
+  , last_login_time DATETIME NOT NULL
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
   , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP
   , CONSTRAINT users_PKC PRIMARY KEY (id)
@@ -147,14 +157,15 @@ CREATE TABLE t_baseball.tournaments (
 
 -- 試合招待
 CREATE TABLE t_baseball.consent_games (
-  id INT NOT NULL AUTO_INCREMENT
+  id BIGINT NOT NULL AUTO_INCREMENT
   , invitee_id INT NOT NULL
   , guest_id INT NOT NULL
-  , consent_status INT NOT NULL
-  , game_date DATETIME NULL DEFAULT NULL
+  , consent_status_id INT NOT NULL
+  , game_date DATETIME
   , first_preferered_date DATETIME NOT NULL
   , second_preferered_date DATETIME NOT NULL
-  , third_preferered_date DATETIME NULL
+  , third_preferered_date DATETIME
+  , message TEXT
   , is_deleted INT DEFAULT 0 NOT NULL
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
   , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
@@ -168,7 +179,7 @@ CREATE TABLE t_baseball.teams (
   , sport_affiliation_type INT NOT NULL
   , invitation_code VARCHAR(255) NOT NULL
   , prefecture INT NOT NULL
-  , address VARCHAR(255) NOT NULL
+  , address VARCHAR(255)
   , team_logo VARCHAR(255) NOT NULL
   , image_extension VARCHAR(255) NOT NULL
   , is_deleted INT DEFAULT 0 NOT NULL
@@ -188,12 +199,12 @@ ALTER TABLE t_baseball.consent_games
   on update cascade;
 
 ALTER TABLE t_baseball.game_players
-  ADD CONSTRAINT game_players_FK1 FOREIGN KEY (position_mst_id) REFERENCES t_baseball.position_mst(id)
+  ADD CONSTRAINT game_players_FK1 FOREIGN KEY (game_id) REFERENCES t_baseball.games(id)
   on delete cascade
   on update cascade;
 
 ALTER TABLE t_baseball.game_players
-  ADD CONSTRAINT game_players_FK2 FOREIGN KEY (game_id) REFERENCES t_baseball.games(id)
+  ADD CONSTRAINT game_players_FK2 FOREIGN KEY (position_mst_id) REFERENCES t_baseball.position_mst(id)
   on delete cascade
   on update cascade;
 
@@ -203,12 +214,17 @@ ALTER TABLE t_baseball.games
   on update cascade;
 
 ALTER TABLE t_baseball.games
-  ADD CONSTRAINT games_FK2 FOREIGN KEY (tournament_id) REFERENCES t_baseball.tournaments(id)
+  ADD CONSTRAINT games_FK2 FOREIGN KEY (consent_game_id) REFERENCES t_baseball.consent_games(id)
   on delete cascade
   on update cascade;
 
 ALTER TABLE t_baseball.games
-  ADD CONSTRAINT games_FK3 FOREIGN KEY (consent_game_id) REFERENCES t_baseball.consent_games(id)
+  ADD CONSTRAINT games_FK3 FOREIGN KEY (tournament_id) REFERENCES t_baseball.tournaments(id)
+  on delete cascade
+  on update cascade;
+
+ALTER TABLE t_baseball.replies
+  ADD CONSTRAINT replies_FK1 FOREIGN KEY (id) REFERENCES t_baseball.consent_games(id)
   on delete cascade
   on update cascade;
 
@@ -218,8 +234,7 @@ ALTER TABLE t_baseball.team_members
   on update cascade;
 
 ALTER TABLE t_baseball.team_members
-  ADD CONSTRAINT team_members_FK3 FOREIGN KEY (team_id) REFERENCES t_baseball.teams(id)
+  ADD CONSTRAINT team_members_FK2 FOREIGN KEY (team_id) REFERENCES t_baseball.teams(id)
   on delete cascade
   on update cascade;
-
 

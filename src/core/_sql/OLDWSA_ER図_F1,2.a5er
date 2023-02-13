@@ -31,7 +31,7 @@ RDBMSType=5
 RDBMSTypeName=MySQL
 BackupRestoreTempTable=0
 CreateFk=1
-FkOnDeleteOption=on delete cascade
+FkOnDeleteOption=on delete no action
 FkOnUpdateOption=on update cascade
 GenerateCommentStatement=0
 GenerateCommentStatement_LName=0
@@ -48,7 +48,7 @@ ShowCommonAttributes=0
 BugFixEntityWidth=1
 
 [Entity]
-PName=administrators
+PName=t_users.administrators
 LName=管理者
 Comment=
 TableOption=
@@ -67,12 +67,12 @@ Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$F
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230102174026
+ModifiedDateTime=20230214074437
 Position="MAIN",450,200,344,497
 ZOrder=1
 
 [Entity]
-PName=temp_users
+PName=t_users.temp_users
 LName=仮ユーザ
 Comment=
 TableOption=
@@ -87,7 +87,8 @@ Field="token","token","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
 Field="expiration_date","expiration_date","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
 Field="sport_affiliation_type","sport_affiliation_type","INT","NOT NULL",,"","",$FFFFFFFF,""
 Field="team_name","team_name","VARCHAR(255)",,,"","",$FFFFFFFF,""
-Field="team_logo","VARCHAR(255)","VARCHAR(255)",,,"","",$FFFFFFFF,""
+Field="team_logo","team_logo","VARCHAR(255)",,,"","",$FFFFFFFF,""
+Field="image_extension","image_extension","VARCHAR(255)",,,"","",$FFFFFFFF,""
 Field="team_url","team_url","VARCHAR(255)",,,"","",$FFFFFFFF,""
 Field="prefecture","prefecture","INT",,,"","",$FFFFFFFF,""
 Field="address","address","VARCHAR(255)",,,"","",$FFFFFFFF,""
@@ -97,12 +98,12 @@ Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP  ON UP
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230130222724
-Position="MAIN",1000,200,451,745
+ModifiedDateTime=20230214074433
+Position="MAIN",1000,200,451,792
 ZOrder=2
 
 [Entity]
-PName=users
+PName=t_users.users
 LName=ユーザ
 Comment=
 TableOption=
@@ -112,18 +113,21 @@ Top=200
 Field="id","id","INT","NOT NULL",0,"","",$00FF0000,"AUTO_INCREMENT"
 Field="name","name1","VARCHAR(20)","NOT NULL",,"","",$FFFFFFFF,""
 Field="email","email","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
-Field="password","password","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="password","password","VARCHAR(255)",,,"","",$FFFFFFFF,""
+Field="google_login_id","google_login_id","VARCHAR(255)",,,"","",$FFFFFFFF,""
+Field="line_login_id","line_login_id","VARCHAR(255)",,,"","",$FFFFFFFF,""
+Field="last_login_time","last_login_time","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
 Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
 Field="updated_at","updated_at","DATETIME",,,"CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230113223628
+ModifiedDateTime=20230214074429
 Position="MAIN",1500,200,405,741
 ZOrder=3
 
 [Entity]
-PName=teams
+PName=t_baseball.teams
 LName=チーム
 Comment=
 TableOption=
@@ -136,18 +140,20 @@ Field="sport_affiliation_type","sport_affiliation_type","INT","NOT NULL",,"","",
 Field="invitation_code","invitation_code","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
 Field="prefecture","prefecture","INT","NOT NULL",,"","",$00000000,""
 Field="address","address","VARCHAR(255)",,,"","",$FFFFFFFF,""
+Field="team_logo","team_logo","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="image_extension","image_extension","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
 Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
 Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
 Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230130223254
-Position="MAIN",1000,1300,574,470
+ModifiedDateTime=20230214074321
+Position="MAIN",1000,1300,574,540
 ZOrder=4
 
 [Entity]
-PName=team_members
+PName=t_baseball.team_members
 LName=チームメンバ
 Comment=
 TableOption=
@@ -157,21 +163,18 @@ Top=1300
 Field="id","id","BIGINT","NOT NULL",0,"","",$FFFFFFFF,"AUTO_INCREMENT"
 Field="team_id","team_id","INT","NOT NULL",,"","",$000000FF,""
 Field="user_id","user_id","INT","NOT NULL",,"","",$00FF0000,""
-Field="role","role","INT",,,"4","",$00808080,""
-Field="number","number","INT",,,"","",$FFFFFFFF,""
-Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
 Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
 Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230111223321
+ModifiedDateTime=20230214074652
 Position="MAIN",1700,1300,328,437
 ZOrder=9
 
 [Relation]
-Entity1=users
-Entity2=team_members
+Entity1=t_users.users
+Entity2=t_baseball.team_members
 RelationType1=2
 RelationType2=3
 Fields1=id
@@ -192,8 +195,8 @@ TermPos2=R
 ZOrder=10
 
 [Relation]
-Entity1=teams
-Entity2=team_members
+Entity1=t_baseball.teams
+Entity2=t_baseball.team_members
 RelationType1=2
 RelationType2=3
 Fields1=id
@@ -214,30 +217,35 @@ TermPos2=R
 ZOrder=11
 
 [Entity]
-PName=consent_games
+PName=t_baseball.consent_games
 LName=試合招待
 Comment=
 TableOption=
 Page=MAIN
 Left=1500
 Top=2000
-Field="id","id","INT","NOT NULL",0,"","",$000099FF,"AUTO_INCREMENT"
+Field="id","id","BIGINT","NOT NULL",0,"","",$000099FF,"AUTO_INCREMENT"
 Field="invitee_id","invitee_id","INT","NOT NULL",,"","",$000000FF,""
 Field="guest_id","guest_id","INT","NOT NULL",,"","",$000000FF,""
 Field="consent_status_id","consent_status_id","INT","NOT NULL",,"","",$00000000,""
+Field="game_date","game_date","DATETIME",,,"","",$FFFFFFFF,""
+Field="first_preferered_date","first_preferered_date","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
+Field="second_preferered_date","second_preferered_date","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
+Field="third_preferered_date","third_preferered_date","DATETIME",,,"","",$FFFFFFFF,""
+Field="message","message","TEXT",,,"","",$FFFFFFFF,""
 Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
 Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
 Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230130222851
-Position="MAIN",1500,2000,492,370
+ModifiedDateTime=20230214074347
+Position="MAIN",1500,2000,536,658
 ZOrder=13
 
 [Relation]
-Entity1=teams
-Entity2=consent_games
+Entity1=t_baseball.teams
+Entity2=t_baseball.consent_games
 RelationType1=2
 RelationType2=5
 Fields1=id
@@ -258,8 +266,8 @@ TermPos2=R
 ZOrder=15
 
 [Relation]
-Entity1=teams
-Entity2=consent_games
+Entity1=t_baseball.teams
+Entity2=t_baseball.consent_games
 RelationType1=2
 RelationType2=5
 Fields1=id
@@ -280,49 +288,7 @@ TermPos2=R
 ZOrder=16
 
 [Entity]
-PName=team_role_mst
-LName=チーム役割マスタ
-Comment=
-TableOption=
-Page=MAIN
-Left=2100
-Top=1300
-Field="id","id","INT","NOT NULL",0,"","",$00808080,"AUTO_INCREMENT"
-Field="label","label","VARCHAR(20)","NOT NULL",,"","",$FFFFFFFF,""
-Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
-Field="created_at","created_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
-Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP","",$FFFFFFFF,""
-EffectMode=None
-Color=$000000
-BkColor=$FFFFFF
-ModifiedDateTime=20230102174105
-Position="MAIN",2100,1300
-ZOrder=17
-
-[Relation]
-Entity1=team_role_mst
-Entity2=team_members
-RelationType1=2
-RelationType2=2
-Fields1=id
-Fields2=role
-Cardinarity1=
-Cardinarity2=
-Position="MAIN",0,5434,4566,5307,R,R,""
-Dependence=0
-Caption=
-PName=
-ModifiedDateTime=20221217232536
-LineMode=0
-Bar1=543
-Bar2=457
-Bar3=531
-TermPos1=R
-TermPos2=R
-ZOrder=18
-
-[Entity]
-PName=games
+PName=t_baseball.games
 LName=試合
 Comment=
 TableOption=
@@ -345,17 +311,17 @@ Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP ON UPD
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230102174142
+ModifiedDateTime=20230214074343
 Position="MAIN",2300,2000,508,651
 ZOrder=19
 
 [Entity]
-PName=stadiums
+PName=t_baseball.stadiums
 LName=球場
 Comment=
 TableOption=
 Page=MAIN
-Left=2500
+Left=2200
 Top=1300
 Field="id","id","INT","NOT NULL",0,"","",$000028FF,"AUTO_INCREMENT"
 Field="team_id","team_id","INT","NOT NULL",,"","",$FFFFFFFF,""
@@ -366,12 +332,12 @@ Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP ON UPD
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230102174111
-Position="MAIN",2500,1300,397,339
+ModifiedDateTime=20230214074329
+Position="MAIN",2200,1300,397,339
 ZOrder=20
 
 [Entity]
-PName=game_players
+PName=t_baseball.game_players
 LName=試合出場選手
 Comment=
 TableOption=
@@ -394,17 +360,17 @@ Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP  ON UP
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230102174147
+ModifiedDateTime=20230214074338
 Position="MAIN",3000,2000,426,680
 ZOrder=21
 
 [Entity]
-PName=position_mst
+PName=t_baseball.position_mst
 LName=ポジションマスタ
 Comment=
 TableOption=
 Page=MAIN
-Left=3000
+Left=2800
 Top=1300
 Field="id","id","INT","NOT NULL",0,"","",$FFFFFFFF,"AUTO_INCREMENT"
 Field="sport_affiliation_mst_id","sport_affiliation_mst_id","INT","NOT NULL",,"","",$FFFFFFFF,""
@@ -416,12 +382,12 @@ Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP ON UPD
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230102174117
-Position="MAIN",3000,1300,484,348
+ModifiedDateTime=20230214074334
+Position="MAIN",2800,1300,484,348
 ZOrder=22
 
 [Entity]
-PName=opponent_teams
+PName=t_baseball.opponent_teams
 LName=対戦相手チーム
 Comment=
 TableOption=
@@ -437,12 +403,12 @@ Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP ON UPD
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230102174157
+ModifiedDateTime=20230214074402
 Position="MAIN",2500,2900,277,318
 ZOrder=23
 
 [Entity]
-PName=tournaments
+PName=t_baseball.tournaments
 LName=大会
 Comment=
 TableOption=
@@ -459,13 +425,13 @@ Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP ON UPD
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230102174153
+ModifiedDateTime=20230214074358
 Position="MAIN",2000,2900,396,368
 ZOrder=24
 
 [Relation]
-Entity1=games
-Entity2=game_players
+Entity1=t_baseball.games
+Entity2=t_baseball.game_players
 RelationType1=2
 RelationType2=4
 Fields1=id
@@ -486,8 +452,8 @@ TermPos2=R
 ZOrder=25
 
 [Relation]
-Entity1=games
-Entity2=stadiums
+Entity1=t_baseball.games
+Entity2=t_baseball.stadiums
 RelationType1=4
 RelationType2=2
 Fields1=stadium_id
@@ -508,8 +474,8 @@ TermPos2=R
 ZOrder=26
 
 [Relation]
-Entity1=opponent_teams
-Entity2=games
+Entity1=t_baseball.opponent_teams
+Entity2=t_baseball.games
 RelationType1=2
 RelationType2=4
 Fields1=id
@@ -530,8 +496,8 @@ TermPos2=R
 ZOrder=27
 
 [Relation]
-Entity1=tournaments
-Entity2=games
+Entity1=t_baseball.tournaments
+Entity2=t_baseball.games
 RelationType1=2
 RelationType2=4
 Fields1=id
@@ -552,8 +518,8 @@ TermPos2=R
 ZOrder=28
 
 [Relation]
-Entity1=position_mst
-Entity2=game_players
+Entity1=t_baseball.position_mst
+Entity2=t_baseball.game_players
 RelationType1=2
 RelationType2=4
 Fields1=id
@@ -574,8 +540,8 @@ TermPos2=R
 ZOrder=29
 
 [Relation]
-Entity1=consent_games
-Entity2=games
+Entity1=t_baseball.consent_games
+Entity2=t_baseball.games
 RelationType1=2
 RelationType2=4
 Fields1=id
@@ -594,3 +560,45 @@ Bar3=183
 TermPos1=R
 TermPos2=R
 ZOrder=30
+
+[Entity]
+PName=t_baseball.replies
+LName=返信
+Comment=
+TableOption=
+Page=Main
+Left=800
+Top=2000
+Field="id","id","BIGINT","NOT NULL",0,"","",$FFFFFFFF,""
+Field="consent_game_id","consent_game_id","BIGINT","NOT NULL",,"","",$000099FF,""
+Field="message","message","TEXT","NOT NULL",,"","",$FFFFFFFF,""
+Field="created_at","created_at","DATETIME","NOT NULL",,"","",$FFFFFFFF,""
+Field="updated_at","updated_at","updated_at","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20230214074351
+Position="Main",800,2000,457,512
+ZOrder=31
+
+[Relation]
+Entity1=t_baseball.consent_games
+Entity2=t_baseball.replies
+RelationType1=2
+RelationType2=5
+Fields1=id
+Fields2=id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5551,4449,5730,R,R,""
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20230214073203
+LineMode=0
+Bar1=555
+Bar2=445
+Bar3=573
+TermPos1=R
+TermPos2=R
+ZOrder=32
