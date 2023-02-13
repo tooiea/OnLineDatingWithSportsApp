@@ -83,7 +83,7 @@
               @endif
             </td>
             <td>
-              <a href="{{ sprintf(url(__('route_const.consent_link') . " %s"), $value->invitation_code)
+              <a href="{{ sprintf(url(__('route_const.consent_link') . '%s'), $value->invitation_code)
                 }}">招待する
               </a>
             </td>

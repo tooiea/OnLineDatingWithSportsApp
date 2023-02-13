@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\ConsentGamesController;
 use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\LineLoginController;
 use App\Http\Controllers\LoginController;
@@ -85,6 +86,10 @@ Route::middleware('auth')->group(function () {
 
     // ログイン後の検索画面
     Route::get('search/team', [SearchTeamController::class, 'index'])->name('search.index');
+
+    // 試合の招待
+    Route::get('consent/team/{invitation_code}', [ConsentGamesController::class, 'index'])->name('consent.index');
+    Route::post('consent/team/confirm', [ConsentGamesController::class, 'confirm'])->name('consent.confirm');
 
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
                 ->name('verification.notice');
