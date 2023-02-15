@@ -8,6 +8,4 @@ use Illuminate\Database\Eloquent\Model;
 class Administrator extends Model
 {
     use HasFactory;
-
-    protected $connection = 't_users';
 }

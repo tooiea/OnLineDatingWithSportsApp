@@ -15,8 +15,6 @@ class TempUser extends Model
     use HasFactory;
     use Notifiable;
 
-    protected $connection = 't_users';
-
     /**
      * The attributes that are mass assignable.
      *

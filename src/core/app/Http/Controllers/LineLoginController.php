@@ -40,6 +40,9 @@ class LineLoginController extends Controller
             $user = $this->user->where('email', $loggeInUserByLine->email)->first();
             $now = Carbon::now();
 
+            // TODO LINEログインした場合に、メールアドレスがない想定がないためケースを追加
+            // メールアドレスが登録されていないときに、このまま登録可能かを確認
+
             // Lineログインで新規登録
             if (is_null($user)) {
                 $user = $this->user->create([

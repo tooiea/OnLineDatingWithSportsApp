@@ -17,8 +17,6 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
 
-    protected $connection = 't_users';
-
     /**
      * The attributes that are mass assignable.
      *
