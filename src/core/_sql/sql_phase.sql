@@ -100,6 +100,7 @@ CREATE TABLE teams (
   , invitation_code VARCHAR(255) NOT NULL
   , prefecture INT NOT NULL
   , address VARCHAR(255)
+  , team_url VARCHAR(255)
   , team_logo VARCHAR(255) NOT NULL
   , image_extension VARCHAR(255) NOT NULL
   , is_deleted INT DEFAULT 0 NOT NULL
