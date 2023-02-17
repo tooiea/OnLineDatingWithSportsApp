@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,6 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <title>確認画面</title>
 </head>
+
 <body>
     <div class="container">
         <div class="card">
@@ -21,10 +23,15 @@
                         <h4>チーム登録</h4>
                     </div>
                     <div class="card-body">
-                        <p>スポーツ種別：<span id="team-name">{{ \App\Enums\SportAffiliationTypeEnum::from($values['sportAffiliationType'])->label() }}</span></p>
+                        <p>スポーツ種別：<span id="team-name">{{
+                                \App\Enums\SportAffiliationTypeEnum::from($values['sportAffiliationType'])->label()
+                                }}</span></p>
                         <p>チーム名：<span id="team-name">{{ $values['teamName'] }}</span></p>
-                        <p>チームロゴ：<img src="{{ asset($values['teamLogo']) }}" id="team-logo" width="100" height="100"></p>
-                        <p>チームURL：<a id="team-url" target="_blank">@if(!empty($values['teamUrl'])){{ $values['teamUrl'] }}@enderror</a></p>
+                        <p>チームロゴ：<img
+                                src="data:{{ $values['image_extension'] }};base64,{{ base64_encode(file_get_contents($values['teamLogo'])) }}"
+                                id="team-logo" width="100" height="100"></p>
+                        <p>チームURL：<a id="team-url" target="_blank">@if(!empty($values['teamUrl'])){{ $values['teamUrl']
+                                }}@enderror</a></p>
                     </div>
                 </div>
                 <div class="card mt-3">
@@ -32,7 +39,8 @@
                         <h4>チーム拠点</h4>
                     </div>
                     <div class="card-body">
-                        <p>都道府県：<span id="team-prefecture">{{ \App\Constants\FormConstant::PREFECTURES[$values['prefecture']] }}</span></p>
+                        <p>都道府県：<span id="team-prefecture">{{
+                                \App\Constants\FormConstant::PREFECTURES[$values['prefecture']] }}</span></p>
                         <p>市町村区：<span id="team-address">{{ $values['address'] }}</span></p>
                     </div>
                 </div>
@@ -58,4 +66,5 @@
         </div>
     </div>
 </body>
+
 </html>

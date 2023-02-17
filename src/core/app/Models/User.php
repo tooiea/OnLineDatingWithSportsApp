@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Constants\CommonConstant;
 use App\Mail\SendMailer;
 use App\Notifications\UserNotification;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -77,10 +78,12 @@ class User extends Authenticatable
      */
     public function registerUser($tempUser)
     {
+        $now = Carbon::now();
         $userId = $this->insertGetId([
             'name' => $tempUser->name,
             'email' => $tempUser->email,
-            'password' => $tempUser->password
+            'password' => $tempUser->password,
+            'last_login_time' => $now,
         ]);
 
         return $userId;

@@ -55,6 +55,7 @@ class Team extends Model
             'prefecture' => $tempUser->prefecture,
             'address' => $tempUser->address,
             'team_logo' => $tempUser->team_logo,
+            'image_extension' => $tempUser->image_extension,
         ]);
 
         return $teamId;

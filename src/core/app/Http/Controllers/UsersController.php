@@ -44,10 +44,8 @@ class UsersController extends BasesController
      */
     public function index(UserTokenRequest $request, $token)
     {
-        // FIXME 複数DBをrollbackし、ロックされない方法
-        // try {
-            // DB::connection('t_users')->beginTransaction();
-            // DB::connection('t_baseball')->beginTransaction();
+        try {
+            DB::beginTransaction();
             $tempUser = $this->tempUserModel->getUserByToken($token);
             $userId = $this->userModel->registerUser($tempUser);
 
@@ -68,16 +66,13 @@ class UsersController extends BasesController
             // メール送信
             $user = $this->teamMemberModel->getUserByTeamIdAndUserId($teamMember);
             $this->userModel->registrationNotification($user);
-            // DB::connection('t_users')->commit();
-            // DB::connection('t_baseball')->commit();
-        // } catch (Exception $e) {
-        //     DB::connection('t_users')->rollBack();
-        //     DB::connection('t_baseball')->rollBack();
-        //     Log::error($e);
-        //     $request->session()->flash('user.register.error', __('validation.custom.error.register'));
-        //     return redirect()->route('login.index');
-        // }
-
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+            $request->session()->flash('user.register.error', __('validation.custom.error.register'));
+            return redirect()->route('login.index');
+        }
         $request->session()->flash('user.registered', __('user_messages.success.registered'));
 
         return redirect()->route('login.index');
