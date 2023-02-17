@@ -92,11 +92,17 @@ class Team extends Model
         return $query->paginate(10);
     }
 
+    /**
+     * 招待コードでチーム情報を取得
+     *
+     * @param string $invitation_code
+     * @return object
+     */
     public function getTeamInfoByInvitationCodeWithConsents($invitation_code)
     {
         $query = $this->where('invitation_code', $invitation_code);
-        // $query->leftJoin('consent_games', 'consent_games.invitee_id', 'teams.id');
+        $query->leftJoin('consent_games', 'consent_games.invitee_id', 'teams.id');
 
-        return $query->get();
+        return $query->first();
     }
 }

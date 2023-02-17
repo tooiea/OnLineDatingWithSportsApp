@@ -22,6 +22,6 @@ class ConsentGamesController extends Controller
         $guestTeam = $this->team->getTeamInfoByInvitationCodeWithConsents($invitation_code);
         dd($guestTeam);
 
-        return view('consentGames.index');
+        return view('consentGames.index', compact('guestTeam'));
     }
 }
