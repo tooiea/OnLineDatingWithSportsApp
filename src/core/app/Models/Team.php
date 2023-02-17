@@ -54,6 +54,7 @@ class Team extends Model
             'invitation_code' => $invitationCode,
             'prefecture' => $tempUser->prefecture,
             'address' => $tempUser->address,
+            'team_url' => $tempUser->team_url,
             'team_logo' => $tempUser->team_logo,
             'image_extension' => $tempUser->image_extension,
         ]);
