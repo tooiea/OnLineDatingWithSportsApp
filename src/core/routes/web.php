@@ -88,8 +88,17 @@ Route::middleware('auth')->group(function () {
     Route::get('search/team', [SearchTeamController::class, 'index'])->name('search.index');
 
     // 試合の招待
-    Route::get('consent/team/{invitation_code}', [ConsentGamesController::class, 'index'])->name('consent.index');
-    Route::post('consent/team/confirm', [ConsentGamesController::class, 'confirm'])->name('consent.confirm');
+    Route::middleware('custom.cache.headers:no_store')->group(function () {
+        Route::get('consent/team/{invitation_code}', [ConsentGamesController::class, 'index'])->name('consent.index');
+        Route::post('consent/team/confirm', [ConsentGamesController::class, 'confirm'])->name('consent.confirm');
+        Route::post('consent/team/back', function (Request $request) {
+            $specifyFormRequestInputs = $request->session()->pull('consent_team');
+            $values = $specifyFormRequestInputs->getAll();
+            $invitation_code = $values['invitation_code'];  // url再セット用に取得
+            return redirect()->route('consent.index', $invitation_code)->withInput($values);
+        })->name('consent.back');
+        Route::post('consent/team/complete', [ConsentGamesController::class, 'complete'])->name('consent.complete');
+    });
 
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
                 ->name('verification.notice');

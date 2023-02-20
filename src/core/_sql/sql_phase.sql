@@ -80,7 +80,7 @@ CREATE TABLE consent_games (
   id BIGINT NOT NULL AUTO_INCREMENT
   , invitee_id INT NOT NULL
   , guest_id INT NOT NULL
-  , consent_status_id INT NOT NULL
+  , consent_status INT NOT NULL
   , game_date DATETIME
   , first_preferered_date DATETIME NOT NULL
   , second_preferered_date DATETIME NOT NULL

@@ -37,6 +37,11 @@ class TrimStrings extends Middleware
             $value = mb_convert_kana($value, "KC");
         }
 
+        // テキストエリアをそのまま返却
+        if ($key === 'message') {
+            return $value;
+        }
+
         return is_string($value) ? preg_replace('/　|\s+/', '', $value) : $value;
     }
 }
