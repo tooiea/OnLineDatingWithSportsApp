@@ -2,26 +2,103 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\FormConstant;
+use App\Http\Requests\ConsentScheduleRequest;
+use App\Http\Requests\TempUserInvitationCodeRequest;
+use App\Models\ConsentGame;
 use App\Models\Team;
+use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ConsentGamesController extends Controller
 {
     private $team;
-
-    public function __construct(Team $team)
+    private $teamMember;
+    private $consentGame;
+    /**
+     * モデルインスタンスセット
+     *
+     * @param Team $team
+     */
+    public function __construct(Team $team, TeamMember $teamMember, ConsentGame $consentGame)
     {
         $this->team = $team;
+        $this->teamMember = $teamMember;
+        $this->consentGame = $consentGame;
     }
 
-    public function index($invitation_code)
+    /**
+     * 招待チームと招待フォーム表示
+     * 既に招待していて、期限切れや返事待ちの時はフォームを出さない
+     *
+     * @param TempUserInvitationCodeRequest $request
+     * @param string $invitation_code
+     * @return void
+     */
+    public function index(TempUserInvitationCodeRequest $request, $invitation_code)
     {
         // 招待先のチーム情報と招待情報の取得
-        // 招待中は、表示を招待中に変更
+        session(['consent_invitaion_code' => $invitation_code]);
         $guestTeam = $this->team->getTeamInfoByInvitationCodeWithConsents($invitation_code);
-        dd($guestTeam);
+
+        // TODO 招待中は、表示を招待中に変更
 
         return view('consentGames.index', compact('guestTeam'));
+    }
+
+    /**
+     * 招待内容の確認画面
+     *
+     * @param ConsentScheduleRequest $request
+     * @return void
+     */
+    public function confirm(ConsentScheduleRequest $request)
+    {
+        $values['invitation_code'] = $request->session()->pull('consent_invitaion_code');
+        $values = array_merge($values, $request->input());
+        $specifyFormRequestInputs = new SpecifyFormRequestInputsController();
+        $specifyFormRequestInputs->setAll($values, FormConstant::CONSENT_FORM_KEYS); // インスタンスをセッションへ
+        session(['consent_team' => $specifyFormRequestInputs]);
+
+        return view('consentGames.confirm', compact('values'));
+    }
+
+    /**
+     * 招待相手にメール送信、DB登録
+     * 登録後にMyチームページへリダイレクト
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function complete(Request $request)
+    {
+        $specifyFormRequestInputs = $request->session()->pull('consent_team');
+        $customValues = $specifyFormRequestInputs->getAll();
+        $teamIds = $this->getTeamIds($customValues);
+
+        DB::transaction(function () use ($customValues, $teamIds) {
+            // 試合招待テーブルへ登録
+            $this->consentGame->createConsent($customValues, $teamIds);
+
+            // TODO メール送信
+            // TODO メール送信完了後に、チームのページにリダイレクト
+        });
+    }
+
+    /**
+     * 登録するチームidを取得
+     *
+     * @param array $customValues
+     * @return array
+     */
+    private function getTeamIds($customValues)
+    {
+        $myTeam = $this->teamMember->getTeamByUserId(Auth::id());
+        $teamIds['invitee_id'] = $myTeam->team->id;
+        $teamIds['guest_id'] = $this->team->getTeamInfoByInvitationCodeWithConsents($customValues['invitation_code'])->id; // チーム情報取得
+
+        return $teamIds;
     }
 }

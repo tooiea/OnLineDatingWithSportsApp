@@ -41,4 +41,15 @@ class FormConstant
         'password',
         'invitation_code'
     ];
+
+    /**
+     * 試合招待用
+     */
+    public const CONSENT_FORM_KEYS = [
+        'first_preferered_date',
+        'second_preferered_date',
+        'third_preferered_date',
+        'message',
+        'invitation_code',
+    ];
 }

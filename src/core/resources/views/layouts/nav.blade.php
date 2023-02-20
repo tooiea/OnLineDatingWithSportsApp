@@ -7,10 +7,13 @@
       <ul class="navbar-nav">
         <!-- TODO 対象ページの場合は、active classを付与条件を追加 -->
         <li class="nav-item active">
-          <a class="nav-link" href="#">ホーム </a>
+          <a class="nav-link" href="#">ホーム</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">チーム詳細</a>
+          <a class="nav-link" href="#">Myチーム詳細</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/search/team/">チーム検索画面</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>

@@ -4,6 +4,18 @@ use App\Constants\ErrorMessagesConstant;
 
 return [
 
+    'values' => [
+        'first_preferered_date' => [
+            'today' => '本日'
+        ],
+        'second_preferered_date' => [
+            'today' => '本日'
+        ],
+        'third_preferered_date' => [
+            'today' => '本日'
+        ]
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Validation Language Lines
@@ -18,7 +30,7 @@ return [
     'accepted' => 'The :attribute must be accepted.',
     'accepted_if' => 'The :attribute must be accepted when :other is :value.',
     'active_url' => 'The :attribute is not a valid URL.',
-    'after' => 'The :attribute must be a date after :date.',
+    'after' => ':attribute は :date 以降で選択してください。',
     'after_or_equal' => 'The :attribute must be a date after or equal to :date.',
     'alpha' => 'The :attribute must only contain letters.',
     'alpha_dash' => 'The :attribute must only contain letters, numbers, dashes and underscores.',
@@ -40,7 +52,7 @@ return [
     'date_format' => 'The :attribute does not match the format :format.',
     'declined' => 'The :attribute must be declined.',
     'declined_if' => 'The :attribute must be declined when :other is :value.',
-    'different' => 'The :attribute and :other must be different.',
+    'different' => ':attribute と :other は異なるものを選択してください。',
     'digits' => 'The :attribute must be :digits digits.',
     'digits_between' => 'The :attribute must be between :min and :max digits.',
     'dimensions' => 'The :attribute has invalid image dimensions.',
@@ -184,6 +196,9 @@ return [
         'teamUrl' => 'チーム紹介サイトのURL',
         'prefecture' => '都道府県',
         'address' => '市町村区',
+        'first_preferered_date' => '第一希望の日程',
+        'second_preferered_date' => '第二希望の日程',
+        'third_preferered_date' => '第三希望の日程',
+        'message' => 'メッセージ',
     ],
-
 ];
