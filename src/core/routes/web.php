@@ -13,6 +13,7 @@ use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\LineLoginController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SearchTeamController;
+use App\Http\Controllers\TeamsController;
 use App\Http\Controllers\TempTeamUsersController;
 use App\Http\Controllers\TempUsersController;
 use App\Http\Controllers\UsersController;
@@ -86,6 +87,8 @@ Route::middleware('auth')->group(function () {
 
     // ログイン後の検索画面
     Route::get('search/team', [SearchTeamController::class, 'index'])->name('search.index');
+    Route::get('team/profile/top', [TeamsController::class, 'index'])->name('team.index');
+    Route::get('team/profile/detail', [TeamsController::class, 'detail'])->name('team.detail');
 
     // 試合の招待
     Route::middleware('custom.cache.headers:no_store')->group(function () {

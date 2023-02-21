@@ -67,8 +67,21 @@ class TeamMember extends Model
      */
     public function getTeamByUserId($userId)
     {
-        $team = $this->where('user_id', '=', $userId)->first();
+        $team = $this->where('user_id', '=', $userId)->with('team')->first();
 
         return $team;
+    }
+
+    /**
+     * 所属しているチームメンバーを取得する
+     *
+     * @param int $userId
+     * @return object
+     */
+    public function getTeamMembers($userId)
+    {
+        $teamMembers = $this->where('user_id', '=', $userId)->with('team')->get();
+
+        return $teamMembers;
     }
 }

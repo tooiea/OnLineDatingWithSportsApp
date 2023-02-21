@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Mockery\Matcher\Not;
@@ -25,6 +26,11 @@ class Team extends Model
         'image_extension',
         'is_deleted',
     ];
+
+    public function consentGames()
+    {
+        return $this->hasMany(ConsentGame::class);
+    }
 
     /**
      * 招待コードから存在しているteamのidを取得
@@ -94,7 +100,6 @@ class Team extends Model
 
     /**
      * 招待コードでチームに招待しているチーム情報を取得する
-     * 取得条件：招待中か招待した日付が現在日以降であるか
      *
      * @param string $invitation_code
      * @return object
@@ -102,7 +107,6 @@ class Team extends Model
     public function getTeamInfoByInvitationCodeWithConsents($invitation_code)
     {
         $query = $this->where('invitation_code', $invitation_code);
-        $query->leftJoin('consent_games', 'consent_games.invitee_id', 'teams.id');
 
         return $query->first();
     }

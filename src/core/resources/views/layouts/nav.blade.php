@@ -10,10 +10,10 @@
           <a class="nav-link" href="#">ホーム</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Myチーム詳細</a>
+          <a class="nav-link" href="{{ route('team.index') }}">Myチームトップへ</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/search/team/">チーム検索画面</a>
+          <a class="nav-link" href="{{ route('search.index') }}">チーム検索画面</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>

@@ -24,16 +24,20 @@
         </div>
         <div class="card-body">
           <h5>チーム名:</h5>
-          <p>team name</p>
+          <p>{{ $myTeam->team->team_name }}</p>
           <h5>チームの登録人数:</h5>
-          <p>number of members</p>
+          <p>{{ $teamMembersNumber }}人</p>
           <h5>チームのロゴ画像:</h5>
-          <img src="team_logo.jpg" alt="team logo" />
+          <img src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents($myTeam->team->team_logo)) }}" alt="team logo" />
           <h5>チーム紹介URL:</h5>
           <p>
-            <a href="#">team_url</a>
+            <a href="{{ $myTeam->team->team_url }}">{{ $myTeam->team->team_url }}</a>
           </p>
-          <h5>アルバム画像:</h5>
+          <h5>チームへの招待URL:</h5>
+          <!-- ボタンを押してコピー機能を追加 -->
+          <p>{{ sprintf(url(__('route_const.invite_in_team') . "%s"), $myTeam->team->invitation_code) }}</p>
+          <!-- TODO 後日実装 -->
+          <!-- <h5>アルバム画像:</h5>
           <div class="row">
             <div class="col-4">
               <img src="album_image_1.jpg" alt="album image 1" />
@@ -41,7 +45,7 @@
             <div class="col-4">
               <img src="album_image_2.jpg" alt="album image 2" />
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

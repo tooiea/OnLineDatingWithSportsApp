@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Mail\SendMailer;
 use App\Notifications\ConsentGameNotification;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -57,5 +58,47 @@ class ConsentGame extends Model
     public function consentGameNotification($customValues, $user)
     {
         $this->notify(new ConsentGameNotification($customValues, $user, new SendMailer()));
+    }
+
+    /**
+     * My Teamで招待したチーム情報を取得する
+     *
+     * @param int $teamId
+     * @return object
+     */
+    public function getMyTeamInvites($teamId)
+    {
+        $now = Carbon::now();
+        $query = $this->where('invitee_id', $teamId);
+        $query->Where(function ($query) use ($now) {
+            $query->orwhere('first_preferered_date', '>=', $now);
+            $query->orwhere('second_preferered_date', '>=', $now);
+            $query->orwhere('third_preferered_date', '>=', $now);
+        });
+        $query->join('teams', 'teams.id', '=', 'consent_games.guest_id');
+        $query->select('consent_games.id as consent_games_id', 'consent_games.*', 'consent_games.created_at as consent_games_created_at', 'teams.id as team_id', 'teams.*', 'teams.created_at as team_created_at');
+        $myTeam = $query->get();
+        return $myTeam;
+    }
+
+    /**
+     * ゲスト側で招待のあったチーム情報を取得
+     *
+     * @param int $teamId
+     * @return object
+     */
+    public function getAsGuestInvites($teamId)
+    {
+        $now = Carbon::now();
+        $query = $this->where('guest_id', $teamId);
+        $query->Where(function ($query) use ($now) {
+            $query->orwhere('first_preferered_date', '>=', $now);
+            $query->orwhere('second_preferered_date', '>=', $now);
+            $query->orwhere('third_preferered_date', '>=', $now);
+        });
+        $query->join('teams', 'teams.id', '=', 'consent_games.invitee_id');
+        $query->select('consent_games.id as consent_games_id', 'consent_games.*', 'consent_games.created_at as consent_games_created_at', 'teams.id as team_id', 'teams.*', 'teams.created_at as team_created_at');
+        $myTeam = $query->get();
+        return $myTeam;
     }
 }

@@ -98,4 +98,11 @@ class ConsentGamesController extends Controller
 
         return $teamIds;
     }
+
+    
+    public function detail()
+    {
+        // チームのトップ一覧から招待情報の一覧を表示
+        // 
+    }
 }
