@@ -20,20 +20,20 @@
     <div class="container my-5">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Team Detail</h3>
+          <h3 class="card-title">チームプロフィール詳細</h3>
         </div>
         <div class="card-body">
-          <h5>Team Name:</h5>
+          <h5>チーム名:</h5>
           <p>team name</p>
-          <h5>Number of Members:</h5>
+          <h5>チームの登録人数:</h5>
           <p>number of members</p>
-          <h5>Team Logo:</h5>
+          <h5>チームのロゴ画像:</h5>
           <img src="team_logo.jpg" alt="team logo" />
-          <h5>Team URL:</h5>
+          <h5>チーム紹介URL:</h5>
           <p>
             <a href="#">team_url</a>
           </p>
-          <h5>Album Images:</h5>
+          <h5>アルバム画像:</h5>
           <div class="row">
             <div class="col-4">
               <img src="album_image_1.jpg" alt="album image 1" />

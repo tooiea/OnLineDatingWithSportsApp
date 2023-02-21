@@ -13,7 +13,7 @@
   <body>
     @include('layouts.nav')
     <div class="container my-5">
-        <h2 class="text-center">練習試合の招待フォーム</h2>
+        <h2 class="text-center">Let's invite to GAME!</h2>
         <div class="card">
             <div class="card-header">
                 招待カード
@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label for="team-url">招待チームURL</label>
-                <p><a id="team-url" href="#">{{ $guestTeam->team_url }}</a></p>
+                <p><a id="team-url" href="{{ $guestTeam->team_url }}">{{ $guestTeam->team_url }}</a></p>
             </div>
             <div class="form-group">
                 <label for="team-logo">招待チームロゴ</label>

@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Mail\SendMailer;
+use App\Notifications\ConsentGameNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class ConsentGame extends Model
 {
     use HasFactory;
+    use Notifiable;
 
     protected $fillable = [
         'invitee_id',
@@ -34,6 +38,24 @@ class ConsentGame extends Model
         $customValues['invitee_id'] = $teamIds['invitee_id']; // Myteamのteam_id
         $customValues['guest_id'] = $teamIds['guest_id']; // 招待するチームのteam_id
 
+        // 登録
         $this->create($customValues);
+        $query = TeamMember::where('team_id', $customValues['invitee_id']);
+        $user = $query->with('user')->first();
+
+        // メール送信
+        $this->consentGameNotification($customValues, $user);
+    }
+
+    /**
+     * 招待お知らせメール送信
+     *
+     * @param array $customValues
+     * @param object $user
+     * @return void
+     */
+    public function consentGameNotification($customValues, $user)
+    {
+        $this->notify(new ConsentGameNotification($customValues, $user, new SendMailer()));
     }
 }

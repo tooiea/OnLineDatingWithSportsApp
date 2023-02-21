@@ -15,24 +15,24 @@
   <body>
     @include('layouts.nav')
     <div class="container my-5">
-      <h1 class="text-center">Team Edit Form</h1>
+      <h1 class="text-center">チームプロフィール編集</h1>
       <div class="card">
         <div class="card-body">
           <form>
             <div class="form-group">
-              <label for="teamName">Team Name:</label>
+              <label for="teamName">チーム名:</label>
               <input type="text" class="form-control" id="teamName" value="[Team Name]" readonly />
             </div>
             <div class="form-group">
-              <label for="teamLogo">Team Logo:</label>
+              <label for="teamLogo">チームロゴ画像:</label>
               <input type="file" class="form-control-file" id="teamLogo" />
             </div>
             <div class="form-group">
-              <label for="teamURL">Team URL:</label>
+              <label for="teamURL">チーム紹介URL:</label>
               <input type="text" class="form-control" id="teamURL" value="[Team URL]" />
             </div>
             <div class="form-group">
-              <label for="teamAlbum">Team Album:</label>
+              <label for="teamAlbum">アルバム画像:</label>
               <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="teamAlbum" />
                 <label class="form-check-label" for="teamAlbum">Delete</label>
@@ -43,11 +43,11 @@
               <input type="file" class="form-control-file" id="teamAlbumAdd" />
             </div>
             <div class="form-group">
-              <label for="teamJoinURL">Team Join URL:</label>
+              <label for="teamJoinURL">チーム招待用URL:</label>
               <input type="text" class="form-control" id="teamJoinURL" value="[Team Join URL]" readonly />
             </div>
             <div class="text-center">
-              <button type="submit" class="btn btn-primary">Update</button>
+              <button type="submit" class="btn btn-primary">更新する</button>
             </div>
           </form>
         </div>

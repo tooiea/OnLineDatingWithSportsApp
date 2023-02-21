@@ -79,11 +79,8 @@ class ConsentGamesController extends Controller
         $teamIds = $this->getTeamIds($customValues);
 
         DB::transaction(function () use ($customValues, $teamIds) {
-            // 試合招待テーブルへ登録
+            // 試合招待テーブルへ登録、メール送信
             $this->consentGame->createConsent($customValues, $teamIds);
-
-            // TODO メール送信
-            // TODO メール送信完了後に、チームのページにリダイレクト
         });
     }
 
