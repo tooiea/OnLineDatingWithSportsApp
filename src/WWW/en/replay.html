@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>返信画面</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title">招待チーム名</h4>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-4">
+								<img src="https://dummyimage.com/200x200/000/fff" alt="チームロゴ">
+							</div>
+							<div class="col-md-8">
+								<div class="form-group">
+									<label for="date1">第一希望日程:</label>
+									<div class="form-check form-check-inline">
+										<input type="radio" name="date1" id="date1-approve" value="approve" class="form-check-input">
+										<label for="date1-approve" class="form-check-label">承認</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input type="radio" name="date1" id="date1-reject" value="reject" class="form-check-input">
+										<label for="date1-reject" class="form-check-label">拒否</label>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="date2">第二希望日程:</label>
+									<div class="form-check form-check-inline">
+										<input type="radio" name="date2" id="date2-approve" value="approve" class="form-check-input">
+										<label for="date2-approve" class="form-check-label">承認</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input type="radio" name="date2" id="date2-reject" value="reject" class="form-check-input">
+										<label for="date2-reject" class="form-check-label">拒否</label>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="date3">第三希望日程:</label>
+									<div class="form-check form-check-inline">
+										<input type="radio" name="date3" id="date3-approve" value="approve" class="form-check-input">
+										<label for="date3-approve" class="form-check-label">承認</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input type="radio" name="date3" id="date3-reject" value="reject" class="form-check-input">
+										<label for="date3-reject" class="form-check-label">拒否</label>
+									</div>
+                                </div>
+                            </div>
+                            <hr>
+				<div class="row">
+					<div class="col-12">
+						<p>相手からのメッセージ</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget velit euismod, tincidunt lacus vel, vehicula nibh. Vivamus dignissim, lorem nec molestie sagittis, sapien nisi luctus nunc, non interdum ipsum magna quis eros.</p>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-12">
+						<form>
+							<div class="form-group">
+								<label for="message">メッセージを入力してください</label>
+								<textarea class="form-control" id="message" rows="3"></textarea>
+							</div>
+							<button type="submit" class="btn btn-primary">送信</button>
+						</form>
+					</div>
+				</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -92,6 +92,7 @@ Route::middleware('auth')->group(function () {
 
     // 試合の招待
     Route::middleware('custom.cache.headers:no_store')->group(function () {
+        // チームへ招待する
         Route::get('consent/team/{invitation_code}', [ConsentGamesController::class, 'index'])->name('consent.index');
         Route::post('consent/team/confirm', [ConsentGamesController::class, 'confirm'])->name('consent.confirm');
         Route::post('consent/team/back', function (Request $request) {
@@ -101,6 +102,9 @@ Route::middleware('auth')->group(function () {
             return redirect()->route('consent.index', $invitation_code)->withInput($values);
         })->name('consent.back');
         Route::post('consent/team/complete', [ConsentGamesController::class, 'complete'])->name('consent.complete');
+
+        // 招待に対する返信
+        Route::get('consent/reply/{consent_game_id}', [ConsentGamesController::class, 'detail'])->name('reply.detail');
     });
 
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])

@@ -6,21 +6,20 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <body>
-@include('layouts.nav')
+
 <div class="container">
 
-  <h2>チームinfo</h2>
+  <h1>Team Invitations</h1>
 
   <!-- Team Name Section -->
   <div class="row mt-4">
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h5>チーム名</h5>
+          <h5>Team Name</h5>
         </div>
         <div class="card-body">
-          <p>{{ $myTeam->team->team_name }}</p>
-          <a href="{{ route('team.detail') }}">チーム詳細ページへ</a>
+          <p>Example Team Name</p>
         </div>
       </div>
     </div>
@@ -31,29 +30,38 @@
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h5>My Teamの招待ステータス</h5>
+          <h5>My Team Invitations</h5>
         </div>
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>日付</th>
-                  <th>チーム名</th>
-                  <th>ステータス</th>
-                  <th>詳細ページ</th>
+                  <th>Date</th>
+                  <th>Team Name</th>
+                  <th>Response</th>
+                  <th>Details</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach ($myTeamInvites as $value)
                 <tr>
-                  <td>{{ \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日') }}</td>
-                  <td>{{ $value['team_name'] }}</td>
-                  <td>{{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}</td>
-                  <!-- TODO 詳細ページ表示画面のURLを追加 -->
-                  <td><a href="">{{ sprintf(url('/', "%s"), $value->consent_games_id) }}</a></td>
+                  <td>2023-02-20</td>
+                  <td>Example Team Name 1</td>
+                  <td>Pending</td>
+                  <td><a href="#">View Details</a></td>
                 </tr>
-                @endforeach
+                <tr>
+                  <td>2023-02-19</td>
+                  <td>Example Team Name 2</td>
+                  <td>Accepted</td>
+                  <td><a href="#">View Details</a></td>
+                </tr>
+                <tr>
+                  <td>2023-02-18</td>
+                  <td>Example Team Name 3</td>
+                  <td>Declined</td>
+                  <td><a href="#">View Details</a></td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -67,28 +75,34 @@
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h5>他チームからの招待ステータス</h5>
+          <h5>Other Team Invitations</h5>
         </div>
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>日付</th>
-                  <th>チーム名</th>
-                  <th>ステータス</th>
-                  <th>お返事する</th>
+                  <th>Date</th>
+                  <th>Team Name</th>
+                  <th>Response Link</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach ($asGuestInvites as $value)
                 <tr>
-                  <td>{{ \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日') }}</td>
-                  <td>{{ $value['team_name'] }}</td>
-                  <td>{{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}</td>
-                  <td><a href="#">{{ $value->consent_games_id }}</a></td>
+                  <td>2023-02-17</td>
+                  <td>Example Team Name 4</td>
+                  <td><a href="#">Respond Now</a></td>
                 </tr>
-                @endforeach
+                <tr>
+                    <td>2023-02-16</td>
+                    <td>Example Team Name 5</td>
+                    <td><a href="#">Respond Now</a></td>
+                  </tr>
+                  <tr>
+                    <td>2023-02-15</td>
+                    <td>Example Team Name 6</td>
+                    <td><a href="#">Respond Now</a></td>
+                  </tr>
                 </tbody>
               </table>
             </div>

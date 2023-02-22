@@ -99,10 +99,10 @@ class ConsentGamesController extends Controller
         return $teamIds;
     }
 
-    
-    public function detail()
+    public function detail($consent_game_id)
     {
+        $id = decrypt($consent_game_id);
         // チームのトップ一覧から招待情報の一覧を表示
-        // 
+        // 既に返信済みであれば、ボタンを表示せずに、回答内容だけを表示するように切り替える
     }
 }
