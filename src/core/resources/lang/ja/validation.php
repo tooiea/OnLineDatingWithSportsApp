@@ -157,7 +157,15 @@ return [
 
     'custom' => [
         'teamLogo' => [
-            'required' => ':attribute を1点アップロードしてください。'
+            'required' => ':attribute を1点アップロードしてください。',
+            'max' => ' 2MB以下の画像を選択してください。',
+            'image' => 'jpeg, jpg, pngの形式をアップロードしてください。'
+        ],
+        'teamUrl' => [
+            'url' => 'URL形式で入力してください。',
+        ],
+        'prefecture' => [
+            'required' => ':attribute を選択してください。',
         ],
         'invitationCode' => [
             'exists' => '入力されたチームが存在しません。<br>再度、URLをご確認ください。'
@@ -184,7 +192,7 @@ return [
     */
 
     'attributes' => [
-        'name' => 'お名前(ニックネーム)',
+        'name' => 'ニックネーム',
         'email' => 'メールアドレス',
         'password' => 'パスワード',
         'password2' => 'パスワード(再入力)',

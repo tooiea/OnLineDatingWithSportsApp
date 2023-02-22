@@ -36,12 +36,12 @@ class TempTeamUserFormRequest extends FormRequest
             'teamName' => [
                 'bail',
                 'required',
-                'max:255'
+                'max:50'
             ],
             'teamLogo' => [
                 'bail',
                 'required',
-                'max:1024',
+                'max:2048',
                 'file',
                 'image',
                 'mimetypes:image/jpeg,image/jpg,image/png',
@@ -60,7 +60,7 @@ class TempTeamUserFormRequest extends FormRequest
             'address' => [
                 'bail',
                 'required',
-                'max:255'
+                'max:50'
             ],
             'name' => [
                 'bail',
