@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\FormConstant;
+use App\Http\Requests\ConsentGameIdRequest;
 use App\Http\Requests\ConsentScheduleRequest;
 use App\Http\Requests\TempUserInvitationCodeRequest;
 use App\Models\ConsentGame;
@@ -10,6 +11,7 @@ use App\Models\Team;
 use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
 class ConsentGamesController extends Controller
@@ -99,10 +101,19 @@ class ConsentGamesController extends Controller
         return $teamIds;
     }
 
-    public function detail($consent_game_id)
+    /**
+     * 試合招待のチーム
+     *
+     * @param string $consent_game_id
+     * @return void
+     */
+    public function detail(ConsentGameIdRequest $request, $consent_game_id)
     {
-        $id = decrypt($consent_game_id);
         // チームのトップ一覧から招待情報の一覧を表示
         // 既に返信済みであれば、ボタンを表示せずに、回答内容だけを表示するように切り替える
+        $id = Crypt::decryptString($consent_game_id);
+        $consents = $this->consentGame->getConsentsGameById($id);
+
+        return view('consentGames.reply', compact('consents'));
     }
 }

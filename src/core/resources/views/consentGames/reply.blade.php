@@ -12,37 +12,43 @@
 	</style>
 </head>
 <body>
+    @include('layouts.nav')
+    <!-- TODO 前に戻るボタンを追加 -->
     <div class="container mt-3">
         <div class="card">
           <div class="card-header">
-            <h5 class="card-title">招待されたチーム名</h5>
+            <h5 class="card-title">チーム名：{{ $consents->team_name }}</h5>
           </div>
           <div class="card-body">
             <div class="row">
               <div class="col-4">
-                <img src="チームロゴのURL" class="img-fluid">
+                <img src="data:{{ $consents->image_extension }};base64,{{ base64_encode(file_get_contents($consents->team_logo)) }}"
+                id="team-logo" class="img-fluid">
               </div>
               <div class="col-8">
-                <p>第一希望：日程1</p>
-                <p>第二希望：日程2</p>
-                <p>第三希望：日程3</p>
+                <p>第一希望：
+                <br>{{ \Carbon\Carbon::parse($consents->first_preferered_date)->format('Y年m月d日 G時i分') }}</p>
+                <p>第二希望：
+                <br>{{ \Carbon\Carbon::parse($consents->second_preferered_date)->format('Y年m月d日 G時i分') }}</p>
+                <p>第三希望：
+                <br>{{ \Carbon\Carbon::parse($consents->third_preferered_date)->format('Y年m月d日 G時i分') }}</p>
               </div>
             </div>
             <hr>
             <form>
               <div class="form-group">
                 <label for="message">相手からのメッセージ</label>
-                <textarea class="form-control" id="message" rows="3" readonly>相手からのメッセージを表示</textarea>
+                <textarea class="form-control" id="message" rows="3" readonly>{{ $consents->message }}</textarea>
               </div>
               <hr>
               <div class="form-group">
                 <label>第一希望</label>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-secondary active">
-                    <input type="radio" name="options" id="option1" checked> 承認
+                    <input type="radio" name="first_preferered_date" id="option1" checked> 承認
                   </label>
                   <label class="btn btn-secondary">
-                    <input type="radio" name="options" id="option2"> 拒否
+                    <input type="radio" name="first_preferered_date" id="option2"> 拒否
                   </label>
                 </div>
               </div>
@@ -50,10 +56,10 @@
                 <label>第二希望</label>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-secondary active">
-                    <input type="radio" name="options" id="option3" checked> 承認
+                    <input type="radio" name="second_preferered_date" id="option3" checked> 承認
                   </label>
                   <label class="btn btn-secondary">
-                    <input type="radio" name="options" id="option4"> 拒否
+                    <input type="radio" name="second_preferered_date" id="option4"> 拒否
                   </label>
                 </div>
               </div>
@@ -61,10 +67,10 @@
                 <label>第三希望</label>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-secondary active">
-                    <input type="radio" name="options" id="option5" checked> 承認
+                    <input type="radio" name="third_preferered_date" id="option5" checked> 承認
                   </label>
                   <label class="btn btn-secondary">
-                    <input type="radio" name="options" id="option6"> 拒否
+                    <input type="radio" name="third_preferered_date" id="option6"> 拒否
                   </label>
                 </div>
               </div>

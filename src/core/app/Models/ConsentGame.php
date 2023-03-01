@@ -101,4 +101,26 @@ class ConsentGame extends Model
         $myTeam = $query->get();
         return $myTeam;
     }
+
+    /**
+     * 詳細ページに表示する試合の招待情報を表示する
+     *
+     * @param int $consentId
+     * @return object
+     */
+    public function getConsentsGameById($consentId)
+    {
+        $now = Carbon::now();
+        $query = $this->where('consent_games.id', $consentId);
+        $query->where(function ($query) use ($now) {
+            $query->orwhere('first_preferered_date', '>=', $now);
+            $query->orwhere('second_preferered_date', '>=', $now);
+            $query->orwhere('third_preferered_date', '>=', $now);
+        });
+        $query->join('teams', 'teams.id', '=', 'consent_games.guest_id');
+        $query->select('consent_games.id as consent_games_id', 'consent_games.*', 'teams.*');
+        $consents = $query->first();
+
+        return $consents;
+    }
 }
