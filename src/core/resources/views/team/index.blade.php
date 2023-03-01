@@ -47,11 +47,10 @@
               <tbody>
                 @foreach ($myTeamInvites as $value)
                 <tr>
-                  <td>{{ \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日') }}</td>
+                  <td>{{ \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日 G時i分') }}</td>
                   <td>{{ $value['team_name'] }}</td>
                   <td>{{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}</td>
-                  <!-- TODO 詳細ページ表示画面のURLを追加 -->
-                  <td><a href="">{{ sprintf(url('/', "%s"), $value->consent_games_id) }}</a></td>
+                  <td><a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}">詳細ページへ</a></td>
                 </tr>
                 @endforeach
               </tbody>
@@ -83,7 +82,7 @@
               <tbody>
                 @foreach ($asGuestInvites as $value)
                 <tr>
-                  <td>{{ \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日') }}</td>
+                  <td>{{ \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日 G時i分') }}</td>
                   <td>{{ $value['team_name'] }}</td>
                   <td>{{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}</td>
                   <td><a href="#">{{ $value->consent_games_id }}</a></td>

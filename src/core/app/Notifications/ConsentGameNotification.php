@@ -58,9 +58,9 @@ class ConsentGameNotification extends Notification
                 ->with(
                     [
                         'teamName' => $this->user->team->team_name,
-                        'firstPrefereredDate' => Carbon::parse($this->customValues['first_preferered_date'])->format('Y年m月d日'),
-                        'secondPrefereredDate' => Carbon::parse($this->customValues['second_preferered_date'])->format('Y年m月d日'),
-                        'thirdPrefereredDate' => (isset($this->customValues['third_preferered_date'])) ? Carbon::parse($this->customValues['third_preferered_date'])->format('Y年m月d日') : '',
+                        'firstPrefereredDate' => Carbon::parse($this->customValues['first_preferered_date'])->format('Y年m月d日 G時i分'),
+                        'secondPrefereredDate' => Carbon::parse($this->customValues['second_preferered_date'])->format('Y年m月d日 G時i分'),
+                        'thirdPrefereredDate' => (isset($this->customValues['third_preferered_date'])) ? Carbon::parse($this->customValues['third_preferered_date'])->format('Y年m月d日 G時i分') : '',
                         'comment' => (isset($this->customValues['message'])) ? $this->customValues['message'] : '',
                         'admin' => config('mail.from.address'),
                         'url' => $url,

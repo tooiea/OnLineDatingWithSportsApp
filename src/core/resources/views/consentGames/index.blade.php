@@ -40,17 +40,17 @@
                 @csrf
                 <div class="form-group">
                     <label for="date-1">第一希望日程</label>
-                    <input type="date" name="first_preferered_date" id="date-1" class="form-control @error('first_preferered_date') is-invalid @enderror" value="{{ old('first_preferered_date') }}">
+                    <input type="datetime-local" name="first_preferered_date" id="date-1" class="form-control @error('first_preferered_date') is-invalid @enderror" value="{{ old('first_preferered_date') }}">
                     @error('first_preferered_date')<div class="invalid-feedback" role="alert"> {{ $message }}</div>@enderror
                 </div>
                 <div class="form-group">
                     <label for="date-2">第二希望日程</label>
-                    <input type="date" name="second_preferered_date" id="date-2" class="form-control @error('second_preferered_date') is-invalid @enderror" value="{{ old('second_preferered_date') }}">
+                    <input type="datetime-local" name="second_preferered_date" id="date-2" class="form-control @error('second_preferered_date') is-invalid @enderror" value="{{ old('second_preferered_date') }}">
                     @error('second_preferered_date')<div class="invalid-feedback" role="alert"> {{ $message }}</div>@enderror
                 </div>
                 <div class="form-group">
                     <label for="date-3">第三希望日程</label>
-                    <input type="date" name="third_preferered_date" id="date-3" class="form-control @error('third_preferered_date') is-invalid @enderror" value="{{ old('third_preferered_date') }}">
+                    <input type="datetime-local" name="third_preferered_date" id="date-3" class="form-control @error('third_preferered_date') is-invalid @enderror" value="{{ old('third_preferered_date') }}">
                     @error('third_preferered_date')<div class="invalid-feedback" role="alert"> {{ $message }}</div>@enderror
                 </div>
                 <div class="form-group">
