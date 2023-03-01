@@ -35,7 +35,8 @@
               </div>
             </div>
             <hr>
-            <form>
+            <form action="{{ route('reply.confirm') }}" method="post">
+              @csrf
               <div class="form-group">
                 <label for="message">相手からのメッセージ</label>
                 <textarea class="form-control" id="message" rows="3" readonly>{{ $consents->message }}</textarea>
@@ -44,22 +45,22 @@
               <div class="form-group">
                 <label>第一希望</label>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-secondary active">
-                    <input type="radio" name="first_preferered_date" id="option1" checked> 承認
-                  </label>
+                  @foreach (\App\Constants\FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT as $key => $value)
                   <label class="btn btn-secondary">
-                    <input type="radio" name="first_preferered_date" id="option2"> 拒否
+                    <!-- TODO checked条件付与 -->
+                    <input type="radio" name="first_preferered_date" value="{{ $key }}" > {{ $value }}
                   </label>
+                  @endforeach
                 </div>
               </div>
               <div class="form-group">
                 <label>第二希望</label>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-secondary active">
-                    <input type="radio" name="second_preferered_date" id="option3" checked> 承認
+                    <input type="radio" name="second_preferered_date" value="1" checked> 受諾
                   </label>
                   <label class="btn btn-secondary">
-                    <input type="radio" name="second_preferered_date" id="option4"> 拒否
+                    <input type="radio" name="second_preferered_date" value="2"> 辞退
                   </label>
                 </div>
               </div>
@@ -67,17 +68,17 @@
                 <label>第三希望</label>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                   <label class="btn btn-secondary active">
-                    <input type="radio" name="third_preferered_date" id="option5" checked> 承認
+                    <input type="radio" name="third_preferered_date" value="1" checked> 受諾
                   </label>
                   <label class="btn btn-secondary">
-                    <input type="radio" name="third_preferered_date" id="option6"> 拒否
+                    <input type="radio" name="third_preferered_date" value="2"> 辞退
                   </label>
                 </div>
               </div>
               <hr>
               <div class="form-group">
                 <label for="reply">返信したいメッセージがあれば入力してください</label>
-                <textarea class="form-control" id="reply" rows="3"></textarea>
+                <textarea class="form-control" id="reply" rows="3" name="message"></textarea>
               </div>
               <div class="text-center">
                 <button type="submit" class="btn btn-primary">送信</button>

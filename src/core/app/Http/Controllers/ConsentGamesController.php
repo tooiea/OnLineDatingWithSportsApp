@@ -118,8 +118,14 @@ class ConsentGamesController extends Controller
         return view('consentGames.reply', compact('consents'));
     }
 
-    public function confirmReply()
+    public function confirmReply(Request $request)
     {
-        return view('');
+        var_dump($request->all());
+        return view('consentGames.reply_confirm');
+    }
+
+    public function completeReply()
+    {
+        // consentGames更新、repliesにメッセージ登録、メッセージ送信、チームトップへリダイレクトしセッションメッセージ表示
     }
 }

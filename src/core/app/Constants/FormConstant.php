@@ -52,4 +52,19 @@ class FormConstant
         'message',
         'invitation_code',
     ];
+
+    /**
+     * 招待に対する返信用
+     */
+    public const CONSENT_REPLY_FORM_KEYS = [
+        'first_preferered_date',
+        'second_preferered_date',
+        'third_preferered_date',
+        'message',
+    ];
+
+    public const CONSENT_REPLY_FORM_VALUE_TEXT = [
+        1 => '受諾',
+        2 => '辞退',
+    ];
 }

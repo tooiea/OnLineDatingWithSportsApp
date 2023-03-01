@@ -105,6 +105,14 @@ Route::middleware('auth')->group(function () {
 
         // 招待に対する返信
         Route::get('consent/reply/{consent_game_id}', [ConsentGamesController::class, 'detail'])->name('reply.detail');
+        Route::post('consent/reply/confirm', [ConsentGamesController::class, 'confirmReply'])->name('reply.confirm');
+        Route::post('consent/reply/back', function (Request $request) {
+            $specifyFormRequestInputs = $request->session()->pull('consent_reply');
+            $values = $specifyFormRequestInputs->getAll();
+            $consent_game_id = $values['consent_game_id'];  // url再セット用に取得
+            return redirect()->route('reply.detail', $consent_game_id)->withInput($values);
+        })->name('reply.back');
+        Route::post('consent/reply/complete', [ConsentGamesController::class, 'completeReply'])->name('reply.complete');
     });
 
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
