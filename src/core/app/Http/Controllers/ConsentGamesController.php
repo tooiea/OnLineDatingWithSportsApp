@@ -104,6 +104,7 @@ class ConsentGamesController extends Controller
     /**
      * 試合招待のチーム
      *
+     * @param ConsentGameIdRequest $request
      * @param string $consent_game_id
      * @return void
      */
@@ -115,5 +116,10 @@ class ConsentGamesController extends Controller
         $consents = $this->consentGame->getConsentsGameById($id);
 
         return view('consentGames.reply', compact('consents'));
+    }
+
+    public function confirmReply()
+    {
+        return view('');
     }
 }
