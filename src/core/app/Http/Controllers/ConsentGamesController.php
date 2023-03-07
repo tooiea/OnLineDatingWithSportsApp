@@ -146,17 +146,26 @@ class ConsentGamesController extends Controller
         $specifyFormRequestInputs->setAll($request->all(), FormConstant::CONSENT_REPLY_FORM_KEYS);
         session(['consent_reply' => $specifyFormRequestInputs]);
         $values = $specifyFormRequestInputs->getAll(); // 返信入力値
-        $consents = $this->getConsentsGame($request->session()->get('consen_game_id')); // 招待の詳細日程
+        $consents = $this->getConsentsGame($request->session()->get('consent_game_id')); // 招待の詳細日程
 
         return view('consentGames.reply_confirm', compact('values', 'consents'));
     }
 
-    public function completeReply()
+    public function completeReply(Request $request)
     {
+        $specifyFormRequestInputs = $request->session()->pull('consent_reply');
+        $customValues = $specifyFormRequestInputs->getAll();
         // TODO 以下を実装
-        // consentGames更新
-        // repliesにメッセージ登録
+        // consentGames更新 game_dateを更新(優先の高いもの)
+
+        // replyモデルにメッセージ新規登録
+
+
         // メッセージ送信
+        // 送信先は、入力した人とチームに最初に登録した人へメッセージを送信する
+
         // チームトップへリダイレクトしセッションメッセージ表示
+
+
     }
 }
