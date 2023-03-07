@@ -11,49 +11,55 @@
     <div class="container">
         <h3>確認画面</h3>
         <hr>
-        <h4>日程</h4>
+        <h4>希望日程へのお返事</h4>
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>希望日程</th>
-              <th>承認/拒否</th>
+              <th>日程</th>
+              <th>返事</th>
               <th>日時</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>第一希望</td>
+              <td>要望1</td>
               <td>
-                <span class="badge badge-success">承認</span>
+                <span class="badge {{ ($values['first_preferered_date'] == 1 ? 'badge-success' : 'badge-danger') }}">{{ \App\Constants\FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT[$values['first_preferered_date']] }}</span>
               </td>
-              <td>2021/09/01 10:00-12:00</td>
+              <td>{{ \Carbon\Carbon::parse($consents->first_preferered_date)->format('Y年m月d日 G時i分') }}</td>
             </tr>
             <tr>
-              <td>第二希望</td>
+              <td>要望2</td>
               <td>
-                <span class="badge badge-danger">拒否</span>
+                <span class="badge {{ ($values['second_preferered_date'] == 1 ? 'badge-success' : 'badge-danger') }}">{{ \App\Constants\FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT[$values['second_preferered_date']] }}</span>
               </td>
-              <td>2021/09/05 15:00-17:00</td>
+              <td>{{ \Carbon\Carbon::parse($consents->second_preferered_date)->format('Y年m月d日 G時i分') }}</td>
             </tr>
             <tr>
-              <td>第三希望</td>
+              <td>要望3</td>
               <td>
-                <span class="badge badge-danger">拒否</span>
+                <span class="badge {{ ($values['third_preferered_date'] == 1 ? 'badge-success' : 'badge-danger') }}">{{ \App\Constants\FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT[$values['third_preferered_date']] }}</span>
               </td>
-              <td>2021/09/09 9:00-11:00</td>
+              <td>{{ \Carbon\Carbon::parse($consents->third_preferered_date)->format('Y年m月d日 G時i分') }}</td>
             </tr>
           </tbody>
         </table>
         <hr>
         <h4>メッセージ</h4>
-        <p>入力されたメッセージが表示されます。</p>
+        <p>@if (!empty($values['message'])) {!! nl2br(e($values['message'])) !!} @endif</p>
         <hr>
         <div class="row">
           <div class="col-6">
-            <button type="button" class="btn btn-primary btn-block">修正する</button>
+            <form action="{{ route('reply.back') }}" method="post">
+              @csrf
+              <button type="submit" class="btn btn-primary btn-block">修正する</button>
+            </form>
           </div>
           <div class="col-6">
-            <button type="button" class="btn btn-success btn-block">送信する</button>
+            <form action="{{ route('consent.complete') }}" method="post">
+              @csrf
+              <button type="submit" class="btn btn-success btn-block">送信する</button>
+            </form>
           </div>
         </div>
       </div>

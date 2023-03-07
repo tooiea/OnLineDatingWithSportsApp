@@ -109,7 +109,7 @@ Route::middleware('auth')->group(function () {
         Route::post('consent/reply/back', function (Request $request) {
             $specifyFormRequestInputs = $request->session()->pull('consent_reply');
             $values = $specifyFormRequestInputs->getAll();
-            $consent_game_id = $values['consent_game_id'];  // url再セット用に取得
+            $consent_game_id = $request->session()->pull('consent_game_id');  // url再セット用に取得
             return redirect()->route('reply.detail', $consent_game_id)->withInput($values);
         })->name('reply.back');
         Route::post('consent/reply/complete', [ConsentGamesController::class, 'completeReply'])->name('reply.complete');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\FormConstant;
 use App\Http\Requests\ConsentGameIdRequest;
+use App\Http\Requests\ConsentGameReplyRequest;
 use App\Http\Requests\ConsentScheduleRequest;
 use App\Http\Requests\TempUserInvitationCodeRequest;
 use App\Models\ConsentGame;
@@ -112,20 +113,50 @@ class ConsentGamesController extends Controller
     {
         // チームのトップ一覧から招待情報の一覧を表示
         // 既に返信済みであれば、ボタンを表示せずに、回答内容だけを表示するように切り替える
-        $id = Crypt::decryptString($consent_game_id);
-        $consents = $this->consentGame->getConsentsGameById($id);
+        session(['consent_game_id' => $consent_game_id]);
+        $consents = $this->getConsentsGame($consent_game_id);
 
         return view('consentGames.reply', compact('consents'));
     }
 
-    public function confirmReply(Request $request)
+    /**
+     * 招待ゲーム詳細を取得
+     *
+     * @param string $consent_game_id
+     * @return object
+     */
+    private function getConsentsGame($consent_game_id)
     {
-        var_dump($request->all());
-        return view('consentGames.reply_confirm');
+        $id = Crypt::decryptString($consent_game_id);
+        $consents = $this->consentGame->getConsentsGameById($id);
+
+        return $consents;
+    }
+
+    /**
+     * 試合招待返信の確認画面
+     *
+     * @param ConsentGameReplyRequest $request
+     * @return void
+     */
+    public function confirmReply(ConsentGameReplyRequest $request)
+    {
+        // 入力値をセッションにセットし、画面用にセット
+        $specifyFormRequestInputs = new SpecifyFormRequestInputsController();
+        $specifyFormRequestInputs->setAll($request->all(), FormConstant::CONSENT_REPLY_FORM_KEYS);
+        session(['consent_reply' => $specifyFormRequestInputs]);
+        $values = $specifyFormRequestInputs->getAll(); // 返信入力値
+        $consents = $this->getConsentsGame($request->session()->get('consen_game_id')); // 招待の詳細日程
+
+        return view('consentGames.reply_confirm', compact('values', 'consents'));
     }
 
     public function completeReply()
     {
-        // consentGames更新、repliesにメッセージ登録、メッセージ送信、チームトップへリダイレクトしセッションメッセージ表示
+        // TODO 以下を実装
+        // consentGames更新
+        // repliesにメッセージ登録
+        // メッセージ送信
+        // チームトップへリダイレクトしセッションメッセージ表示
     }
 }
