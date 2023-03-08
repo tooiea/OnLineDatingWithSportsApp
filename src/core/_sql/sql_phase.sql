@@ -6,7 +6,7 @@
 
 -- 返信
 CREATE TABLE replies (
-  id BIGINT NOT NULL
+  id BIGINT NOT NULL AUTO_INCREMENT
   , consent_game_id BIGINT NOT NULL
   , message TEXT NOT NULL
   , created_at DATETIME NOT NULL

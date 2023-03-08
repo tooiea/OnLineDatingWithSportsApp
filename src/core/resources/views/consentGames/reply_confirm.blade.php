@@ -56,7 +56,7 @@
             </form>
           </div>
           <div class="col-6">
-            <form action="{{ route('consent.complete') }}" method="post">
+            <form action="{{ route('reply.complete') }}" method="post">
               @csrf
               <button type="submit" class="btn btn-success btn-block">送信する</button>
             </form>

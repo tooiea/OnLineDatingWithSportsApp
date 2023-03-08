@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Constants\FormConstant;
+use App\Enums\ConsentStatusTypeEnum;
 use App\Mail\SendMailer;
 use App\Notifications\ConsentGameNotification;
 use Carbon\Carbon;
@@ -35,7 +37,7 @@ class ConsentGame extends Model
      */
     public function createConsent($customValues, $teamIds)
     {
-        $customValues['consent_status'] = \App\Enums\ConsentStatusTypeEnum::WAIT->value;
+        $customValues['consent_status'] = ConsentStatusTypeEnum::WAIT->value;
         $customValues['invitee_id'] = $teamIds['invitee_id']; // Myteamのteam_id
         $customValues['guest_id'] = $teamIds['guest_id']; // 招待するチームのteam_id
 
@@ -122,5 +124,67 @@ class ConsentGame extends Model
         $consents = $query->first();
 
         return $consents;
+    }
+
+    /**
+     * 返信入力内容を登録
+     *
+     * @param object $consents
+     * @param array $customValues
+     * @return void
+     */
+    public function updateConsent($consents, $customValues)
+    {
+        $updateConsent = $this->where('id', $consents->consent_games_id)->first();
+        $updateConsent->consent_status = ConsentStatusTypeEnum::REJECT->value;
+        $isAccept = $this->checkReplyIsAcceptance($customValues);
+        // 承認された日程があれば、上書き
+        if ($isAccept) {
+            $updateConsent->consent_status = ConsentStatusTypeEnum::ACCEPT->value;
+            $desirableDateKey = $this->getAcceptanceDateByDesirableDate($customValues);
+            $updateConsent->game_date = $consents[$desirableDateKey];
+        }
+        $updateConsent->save();
+    }
+
+    /**
+     * 返信内容中に受諾された日程が存在するかをチェック
+     *
+     * @param array $customValues
+     * @return boolean
+     */
+    private function checkReplyIsAcceptance($customValues)
+    {
+        $isAccept = false;
+
+        if ($customValues['first_preferered_date'] == FormConstant::ACCEPT_VALUE) {
+            return $isAccept = true;
+        }
+        if ($customValues['second_preferered_date'] == FormConstant::ACCEPT_VALUE) {
+            return $isAccept = true;
+        }
+        if ($customValues['third_preferered_date'] == FormConstant::ACCEPT_VALUE) {
+            return $isAccept = true;
+        }
+
+        return $isAccept;
+    }
+
+    /**
+     * 選択された返信の希望が高いものを選択する
+     *
+     * @param array $customValues
+     * @return string
+     */
+    private function getAcceptanceDateByDesirableDate($customValues)
+    {
+        $desirableDateKey = '';
+        foreach ($customValues as $key => $value) {
+            if ('message' !== $key && $value == FormConstant::ACCEPT_VALUE) {
+                $desirableDateKey = $key;
+                break;
+            }
+        }
+        return $desirableDateKey;
     }
 }

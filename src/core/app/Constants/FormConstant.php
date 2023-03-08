@@ -67,4 +67,6 @@ class FormConstant
         1 => '受諾',
         2 => '辞退',
     ];
+
+    public const ACCEPT_VALUE = 1;
 }

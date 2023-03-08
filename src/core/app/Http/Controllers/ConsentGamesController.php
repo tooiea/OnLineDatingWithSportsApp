@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Constants\FormConstant;
+use App\Enums\ConsentStatusTypeEnum;
 use App\Http\Requests\ConsentGameIdRequest;
 use App\Http\Requests\ConsentGameReplyRequest;
 use App\Http\Requests\ConsentScheduleRequest;
 use App\Http\Requests\TempUserInvitationCodeRequest;
 use App\Models\ConsentGame;
+use App\Models\Reply;
 use App\Models\Team;
 use App\Models\TeamMember;
 use Illuminate\Http\Request;
@@ -20,16 +22,18 @@ class ConsentGamesController extends Controller
     private $team;
     private $teamMember;
     private $consentGame;
+    private $reply;
     /**
      * モデルインスタンスセット
      *
      * @param Team $team
      */
-    public function __construct(Team $team, TeamMember $teamMember, ConsentGame $consentGame)
+    public function __construct(Team $team, TeamMember $teamMember, ConsentGame $consentGame, Reply $reply)
     {
         $this->team = $team;
         $this->teamMember = $teamMember;
         $this->consentGame = $consentGame;
+        $this->reply = $reply;
     }
 
     /**
@@ -153,19 +157,17 @@ class ConsentGamesController extends Controller
 
     public function completeReply(Request $request)
     {
+        $consents = $this->getConsentsGame($request->session()->pull('consent_game_id')); // 招待の詳細日程
         $specifyFormRequestInputs = $request->session()->pull('consent_reply');
         $customValues = $specifyFormRequestInputs->getAll();
+        $this->consentGame->updateConsent($consents, $customValues);
+        $this->reply->createReply($consents->consent_games_id, $customValues);
+
         // TODO 以下を実装
-        // consentGames更新 game_dateを更新(優先の高いもの)
-
-        // replyモデルにメッセージ新規登録
-
 
         // メッセージ送信
         // 送信先は、入力した人とチームに最初に登録した人へメッセージを送信する
 
         // チームトップへリダイレクトしセッションメッセージ表示
-
-
     }
 }
