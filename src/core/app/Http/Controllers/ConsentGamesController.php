@@ -106,19 +106,30 @@ class ConsentGamesController extends Controller
         return $teamIds;
     }
 
+    public function detail(ConsentGameIdRequest $request, $consent_game_id)
+    {
+        $consents = $this->getConsentsGame($consent_game_id);
+        $replies = $this->consentGame->getRepliesByConsentGameId(Crypt::decryptString($consent_game_id));
+
+        // dd($replies);
+        return view('consentGames.reply_detail', compact('consents', 'replies'));
+    }
+
     /**
-     * 試合招待のチーム
+     * 試合招待への返信
      *
      * @param ConsentGameIdRequest $request
      * @param string $consent_game_id
      * @return void
      */
-    public function detail(ConsentGameIdRequest $request, $consent_game_id)
+    public function reply(ConsentGameIdRequest $request, $consent_game_id)
     {
         // チームのトップ一覧から招待情報の一覧を表示
         // 既に返信済みであれば、ボタンを表示せずに、回答内容だけを表示するように切り替える
         session(['consent_game_id' => $consent_game_id]);
         $consents = $this->getConsentsGame($consent_game_id);
+
+        // TODO 既に返信済みだった場合は、リダイレクトする
 
         return view('consentGames.reply', compact('consents'));
     }
@@ -160,14 +171,17 @@ class ConsentGamesController extends Controller
         $consents = $this->getConsentsGame($request->session()->pull('consent_game_id')); // 招待の詳細日程
         $specifyFormRequestInputs = $request->session()->pull('consent_reply');
         $customValues = $specifyFormRequestInputs->getAll();
-        $this->consentGame->updateConsent($consents, $customValues);
-        $this->reply->createReply($consents->consent_games_id, $customValues);
 
-        // TODO 以下を実装
+        DB::transaction(function () use ($consents, $customValues) {
+            $this->consentGame->updateConsent($consents, $customValues);
+            $this->reply->createReply($consents, $customValues);
 
-        // メッセージ送信
-        // 送信先は、入力した人とチームに最初に登録した人へメッセージを送信する
+            // TODO 以下を実装
 
-        // チームトップへリダイレクトしセッションメッセージ表示
+            // メッセージ送信
+            // 送信先は、入力した人とチームに最初に登録した人へメッセージを送信する
+
+            // チームトップへリダイレクトしセッションメッセージ表示
+        });
     }
 }

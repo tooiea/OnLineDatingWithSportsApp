@@ -104,7 +104,7 @@ Route::middleware('auth')->group(function () {
         Route::post('consent/team/complete', [ConsentGamesController::class, 'complete'])->name('consent.complete');
 
         // 招待に対する返信
-        Route::get('consent/reply/{consent_game_id}', [ConsentGamesController::class, 'detail'])->name('reply.detail');
+        Route::get('consent/reply/{consent_game_id}', [ConsentGamesController::class, 'reply'])->name('reply.index');
         Route::post('consent/reply/confirm', [ConsentGamesController::class, 'confirmReply'])->name('reply.confirm');
         Route::post('consent/reply/back', function (Request $request) {
             $specifyFormRequestInputs = $request->session()->pull('consent_reply');
@@ -113,6 +113,9 @@ Route::middleware('auth')->group(function () {
             return redirect()->route('reply.detail', $consent_game_id)->withInput($values);
         })->name('reply.back');
         Route::post('consent/reply/complete', [ConsentGamesController::class, 'completeReply'])->name('reply.complete');
+
+        // 招待とメール返信の詳細
+        Route::get('consent/reply_detail/{consent_game_id}', [ConsentGamesController::class, 'detail'])->name('reply.detail');
     });
 
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])

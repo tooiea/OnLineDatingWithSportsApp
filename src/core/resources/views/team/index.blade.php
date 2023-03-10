@@ -52,7 +52,7 @@
                     <td>{{ \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日') }}</td>
                     <td>{{ $value['team_name'] }}</td>
                     <td>{{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}</td>
-                    <td><a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}">詳細ページへ</a>
+                    <td><a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}">詳細</a>
                     </td>
                   </tr>
                   @endforeach
@@ -88,7 +88,7 @@
                     <td>{{ \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日') }}</td>
                     <td>{{ $value['team_name'] }}</td>
                     <td>{{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}</td>
-                    <td><a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}">詳細ページへ
+                    <td><a href="{{ route('reply.index', Crypt::encryptString($value->consent_games_id)) }}">返信
                     </td>
                   </tr>
                   @endforeach

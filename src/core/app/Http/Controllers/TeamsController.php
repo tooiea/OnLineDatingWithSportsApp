@@ -35,6 +35,10 @@ class TeamsController extends Controller
     public function index()
     {
         $myTeam = $this->getMyTeam();
+        // チームを作らずに、直接ログインした場合
+        if (empty($myTeam)) {
+            // TODO チームに登録する処理から、チーム登録
+        }
         $myTeamInvites = $this->consentGame->getMyTeamInvites($myTeam->id);
         $asGuestInvites = $this->consentGame->getAsGuestInvites($myTeam->id);
 

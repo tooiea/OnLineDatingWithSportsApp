@@ -29,6 +29,16 @@ class ConsentGame extends Model
     ];
 
     /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function reply()
+    {
+        return $this->hasMany(Reply::class, 'consent_game_id');
+    }
+
+    /**
      * 招待履歴を登録する
      *
      * @param array $customValues
@@ -186,5 +196,27 @@ class ConsentGame extends Model
             }
         }
         return $desirableDateKey;
+    }
+
+    public function getRepliesByConsentGameId($consent_game_id)
+    {
+        $now = Carbon::now();
+        $query = $this->where('consent_games.id', $consent_game_id);
+        $query->join('teams as it', 'it.id', '=', 'consent_games.invitee_id');
+        $query->join('teams as gt', 'gt.id', '=', 'consent_games.guest_id');
+        $query->with('reply');
+        $query->select(
+            'consent_games.id as consent_games_id',
+            'consent_games.*',
+            'it.team_name as invite_team_name',
+            'it.team_logo as invite_team_logo',
+            'it.image_extension as invite_image_extension',
+            'gt.team_name as guest_team_name',
+            'gt.team_logo as guest_team_logo',
+            'gt.image_extension as guest_image_extension',
+        );
+        $replies = $query->first();
+
+        return $replies;
     }
 }

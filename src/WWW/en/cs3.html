@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINE風メッセージ画面</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-8 col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-header text-center">
+                        チャット
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-unstyled">
+                            <li class="media p-3 border-bottom">
+                                <img src="https://via.placeholder.com/50" class="mr-3 rounded-circle" alt="...">
+                                <div class="media-body">
+                                    <h5 class="mt-0 mb-1">相手の名前</h5>
+                                    メッセージ内容
+                                    <small class="text-muted float-right">送信日時</small>
+                                </div>
+                            </li>
+                            <li class="media p-3 border-bottom">
+                                <div class="media-body text-right">
+                                    <h5 class="mt-0 mb-1">自分の名前</h5>
+                                    メッセージ内容
+                                    <small class="text-muted float-left">送信日時</small>
+                                </div>
+                                <img src="https://via.placeholder.com/50" class="ml-3 rounded-circle" alt="...">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="メッセージを入力してください"
+                                aria-label="メッセージを入力してください">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">送信</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/esm/popper">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

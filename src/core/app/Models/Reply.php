@@ -16,6 +16,7 @@ class Reply extends Model
      */
     protected $fillable = [
         'consent_game_id',
+        'team_id',
         'message',
     ];
 
@@ -26,10 +27,11 @@ class Reply extends Model
      * @param array $customValues
      * @return void
      */
-    public function createReply($consent_games_id, $customValues)
+    public function createReply($consents, $customValues)
     {
         $values = [
-            'consent_game_id' => $consent_games_id,
+            'consent_game_id' => $consents->consent_games_id,
+            'team_id' => $consents->guest_id,
             'message' => '',
         ];
 

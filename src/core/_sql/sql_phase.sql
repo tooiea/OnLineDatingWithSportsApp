@@ -8,6 +8,7 @@
 CREATE TABLE replies (
   id BIGINT NOT NULL AUTO_INCREMENT
   , consent_game_id BIGINT NOT NULL
+  , team_id INT NOT NULL
   , message TEXT NOT NULL
   , created_at DATETIME NOT NULL
   , updated_at DATETIME NOT NULL
@@ -120,7 +121,8 @@ ALTER TABLE consent_games
   on update cascade;
 
 ALTER TABLE replies
-  ADD CONSTRAINT replies_FK1 FOREIGN KEY (id) REFERENCES consent_games(id)
+  ADD CONSTRAINT replies_FK1 FOREIGN KEY (consent_game_id) REFERENCES consent_games(id)
+  ADD CONSTRAINT replies_FK2 FOREIGN KEY (team_id) REFERENCES teams(id)
   on delete cascade
   on update cascade;
 

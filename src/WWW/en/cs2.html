@@ -1,138 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <title>確認画面</title>
-    <style>
-            .icon-container {
-            width: 50px;
-            height: 50px;
-            }
-
-            .avatar-icon {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            }
-
-            .message-container {
-            width: calc(100% - 50px);
-            }
-
-            .message-bubble {
-            max-width: 80%;
-            background-color: #DCF8C6;
-            padding: 8px;
-            border-radius: 10px;
-            margin: 8px;
-            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
-            display: inline-block;
-            }
-
-            .message-content {
-            display: inline-block;
-            }
-
-            .d-flex .list-group-item:first-child .message-container {
-            margin-left: 8px;
-            }
-
-            .d-flex .list-group-item:last-child .message-container {
-            margin-right: 8px;
-            }
-
-            .d-flex.justify-content-end .message-bubble {
-            background-color: #ECE5DD;
-            }
-      </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LINE風メッセージ画面</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 
 <body>
-    <div class="container mt-4">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex flex-row mb-3">
-                    <img src="ロゴの画像URL" class="card-img-left flex-shrink-0" alt="ロゴ">
-                    <div class="ms-3">
-                        <h5 class="card-title">チーム名</h5>
-                        <p class="card-text">チームの紹介ページへのURL</p>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <label for="">ステータス:</label>
-                                <p>招待中</p>
-                            </li>
-                            <li class="list-group-item">
-                                <label for="">第一希望日程:</label>
-                                <p>2023年3月10日 10:00-12:00</p>
-                            </li>
-                            <li class="list-group-item">
-                                <label for="">第二希望日程:</label>
-                                <p>2023年3月11日 14:00-16:00</p>
-                            </li>
-                            <li class="list-group-item">
-                                <label for="">第三希望日程:</label>
-                                <p>2023年3月12日 18:00-20:00</p>
-                            </li>
-                            <li class="list-group-item">
-                                <label for="">メッセージ:</label>
-                                <p>招待ありがとうございます！</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+
+        <!-- メッセージ一覧 -->
+        <div class="list-group mt-3">
+          <div class="list-group-item list-group-item-action disabled text-center font-weight-bold bg-light">
+            チャット
+          </div>
+          <div class="list-group-item">
+            <div class="media">
+              <img src="https://placehold.jp/50x50.png" class="align-self-start mr-3 rounded-circle" alt="アイコン">
+              <div class="media-body">
+                <h5 class="mt-0">相手の名前</h5>
+                メッセージの内容
+                <br>
+                <small class="text-muted">2023/03/10 10:00</small>
+              </div>
             </div>
-            <div class="card mt-2">
-                <div class="card-header">
-                  <h5 class="card-title mb-0">メッセージの返信</h5>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-12 col-md-12">
-                      <ul class="list-group">
-                        <li class="list-group-item">
-                          <div class="d-flex">
-                            <div class="icon-container">
-                              <img src="path/to/avatar.jpg" alt="招待者のアイコン" class="avatar-icon">
-                            </div>
-                            <div class="message-container">
-                              <div class="message-bubble">
-                                <div class="message-content">
-                                  <p class="mb-0">招待ありがとうございます！</p>
-                                  <small class="text-muted">2023年3月7日 13:00</small>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="list-group-item">
-                          <div class="d-flex justify-content-end">
-                            <div class="message-container">
-                              <div class="message-bubble">
-                                <div class="message-content">
-                                  <p class="mb-0">了解です。第一希望の日程で参加いたします。</p>
-                                  <small class="text-muted">2023年3月8日 10:30</small>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="icon-container">
-                              <img src="path/to/myteam-logo.jpg" alt="MyTeamのアイコン" class="avatar-icon">
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+          </div>
+          <div class="list-group-item">
+            <div class="media">
+              <div class="media-body text-right">
+                <h5 class="mt-0">自分の名前</h5>
+                メッセージの内容
+                <br>
+                <small class="text-muted">2023/03/10 10:05</small>
+              </div>
+              <img src="https://placehold.jp/50x50.png" class="align-self-end ml-3 rounded-circle" alt="アイコン">
             </div>
+          </div>
         </div>
+
+        <!-- 入力フォーム -->
+        <form class="mt-3">
+          <div class="form-group">
+            <textarea class="form-control" placeholder="メッセージを入力"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">送信</button>
+        </form>
+
+      </div>
     </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/esm/popper">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
 
 </html>
