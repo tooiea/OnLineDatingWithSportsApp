@@ -161,11 +161,11 @@ class ConsentGame extends Model
     public function updateConsent($consents, $customValues)
     {
         $updateConsent = $this->where('id', $consents->consent_games_id)->first();
-        $updateConsent->consent_status = ConsentStatusTypeEnum::REJECT->value;
+        $updateConsent->consent_status = ConsentStatusTypeEnum::DECLINED->value;
         $isAccept = $this->checkReplyIsAcceptance($customValues);
         // 承認された日程があれば、上書き
         if ($isAccept) {
-            $updateConsent->consent_status = ConsentStatusTypeEnum::ACCEPT->value;
+            $updateConsent->consent_status = ConsentStatusTypeEnum::ACCEPTED->value;
             $desirableDateKey = $this->getAcceptanceDateByDesirableDate($customValues);
             $updateConsent->game_date = $consents[$desirableDateKey];
         }

@@ -94,6 +94,19 @@
                                             }}
                                         </span>
                                     </li>
+                                    @if ($replies->consent_status === \App\Enums\ConsentStatusTypeEnum::ACCEPTED->value)
+                                    <li class="message-bubble mt-2">
+                                        <label for="">承認日程:</label>
+                                        <p>
+                                            {{ \Carbon\Carbon::parse($replies->game_date)->format('Y年m月d日G時i分') }}
+                                        </p>
+                                    </li>
+                                    @elseif ($replies->consent_status ===
+                                    \App\Enums\ConsentStatusTypeEnum::DECLINED->value)
+                                    <li class="message-bubble mt-2">
+                                        <label for="">承認日程:　-</label>
+                                    </li>
+                                    @else
                                     <li class="message-bubble mt-2">
                                         <label for="">第一希望日程:</label>
                                         <p>{{ \Carbon\Carbon::parse($replies->first_preferered_date)->format('Y年m月d日
@@ -105,6 +118,7 @@
                                         <p>{{ \Carbon\Carbon::parse($replies->third_preferered_date)->format('Y年m月d日
                                             G時i分') }}</p>
                                     </li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -227,6 +241,9 @@
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
 
 </html>

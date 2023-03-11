@@ -48,7 +48,6 @@ class ConsentGameNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        // dd((isset($this->customValues['message'])) ? $this->customValues['message'] : '');
         $url = url(__('route_const.login'));
         return $this->mail
                 ->from(config('mail.from.address'))
