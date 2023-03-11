@@ -89,6 +89,10 @@ class ConsentGamesController extends Controller
             // 試合招待テーブルへ登録、メール送信
             $this->consentGame->createConsent($customValues, $teamIds);
         });
+
+        // チームトップへリダイレクトしセッションメッセージ表示
+        $request->session()->flash('consent.sent', __('user_messages.success.consent_sent'));
+        return redirect()->route('team.index');
     }
 
     /**
@@ -106,12 +110,18 @@ class ConsentGamesController extends Controller
         return $teamIds;
     }
 
+    /**
+     * 招待された内容を表示
+     * 返信があれば併せて取得して表示する
+     *
+     * @param ConsentGameIdRequest $request
+     * @param string $consent_game_id
+     * @return void
+     */
     public function detail(ConsentGameIdRequest $request, $consent_game_id)
     {
-        // $consents = $this->getConsentsGame($consent_game_id);
         $replies = $this->consentGame->getRepliesByConsentGameId(Crypt::decryptString($consent_game_id));
 
-        // dd($replies);
         return view('consentGames.reply_detail', compact('replies'));
     }
 
@@ -164,22 +174,26 @@ class ConsentGamesController extends Controller
         return view('consentGames.reply_confirm', compact('values', 'consents'));
     }
 
+    /**
+     * 招待への返信の登録、メール送信、トップへリダイレクト
+     *
+     * @param Request $request
+     * @return void
+     */
     public function completeReply(Request $request)
     {
         $consents = $this->getConsentsGame($request->session()->pull('consent_game_id')); // 招待の詳細日程
         $specifyFormRequestInputs = $request->session()->pull('consent_reply');
         $customValues = $specifyFormRequestInputs->getAll();
 
+        // 招待履歴の更新、返信内容を登録
         DB::transaction(function () use ($consents, $customValues) {
             $this->consentGame->updateConsent($consents, $customValues);
             $this->reply->createReply($consents, $customValues);
-
-            // TODO 以下を実装
-
-            // メッセージ送信
-            // 送信先は、入力した人とチームに最初に登録した人へメッセージを送信する
-
-            // チームトップへリダイレクトしセッションメッセージ表示
         });
+
+        // チームトップへリダイレクトしセッションメッセージ表示
+        $request->session()->flash('consent.reply', __('user_messages.success.reply_sent'));
+        return redirect()->route('team.index');
     }
 }
