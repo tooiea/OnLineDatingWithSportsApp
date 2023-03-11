@@ -23,8 +23,7 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                // TODO ログイン後のリダイレクト先を設定
-                return redirect()->route('search.index');
+                return redirect()->route('team.index');
             }
         }
 

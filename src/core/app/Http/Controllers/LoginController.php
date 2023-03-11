@@ -31,7 +31,7 @@ class LoginController extends AuthenticatedSessionController
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('search.index');
+            return redirect()->route('team.index');
         }
 
         return back()->withErrors([
