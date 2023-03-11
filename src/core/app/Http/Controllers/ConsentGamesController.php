@@ -108,11 +108,11 @@ class ConsentGamesController extends Controller
 
     public function detail(ConsentGameIdRequest $request, $consent_game_id)
     {
-        $consents = $this->getConsentsGame($consent_game_id);
+        // $consents = $this->getConsentsGame($consent_game_id);
         $replies = $this->consentGame->getRepliesByConsentGameId(Crypt::decryptString($consent_game_id));
 
         // dd($replies);
-        return view('consentGames.reply_detail', compact('consents', 'replies'));
+        return view('consentGames.reply_detail', compact('replies'));
     }
 
     /**
@@ -128,8 +128,6 @@ class ConsentGamesController extends Controller
         // 既に返信済みであれば、ボタンを表示せずに、回答内容だけを表示するように切り替える
         session(['consent_game_id' => $consent_game_id]);
         $consents = $this->getConsentsGame($consent_game_id);
-
-        // TODO 既に返信済みだった場合は、リダイレクトする
 
         return view('consentGames.reply', compact('consents'));
     }

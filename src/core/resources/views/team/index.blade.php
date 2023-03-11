@@ -5,30 +5,39 @@
   <title>Team Invitations</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <style>
+    /* Adjust table font sizes for mobile devices */
+    @media screen and (max-width: 767px) {
+      table {
+        font-size: 12px;
+      }
+
+      thead th {
+        font-size: 10px;
+      }
+    }
+  </style>
 </head>
 
 <body>
   @include('layouts.nav')
-  <div class="container">
-
-    <h2>チームinfo</h2>
-
+  <!-- Main content -->
+  <div class="container mt-3">
     <!-- Team Name Section -->
-    <div class="row mt-4">
+    <div class="row">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h5>チーム名</h5>
+            <h5 class="mb-0">Team Name</h5>
           </div>
           <div class="card-body">
-            <p>{{ $myTeam->team->team_name }}</p>
+            <p class="mb-0">{{ $myTeam->team->team_name }}</p>
             <a href="{{ route('team.detail') }}">チーム詳細ページへ</a>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- My Team Invitations Section -->
     <div class="row mt-4">
       <div class="col-12">
         <div class="card">
@@ -49,10 +58,15 @@
                 <tbody>
                   @foreach ($myTeamInvites as $value)
                   <tr>
-                    <td>{{ \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日') }}</td>
-                    <td>{{ $value['team_name'] }}</td>
-                    <td>{{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}</td>
-                    <td><a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}">詳細</a>
+                    <td class="align-middle">{{
+                      \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日')
+                      }}</td>
+                    <td class="align-middle">{{ $value['team_name'] }}</td>
+                    <td class="align-middle">{{
+                      \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
+                    </td>
+                    <td class="align-middle"><a
+                        href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}">詳細</a>
                     </td>
                   </tr>
                   @endforeach
@@ -85,11 +99,22 @@
                 <tbody>
                   @foreach ($asGuestInvites as $value)
                   <tr>
-                    <td>{{ \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日') }}</td>
-                    <td>{{ $value['team_name'] }}</td>
-                    <td>{{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}</td>
-                    <td><a href="{{ route('reply.index', Crypt::encryptString($value->consent_games_id)) }}">返信
+                    <td class="align-middle">{{
+                      \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日')
+                      }}</td>
+                    <td class="align-middle">{{ $value['team_name'] }}</td>
+                    <td class="align-middle">{{
+                      \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
                     </td>
+                    @if ($value['consent_status'] === \App\Enums\ConsentStatusTypeEnum::ACCEPT->value)
+                    <td class="align-middle"><a
+                        href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}">詳細
+                    </td>
+                    @else
+                    <td class="align-middle"><a
+                        href="{{ route('reply.index', Crypt::encryptString($value->consent_games_id)) }}">返信
+                    </td>
+                    @endif
                   </tr>
                   @endforeach
                 </tbody>

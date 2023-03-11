@@ -57,33 +57,52 @@
             <div class="col-12 col-md-10 col-lg-6">
                 <div class="card rounded">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">招待情報</h5>
+                        <h5 class="card-title mb-0">招待情報
+                            {{ ($replies->invitee_id === $replies->my_team_id) ? '(あなたが招待)' : '' }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 col-md-4">
-                                <img src="data:{{ $consents->image_extension }};base64,{{ base64_encode(file_get_contents($consents->team_logo)) }}"
+                                @if($replies->invitee_id === $replies->my_team_id)
+                                <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
                                     class="card-img-top rounded-circle" alt="ロゴ">
+                                @else
+                                <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
+                                    class="card-img-top rounded-circle" alt="ロゴ">
+                                @endif
                             </div>
                             <div class="col-12 col-md-8">
-                                <h5 class="card-title">{{ $consents->team_name }}</h5>
-                                <p class="card-text"><a href="{{ $consents->team_url }}">チームURL</a></p>
+                                <h5 class="card-title">
+                                    @if($replies->invitee_id === $replies->my_team_id)
+                                    {{ $replies->guest_team_name }}
+                                    @else
+                                    {{ $replies->invite_team_name }}
+                                    @endif
+                                </h5>
+                                <p class="card-text">
+                                    @if($replies->invitee_id === $replies->my_team_id)
+                                    <a href="{{ $replies->guest_team_url }}">チームURL</a>
+                                    @else
+                                    <a href="{{ $replies->invite_team_url }}">チームURL</a>
+                                    @endif
+                                </p>
                                 <ul class="list-group">
                                     <li class="message-bubble mt-2">
                                         <label for="">ステータス:　</label>
-                                        <span>{{
-                                            \App\Enums\ConsentStatusTypeEnum::from($consents->consent_status)->label()
-                                            }}</span>
+                                        <span>
+                                            {{ \App\Enums\ConsentStatusTypeEnum::from($replies->consent_status)->label()
+                                            }}
+                                        </span>
                                     </li>
                                     <li class="message-bubble mt-2">
                                         <label for="">第一希望日程:</label>
-                                        <p>{{ \Carbon\Carbon::parse($consents->first_preferered_date)->format('Y年m月d日
+                                        <p>{{ \Carbon\Carbon::parse($replies->first_preferered_date)->format('Y年m月d日
                                             G時i分') }}</p>
                                         <label for="">第二希望日程:</label>
-                                        <p>{{ \Carbon\Carbon::parse($consents->second_preferered_date)->format('Y年m月d日
+                                        <p>{{ \Carbon\Carbon::parse($replies->second_preferered_date)->format('Y年m月d日
                                             G時i分') }}</p>
                                         <label for="">第三希望日程:</label>
-                                        <p>{{ \Carbon\Carbon::parse($consents->third_preferered_date)->format('Y年m月d日
+                                        <p>{{ \Carbon\Carbon::parse($replies->third_preferered_date)->format('Y年m月d日
                                             G時i分') }}</p>
                                     </li>
                                 </ul>
@@ -96,26 +115,73 @@
                     <h5 class="card-title mb-0">メッセージの返信</h5>
                 </div>
                 <div class="card-body">
+                    @if($replies->invitee_id === $replies->my_team_id)
+                    <div class="media mb-3 media-sender">
+                        <div class="media-body">
+                            <div class="message-bubble">
+                                {!! nl2br(e($replies->message)) !!}
+                            </div>
+                            <div class="small text-muted text-right pr-5">
+                                {{ \Carbon\Carbon::parse($replies->created_at)->format('Y年m月d日 G時i分') }}
+                            </div>
+                        </div>
+                        <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
+                            class="ml-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
+                    </div>
+                    @else
                     <div class="media mb-3 media-receiver">
                         <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
                             class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
                         <div class="media-body">
                             <div class="message-bubble">
-                                {!! nl2br(e($consents->message)) !!}
+                                {!! nl2br(e($replies->message)) !!}
                             </div>
-                            <div class="small text-muted">{{
-                                \Carbon\Carbon::parse($consents->created_at)->format('Y年m月d日 G時i分') }}</div>
+                            <div class="small text-muted pl-3">
+                                {{ \Carbon\Carbon::parse($replies->created_at)->format('Y年m月d日 G時i分') }}
+                            </div>
                         </div>
                     </div>
+                    @endif
                     @foreach ($replies->reply as $reply)
-                    @if ($reply->team_id == $consents->guest_id)
+                    @if($replies->invitee_id === $replies->my_team_id)
+                    <!-- 招待した場合 -->
+                    @if ($reply->team_id == $replies->guest_id)
+                    <div class="media mb-3 media-receiver">
+                        <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
+                            class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
+                        <div class="media-body">
+                            <div class="message-bubble">
+                                {!! nl2br(e($reply->message)) !!}
+                            </div>
+                            <div class="small text-muted pl-3">
+                                {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日G時i分') }}
+                            </div>
+                        </div>
+                    </div>
+                    @else
                     <div class="media mb-3 media-sender">
                         <div class="media-body">
                             <div class="message-bubble">
                                 {!! nl2br(e($reply->message)) !!}
                             </div>
-                            <div class="small text-muted text-right">{{
+                            <div class="small text-muted text-right pr-5">{{
                                 \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日 G時i分') }}</div>
+                        </div>
+                        <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
+                            class="ml-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
+                    </div>
+                    @endif
+                    @else
+                    <!-- 招待した場合 -->
+                    @if ($reply->team_id == $replies->guest_id)
+                    <div class="media mb-3 media-sender">
+                        <div class="media-body">
+                            <div class="message-bubble">
+                                {!! nl2br(e($reply->message)) !!}
+                            </div>
+                            <div class="small text-muted text-right pr-5">
+                                {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日 G時i分') }}
+                            </div>
                         </div>
                         <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
                             class="ml-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
@@ -128,10 +194,12 @@
                             <div class="message-bubble">
                                 {!! nl2br(e($reply->message)) !!}
                             </div>
-                            <div class="small text-muted">{{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日
-                                G時i分') }}</div>
+                            <div class="small text-muted pl-3">
+                                {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日G時i分') }}
+                            </div>
                         </div>
                     </div>
+                    @endif
                     @endif
                     @endforeach
 
