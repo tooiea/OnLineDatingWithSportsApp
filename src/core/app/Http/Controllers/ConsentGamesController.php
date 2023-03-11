@@ -46,11 +46,10 @@ class ConsentGamesController extends Controller
      */
     public function index(TempUserInvitationCodeRequest $request, $invitation_code)
     {
+        // TODO リクエストクラス内で、返信済みならトップページへリダイレクトする処理を追加
         // 招待先のチーム情報と招待情報の取得
         session(['consent_invitaion_code' => $invitation_code]);
         $guestTeam = $this->team->getTeamInfoByInvitationCodeWithConsents($invitation_code);
-
-        // TODO 招待中は、表示を招待中に変更
 
         return view('consentGames.index', compact('guestTeam'));
     }

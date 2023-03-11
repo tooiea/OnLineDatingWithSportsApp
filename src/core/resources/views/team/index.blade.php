@@ -5,30 +5,7 @@
   <title>Team Invitations</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <style>
-    /* Adjust table font sizes for mobile devices */
-    @media screen and (max-width: 767px) {
-      table {
-        font-size: 12px;
-      }
-
-      thead th {
-        font-size: 10px;
-      }
-    }
-
-    .status-wait {
-      color: orange;
-    }
-
-    .status-accepted {
-      color: green;
-    }
-
-    .status-declined {
-      color: red;
-    }
-  </style>
+  <link rel="stylesheet" href="/public/css/common.css">
 </head>
 
 <body>

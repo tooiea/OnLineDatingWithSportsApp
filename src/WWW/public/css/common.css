@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+/* ナビゲーション */
+.nav-item.active a {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-item.active .nav-link {
+    color: cadetblue;
+}
+
+/* ナビゲーションバーを固定 */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+/* ページ上部にスペースを作るためのパディング */
+body {
+    padding-top: 60px;
+    /* ナビゲーションバーの高さに合わせて調整 */
+}
+
+
+/* ステータス表示 */
+@media screen and (max-width: 767px) {
+    table {
+        font-size: 12px;
+    }
+
+    thead th {
+        font-size: 10px;
+    }
+}
+
+.status-wait {
+    color: orange;
+}
+
+.status-accepted {
+    color: green;
+}
+
+.status-declined {
+    color: red;
+}
