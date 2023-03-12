@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Constants\FormConstant;
-use App\Enums\ConsentStatusTypeEnum;
 use App\Http\Requests\ConsentGameIdRequest;
 use App\Http\Requests\ConsentGameReplyRequest;
 use App\Http\Requests\ConsentScheduleRequest;
-use App\Http\Requests\TempUserInvitationCodeRequest;
+use App\Http\Requests\InvitationCodeRequest;
 use App\Models\ConsentGame;
 use App\Models\Reply;
 use App\Models\Team;
@@ -38,17 +37,15 @@ class ConsentGamesController extends Controller
 
     /**
      * 招待チームと招待フォーム表示
-     * 既に招待していて、期限切れや返事待ちの時はフォームを出さない
      *
-     * @param TempUserInvitationCodeRequest $request
+     * @param InvitationCodeRequest $request
      * @param string $invitation_code
      * @return void
      */
-    public function index(TempUserInvitationCodeRequest $request, $invitation_code)
+    public function index(InvitationCodeRequest $request, $invitation_code)
     {
-        // TODO リクエストクラス内で、返信済みならトップページへリダイレクトする処理を追加
         // 招待先のチーム情報と招待情報の取得
-        session(['consent_invitaion_code' => $invitation_code]);
+        session(['consent_invitation_code' => $invitation_code]);
         $guestTeam = $this->team->getTeamInfoByInvitationCodeWithConsents($invitation_code);
 
         return view('consentGames.index', compact('guestTeam'));
@@ -62,7 +59,7 @@ class ConsentGamesController extends Controller
      */
     public function confirm(ConsentScheduleRequest $request)
     {
-        $values['invitation_code'] = $request->session()->pull('consent_invitaion_code');
+        $values['invitation_code'] = $request->session()->pull('consent_invitation_code');
         $values = array_merge($values, $request->input());
         $specifyFormRequestInputs = new SpecifyFormRequestInputsController();
         $specifyFormRequestInputs->setAll($values, FormConstant::CONSENT_FORM_KEYS); // インスタンスをセッションへ

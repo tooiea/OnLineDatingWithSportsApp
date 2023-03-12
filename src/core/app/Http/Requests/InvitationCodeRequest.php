@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Constants\ErrorMessagesConstant;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TempUserInvitationCodeRequest extends FormRequest
+class InvitationCodeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
