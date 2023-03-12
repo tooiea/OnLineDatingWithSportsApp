@@ -145,7 +145,7 @@ class ConsentGame extends Model
             $query->orwhere('second_preferered_date', '>=', $now);
             $query->orwhere('third_preferered_date', '>=', $now);
         });
-        $query->join('teams', 'teams.id', '=', 'consent_games.guest_id');
+        $query->join('teams', 'teams.id', '=', 'consent_games.invitee_id');
         $query->select('consent_games.id as consent_games_id', 'consent_games.*', 'teams.*');
         $consents = $query->first();
 
