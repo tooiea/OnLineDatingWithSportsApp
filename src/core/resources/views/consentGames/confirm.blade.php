@@ -30,14 +30,16 @@
                         <p>@if(!is_null($values['message'])) {!! nl2br(htmlspecialchars($values['message'])) !!} @endif</p>
                     </div>
                 </div>
-                <form action="{{route('consent.complete')}}" method="post">
-                    @csrf
-                    <button type="submit" class="btn btn-primary mt-3">登録する</button>
-                </form>
-                <form action="{{route('consent.back')}}" method="post">
-                    @csrf
-                    <button type="submit" class="btn btn-secondary mt-3">修正する</button>
-                </form>
+                <div class="d-flex flex-row">
+                    <form action="{{route('consent.back')}}" method="post" class="mr-2">
+                        @csrf
+                        <button type="submit" class="btn btn-secondary mt-3">修正する</button>
+                    </form>
+                    <form action="{{route('consent.complete')}}" method="post">
+                        @csrf
+                        <button type="submit" class="btn btn-primary mt-3">送信する</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

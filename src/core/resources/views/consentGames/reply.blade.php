@@ -30,15 +30,21 @@
               id="team-logo" class="img-fluid">
           </div>
           <div class="col-8">
-            <p>第一希望：
-              <br>{{ \Carbon\Carbon::parse($consents->first_preferered_date)->format('Y年m月d日 G時i分') }}
+            <p>第一希望：<br>
+              <span style="white-space: nowrap; overflow: hidden;">
+              {{ \Carbon\Carbon::parse($consents->first_preferered_date)->format('Y年m月d日 G時i分') }}
+              </span>
             </p>
-            <p>第二希望：
-              <br>{{ \Carbon\Carbon::parse($consents->second_preferered_date)->format('Y年m月d日 G時i分') }}
+            <p>第二希望：<br>
+              <span style="white-space: nowrap; overflow: hidden;">
+              {{ \Carbon\Carbon::parse($consents->second_preferered_date)->format('Y年m月d日 G時i分') }}
+              </span>
             </p>
             @if (!empty($consents->third_preferered_date))
-            <p>第三希望：
-              <br>{{ \Carbon\Carbon::parse($consents->third_preferered_date)->format('Y年m月d日 G時i分') }}
+            <p>第三希望：<br>
+              <span style="white-space: nowrap; overflow: hidden;">
+              {{ \Carbon\Carbon::parse($consents->third_preferered_date)->format('Y年m月d日 G時i分') }}
+              </span>
             </p>
             @endif
           </div>

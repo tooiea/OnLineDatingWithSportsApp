@@ -71,7 +71,7 @@
                             name="message">{{ old('message') }}</textarea>
                         @error('message')<div class="invalid-feedback" role="alert"> {{ $message }}</div>@enderror
                     </div>
-                    <button type="submit" class="btn btn-primary">送信</button>
+                    <button type="submit" class="btn btn-primary">確認する</button>
                 </form>
             </div>
         </div>
