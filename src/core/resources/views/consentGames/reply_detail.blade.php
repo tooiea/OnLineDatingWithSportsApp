@@ -133,7 +133,11 @@
                     <div class="media mb-3 media-sender">
                         <div class="media-body">
                             <div class="message-bubble">
+                                @if (empty($replies->message))
+                                <small>メッセージなし</small>
+                                @else
                                 {!! nl2br(e($replies->message)) !!}
+                                @endif
                             </div>
                             <div class="small text-muted text-right pr-5">
                                 {{ \Carbon\Carbon::parse($replies->created_at)->format('Y年m月d日 G時i分') }}
@@ -148,7 +152,11 @@
                             class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
                         <div class="media-body">
                             <div class="message-bubble">
+                                @if (empty($replies->message))
+                                <small>メッセージなし</small>
+                                @else
                                 {!! nl2br(e($replies->message)) !!}
+                                @endif
                             </div>
                             <div class="small text-muted pl-3">
                                 {{ \Carbon\Carbon::parse($replies->created_at)->format('Y年m月d日 G時i分') }}
@@ -165,7 +173,11 @@
                             class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
                         <div class="media-body">
                             <div class="message-bubble">
+                                @if (empty($reply->message))
+                                <small>メッセージなし</small>
+                                @else
                                 {!! nl2br(e($reply->message)) !!}
+                                @endif
                             </div>
                             <div class="small text-muted pl-3">
                                 {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日G時i分') }}
@@ -176,7 +188,11 @@
                     <div class="media mb-3 media-sender">
                         <div class="media-body">
                             <div class="message-bubble">
+                                @if (empty($reply->message))
+                                <small>メッセージなし</small>
+                                @else
                                 {!! nl2br(e($reply->message)) !!}
+                                @endif
                             </div>
                             <div class="small text-muted text-right pr-5">{{
                                 \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日 G時i分') }}</div>
@@ -191,7 +207,11 @@
                     <div class="media mb-3 media-sender">
                         <div class="media-body">
                             <div class="message-bubble">
+                                @if (empty($reply->message))
+                                <small>メッセージなし</small>
+                                @else
                                 {!! nl2br(e($reply->message)) !!}
+                                @endif
                             </div>
                             <div class="small text-muted text-right pr-5">
                                 {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日 G時i分') }}
@@ -206,7 +226,11 @@
                             class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
                         <div class="media-body">
                             <div class="message-bubble">
+                                @if (empty($reply->message))
+                                <small>メッセージなし</small>
+                                @else
                                 {!! nl2br(e($reply->message)) !!}
+                                @endif
                             </div>
                             <div class="small text-muted pl-3">
                                 {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日G時i分') }}
