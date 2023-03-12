@@ -36,9 +36,11 @@
             <p>第二希望：
               <br>{{ \Carbon\Carbon::parse($consents->second_preferered_date)->format('Y年m月d日 G時i分') }}
             </p>
+            @if (!empty($consents->third_preferered_date))
             <p>第三希望：
               <br>{{ \Carbon\Carbon::parse($consents->third_preferered_date)->format('Y年m月d日 G時i分') }}
             </p>
+            @endif
           </div>
         </div>
         <hr>
@@ -80,6 +82,7 @@
             </div>
             @error ('second_preferered_date') <div class="text-danger mt-2">{{ $message }}</div> @enderror
           </div>
+          @if (!empty($consents->third_preferered_date))
           <div class="form-group">
             <label>第三希望</label>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -96,13 +99,14 @@
             </div>
             @error ('third_preferered_date') <div class="text-danger mt-2">{{ $message }}</div> @enderror
           </div>
+          @endif
           <hr>
           <div class="form-group">
             <label for="reply">返信したいメッセージがあれば入力してください</label>
             <textarea class="form-control" id="reply" rows="3" name="message">{{ old('message') }}</textarea>
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary">送信</button>
+            <button type="submit" class="btn btn-primary">確認する</button>
           </div>
         </form>
       </div>

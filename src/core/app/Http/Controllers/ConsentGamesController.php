@@ -193,7 +193,6 @@ class ConsentGamesController extends Controller
             $this->reply->createReply($consents, $customValues);
         });
 
-
         $invitee = Team::where('id', $consents->invitee_id)->first();
 
         // チームトップへリダイレクトしセッションメッセージ表示

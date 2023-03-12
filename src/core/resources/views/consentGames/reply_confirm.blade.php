@@ -35,6 +35,7 @@
               </td>
               <td>{{ \Carbon\Carbon::parse($consents->second_preferered_date)->format('Y年m月d日 G時i分') }}</td>
             </tr>
+            @isset($values['third_preferered_date'])
             <tr>
               <td>要望3</td>
               <td>
@@ -42,6 +43,7 @@
               </td>
               <td>{{ \Carbon\Carbon::parse($consents->third_preferered_date)->format('Y年m月d日 G時i分') }}</td>
             </tr>
+            @endif
           </tbody>
         </table>
         <hr>
@@ -63,6 +65,6 @@
           </div>
         </div>
       </div>
-      
+
 </body>
 </html>

@@ -189,7 +189,7 @@ class ConsentGame extends Model
         if ($customValues['second_preferered_date'] == FormConstant::ACCEPT_VALUE) {
             return $isAccept = true;
         }
-        if ($customValues['third_preferered_date'] == FormConstant::ACCEPT_VALUE) {
+        if (isset($customValues['third_preferered_date']) && $customValues['third_preferered_date'] == FormConstant::ACCEPT_VALUE) {
             return $isAccept = true;
         }
 

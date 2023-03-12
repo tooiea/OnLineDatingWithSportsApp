@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Constants\FormConstant;
+use App\Models\ConsentGame;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -35,8 +36,18 @@ class ConsentGameReplyRequest extends FormRequest
                 Rule::in(array_keys(FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT)),
             ],
             'third_preferered_date' => [
-                'required',
+                'bail',
+                'nullable',
                 Rule::in(array_keys(FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT)),
+                function ($attribute, $value, $fail) {
+                    $consentGameModel = new ConsentGame();
+                    $consent_game_id = $this->session()->get('consent_game_id');
+                    $consent = $consentGameModel->where('id', $consent_game_id)->first();
+
+                    if (empty($consent->third_preferered_date)) {
+                        $fail;
+                    }
+                }
             ],
             'message' => [
                 'nullable',
