@@ -14,7 +14,8 @@ class ConsentGameNotification extends Notification
     use Queueable;
 
     private $customValues;
-    private $user;
+    private $guest;
+    private $invitee;
     private $mail;
 
     /**
@@ -22,10 +23,11 @@ class ConsentGameNotification extends Notification
      *
      * @return void
      */
-    public function __construct(array $customValues, object $user, SendMailer $mail)
+    public function __construct(array $customValues, object $guest, $invitee, SendMailer $mail)
     {
         $this->customValues = $customValues;
-        $this->user = $user;
+        $this->guest = $guest;
+        $this->invitee = $invitee;
         $this->mail = $mail;
     }
 
@@ -51,12 +53,12 @@ class ConsentGameNotification extends Notification
         $url = url(__('route_const.login'));
         return $this->mail
                 ->from(config('mail.from.address'))
-                ->to($this->user->user->email)
+                ->to($this->guest->user->email)
                 ->text('mail.consent_game')
                 ->subject(__('mail_messages.subject.consent_game'))
                 ->with(
                     [
-                        'teamName' => $this->user->team->team_name,
+                        'teamName' => $this->invitee->team->team_name,
                         'firstPrefereredDate' => Carbon::parse($this->customValues['first_preferered_date'])->format('Y年m月d日 G時i分'),
                         'secondPrefereredDate' => Carbon::parse($this->customValues['second_preferered_date'])->format('Y年m月d日 G時i分'),
                         'thirdPrefereredDate' => (isset($this->customValues['third_preferered_date'])) ? Carbon::parse($this->customValues['third_preferered_date'])->format('Y年m月d日 G時i分') : '',

@@ -47,3 +47,73 @@ body {
 .status-declined {
     color: red;
 }
+
+.table {
+    display: table;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.table thead th,
+.table tbody th,
+.table tbody td {
+    vertical-align: middle;
+}
+
+/* テーブル内の文字サイズを幅に合わせて自動調整 */
+.table-responsive table {
+    table-layout: auto;
+    width: 100%;
+}
+
+.table-responsive table td,
+.table-responsive table th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* テーブル内の文字サイズを幅に合わせて自動調整 */
+.table-responsive table td span,
+.table-responsive table th span {
+    display: inline-block;
+    width: 100%;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* テーブル内の文字サイズを幅に合わせて自動調整 */
+@media screen and (min-width: 576px) {
+
+    .table-responsive table td span,
+    .table-responsive table th span {
+        font-size: calc(16px + (20 - 16) * ((100vw - 576px) / (1920 - 576)));
+    }
+}
+
+/* テーブル内の文字サイズを幅に合わせて自動調整 */
+@media screen and (min-width: 768px) {
+
+    .table-responsive table td span,
+    .table-responsive table th span {
+        font-size: calc(16px + (20 - 16) * ((100vw - 768px) / (1920 - 768)));
+    }
+}
+
+/* テーブル内の文字サイズを幅に合わせて自動調整 */
+@media screen and (min-width: 992px) {
+
+    .table-responsive table td span,
+    .table-responsive table th span {
+        font-size: calc(16px + (20 - 16) * ((100vw - 992px) / (1920 - 992)));
+    }
+}
+
+/* テーブル内の文字サイズを幅に合わせて自動調整 */
+@media screen and (min-width: 1200px) {
+
+    .table-responsive table td span,
+    .table-responsive table th span {
+        font-size: 20px;
+    }
+}

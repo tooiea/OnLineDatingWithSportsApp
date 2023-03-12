@@ -89,8 +89,10 @@ class ConsentGamesController extends Controller
             $this->consentGame->createConsent($customValues, $teamIds);
         });
 
+        $guest = Team::where('id', $teamIds['guest_id'])->first();
+
         // チームトップへリダイレクトしセッションメッセージ表示
-        $request->session()->flash('consent.sent', __('user_messages.success.consent_sent'));
+        $request->session()->flash('consent.sent', $guest->team_name . __('user_messages.success.consent_sent'));
         return redirect()->route('team.index');
     }
 
@@ -191,8 +193,11 @@ class ConsentGamesController extends Controller
             $this->reply->createReply($consents, $customValues);
         });
 
+
+        $invitee = Team::where('id', $consents->invitee_id)->first();
+
         // チームトップへリダイレクトしセッションメッセージ表示
-        $request->session()->flash('consent.reply', __('user_messages.success.reply_sent'));
+        $request->session()->flash('consent.reply', $invitee->team_name . __('user_messages.success.reply_sent'));
         return redirect()->route('team.index');
     }
 }

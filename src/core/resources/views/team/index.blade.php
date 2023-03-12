@@ -17,11 +17,10 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h5 class="mb-0">Team Name</h5>
+            <h5 class="mb-0">Myチーム</h5>
           </div>
           <div class="card-body">
-            <p class="mb-0">{{ $myTeam->team->team_name }}</p>
-            <a href="{{ route('team.detail') }}">チーム詳細ページへ</a>
+            <p class="mb-0">チーム名　<a href="{{ route('team.detail') }}">{{ $myTeam->team->team_name }}</a></p>
             @if (session('consent.reply'))
             <div class="alert alert-success" role="alert"> {!! session('consent.reply') !!} </div>
             @elseif (session('consent.sent'))
@@ -36,17 +35,16 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h5>My Teamの招待ステータス</h5>
+            <h5>招待状況</h5>
           </div>
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>日付</th>
-                    <th>チーム名</th>
-                    <th>ステータス</th>
-                    <th>詳細ページ</th>
+                    <th>招待日</th>
+                    <th>チーム名<br><small>※詳細ページへ</small></th>
+                    <th>進捗状況</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -55,13 +53,14 @@
                     <td class="align-middle">{{
                       \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日')
                       }}</td>
-                    <td class="align-middle">{{ $value['team_name'] }}</td>
+                    <td class="align-middle">
+                      <a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}">
+                        {{ $value['team_name'] }}
+                      </a>
+                    </td>
                     <td
                       class="align-middle {{ 'status-' . \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->className() }}">
                       {{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
-                    </td>
-                    <td class="align-middle"><a
-                        href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}">詳細</a>
                     </td>
                   </tr>
                   @endforeach
@@ -77,17 +76,16 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h5>他チームからの招待ステータス</h5>
+            <h5>他チームからの招待状況</h5>
           </div>
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>日付</th>
-                    <th>チーム名</th>
-                    <th>ステータス</th>
-                    <th>お返事する</th>
+                    <th>招待日</th>
+                    <th>チーム名<br><small>※詳細ページへ</small></th>
+                    <th>進捗状況</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -96,21 +94,20 @@
                     <td class="align-middle">{{
                       \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日')
                       }}</td>
-                    <td class="align-middle">{{ $value['team_name'] }}</td>
+                    @if ($value['consent_status'] === \App\Enums\ConsentStatusTypeEnum::WAIT->value)
+                    <td class="align-middle">
+                      <a href="{{ route('reply.index', Crypt::encryptString($value->consent_games_id)) }}">{{ $value['team_name'] }}</a>
+                    </td>
+                    @else
+                    <td class="align-middle">
+                      <a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}">{{ $value['team_name'] }}</a>
+                    </td>
+                    @endif
                     <td
                       class="align-middle {{ 'status-' . \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->className() }}">
                       {{
                       \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
                     </td>
-                    @if ($value['consent_status'] === \App\Enums\ConsentStatusTypeEnum::WAIT->value)
-                    <td class="align-middle">
-                      <a href="{{ route('reply.index', Crypt::encryptString($value->consent_games_id)) }}">返信</a>
-                    </td>
-                    @else
-                    <td class="align-middle">
-                      <a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}">詳細</a>
-                    </td>
-                    @endif
                   </tr>
                   @endforeach
                 </tbody>

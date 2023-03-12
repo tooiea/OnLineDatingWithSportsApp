@@ -11,8 +11,8 @@ case DECLINED = 3;
     public function label(): string
     {
         return match ($this) {
-            self::WAIT => '承認待ち',
-            self::ACCEPTED => '承諾済み',
+            self::WAIT => '連絡未',
+            self::ACCEPTED => '試合日時決定',
             self::DECLINED => '試合不可',
         };
     }

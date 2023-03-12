@@ -126,7 +126,7 @@
                 </div>
 
                 <div class="card-header">
-                    <h5 class="card-title mb-0">メッセージの返信</h5>
+                    <h5 class="card-title mb-0">メッセージ履歴</h5>
                 </div>
                 <div class="card-body">
                     @if($replies->invitee_id === $replies->my_team_id)

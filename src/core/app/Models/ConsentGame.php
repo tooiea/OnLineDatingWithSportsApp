@@ -54,11 +54,11 @@ class ConsentGame extends Model
 
         // 登録
         $this->create($customValues);
-        $query = TeamMember::where('team_id', $customValues['invitee_id']);
-        $user = $query->with('user')->first();
+        $guest = TeamMember::where('team_id', $customValues['guest_id'])->first();
+        $invitee = TeamMember::where('team_id', $customValues['invitee_id'])->with('user')->first();
 
         // メール送信
-        $this->consentGameNotification($customValues, $user);
+        $this->consentGameNotification($customValues, $guest, $invitee);
     }
 
     /**
@@ -66,11 +66,12 @@ class ConsentGame extends Model
      *
      * @param array $customValues
      * @param object $user
+     * @param object $myTeam
      * @return void
      */
-    public function consentGameNotification($customValues, $user)
+    public function consentGameNotification($customValues, $user, $invitee)
     {
-        $this->notify(new ConsentGameNotification($customValues, $user, new SendMailer()));
+        $this->notify(new ConsentGameNotification($customValues, $user, $invitee, new SendMailer()));
     }
 
     /**
