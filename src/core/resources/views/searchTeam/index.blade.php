@@ -49,7 +49,7 @@
                 @error('address')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
               </div>
               <button type="submit" class="btn btn-primary btn-block">
-                Search
+                検索する
               </button>
             </form>
           </div>
@@ -72,7 +72,7 @@
         <tbody>
           @foreach ($teams as $key => $value)
           <tr>
-            <th>{{ $value->id }}</th>
+            <th>{{ $key+1 }}</th>
             <td>{{ $value->team_name }}</td>
             <td>{{ \App\Constants\FormConstant::PREFECTURES[$value->prefecture] . $value->address }}
             </td>
