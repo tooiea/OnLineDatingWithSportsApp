@@ -60,7 +60,7 @@ class LineLoginController extends Controller
                 $user->save();
             }
             Auth::login($user);
-            return redirect()->route('search.index');
+            return redirect()->route('team.index');
         } catch (Exception $e) {
             Log::error($e->getMessage());
         }
