@@ -59,54 +59,62 @@
   </div>
   <div class="container mt-5">
     <div class="row">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>チーム名</th>
-            <th>チーム活動拠点</th>
-            <th>チームロゴ</th>
-            <th>招待する</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($teams as $key => $value)
-          <tr>
-            <th>{{ $key+1 }}</th>
-            <td>{{ $value->team_name }}</td>
-            <td>{{ \App\Constants\FormConstant::PREFECTURES[$value->prefecture] . $value->address }}
-            </td>
-            <td>
-              @if (!empty($value->image_extension))
-              <img
-                src="data:{{ $value->image_extension }};base64,{{ base64_encode(file_get_contents($value->team_logo)) }}"
-                id="team-logo" width="50" height="50">
-              @endif
-            </td>
-            <td>
-              <a href="{{ sprintf(url(__('route_const.consent_link') . '%s'), $value->invitation_code)
-                }}">招待する
-              </a>
-            </td>
-          </tr>
-          @endforeach
-        </tbody>
-      </table>
-      <nav aria-label="ページネーション">
-        <ul class="pagination justify-content-center">
-          <li class="page-item {{ $teams->currentPage() == 1 ? 'disabled' : '' }}">
-            <a class="page-link" href="{{ $teams->previousPageUrl() }}" tabindex="-1">前のページ</a>
-          </li>
-          @for ($i = 1; $i <= $teams->lastPage(); $i++)
-            <li class="page-item {{ $teams->currentPage() == $i ? 'active' : '' }}">
-              <a class="page-link" href="{{ $teams->url($i) }}">{{ $i }}</a>
+      <div class="col-sm-12">
+        @if ($teams->count() == 0 && ($prefecture != "" || $address != ""))
+        <p class="text-center">検索した都道府県にはチームが登録されていません</p>
+        @elseif ($teams->count() == 0)
+        <p class="text-center">あなたが登録している都道府県にチームが登録されていません</p>
+        @else
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>チーム名</th>
+              <th>チーム活動拠点</th>
+              <th>チームロゴ</th>
+              <th>招待する</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($teams as $key => $value)
+            <tr>
+              <th>{{ $key+1 }}</th>
+              <td>{{ $value->team_name }}</td>
+              <td>{{ \App\Constants\FormConstant::PREFECTURES[$value->prefecture] . $value->address }}
+              </td>
+              <td>
+                @if (!empty($value->image_extension))
+                <img
+                  src="data:{{ $value->image_extension }};base64,{{ base64_encode(file_get_contents($value->team_logo)) }}"
+                  id="team-logo" width="50" height="50">
+                @endif
+              </td>
+              <td>
+                <a href="{{ sprintf(url(__('route_const.consent_link') . '%s'), $value->invitation_code)
+                  }}">招待する
+                </a>
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+        <nav aria-label="ページネーション">
+          <ul class="pagination justify-content-center">
+            <li class="page-item {{ $teams->currentPage() == 1 ? 'disabled' : '' }}">
+              <a class="page-link" href="{{ $teams->previousPageUrl() }}" tabindex="-1">前のページ</a>
             </li>
-            @endfor
-            <li class="page-item {{ $teams->currentPage() == $teams->lastPage() ? 'disabled' : '' }}">
-              <a class="page-link" href="{{ $teams->nextPageUrl() }}">次のページ</a>
-            </li>
-        </ul>
-      </nav>
+            @for ($i = 1; $i <= $teams->lastPage(); $i++)
+              <li class="page-item {{ $teams->currentPage() == $i ? 'active' : '' }}">
+                <a class="page-link" href="{{ $teams->url($i) }}">{{ $i }}</a>
+              </li>
+              @endfor
+              <li class="page-item {{ $teams->currentPage() == $teams->lastPage() ? 'disabled' : '' }}">
+                <a class="page-link" href="{{ $teams->nextPageUrl() }}">次のページ</a>
+              </li>
+          </ul>
+        </nav>
+        @endif
+      </div>
     </div>
   </div>
 </body>

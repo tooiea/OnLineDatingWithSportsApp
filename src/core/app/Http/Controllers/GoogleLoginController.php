@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TeamMember;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -32,24 +33,32 @@ class GoogleLoginController extends Controller
     public function handleGoogleCallback()
     {
         try {
-            $loggeInUserByGoogle = Socialite::driver('google')->user();
-            $user = User::where('email', $loggeInUserByGoogle->email)->first();
+            $loggedInUserByGoogle = Socialite::driver('google')->user();
+
+            // google_idでユーザの存在確認(ユーザの上書き)
+            $user = User::where('google_login_id', $loggedInUserByGoogle->id)->first();
             $now = Carbon::now();
 
-            // googleログインで新規登録
-            if (is_null($user)) {
+            // 初めてgoogleログインしたとき
+            if (empty($user)) {
+                $user = User::where('email', $loggedInUserByGoogle->email)->first();
                 $userModel = new User();
-                $user = $userModel->create([
-                    'name' => $loggeInUserByGoogle->name,
-                    'email' => $loggeInUserByGoogle->email,
-                    'google_login_id' => $loggeInUserByGoogle->id,
-                    'last_login_time' => $now,
-                ]);
-            } else {
-                // 既に登録されている
-                if (is_null($user->google_login_id)) {
-                    $user->google_login_id = $loggeInUserByGoogle->id;
+                // googleログインしたときに同一メールアドレスが存在している
+                if (empty($user)) {
+                     // 新規のユーザ(メールアドレスも登録されていない)
+                    $user = $userModel->create([
+                        'name' => $loggedInUserByGoogle->name,
+                        'email' => $loggedInUserByGoogle->email,
+                        'google_login_id' => $loggedInUserByGoogle->id,
+                        'last_login_time' => $now,
+                    ]);
+                } else {
+                    $user->google_login_id = $loggedInUserByGoogle->id;
+                    $user->last_login_time = $now;
+                    $user->save();
                 }
+            } else {
+                // 既に登録されている(ログイン日時のみ更新)
                 $user->last_login_time = $now;
                 $user->save();
             }
