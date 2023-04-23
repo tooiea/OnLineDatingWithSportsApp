@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Constants\ErrorMessagesConstant;
 use Illuminate\Foundation\Http\FormRequest;
 
 class InvitationCodeRequest extends FormRequest

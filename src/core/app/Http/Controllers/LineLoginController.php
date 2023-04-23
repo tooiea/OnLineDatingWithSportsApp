@@ -9,15 +9,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 
+/**
+ * LINEでログイン
+ */
 class LineLoginController extends Controller
 {
-    private $user;
-
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
     /**
      * Create a new controller instance.
      *
@@ -37,7 +33,7 @@ class LineLoginController extends Controller
     {
         try {
             $loggeInUserByLine = Socialite::driver('line')->user();
-            $user = $this->user->where('email', $loggeInUserByLine->email)->first();
+            $user = User::where('email', $loggeInUserByLine->email)->first();
             $now = Carbon::now();
 
             // TODO LINEログインした場合に、メールアドレスがない想定がないためケースを追加
@@ -45,7 +41,8 @@ class LineLoginController extends Controller
 
             // Lineログインで新規登録
             if (is_null($user)) {
-                $user = $this->user->create([
+                $userModel = new User();
+                $user = $userModel->create([
                     'name' => $loggeInUserByLine->name,
                     'email' => $loggeInUserByLine->email,
                     'line_login_id' => $loggeInUserByLine->id,

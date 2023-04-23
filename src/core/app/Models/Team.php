@@ -32,16 +32,20 @@ class Team extends Model
         return $this->hasMany(ConsentGame::class);
     }
 
+    public function teamMembers()
+    {
+        return $this->hasMany(TeamMember::class);
+    }
+
     /**
      * 招待コードから存在しているteamのidを取得
      *
      * @param string $invitationCode
      * @return void
      */
-    public function getTeamIdByInvitationCode($invitationCode)
+    public static function getTeamIdByInvitationCode($invitationCode)
     {
-        $teamId = $this->where('invitation_code', $invitationCode)
-                ->select(['id'])->first();
+        $teamId = Team::where('invitation_code', $invitationCode)->select(['id'])->first();
         return $teamId->id;
     }
 
@@ -75,9 +79,9 @@ class Team extends Model
      * @param array $values
      * @return object
      */
-    public function getTeamBySearchQuery($myTeam, $values)
+    public static function getTeamBySearchQuery($myTeam, $values)
     {
-        $query = $this; // 全件取得(初期値)
+        $query = new Team(); // 全件取得(初期値)
 
         // 都道府県
         if (!empty($values['prefecture'])) {
@@ -104,10 +108,27 @@ class Team extends Model
      * @param string $invitation_code
      * @return object
      */
-    public function getTeamInfoByInvitationCodeWithConsents($invitation_code)
+    public static function getTeamInfoByInvitationCodeWithConsents($invitation_code)
     {
-        $query = $this->where('invitation_code', $invitation_code);
+        $query = Team::where('invitation_code', $invitation_code);
 
         return $query->first();
+    }
+
+    /**
+     * 自分が招待する側で、登録するチーム(invitee, guest)で登録する
+     *
+     * @param array $customValues
+     * @return array
+     */
+    public static function getTeamIds($customValues, $userId)
+    {
+        $myTeam = TeamMember::getTeamByUserId($userId);
+        $teamIds['invitee_id'] = $myTeam->team->id;
+
+        // 招待するチームのチームid
+        $teamIds['guest_id'] = Team::getTeamInfoByInvitationCodeWithConsents($customValues['invitation_code'])->id;
+
+        return $teamIds;
     }
 }

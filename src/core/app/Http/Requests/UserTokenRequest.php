@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Constants\CommonConstant;
 use App\Models\TempUser;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
@@ -34,16 +33,14 @@ class UserTokenRequest extends FormRequest
                 'bail',
                 'exists:App\Models\TempUser,token',
                 function ($attribute, $value, $fail) {
-                    $tempUserModel = new TempUser();
-                    $tempUser = $tempUserModel->checkExpiration($value);
+                    $tempUser = TempUser::checkExpiration($value);
 
                     // トークン有効期限切れ
                     if (is_null($tempUser)) {
                         return $fail(__('validation.custom.token.expired'));
                     }
 
-                    $userModel = new User();
-                    $registeredUser = $userModel->where('email', '=', $tempUser->email)->first();
+                    $registeredUser = User::where('email', '=', $tempUser->email)->first();
 
                     // 本登録済み
                     if (!is_null($registeredUser)) {

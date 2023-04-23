@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class ConsentGame extends Model
 {
@@ -80,10 +81,10 @@ class ConsentGame extends Model
      * @param int $teamId
      * @return object
      */
-    public function getMyTeamInvites($teamId)
+    public static function getMyTeamInvites($teamId)
     {
         $now = Carbon::now();
-        $query = $this->where('invitee_id', $teamId);
+        $query = ConsentGame::where('invitee_id', $teamId);
         $query->Where(function ($query) use ($now) {
             $query->orwhere('first_preferered_date', '>=', $now);
             $query->orwhere('second_preferered_date', '>=', $now);
@@ -108,10 +109,10 @@ class ConsentGame extends Model
      * @param int $teamId
      * @return object
      */
-    public function getAsGuestInvites($teamId)
+    public static function getAsGuestInvites($teamId)
     {
         $now = Carbon::now();
-        $query = $this->where('guest_id', $teamId);
+        $query = ConsentGame::where('guest_id', $teamId);
         $query->Where(function ($query) use ($now) {
             $query->orwhere('first_preferered_date', '>=', $now);
             $query->orwhere('second_preferered_date', '>=', $now);
@@ -220,13 +221,12 @@ class ConsentGame extends Model
      * @param int $consent_game_id
      * @return object
      */
-    public function getRepliesByConsentGameId($consent_game_id)
+    public static function getRepliesByConsentGameId($consent_game_id)
     {
-        // userのチームを取得
-        $teamMemberModel = new TeamMember();
-        $myTeam = $teamMemberModel->getTeamByUserId(Auth::user()->id);
+        // 自分のチーム情報を取得
+        $myTeam = TeamMember::getTeamByUserId(Auth::user()->id);
 
-        $query = $this->where('consent_games.id', '=', $consent_game_id);
+        $query = ConsentGame::where('consent_games.id', '=', $consent_game_id);
         $query->join('teams as it', 'it.id', '=', 'consent_games.invitee_id');
         $query->join('teams as gt', 'gt.id', '=', 'consent_games.guest_id');
         $query->join('teams as myt', function ($join) use ($myTeam, $consent_game_id, $query) {
@@ -256,5 +256,19 @@ class ConsentGame extends Model
         $replies = $query->first();
 
         return $replies;
+    }
+
+    /**
+     * 招待ゲーム詳細を取得
+     *
+     * @param string $consent_game_id
+     * @return object
+     */
+    public static function getConsentsGame($consent_game_id)
+    {
+        $id = Crypt::decryptString($consent_game_id);
+        $consents = ConsentGame::getConsentsGameById($id);
+
+        return $consents;
     }
 }

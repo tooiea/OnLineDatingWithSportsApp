@@ -72,8 +72,7 @@ class TempTeamUserFormRequest extends FormRequest
                 'required',
                 'email:rfc,strict',
                 function ($attribute, $value, $fail) {
-                    $userModel = new User();
-                    $activeUser = $userModel->getByEmail($value);
+                    $activeUser = User::getByEmail($value);
                     if ($activeUser) {
                         $fail(__('validation.unique'));
                     }

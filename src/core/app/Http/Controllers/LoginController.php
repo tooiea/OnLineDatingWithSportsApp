@@ -7,6 +7,9 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * メールアドレスでログイン
+ */
 class LoginController extends AuthenticatedSessionController
 {
     /**

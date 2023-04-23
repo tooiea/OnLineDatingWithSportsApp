@@ -16,25 +16,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * 試合への招待 | 試合へ招待された
+ */
 class ConsentGamesController extends Controller
 {
-    private $team;
-    private $teamMember;
-    private $consentGame;
-    private $reply;
-    /**
-     * モデルインスタンスセット
-     *
-     * @param Team $team
-     */
-    public function __construct(Team $team, TeamMember $teamMember, ConsentGame $consentGame, Reply $reply)
-    {
-        $this->team = $team;
-        $this->teamMember = $teamMember;
-        $this->consentGame = $consentGame;
-        $this->reply = $reply;
-    }
-
     /**
      * 招待チームと招待フォーム表示
      *
@@ -46,7 +32,7 @@ class ConsentGamesController extends Controller
     {
         // 招待先のチーム情報と招待情報の取得
         session(['consent_invitation_code' => $invitation_code]);
-        $guestTeam = $this->team->getTeamInfoByInvitationCodeWithConsents($invitation_code);
+        $guestTeam = Team::getTeamInfoByInvitationCodeWithConsents($invitation_code);
 
         return view('consentGames.index', compact('guestTeam'));
     }
@@ -79,33 +65,22 @@ class ConsentGamesController extends Controller
     {
         $specifyFormRequestInputs = $request->session()->pull('consent_team');
         $customValues = $specifyFormRequestInputs->getAll();
-        $teamIds = $this->getTeamIds($customValues);
+
+        // 招待チーム及び招待されるチームを取得
+        $teamIds = Team::getTeamIds($customValues, Auth::id());
 
         DB::transaction(function () use ($customValues, $teamIds) {
             // 試合招待テーブルへ登録、メール送信
-            $this->consentGame->createConsent($customValues, $teamIds);
+            $consentGameModel = new ConsentGame();
+            $$consentGameModel->createConsent($customValues, $teamIds);
         });
 
+        // 招待されるチームの情報
         $guest = Team::where('id', $teamIds['guest_id'])->first();
 
         // チームトップへリダイレクトしセッションメッセージ表示
         $request->session()->flash('consent.sent', $guest->team_name . __('user_messages.success.consent_sent'));
         return redirect()->route('team.index');
-    }
-
-    /**
-     * 登録するチームidを取得
-     *
-     * @param array $customValues
-     * @return array
-     */
-    private function getTeamIds($customValues)
-    {
-        $myTeam = $this->teamMember->getTeamByUserId(Auth::id());
-        $teamIds['invitee_id'] = $myTeam->team->id;
-        $teamIds['guest_id'] = $this->team->getTeamInfoByInvitationCodeWithConsents($customValues['invitation_code'])->id; // チーム情報取得
-
-        return $teamIds;
     }
 
     /**
@@ -118,7 +93,7 @@ class ConsentGamesController extends Controller
      */
     public function detail(ConsentGameIdRequest $request, $consent_game_id)
     {
-        $replies = $this->consentGame->getRepliesByConsentGameId(Crypt::decryptString($consent_game_id));
+        $replies = ConsentGame::getRepliesByConsentGameId(Crypt::decryptString($consent_game_id));
 
         return view('consentGames.reply_detail', compact('replies'));
     }
@@ -135,23 +110,9 @@ class ConsentGamesController extends Controller
         // チームのトップ一覧から招待情報の一覧を表示
         // 既に返信済みであれば、ボタンを表示せずに、回答内容だけを表示するように切り替える
         session(['consent_game_id' => $consent_game_id]);
-        $consents = $this->getConsentsGame($consent_game_id);
+        $consents = ConsentGame::getConsentsGame($consent_game_id);
 
         return view('consentGames.reply', compact('consents'));
-    }
-
-    /**
-     * 招待ゲーム詳細を取得
-     *
-     * @param string $consent_game_id
-     * @return object
-     */
-    private function getConsentsGame($consent_game_id)
-    {
-        $id = Crypt::decryptString($consent_game_id);
-        $consents = $this->consentGame->getConsentsGameById($id);
-
-        return $consents;
     }
 
     /**
@@ -167,7 +128,9 @@ class ConsentGamesController extends Controller
         $specifyFormRequestInputs->setAll($request->all(), FormConstant::CONSENT_REPLY_FORM_KEYS);
         session(['consent_reply' => $specifyFormRequestInputs]);
         $values = $specifyFormRequestInputs->getAll(); // 返信入力値
-        $consents = $this->getConsentsGame($request->session()->get('consent_game_id')); // 招待の詳細日程
+
+        // 招待の詳細日程
+        $consents = ConsentGame::getConsentsGame($request->session()->get('consent_game_id'));
 
         return view('consentGames.reply_confirm', compact('values', 'consents'));
     }
@@ -180,14 +143,20 @@ class ConsentGamesController extends Controller
      */
     public function completeReply(Request $request)
     {
-        $consents = $this->getConsentsGame($request->session()->pull('consent_game_id')); // 招待の詳細日程
+        // 招待の詳細日程
+        $consents = ConsentGame::getConsentsGame($request->session()->pull('consent_game_id'));
         $specifyFormRequestInputs = $request->session()->pull('consent_reply');
         $customValues = $specifyFormRequestInputs->getAll();
 
         // 招待履歴の更新、返信内容を登録
         DB::transaction(function () use ($consents, $customValues) {
-            $this->consentGame->updateConsent($consents, $customValues);
-            $this->reply->createReply($consents, $customValues);
+            // 試合招待へ登録
+            $consentGameModel = new ConsentGame();
+            $consentGameModel->updateConsent($consents, $customValues);
+
+            // 返信詳細へ登録
+            $replyModel = new Reply();
+            $replyModel->createReply($consents, $customValues);
         });
 
         $invitee = Team::where('id', $consents->invitee_id)->first();

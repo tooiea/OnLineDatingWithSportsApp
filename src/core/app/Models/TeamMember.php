@@ -30,29 +30,14 @@ class TeamMember extends Model
     }
 
     /**
-     * チームメンバ登録
-     *
-     * @param int $userId
-     * @param int $teamId
-     * @return void
-     */
-    public function registerTeamMember($userId, $teamId)
-    {
-        return $this->create([
-            'user_id' => $userId,
-            'team_id' => $teamId,
-        ]);
-    }
-
-    /**
      * 登録後のユーザ情報を取得
      *
      * @param object $teamMember
      * @return object
      */
-    public function getUserByTeamIdAndUserId($teamMember)
+    public static function getUserByTeamIdAndUserId($teamMember)
     {
-        $query = $this->where([
+        $query = TeamMember::where([
             'user_id' => $teamMember->user_id,
             'team_id' => $teamMember->team_id,
         ]);
@@ -65,9 +50,9 @@ class TeamMember extends Model
      * @param int $userId
      * @return object
      */
-    public function getTeamByUserId($userId)
+    public static function getTeamByUserId($userId)
     {
-        $team = $this->where('user_id', '=', $userId)->with('team')->first();
+        $team = TeamMember::where('user_id', '=', $userId)->with('team')->first();
 
         return $team;
     }

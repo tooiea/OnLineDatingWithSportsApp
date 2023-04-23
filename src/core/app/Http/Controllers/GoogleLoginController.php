@@ -9,15 +9,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 
+/**
+ * googleでログイン
+ */
 class GoogleLoginController extends Controller
 {
-    private $user;
-
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
     /**
      * Create a new controller instance.
      *
@@ -37,12 +33,13 @@ class GoogleLoginController extends Controller
     {
         try {
             $loggeInUserByGoogle = Socialite::driver('google')->user();
-            $user = $this->user->where('email', $loggeInUserByGoogle->email)->first();
+            $user = User::where('email', $loggeInUserByGoogle->email)->first();
             $now = Carbon::now();
 
             // googleログインで新規登録
             if (is_null($user)) {
-                $user = $this->user->create([
+                $userModel = new User();
+                $user = $userModel->create([
                     'name' => $loggeInUserByGoogle->name,
                     'email' => $loggeInUserByGoogle->email,
                     'google_login_id' => $loggeInUserByGoogle->id,

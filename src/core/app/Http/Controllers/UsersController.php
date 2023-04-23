@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\CommonConstant;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\UserFormRequest;
 use App\Http\Requests\UserTokenRequest;
@@ -17,24 +16,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * ユーザ本登録
+ */
 class UsersController extends BasesController
 {
-    private $userModel;
-    private $tempUserModel;
-    private $teamModel;
-    private $teamMemberModel;
-
-    public function __construct(
-        User $userModel,
-        TempUser $tempUserModel,
-        Team $teamModel,
-        TeamMember $teamMemberModel
-    ) {
-        $this->userModel = $userModel;
-        $this->tempUserModel = $tempUserModel;
-        $this->teamModel = $teamModel;
-        $this->teamMemberModel = $teamMemberModel;
-    }
     /**
      * 本登録
      *
@@ -45,30 +31,42 @@ class UsersController extends BasesController
     public function index(UserTokenRequest $request, $token)
     {
         try {
-            DB::beginTransaction();
-            $tempUser = $this->tempUserModel->getUserByToken($token);
-            $userId = $this->userModel->registerUser($tempUser);
+             DB::transaction(function () use ($token) {
+                // URLのトークンから仮ユーザを取得
+                $tempUser = TempUser::getUserByToken($token);
 
-            // チーム招待での登録
-            if (empty($tempUser->sport_affiliation_type)) {
-                // チーム特定
-                $invitationCode = $tempUser->invitation_code;
-                $teamId = $this->teamModel->getTeamIdByInvitationCode($invitationCode);
-            } else {
-                // チームを登録
-                $invitationCode = $this->createUuid();
-                $teamId = $this->teamModel->registerTeam($tempUser, $invitationCode);
-            }
+                // 新規ユーザとして登録
+                $userModel = new User();
+                $userId = $userModel->registerUser($tempUser);
 
-            $teamMember = $this->teamMemberModel->registerTeamMember($userId, $teamId);
-            $this->tempUserModel->deleteTempUserData($tempUser);
+                // 存在するチームへ登録
+                if (empty($tempUser->sport_affiliation_type)) {
+                    // チーム特定(チームに招待されたユーザ)
+                    $invitationCode = $tempUser->invitation_code;
+                    $teamId = Team::getTeamIdByInvitationCode($invitationCode);
+                } else {
+                    // チームを新規で登録
+                    $invitationCode = $this->createUuid(); // 招待コード取得
+                    $teamModel = new Team();
+                    $teamId = $teamModel->registerTeam($tempUser, $invitationCode);
+                }
 
-            // メール送信
-            $user = $this->teamMemberModel->getUserByTeamIdAndUserId($teamMember);
-            $this->userModel->registrationNotification($user);
-            DB::commit();
+                // チームメンバーに登録
+                $teamMemberModel = new TeamMember();
+                $teamMember = $teamMemberModel->create([
+                    'user_id' => $userId,
+                    'team_id' => $teamId,
+                ]);
+
+                // 仮ユーザから削除
+                $tempUserModel = new TempUser();
+                $tempUserModel->where('email', '=', $tempUser->email)->delete();
+
+                // メール送信
+                $user = TeamMember::getUserByTeamIdAndUserId($teamMember);
+                $userModel->registrationNotification($user);
+             });
         } catch (Exception $e) {
-            DB::rollBack();
             Log::error($e);
             $request->session()->flash('user.register.error', __('validation.custom.error.register'));
             return redirect()->route('login.index');

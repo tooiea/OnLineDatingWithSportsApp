@@ -42,10 +42,10 @@ class TempUser extends Model
      * @param string $token
      * @return object
      */
-    public function checkExpiration($token)
+    public static function checkExpiration($token)
     {
         $now = Carbon::now();
-        $activeUser = $this->where([
+        $activeUser = TempUser::where([
             ['expiration_date','>=', $now],
             ['token', '=', $token],
         ])->first();
@@ -58,9 +58,9 @@ class TempUser extends Model
      * @param string $token
      * @return object
      */
-    public function getUserByToken($token)
+    public static function getUserByToken($token)
     {
-        $tmpUser = $this->where([
+        $tmpUser = TempUser::where([
             'token' => $token,
         ])->first();
 
@@ -113,17 +113,14 @@ class TempUser extends Model
         $this->temporaryRegistrationNotification($token, $customValues['email']);
     }
 
+
     /**
-     * 本登録済のユーザ情報を仮登録テーブルから削除
+     * 招待されたユーザを登録する
      *
-     * @param object $tempUser
+     * @param array $customValues
+     * @param string $token
      * @return void
      */
-    public function deleteTempUserData($tempUser)
-    {
-        $this->where('email', '=', $tempUser->email)->delete();
-    }
-
     public function registrationTempUserByInvitationCode($customValues, $token)
     {
         // invitation_codeを登録

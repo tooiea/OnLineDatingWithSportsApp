@@ -1,6 +1,3 @@
-<?php
-    use App\Constants\ErrorMessagesConstant;
-?>
 <!DOCTYPE html>
 <html lang="ja">
 

@@ -48,7 +48,7 @@ CREATE TABLE temp_users (
   , password VARCHAR(255) NOT NULL
   , token VARCHAR(255) NOT NULL
   , expiration_date DATETIME NOT NULL
-  , sport_affiliation_type INT NOT NULL
+  , sport_affiliation_type INT
   , team_name VARCHAR(255)
   , team_logo VARCHAR(255)
   , image_extension VARCHAR(255)

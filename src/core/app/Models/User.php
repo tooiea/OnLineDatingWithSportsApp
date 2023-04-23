@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Constants\CommonConstant;
 use App\Mail\SendMailer;
 use App\Notifications\UserNotification;
 use Carbon\Carbon;
@@ -58,9 +57,9 @@ class User extends Authenticatable
      * @param string $email
      * @return boolean
      */
-    public function getByEmail($email)
+    public static function getByEmail($email)
     {
-        $user = $this->where(['email' => $email])->first();
+        $user = User::where(['email' => $email])->first();
         $isRegisterUser = false;
 
         if (!is_null($user)) {
@@ -68,6 +67,24 @@ class User extends Authenticatable
         }
 
         return $isRegisterUser;
+    }
+
+    /**
+     * 登録処理前にユーザが本登録されていないかをチェック
+     *
+     * @param string $customValues
+     * @return boolean
+     */
+    public static function checkIsRegistered($email)
+    {
+        $activatedUser = User::getByEmail($email);
+        $isRegistered = false;
+
+        // 既に登録されているメールアドレスである
+        if ($activatedUser) {
+            $isRegistered = true;
+        }
+        return $isRegistered;
     }
 
     /**
