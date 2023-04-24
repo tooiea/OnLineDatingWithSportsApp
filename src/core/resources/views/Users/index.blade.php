@@ -11,11 +11,6 @@
     />
     <link rel="stylesheet" href="/public/css/common.css">
     <title>Login Form</title>
-    <style>
-      body {
-        padding-top: 0;
-      }
-    </style>
   </head>
   <body>
     <div class="container-xl mt-5">
@@ -23,7 +18,7 @@
         <div class="col-sm-7 col-md-5">
           <div class="card">
             <div class="card-header">
-              <h3>Login</h3>
+              <h4>OLDwsへログイン</h4>
             </div>
             <div class="card-body">
               <form action="{{ route('login') }}" method="post">
@@ -33,14 +28,14 @@
                   <label for="email">メールアドレス</label>
                   <input type="email" name="email"
                       class="form-control @error('email') is-invalid @enderror" id="email"
-                      placeholder="メールアドレス" aria-describedby="emailHelp">
+                      placeholder="oldsws@gmail.com" aria-describedby="emailHelp">
                   @error('email')<small id="emailHelp" class="invalid-feedback" role="alert"> {{ $message }} </small> @enderror
                 </div>
                 <div class="form-group">
                   <label for="password">パスワード</label>
                   <input type="password" name="password"
                     class="form-control @error('password') is-invalid @enderror" id="password"
-                    required autocomplete="password" placeholder="パスワード">
+                    required autocomplete="password" placeholder="password">
                     @error('password') <small id="passwordHelp" class="invalid-feedback" role="alert"> {{ $message }} </small> @enderror
                 </div>
                 @if (session('user.registered')) <div class="alert alert-light" role="alert"> {!! session('user.registered') !!} </div> @endif
@@ -51,8 +46,24 @@
                 </button>
                 <a href="{{ route('password.request') }}">→パスワードをお忘れの方はこちら</a>
                 <hr />
-                <a href="{{ route('google.login') }}" class="btn btn-block btn-lg"><img src="/public/images/btn_google_signin_dark_normal_web.png"></a>
-                <a href="{{ route('line.login') }}" class="btn btn-block btn-lg"><img src="/public/images/btn_login_base.png" alt="" class="btn"></a>
+                <div class="row">
+                  <div class="col" style="max-width: 100%;">
+                    <div class="text-center">
+                      <a href="{{ route('google.login') }}" class="btn btn-block btn-lg">
+                        <img src="/public/images/btn_google_signin_dark_normal_web@2x.png" alt="Google Login" style="width: 100%;">
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col" style="max-width: 100%;">
+                    <div class="text-center">
+                      <a href="{{ route('line.login') }}" class="btn btn-block btn-lg">
+                        <img src="/public/images/btn_login_base.png" alt="Line Login" style="width: 100%;">
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </form>
             </div>
           </div>

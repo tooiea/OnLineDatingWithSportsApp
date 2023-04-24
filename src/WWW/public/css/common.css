@@ -7,15 +7,27 @@ body {
 
 /* ボタンの色を上書き */
 .btn-info {
-    background-color: #90ced8;
+    background-color: #dbdeaf;
+    color: #ffffff;
     border: solid white;
     border-radius: 10px;
 }
 
+.btn-info:hover {
+    background-color: #d2d87c;
+    border: solid white;
+}
+
 .btn-primary {
-    background-color: #6caff6;
+    background-color: #dcd7e7;
+    color: #ffffff;
     border: solid white;
     border-radius: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #c7b9e5;
+    border: solid white;
 }
 
 /* ナビゲーション */
