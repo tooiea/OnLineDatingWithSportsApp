@@ -43,7 +43,7 @@ return [
         'array' => 'The :attribute must have between :min and :max items.',
     ],
     'boolean' => 'The :attribute field must be true or false.',
-    'confirmed' => 'The :attribute confirmation does not match.',
+    'confirmed' => ':attribute は同じ入力でありません',
     'current_password' => 'The password is incorrect.',
     'date' => ':attribute を正しく入力してください。',
     'date_equals' => 'The :attribute must be a date equal to :date.',

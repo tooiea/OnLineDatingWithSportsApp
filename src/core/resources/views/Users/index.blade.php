@@ -9,12 +9,18 @@
       integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="/public/css/common.css">
     <title>Login Form</title>
+    <style>
+      body {
+        padding-top: 0;
+      }
+    </style>
   </head>
   <body>
-    <div class="container mt-5">
+    <div class="container-xl mt-5">
       <div class="row justify-content-center">
-        <div class="col-sm-6 col-md-4">
+        <div class="col-sm-7 col-md-5">
           <div class="card">
             <div class="card-header">
               <h3>Login</h3>
@@ -38,13 +44,14 @@
                     @error('password') <small id="passwordHelp" class="invalid-feedback" role="alert"> {{ $message }} </small> @enderror
                 </div>
                 @if (session('user.registered')) <div class="alert alert-light" role="alert"> {!! session('user.registered') !!} </div> @endif
-                <button type="submit" class="btn btn-primary btn-block">
+                @if (session('new-pw.status')) <div class="alert alert-light" role="alert"> {!! session('new-pw.status') !!} </div> @endif
+                <a href="{{ route('tmp_team_user.index') }}" class="btn btn-secondary btn-block mt-3 btn-lg">新しくチームを作る</a>
+                <button type="submit" class="btn btn-primary btn-block btn-lg">
                   ログインする
                 </button>
-                <a href="{{ route('tmp_team_user.index') }}" class="btn btn-secondary btn-block mt-3">チームを作成して新規登録</a>
                 <hr />
-                <a href="{{ route('google.login') }}" class="btn btn-block"><img src="/public/images/btn_google_signin_dark_normal_web.png"></a>
-                <a href="{{ route('line.login') }}" class="btn btn-block"><img src="/public/images/btn_login_base.png" alt="" class="btn"></a>
+                <a href="{{ route('google.login') }}" class="btn btn-block btn-lg"><img src="/public/images/btn_google_signin_dark_normal_web.png"></a>
+                <a href="{{ route('line.login') }}" class="btn btn-block btn-lg"><img src="/public/images/btn_login_base.png" alt="" class="btn"></a>
               </form>
             </div>
           </div>
