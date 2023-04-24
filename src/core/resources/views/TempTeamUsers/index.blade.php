@@ -18,7 +18,7 @@
         <form action="{{ route('tmp_team_user.confirm') }}" method="post" enctype="multipart/form-data">
           @csrf
           <hr>
-          <h5 class="card-title mb-4">チームについて</h5>
+          <h5 class="card-title mb-4 sports">チームについて</h5>
           <hr>
           <div class="form-group">
             <label for="teamName">スポーツ種別</label>
@@ -56,7 +56,7 @@
             @error('teamUrl')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <hr>
-          <h5 class="card-title mb-4">チーム活動について</h5>
+          <h5 class="card-title mb-4 team">チーム活動について</h5>
           <hr>
           <div class="form-group">
             <label for="prefecture">都道府県</label>
