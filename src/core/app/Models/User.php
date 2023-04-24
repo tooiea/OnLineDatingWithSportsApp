@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Mail\SendMailer;
+use App\Notifications\ResetPasswordNotification;
 use App\Notifications\UserNotification;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -115,5 +116,16 @@ class User extends Authenticatable
     public function registrationNotification($user)
     {
         $this->notify(new UserNotification($user, new SendMailer()));
+    }
+
+    /**
+     * パスワードリセットメール送信(カスタム)
+     *
+     * @param string $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token, new SendMailer()));
     }
 }
