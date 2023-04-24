@@ -1,36 +1,46 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
-
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <title>パスワード再設定</title>
+  </head>
+  <body>
+    <div class="container-fluid mt-5">
+      <div class="row justify-content-center">
+        <div class="col-sm-8 col-md-6 col-lg-4">
+          <div class="card">
+            <div class="card-header">
+              <h3>パスワード再設定</h3>
+            </div>
+            <div class="card-body">
+              <form action="{{ route('password.email') }}" method="post">
+                @csrf
+                @if (session('pw-forgot.status')) <div class="alert alert-danger" role="alert"> {!! session('pw-forgot.status') !!} </div> @endif
+                <div class="form-group">
+                  <label for="email">メールアドレス</label>
+                  <input type="email" name="email"
+                      class="form-control @error('email') is-invalid @enderror" id="email"
+                      placeholder="メールアドレス" aria-describedby="emailHelp">
+                  @error('email')<small id="emailHelp" class="invalid-feedback" role="alert"> {{ $message }} </small> @enderror
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                  送信
+                </button>
+              </form>
+              <div class="mt-3">
+                <p class="text-center">*登録しているメールアドレスを入力してください</p>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
-        <form method="POST" action="{{ route('password.email') }}">
-            @csrf
-
-            <!-- Email Address -->
-            <div>
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <x-button>
-                    {{ __('Email Password Reset Link') }}
-                </x-button>
-            </div>
-        </form>
-    </x-auth-card>
-</x-guest-layout>
+      </div>
+    </div>
+  </body>
+</html>

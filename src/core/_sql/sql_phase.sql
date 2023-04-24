@@ -70,6 +70,7 @@ CREATE TABLE users (
   , google_login_id VARCHAR(255)
   , line_login_id VARCHAR(255)
   , last_login_time DATETIME NOT NULL
+  , remember_token VARCHAR(255)
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
   , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP
   , CONSTRAINT users_PKC PRIMARY KEY (id)

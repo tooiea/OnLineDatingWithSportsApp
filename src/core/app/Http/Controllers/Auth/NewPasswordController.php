@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 
+/**
+ * パスワード再設定
+ */
 class NewPasswordController extends Controller
 {
     /**
