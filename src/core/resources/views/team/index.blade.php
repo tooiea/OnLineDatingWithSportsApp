@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/public/css/common.css">
 </head>
 
-<body>
+<body class="body-with-nav">
   @include('layouts.nav')
   <!-- Main content -->
   <div class="container mt-3">

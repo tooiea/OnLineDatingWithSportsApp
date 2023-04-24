@@ -11,7 +11,7 @@
   <title>Team Edit Form</title>
 </head>
 
-<body>
+<body class="body-with-nav">
   @include('layouts.nav')
   <div class="container my-5">
     <h1 class="text-center">チームプロフィール編集</h1>

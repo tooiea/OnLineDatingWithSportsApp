@@ -13,7 +13,7 @@
   <title>Search Team</title>
 </head>
 
-<body>
+<body class="body-with-nav">
   @include('layouts.nav')
   <div class="container mt-5">
     <div class="row justify-content-center">

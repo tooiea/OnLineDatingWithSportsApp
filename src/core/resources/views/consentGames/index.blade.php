@@ -12,7 +12,7 @@
     <title>練習試合の招待フォーム</title>
 </head>
 
-<body>
+<body class="body-with-nav">
     @include('layouts.nav')
     <div class="container my-5">
         <h2 class="text-center">Let's invite to GAME!</h2>

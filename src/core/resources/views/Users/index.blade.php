@@ -45,10 +45,11 @@
                 </div>
                 @if (session('user.registered')) <div class="alert alert-light" role="alert"> {!! session('user.registered') !!} </div> @endif
                 @if (session('new-pw.status')) <div class="alert alert-light" role="alert"> {!! session('new-pw.status') !!} </div> @endif
-                <a href="{{ route('tmp_team_user.index') }}" class="btn btn-secondary btn-block mt-3 btn-lg">新しくチームを作る</a>
-                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                <a href="{{ route('tmp_team_user.index') }}" class="btn btn-info btn-block mt-4 btn-lg">新しくチームを作る</a>
+                <button type="submit" class="btn btn-primary btn-block btn-lg mb-2">
                   ログインする
                 </button>
+                <a href="{{ route('password.request') }}">→パスワードをお忘れの方はこちら</a>
                 <hr />
                 <a href="{{ route('google.login') }}" class="btn btn-block btn-lg"><img src="/public/images/btn_google_signin_dark_normal_web.png"></a>
                 <a href="{{ route('line.login') }}" class="btn btn-block btn-lg"><img src="/public/images/btn_login_base.png" alt="" class="btn"></a>

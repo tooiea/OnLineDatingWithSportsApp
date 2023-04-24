@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>返信画面</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/public/css/common.css">
   <style>
     .card {
       margin: 10px;
@@ -14,7 +15,7 @@
   <link rel="stylesheet" href="/public/css/common.css">
 </head>
 
-<body>
+<body class="body-with-nav">
   @include('layouts.nav')
   <!-- TODO 前に戻るボタンを追加 -->
   <div class="container mt-3">

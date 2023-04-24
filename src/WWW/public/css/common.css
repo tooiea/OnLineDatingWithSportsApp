@@ -1,5 +1,23 @@
 @charset "UTF-8";
 
+/* フォント統一 */
+body {
+    font-family:  游ゴシック, "Yu Gothic", メイリオ, Meiryo, Verdana, Helvetica, Arial, sans-serif;
+}
+
+/* ボタンの色を上書き */
+.btn-info {
+    background-color: #90ced8;
+    border: solid white;
+    border-radius: 10px;
+}
+
+.btn-primary {
+    background-color: #6caff6;
+    border: solid white;
+    border-radius: 10px;
+}
+
 /* ナビゲーション */
 .nav-item.active a {
     text-decoration: underline;
@@ -19,12 +37,10 @@
 }
 
 /* ページ上部にスペースを作るためのパディング */
-body {
-    font-family:  游ゴシック, "Yu Gothic", メイリオ, Meiryo, Verdana, Helvetica, Arial, sans-serif;
+.body-with-nav {
     padding-top: 60px;
     /* ナビゲーションバーの高さに合わせて調整 */
 }
-
 
 /* ステータス表示 */
 @media screen and (max-width: 767px) {

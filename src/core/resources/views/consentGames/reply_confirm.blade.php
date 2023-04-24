@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <title>確認画面</title>
 </head>
-<body>
+<body class="body-with-nav">
     @include('layouts.nav')
     <div class="container">
         <h3>確認画面</h3>

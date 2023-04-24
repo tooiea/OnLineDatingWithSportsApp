@@ -14,7 +14,7 @@
   <title>Team Detail</title>
 </head>
 
-<body>
+<body class="body-with-nav">
   @include('layouts.nav')
   <div class="container my-5">
     <div class="card">
