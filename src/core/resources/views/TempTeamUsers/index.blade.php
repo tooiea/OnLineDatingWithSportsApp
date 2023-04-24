@@ -17,7 +17,9 @@
       <div class="card-body">
         <form action="{{ route('tmp_team_user.confirm') }}" method="post" enctype="multipart/form-data">
           @csrf
-          <h5 class="card-title mb-4">Team Information</h5>
+          <hr>
+          <h5 class="card-title mb-4">チームについて</h5>
+          <hr>
           <div class="form-group">
             <label for="teamName">スポーツ種別</label>
             <select name="sportAffiliationType"
@@ -53,7 +55,9 @@
             <small id="teamUrlHelp" class="form-text text-muted">facebookやinstagramなどチームを紹介などでご使用ください</small>
             @error('teamUrl')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
-          <h5 class="card-title mb-4 mt-5">チームが主に活動するエリア</h5>
+          <hr>
+          <h5 class="card-title mb-4">チーム活動について</h5>
+          <hr>
           <div class="form-group">
             <label for="prefecture">都道府県</label>
             <select name="prefecture" class="form-control @error('prefecture') is-invalid @enderror" id="prefecture" aria-describedby="nameHelp">
@@ -73,7 +77,9 @@
             <small id="addressHelp" class="form-text text-muted">チームの拠点を入力してください</small>
             @error('address')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
-          <h5 class="card-title mb-4 mt-5">User Information</h5>
+          <hr>
+          <h5 class="card-title mb-4 mt-3 user">ユーザについて</h5>
+          <hr>
           <div class="form-group">
             <label for="name">ニックネーム</label>
             <input type="text" name="name" value="{{ old('name') }}" id="name" aria-describedby="nameHelp"
@@ -106,7 +112,9 @@
             <small id="passwordHelp" class="form-text text-muted">上記のパスワードと同じ入力をしてください</small>
             @error('password2')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
-          <button type="submit" class="btn btn-primary">確認する</button>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-lg">確認する</button>
+          </div>
         </form>
       </div>
   </div>

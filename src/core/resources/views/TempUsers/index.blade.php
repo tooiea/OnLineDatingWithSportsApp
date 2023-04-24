@@ -17,7 +17,9 @@
       <div class="card-body">
         <form action="{{ route('tmp_user.confirm') }}" method="post">
             @csrf
-          <h5 class="card-title mb-4 mt-5">ユーザ情報</h5>
+          <hr>
+          <h5 class="card-title mb-4 mt-5 user">ユーザについて</h5>
+          <hr>
           <div class="form-group">
             <label for="name">ニックネーム</label>
             <input type="text" name="name" value="{{ old('name') }}" id="name" aria-describedby="nameHelp"
@@ -50,7 +52,9 @@
             <small id="passwordHelp" class="form-text text-muted">上記のパスワードと同じ入力をしてください</small>
             @error('password2')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
-          <button type="submit" class="btn btn-primary">確認する</button>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-lg">確認する</button>
+          </div>
         </form>
       </div>
   </div>

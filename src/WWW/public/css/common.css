@@ -54,6 +54,22 @@ body {
     /* ナビゲーションバーの高さに合わせて調整 */
 }
 
+/* お問い合わせフォームのユーザについての画像調整 */
+h5.user {
+    position: relative;
+    padding-left: 50px;
+}
+
+h5.user::before {
+    content: url(/public/images/human.jpeg);
+    display: inline-block;
+    vertical-align: middle;
+    transform: scale(0.15);
+    position: absolute;
+    top: -102px;
+    left: -100px;
+}
+
 /* ステータス表示 */
 @media screen and (max-width: 767px) {
     table {
