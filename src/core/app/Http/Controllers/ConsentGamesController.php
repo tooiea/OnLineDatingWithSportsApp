@@ -72,7 +72,7 @@ class ConsentGamesController extends Controller
         DB::transaction(function () use ($customValues, $teamIds) {
             // 試合招待テーブルへ登録、メール送信
             $consentGameModel = new ConsentGame();
-            $$consentGameModel->createConsent($customValues, $teamIds);
+            $consentGameModel->createConsent($customValues, $teamIds);
         });
 
         // 招待されるチームの情報

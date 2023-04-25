@@ -137,10 +137,10 @@ class ConsentGame extends Model
      * @param int $consentId
      * @return object
      */
-    public function getConsentsGameById($consentId)
+    public static function getConsentsGameById($consentId)
     {
         $now = Carbon::now();
-        $query = $this->where('consent_games.id', $consentId);
+        $query = ConsentGame::where('consent_games.id', $consentId);
         $query->where(function ($query) use ($now) {
             $query->orwhere('first_preferered_date', '>=', $now);
             $query->orwhere('second_preferered_date', '>=', $now);
