@@ -121,6 +121,7 @@ h5.user::before {
         }
     }
 }
+
 .status-wait {
     color: orange;
 }
@@ -201,4 +202,8 @@ h5.user::before {
     .table-responsive table th span {
         font-size: 20px;
     }
+}
+
+.team_logo {
+    width: 80px;
 }

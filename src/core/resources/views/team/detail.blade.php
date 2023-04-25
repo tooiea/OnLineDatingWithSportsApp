@@ -11,6 +11,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="/public/css/common.css">
+  <style>
+    .card-body h5 {
+      margin-bottom: 20px;
+    }
+  </style>
   <title>Team Detail</title>
 </head>
 
@@ -22,21 +27,20 @@
         <h3 class="card-title">チームプロフィール詳細</h3>
       </div>
       <div class="card-body">
-        <h5>チーム名</h5>
-        <p>{{ $myTeam->team->team_name }}</p>
-        <p>
-          <img
+        <h5>チーム名　　　{{ $myTeam->team->team_name }}</h5>
+        <h5>
+          チームロゴ　　<img
           src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents($myTeam->team->team_logo)) }}"
-          class="img-fluid" alt="team logo" /></p>
-        <h5>登録人数</h5>
-        <p>{{ $teamMembersNumber }}人</p>
+          class="img-fluid" alt="team logo" />
+        </h5>
+        <h5>登録人数　　　{{ $teamMembersNumber }}人</h5>
         <h5>チーム紹介URL</h5>
-        <p>
+        <h5>
           <a href="{{ $myTeam->team->team_url }}">{{ $myTeam->team->team_url }}</a>
           @empty($myTeam->team->team_url)
-          -
+          　未登録
           @endempty
-        </p>
+        </h5>
         <h5>他選手の招待URL</h5>
         <div class="input-group mb-3">
           <input type="text" class="form-control" id="myInput"

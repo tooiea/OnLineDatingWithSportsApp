@@ -65,10 +65,10 @@
                             <div class="col-12 col-md-4">
                                 @if($replies->invitee_id === $replies->my_team_id)
                                 <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
-                                    class="card-img-top rounded-circle" alt="ロゴ">
+                                    class="card-img-top rounded-circle team_logo" alt="ロゴ">
                                 @else
                                 <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
-                                    class="card-img-top rounded-circle" alt="ロゴ">
+                                    class="card-img-top rounded-circle team_logo" alt="ロゴ">
                                 @endif
                             </div>
                             <div class="col-12 col-md-8">
