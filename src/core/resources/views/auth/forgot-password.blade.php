@@ -30,9 +30,8 @@
                       placeholder="メールアドレス" aria-describedby="emailHelp">
                   @error('email')<small id="emailHelp" class="invalid-feedback" role="alert"> {{ $message }} </small> @enderror
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">
-                  送信
-                </button>
+                <input type="submit" class="btn btn-primary btn-block" value="送信">
+              </input>
               </form>
               <div class="mt-3">
                 <p class="text-center">*登録しているメールアドレスを入力してください</p>

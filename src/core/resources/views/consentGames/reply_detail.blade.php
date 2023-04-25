@@ -240,27 +240,6 @@
                     @endif
                     @endif
                     @endforeach
-
-                    <!-- <div class="media mb-3 media-sender">
-                        <div class="media-body text-right">
-                            <div class="message-bubble">
-                                <h5 class="mt-0">自分の名前</h5>
-                                メッセージの本文がここに入ります。
-                            </div>
-                            <div class="small text-muted">送信日時</div>
-                        </div>
-                        <img src="https://via.placeholder.com/50x50" class="ml-3 rounded-circle" alt="自分のアイコン">
-                    </div>
-                    <div class="media mb-3 media-receiver">
-                        <img src="https://via.placeholder.com/50x50" class="mr-3 rounded-circle" alt="送信者アイコン">
-                        <div class="media-body">
-                            <div class="message-bubble">
-                                <h5 class="mt-0">送信者名</h5>
-                                メッセージの本文がここに入ります。
-                            </div>
-                            <div class="small text-muted">送信日時</div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>

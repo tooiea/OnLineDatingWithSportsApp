@@ -7,26 +7,26 @@ body {
 
 /* ボタンの色を上書き */
 .btn-info {
-    background-color: #dbdeaf;
+    background-color: #ced28f;
     color: #ffffff;
     border: solid white;
     border-radius: 10px;
 }
 
 .btn-info:hover {
-    background-color: #d2d87c;
+    background-color: #c2cc38;
     border: solid white;
 }
 
 .btn-primary {
-    background-color: #dcd7e7;
+    background-color: #b29ce1;
     color: #ffffff;
     border: solid white;
     border-radius: 10px;
 }
 
 .btn-primary:hover {
-    background-color: #c7b9e5;
+    background-color: #835ed2;
     border: solid white;
 }
 
@@ -109,8 +109,18 @@ h5.user::before {
     thead th {
         font-size: 10px;
     }
-}
+    
+    /* iPhone 12 や iPhone 13 mini などのスペースに合わせた修正 */
+    @supports (max-width: -webkit-fill-available) {
+        table {
+            font-size: 11px !important;
+        }
 
+        thead th {
+            font-size: 9px !important;
+        }
+    }
+}
 .status-wait {
     color: orange;
 }
