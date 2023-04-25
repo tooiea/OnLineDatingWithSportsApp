@@ -21,7 +21,7 @@
                 招待内容
             </h3>
             <div class="card-body">
-                <h5 class="card-title mb-4">▼招待するのチーム詳細</h5>
+                <h5 class="card-title mb-4">▼招待するチームの詳細</h5>
                 <div class="form-group">
                     <p>チーム名　　　{{ $guestTeam->team_name }}</p>
                 </div>

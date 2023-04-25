@@ -21,7 +21,7 @@
   <div class="container mt-3">
     <div class="card">
       <div class="card-header">
-        <h5 class="card-title">チーム名：{{ $consents->team_name }}</h5>
+        <h5 class="card-title">チーム名　{{ $consents->team_name }}</h5>
       </div>
       <div class="card-body">
         <div class="row">
@@ -31,18 +31,18 @@
               id="team-logo" class="img-fluid">
           </div>
           <div class="col-8">
-            <p>第一希望：<br>
+            <p>第一希望<br>
               <span style="white-space: nowrap; overflow: hidden;">
               {{ \Carbon\Carbon::parse($consents->first_preferered_date)->format('Y年m月d日 G時i分') }}
               </span>
             </p>
-            <p>第二希望：<br>
+            <p>第二希望<br>
               <span style="white-space: nowrap; overflow: hidden;">
               {{ \Carbon\Carbon::parse($consents->second_preferered_date)->format('Y年m月d日 G時i分') }}
               </span>
             </p>
             @if (!empty($consents->third_preferered_date))
-            <p>第三希望：<br>
+            <p>第三希望<br>
               <span style="white-space: nowrap; overflow: hidden;">
               {{ \Carbon\Carbon::parse($consents->third_preferered_date)->format('Y年m月d日 G時i分') }}
               </span>
@@ -109,7 +109,7 @@
           @endif
           <hr>
           <div class="form-group">
-            <label for="reply">返信したいメッセージがあれば入力してください</label>
+            <label for="reply">メッセージを入力してください</label>
             <textarea class="form-control" id="reply" rows="3" name="message">{{ old('message') }}</textarea>
           </div>
           <div class="text-center">

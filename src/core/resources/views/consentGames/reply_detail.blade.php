@@ -16,6 +16,10 @@
             border-radius: 0.5rem 0.5rem 0 0;
         }
 
+        .card-header:nth-child(2) {
+            margin-top: 10px;
+        }
+
         .card-body {
             background-color: #f2f2f2;
             border-radius: 0 0 0.5rem 0.5rem;
@@ -81,14 +85,14 @@
                                 </h5>
                                 <p class="card-text">
                                     @if($replies->invitee_id === $replies->my_team_id)
-                                    <a href="{{ $replies->guest_team_url }}">チームURL</a>
+                                    <a href="{{ $replies->guest_team_url }}">{{ $replies->guest_team_url }}</a>
                                     @else
-                                    <a href="{{ $replies->invite_team_url }}">チームURL</a>
+                                    <a href="{{ $replies->invite_team_url }}">{{ $replies->guest_team_url }}</a>
                                     @endif
                                 </p>
                                 <ul class="list-group">
                                     <li class="message-bubble mt-2">
-                                        <label for="">ステータス:　</label>
+                                        <label for="">進捗状況　　</label>
                                         <span>
                                             {{ \App\Enums\ConsentStatusTypeEnum::from($replies->consent_status)->label()
                                             }}
@@ -96,7 +100,7 @@
                                     </li>
                                     @if ($replies->consent_status === \App\Enums\ConsentStatusTypeEnum::ACCEPTED->value)
                                     <li class="message-bubble mt-2">
-                                        <label for="">承認日程:</label>
+                                        <label for="">試合決定日時</label>
                                         <p>
                                             {{ \Carbon\Carbon::parse($replies->game_date)->format('Y年m月d日G時i分') }}
                                         </p>
@@ -104,7 +108,7 @@
                                     @elseif ($replies->consent_status ===
                                     \App\Enums\ConsentStatusTypeEnum::DECLINED->value)
                                     <li class="message-bubble mt-2">
-                                        <label for="">承認日程:　-</label>
+                                        <label for="">承認日程　-</label>
                                     </li>
                                     @else
                                     <li class="message-bubble mt-2">

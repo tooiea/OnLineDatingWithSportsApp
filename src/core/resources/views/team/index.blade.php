@@ -43,8 +43,8 @@
                 <thead>
                   <tr>
                     <th>招待日</th>
-                    <th>チーム名<br><small>※詳細ページへ</small></th>
-                    <th>進捗状況</th>
+                    <th>チーム名</th>
+                    <th>進捗状況<br><small>※詳細ページへ</small></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -54,13 +54,14 @@
                       \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日')
                       }}</td>
                     <td class="align-middle">
-                      <a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}">
                         {{ $value['team_name'] }}
-                      </a>
                     </td>
                     <td
-                      class="align-middle {{ 'status-' . \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->className() }}">
-                      {{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
+                      class="align-middle">
+                      <a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}"
+                      class=" {{ 'status-' . \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->className() }}">
+                        {{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
+                      </a>
                     </td>
                   </tr>
                   @endforeach
@@ -84,8 +85,8 @@
                 <thead>
                   <tr>
                     <th>招待日</th>
-                    <th>チーム名<br><small>※詳細ページへ</small></th>
-                    <th>進捗状況</th>
+                    <th>チーム名</th>
+                    <th>進捗状況<br><small>※詳細ページへ</small></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -94,20 +95,25 @@
                     <td class="align-middle">{{
                       \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日')
                       }}</td>
+                    <td
+                      class="align-middle">
+                      {{ $value['team_name'] }}
+                    </td>
                     @if ($value['consent_status'] === \App\Enums\ConsentStatusTypeEnum::WAIT->value)
                     <td class="align-middle">
-                      <a href="{{ route('reply.index', Crypt::encryptString($value->consent_games_id)) }}">{{ $value['team_name'] }}</a>
+                      <a href="{{ route('reply.index', Crypt::encryptString($value->consent_games_id)) }}"
+                      class="{{ 'status-' . \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->className() }}">
+                        {{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
+                      </a>
                     </td>
                     @else
                     <td class="align-middle">
-                      <a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}">{{ $value['team_name'] }}</a>
+                      <a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}"
+                      class="{{ 'status-' . \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->className() }}">
+                        {{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
+                      </a>
                     </td>
                     @endif
-                    <td
-                      class="align-middle {{ 'status-' . \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->className() }}">
-                      {{
-                      \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
-                    </td>
                   </tr>
                   @endforeach
                 </tbody>

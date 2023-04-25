@@ -42,8 +42,24 @@ services:
     networks:
       - br0
 
+  phpmyadmin:
+    container_name: "oldws_phpmyadmin"
+    platform: linux/x86_64
+    depends_on:
+      - db_baseball
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db_baseball
+    ports:
+      - 8080:80
+    volumes:
+      - ./phpmyadmin/phpmyadmin-misc.ini:/usr/local/etc/php/conf.d/phpmyadmin-misc.ini
+    networks:
+      - br0
+
 volumes:
   db_baseball:
+
 
 networks:
   br0:

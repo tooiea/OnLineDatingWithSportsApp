@@ -24,24 +24,24 @@
   <div class="container my-5">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">チームプロフィール詳細</h3>
+        <h4 class="card-title">チームプロフィール</h4>
       </div>
       <div class="card-body">
         <h5>チーム名　　　{{ $myTeam->team->team_name }}</h5>
         <h5>
           チームロゴ　　<img
           src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents($myTeam->team->team_logo)) }}"
-          class="img-fluid" alt="team logo" />
+          class="img-fluid  w-25" alt="team logo" />
         </h5>
         <h5>登録人数　　　{{ $teamMembersNumber }}人</h5>
-        <h5>チーム紹介URL</h5>
         <h5>
+          チーム紹介URL<br>
           <a href="{{ $myTeam->team->team_url }}">{{ $myTeam->team->team_url }}</a>
           @empty($myTeam->team->team_url)
           　未登録
           @endempty
         </h5>
-        <h5>他選手の招待URL</h5>
+        <h5>他選手を登録(招待URL)</h5>
         <div class="input-group mb-3">
           <input type="text" class="form-control" id="myInput"
             value="{{ sprintf(url(__('route_const.invite_in_team') . '%s'), $myTeam->team->invitation_code) }}">

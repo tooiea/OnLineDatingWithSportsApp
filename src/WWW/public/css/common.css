@@ -2,7 +2,7 @@
 
 /* フォント統一 */
 body {
-    font-family:  游ゴシック, "Yu Gothic", メイリオ, Meiryo, Verdana, Helvetica, Arial, sans-serif;
+    font-family: 游ゴシック, "Yu Gothic", メイリオ, Meiryo, Verdana, Helvetica, Arial, sans-serif;
 }
 
 /* ボタンの色を上書き */
@@ -109,7 +109,7 @@ h5.user::before {
     thead th {
         font-size: 10px;
     }
-    
+
     /* iPhone 12 や iPhone 13 mini などのスペースに合わせた修正 */
     @supports (max-width: -webkit-fill-available) {
         table {
@@ -206,4 +206,19 @@ h5.user::before {
 
 .team_logo {
     width: 80px;
+    height: 80px;
+}
+
+.btn-secondary:not(:disabled):not(.disabled).active,
+.btn-secondary:not(:disabled):not(.disabled):active,
+.show>.btn-secondary.dropdown-toggle {
+    background-color: rgb(128, 146, 226);
+}
+
+label.btn-secondary {
+    background-color: rgb(208, 209, 215);
+}
+
+.img-fluid {
+    max-width: 80%;
 }
