@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
+    <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<style>
+    /** select要素を変更できないようにするカバー。要素よりも前に記載する**/
+    .cover {
+        margin: 0 15px;
+        width: calc(100% - 30px);
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 3;　/** じゅうぶん大きな値にする**/
+    }
+</style>
+<body>
+
+    <div class="container">
+        <form action="" method="post">
+            <div class="form-group row ">
+				<label for="'cust_name" class="col-sm-2 col-form-label">入力</label>
+				<div class="col-sm-10">
+					<input type="text" readonly class="form-control-plaintext convertInput" id="cust_name" name="cust_name" value="test" maxlength="64" required>
+					<div class="invalid-feedback">
+						会社名を入力してください。
+					</div>
+				</div>
+			</div>
+            <div class="form-group">
+                <div>
+                    <label for="">入力テスト</label>
+                    <input type="text" readonly class="form-control-plaintext convertInput" value="テスト">
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>    
+</body>
+<script>
+    $(function(){
+        // inputをダブルクリックすると編集可能に
+        $("form").on('dblclick', ".convertInput", function(event) {
+            $(this).removeClass('form-control-plaintext');
+            $(this).addClass('form-control');
+            $(this).attr('readonly',false);
+        });
+        // inputからフォーカスが外れる
+        $("form").on('blur', ".convertInput", function() {
+            $(this).addClass('form-control-plaintext');
+            $(this).removeClass('form-control');
+            $(this).attr('readonly',true);
+        });
+        // coverをダブルクリックすると表示しない
+        $("form").on('dblclick',".cover", function() {
+            $(this).addClass('d-none');
+        });
+        // coverの次の要素からフォーカスが外れる
+        $("form").on('blur', ".cover + *", function() {
+            $(this).prev().removeClass('d-none');
+        });
+        $("form").on('click', "button[type='submit']", function(event) {
+            $('form').removeClass('was-validated');
+            
+            // クリックで編集可能なコントロールを編集可能にすることでエラー枠を表示
+            $('.convertInput').each(function(index, element){
+                $(element).removeClass('form-control-plaintext');
+                $(element).addClass('form-control');
+                $(element).attr('readonly',false);
+            });
+            $('.cover').each(function(index, element){
+                $(element).addClass('d-none');
+            });
+    
+            if ($('form')[0].checkValidity() === false) {
+                event.preventDefault();// 画面遷移をキャンセル
+                event.stopPropagation();
+                $('form').addClass('was-validated');
+            } else {
+                alert("処理");
+            }
+        });
+    });
+    </script>
+</html>

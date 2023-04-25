@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+    <title>Document</title>
+</head>
+<style>
+    /** select要素を変更できないようにするカバー。要素よりも前に記載する**/
+    .cover {
+        margin: 0 15px;
+        width: calc(100% - 30px);
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 3;　/** じゅうぶん大きな値にする**/
+    }
+</style>
+<body>
+    <div class="toggleLabel" id="cust_name1">企業名</div>
+    <input type="text" id="cust_name1" class="toggleInput" value="企業名" style="display:none;">
+    <!-- <div class="container">
+        <form action="" method="post"  class="needs-validation" novalidate>
+            <div class="form-group">
+                <div>
+                    <label for="">入力テスト</label>
+                    <input type="text" class="toggleInput" value="テスト" style="display:none;">
+                </div>
+            </div>
+        </form>
+    </div> -->
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- <script>
+    $(function(){
+        // inputをダブルクリックすると編集可能に
+        $("form").on('dblclick', ".convertInput", function(event) {
+            $(this).removeClass('form-control-plaintext');
+            $(this).addClass('form-control');
+            $(this).attr('readonly',false);
+        });
+        // inputからフォーカスが外れる
+        $("form").on('blur', ".convertInput", function() {
+            $(this).addClass('form-control-plaintext');
+            $(this).removeClass('form-control');
+            $(this).attr('readonly',true);
+        });
+        // coverをダブルクリックすると表示しない
+        $("form").on('dblclick',".cover", function() {
+            $(this).addClass('d-none');
+        });
+        // coverの次の要素からフォーカスが外れる
+        $("form").on('blur', ".cover + *", function() {
+            $(this).prev().removeClass('d-none');
+        });
+        $("form").on('click', "button[type='submit']", function(event) {
+            $('form').removeClass('was-validated');
+            
+            // クリックで編集可能なコントロールを編集可能にすることでエラー枠を表示
+            $('.convertInput').each(function(index, element){
+                $(element).removeClass('form-control-plaintext');
+                $(element).addClass('form-control');
+                $(element).attr('readonly',false);
+            });
+            $('.cover').each(function(index, element){
+                $(element).addClass('d-none');
+            });
+    
+            if ($('form')[0].checkValidity() === false) {
+                event.preventDefault();// 画面遷移をキャンセル
+                event.stopPropagation();
+                $('form').addClass('was-validated');
+            } else {
+                alert("処理");
+            }
+        });
+    });
+    </script> -->
+    <script>
+        $(function(){
+            // ラベルをクリック（inputに切り替える）
+            $(".toggleLabel").click(function() {
+                var id = $(this).attr("id");
+                $(".toggleLabel#"+id).css( "display", "none");
+                switch ( $(this).prop("tagName")) {
+                case 'INPUT':
+                    $(".toggleInput#"+id).val( $.trim($( ".toggleLabel#"+ id).text()));
+                    break;
+                case 'SELECT':
+                    break;
+                }
+                $(".toggleInput#"+id).css( "display", "");
+                $(".toggleInput#"+id).focus();
+            });
+            // inputからフォーカスが外れる（ラベルに切り替える）
+            $(".toggleInput").blur(function() {
+                var id = $(this).attr("id");
+                $(".toggleInput#"+id).css( "display", "none");
+                var val = $(".toggleInput#"+id).val();
+                var org = $(".toggleLabel#"+id).html(); //display:noneの要素に対してはDOMのvalueプロパティの値が取得できない。
+                switch ( $(this).prop("tagName")) {
+                case 'INPUT':
+                    // 空欄の場合はスペースをあける（クリックできるようにするため）
+                    if ($.trim(val) == "") {
+                        val = '&nbsp;';
+                    }
+                    $(".toggleInput#"+id).html(val);
+                    $(".toggleInput#"+id).val(val);
+                    $(".toggleLabel#"+id).html(val);
+                    break;
+                case 'SELECT':
+                    $(".toggleInput#"+id).val(val);
+                    // optionを全部見て選択したvalue値のtextを取得する
+                    $(".toggleInput#"+id+" option").each(function(i, elem) {
+                        if (val == $(elem).val()) {
+                            category = $(elem).text();
+                        }
+                    });
+                    $(".toggleLabel#"+id).text(category);
+                    break;
+                default:
+                    // 未対応
+                }
+        
+                $(".toggleLabel#"+id).css( "display", "");
+            });
+        
+        });
+        </script>
+</html>
