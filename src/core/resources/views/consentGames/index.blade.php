@@ -15,30 +15,28 @@
 <body class="body-with-nav">
     @include('layouts.nav')
     <div class="container my-5">
-        <h2 class="text-center">Let's invite to GAME!</h2>
+        <h4 class="text-center">早速、試合に招待してみよう！</h4>
         <div class="card">
-            <div class="card-header">
-                招待カード
-            </div>
+            <h3 class="card-header">
+                招待内容
+            </h3>
             <div class="card-body">
-                <h5 class="card-title mb-4">▼チーム詳細</h5>
+                <h5 class="card-title mb-4">▼招待するのチーム詳細</h5>
                 <div class="form-group">
-                    <label for="team-name">招待チーム名</label>
-                    <p id="team-name">{{ $guestTeam->team_name }}</p>
+                    <p>チーム名　　　{{ $guestTeam->team_name }}</p>
                 </div>
                 <div class="form-group">
-                    <label for="team-url">招待チームURL</label>
+                    <label for="team-url">チームURL</label>
                     <p><a id="team-url" href="{{ $guestTeam->team_url }}">{{ $guestTeam->team_url }}</a></p>
                 </div>
                 <div class="form-group">
-                    <label for="team-logo">招待チームロゴ</label>
-                    <p><img id="team-logo"
-                            src="data:{{ $guestTeam->image_extension }};base64,{{ base64_encode(file_get_contents($guestTeam->team_logo)) }}"
-                            id="team-logo" width="100" height="100" alt="チームAロゴ"></p>
+                    <p>チームロゴ　　<img id="team-logo"
+                        src="data:{{ $guestTeam->image_extension }};base64,{{ base64_encode(file_get_contents($guestTeam->team_logo)) }}"
+                        id="team-logo" width="100" height="100" alt="チームAロゴ"></p>
                 </div>
                 <hr>
-                <h5 class="card-title mb-4">▼招待希望日程</h5>
-                <p>※以下の第一希望から第三希望の日程を選択してください。</p>
+                <h5 class="card-title mb-4">▼希望する日程</h5>
+                <p><small>※第二希望まで必ず選択してください</small></p>
                 <form action="{{ route('consent.confirm') }}" method="post">
                     @csrf
                     <div class="form-group">
