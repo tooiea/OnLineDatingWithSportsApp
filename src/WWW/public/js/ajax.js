@@ -1,58 +1,47 @@
-$(function () {
+document.addEventListener("DOMContentLoaded", () => {
+    const url = "https://opendata.resas-portal.go.jp/api/v1/cities?prefCode";
+    const api_key = "ZvDihyeuqc2GZEsVUUbI7nWt7sr9OQF1ztEXu5Hz"; // 自分のAPIキーを設定
 
-    // 「都道府県」のセレクトボックスが変更された場合
-    $('#prefecture').on('change', function () {
-        // value属性の値を取得
-        let prefecture_val = $(this).val();
+    const input = document.getElementById("prefecture"); // 入力欄の要素を取得
+    console.info(input);
+    const list = document.getElementById("address"); // 補完リストの要素を取得
+    console.info(list);
 
-        // tag_name_valをHomeControllerへ渡す
-        $.ajax({
-            headers: {
-                'X-API-KEY': 'ZvDihyeuqc2GZEsVUUbI7nWt7sr9OQF1ztEXu5Hz'
-            },
+    // 都道府県名に対応する都道府県コードを取得する関数
+    async function getPrefectureCode(prefectureName) {
+        const response = await fetch("https://opendata.resas-portal.go.jp/api/v1/prefectures", {
+            headers: { "X-API-KEY": api_key },
             type: "GET",
-            url: "https://opendata.resas-portal.go.jp/api/v1/cities?prefCode",
-            dataType: "JSON",
-            data: {
-                prefCode: prefecture_val
-            }
-        })
-        .done(function (data) {
-            // 初期化セレクト
-            $('#city > option').remove();
-            $('#city').append($('<option>').html("選択してください").val(""));
-            $.each(data['result'], function (index, value) {
-                // コントローラ側で取得した課題のデータをセレクトボックスに追加する
-                $('#city').append($('<option>').val(value.cityName).text(value.cityName));
-            })
-
-            // 初期化
-            $('#city').val('');
-            $('#city-list').empty();
-            let cities = data['result'].map(function(city) {
-                return city.cityName;
-            });
-            // input要素のイベントを監視して、入力補完を実装する
-            $('#city').on('input', function() {
-                let input_val = $(this).val();
-                let matched_cities = cities.filter(function(city) {
-                    return city.indexOf(input_val) === 0;
-                });
-                $('#city-list').empty();
-                matched_cities.forEach(function(city) {
-                    let li = $('<li>').text(city);
-                    li.on('click', function() {
-                        $('#city').val(city);
-                        $('#city-list').empty();
-                    });
-                    $('#city-list').append(li);
-                });
-            });
-        })
-        .fail(function () {
-            // 失敗した際の処理を記述
         });
+        const data = await response.json();
+        const prefecture = data.result.find(prefecture => prefecture.prefName === prefectureName);
+        return prefecture.prefCode;
+    }
 
+    // 都道府県コードを指定して、市町村区のリストを取得する関数
+    async function getCities(prefectureCode) {
+        const response = await fetch(`${url}=${prefectureCode}`, {
+            headers: { "X-API-KEY": api_key },
+            type: "GET",
+        });
+        const data = await response.json();
+        const cities = data.result.map(city => city.cityName);
+        return cities;
+    }
+
+    // 入力欄にフォーカスがあたったときのイベントリスナーを設定
+    input.addEventListener("focus", async () => {
+        const prefectureName = input.value; // 入力値を取得
+        const prefectureCode = await getPrefectureCode(prefectureName); // 都道府県名に対応する都道府県コードを取得
+        if (prefectureCode) {
+            const cities = await getCities(prefectureCode); // 市町村区のリストを取得
+            console.info(cities);
+            list.innerHTML = ""; // 補完リストをリセット
+            cities.forEach(city => {
+                const option = document.createElement("option");
+                option.value = city;
+                list.appendChild(option);
+            });
+        }
     });
-
 });

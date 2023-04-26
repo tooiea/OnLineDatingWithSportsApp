@@ -10,12 +10,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css">
-  <script src="/public/js/ajax.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link rel="stylesheet" href="/public/css/common.css">
   <title>Search Team</title>
 </head>
 
 <body class="body-with-nav">
+  <script src="/public/js/ajax.js"></script>
   @include('layouts.nav')
   <div class="container mt-5">
     <div class="row justify-content-center">
@@ -44,10 +45,7 @@
               </div>
               <div class="form-group">
                 <label for="address">住所</label>
-                <select name="city" class="form-control @error('prefecture') is-invalid @enderror" id="city">
-                  <option value>選択してください</option>
-                </select>
-                <input type="text" name="address" value="{{ old('address')  . $address }}" id="address"
+                <input type="text" name="address" value="{{ old('address') ?: $address }}" id="address"
                   aria-describedby="nameHelp" class="form-control @error('address') is-invalid @enderror"
                   placeholder="例：宮崎市">
                 <small id="nameHelp" class="form-text text-muted">市町村区を入力してください。</small>

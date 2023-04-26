@@ -49,6 +49,7 @@
             margin-left: auto;
             margin-right: 0;
         }
+
     </style>
 
 
@@ -61,8 +62,7 @@
             <div class="col-12 col-md-10 col-lg-6">
                 <div class="card rounded">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">招待情報
-                            {{ ($replies->invitee_id === $replies->my_team_id) ? '(あなたが招待)' : '' }}</h5>
+                        <h5 class="card-title mb-0">招待情報</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -135,7 +135,7 @@
                 <div class="card-body">
                     @if($replies->invitee_id === $replies->my_team_id)
                     <div class="media mb-3 media-sender">
-                        <div class="media-body">
+                        <div class="media-body text-right">
                             <div class="message-bubble">
                                 @if (empty($replies->message))
                                 <small>メッセージなし</small>
@@ -143,7 +143,7 @@
                                 {!! nl2br(e($replies->message)) !!}
                                 @endif
                             </div>
-                            <div class="small text-muted text-right pr-5">
+                            <div class="small text-muted text-right">
                                 {{ \Carbon\Carbon::parse($replies->created_at)->format('Y年m月d日 G時i分') }}
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                     <div class="media mb-3 media-receiver">
                         <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
                             class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
-                        <div class="media-body">
+                        <div class="media-body text-right">
                             <div class="message-bubble">
                                 @if (empty($reply->message))
                                 <small>メッセージなし</small>
@@ -209,7 +209,7 @@
                     <!-- 招待した場合 -->
                     @if ($reply->team_id == $replies->guest_id)
                     <div class="media mb-3 media-sender">
-                        <div class="media-body">
+                        <div class="media-body text-right">
                             <div class="message-bubble">
                                 @if (empty($reply->message))
                                 <small>メッセージなし</small>
@@ -217,7 +217,7 @@
                                 {!! nl2br(e($reply->message)) !!}
                                 @endif
                             </div>
-                            <div class="small text-muted text-right pr-5">
+                            <div class="small text-muted text-right">
                                 {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日 G時i分') }}
                             </div>
                         </div>
