@@ -147,7 +147,7 @@
                                 {{ \Carbon\Carbon::parse($replies->created_at)->format('Y年m月d日 G時i分') }}
                             </div>
                         </div>
-                        <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
+                        <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
                             class="ml-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
                     </div>
                     @else
@@ -175,7 +175,7 @@
                     <div class="media mb-3 media-receiver">
                         <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
                             class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
-                        <div class="media-body text-right">
+                        <div class="media-body">
                             <div class="message-bubble">
                                 @if (empty($reply->message))
                                 <small>メッセージなし</small>
