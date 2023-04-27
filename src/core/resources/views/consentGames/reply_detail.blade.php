@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Bootstrap 4.5 Example</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/public/css/common.css">
@@ -245,12 +246,24 @@
                     @endif
                     @endforeach
                 </div>
+                <div class="card-footer">
+                    <form>
+                        <div class="input-group">
+                            <input type="text" id="message" class="form-control" placeholder="メッセージを入力してください" aria-label="メッセージを入力してください" aria-describedby="button-send">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" id="button-send">送信</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="/public/js/ajax_reply.js"></script>
 </body>
 
 </html>

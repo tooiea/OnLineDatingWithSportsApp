@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * 試合への招待 | 試合へ招待された
@@ -164,5 +165,13 @@ class ConsentGamesController extends Controller
         // チームトップへリダイレクトしセッションメッセージ表示
         $request->session()->flash('consent.reply', $invitee->team_name . __('user_messages.success.reply_sent'));
         return redirect()->route('team.index');
+    }
+
+    public function replyMessage(Request $request)
+    {
+        Log::info($request->all());
+        return response()->json([
+            'message' => 'complete_registered'
+        ], 200);
     }
 }
