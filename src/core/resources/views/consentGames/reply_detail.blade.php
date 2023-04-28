@@ -23,7 +23,7 @@
 
         .card-body {
             background-color: #f2f2f2;
-            border-radius: 0 0 0.5rem 0.5rem;
+            /* border-radius: 0 0 0.5rem 0.5rem; */
         }
 
         .list-group {
@@ -70,10 +70,10 @@
                             <div class="col-12 col-md-4">
                                 @if($replies->invitee_id === $replies->my_team_id)
                                 <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
-                                    class="card-img-top rounded-circle team_logo" alt="ロゴ">
+                                    class="card-img-top rounded-circle img-fluid" alt="ロゴ">
                                 @else
                                 <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
-                                    class="card-img-top rounded-circle team_logo" alt="ロゴ">
+                                    class="card-img-top rounded-circle img-fluid" alt="ロゴ">
                                 @endif
                             </div>
                             <div class="col-12 col-md-8">
@@ -127,13 +127,8 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="card-header">
-                    <h5 class="card-title mb-0">メッセージ履歴</h5>
-                </div>
-                <div class="card-body">
+                    <hr>
+                    <p>メッセージ履歴</p>
                     @if($replies->invitee_id === $replies->my_team_id)
                     <div class="media mb-3 media-sender">
                         <div class="media-body text-right">
@@ -169,10 +164,10 @@
                         </div>
                     </div>
                     @endif
-                    @foreach ($replies->reply as $reply)
-                    @if($replies->invitee_id === $replies->my_team_id)
+                @foreach ($replies->reply as $reply)
+                @if($replies->invitee_id === $replies->my_team_id)
                     <!-- 招待した場合 -->
-                    @if ($reply->team_id == $replies->guest_id)
+                    @if ($reply->team_id == $replies->my_team_id)
                     <div class="media mb-3 media-receiver">
                         <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
                             class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
@@ -191,6 +186,8 @@
                     </div>
                     @else
                     <div class="media mb-3 media-sender">
+                        <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
+                            class="mr-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
                         <div class="media-body">
                             <div class="message-bubble">
                                 @if (empty($reply->message))
@@ -199,17 +196,15 @@
                                 {!! nl2br(e($reply->message)) !!}
                                 @endif
                             </div>
-                            <div class="small text-muted text-right pr-5">{{
+                            <div class="small text-muted">{{
                                 \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日 G時i分') }}</div>
                         </div>
-                        <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
-                            class="ml-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
                     </div>
                     @endif
-                    @else
-                    <!-- 招待した場合 -->
-                    @if ($reply->team_id == $replies->guest_id)
-                    <div class="media mb-3 media-sender">
+                @else
+                    <!-- 招待された場合 -->
+                    @if ($reply->team_id == $replies->my_team_id)
+                    <div class="media mb-3 media-receiver">
                         <div class="media-body text-right">
                             <div class="message-bubble">
                                 @if (empty($reply->message))
@@ -226,9 +221,7 @@
                             class="ml-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
                     </div>
                     @else
-                    <div class="media mb-3 media-receiver">
-                        <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
-                            class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
+                    <div class="media mb-3 media-sender">
                         <div class="media-body">
                             <div class="message-bubble">
                                 @if (empty($reply->message))
@@ -241,10 +234,13 @@
                                 {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日G時i分') }}
                             </div>
                         </div>
+                        <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
+                            class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
                     </div>
                     @endif
-                    @endif
-                    @endforeach
+                @endif
+                @endforeach
+                    </div>
                 </div>
                 <div class="card-footer">
                     <form>
@@ -256,7 +252,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>

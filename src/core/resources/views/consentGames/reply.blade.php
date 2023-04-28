@@ -25,10 +25,10 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-4">
+          <div class="col-3">
             <img
               src="data:{{ $consents->image_extension }};base64,{{ base64_encode(file_get_contents($consents->team_logo)) }}"
-              id="team-logo" class="img-fluid">
+              id="team-logo" class="team-logo">
           </div>
           <div class="col-8">
             <p>第一希望<br>

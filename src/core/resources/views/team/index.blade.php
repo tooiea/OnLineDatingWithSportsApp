@@ -20,7 +20,11 @@
             <h5 class="mb-0">Myチーム</h5>
           </div>
           <div class="card-body">
-            <p class="mb-0">チーム名　<a href="{{ route('team.detail') }}">{{ $myTeam->team->team_name }}</a></p>
+            <p class="mt-2 ml-2">チーム名　
+              <a class="mr-5" href="{{ route('team.detail') }}">{{ $myTeam->team->team_name }}</a>
+              <img src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents($myTeam->team->team_logo)) }}"
+                 width="45px" height="45px" alt="team logo" class="img-fluid"/>
+            </p>
             @if (session('consent.reply'))
             <div class="alert alert-success" role="alert"> {!! session('consent.reply') !!} </div>
             @elseif (session('consent.sent'))
@@ -35,7 +39,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h5>招待状況</h5>
+            <h5 class="mb-0">招待状況</h5>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -77,7 +81,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h5>他チームからの招待状況</h5>
+            <h5 class="mb-0">他チームからの招待状況</h5>
           </div>
           <div class="card-body">
             <div class="table-responsive">

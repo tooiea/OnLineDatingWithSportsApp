@@ -48,6 +48,10 @@ body {
     z-index: 100;
 }
 
+.card-body {
+    /* padding: 0.8rem; */
+}
+
 /* ページ上部にスペースを作るためのパディング */
 .body-with-nav {
     padding-top: 60px;
@@ -146,6 +150,11 @@ h5.user::before {
     vertical-align: middle;
 }
 
+.table td,
+.table th {
+    padding: .5rem;
+}
+
 /* テーブル内の文字サイズを幅に合わせて自動調整 */
 .table-responsive table {
     table-layout: auto;
@@ -219,8 +228,46 @@ label.btn-secondary {
     background-color: rgb(208, 209, 215);
 }
 
-.img-fluid {
-    max-width: 80%;
+.img-fluid,
+.team-logo,
+.search-logo {
+    border-radius: 50%;
+}
+
+.team-logo {
+    object-fit: cover;
+    overflow: hidden;
+}
+
+@media (max-width: 767px) {
+
+    .search-logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* スマートフォン用のスタイル */
+    .team-logo,
+    .img-fluid {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (min-width: 768px) {
+
+    /* PC用のスタイル */
+    .team-logo,
+    .img-fluid {
+        width: 100px;
+        height: 100px;
+    }
+
+    .search-logo {
+        width: 50px;
+        height: 50px;
+    }
+
 }
 
 /* ajax入力補完 */

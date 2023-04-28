@@ -31,7 +31,7 @@
         <h5>
           チームロゴ　　<img
           src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents($myTeam->team->team_logo)) }}"
-          class="img-fluid  w-25" alt="team logo" />
+          class="img-fluid" alt="team logo" />
         </h5>
         <h5>登録人数　　　{{ $teamMembersNumber }}人</h5>
         <h5>
@@ -43,7 +43,7 @@
         </h5>
         <h5>他選手を登録(招待URL)</h5>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" id="myInput"
+          <input type="text" class="form-control" id="myInput" readonly disabled
             value="{{ sprintf(url(__('route_const.invite_in_team') . '%s'), $myTeam->team->invitation_code) }}">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary copy-button" type="button">Copy<i

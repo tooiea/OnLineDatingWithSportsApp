@@ -18,7 +18,7 @@
 <body class="body-with-nav">
   <script src="/public/js/ajax.js"></script>
   @include('layouts.nav')
-  <div class="container mt-5">
+  <div class="container mt-3">
     <div class="row justify-content-center">
       <div class="col-sm-6">
         <div class="card">
@@ -89,7 +89,7 @@
                 @if (!empty($value->image_extension))
                 <img
                   src="data:{{ $value->image_extension }};base64,{{ base64_encode(file_get_contents($value->team_logo)) }}"
-                  id="team-logo" width="50" height="50">
+                  id="team-logo" class="search-logo">
                 @endif
               </td>
               <td>
