@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/public/css/common.css">
+    <link rel="stylesheet" href="/public/css/common.css?q">
     <title>練習試合の招待フォーム</title>
 </head>
 
@@ -32,7 +32,7 @@
                 <div class="form-group">
                     <p>チームロゴ　　<img id="team-logo"
                         src="data:{{ $guestTeam->image_extension }};base64,{{ base64_encode(file_get_contents($guestTeam->team_logo)) }}"
-                        id="team-logo" width="100" height="100" alt="チームAロゴ"></p>
+                        id="team-logo" width="100" height="100" alt="チームAロゴ" class="team-logo"></p>
                 </div>
                 <hr>
                 <h5 class="card-title mb-4">▼希望する日程</h5>

@@ -8,6 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/public/css/common.css?q">
     <title>確認画面</title>
 </head>
 
@@ -26,11 +27,11 @@
                         <p>スポーツ種別：<span id="team-name">{{
                                 \App\Enums\SportAffiliationTypeEnum::from($values['sportAffiliationType'])->label()
                                 }}</span></p>
-                        <p>チーム名：<span id="team-name">{{ $values['teamName'] }}</span></p>
-                        <p>チームロゴ：<img
+                        <p>チーム名：　　<span id="team-name">{{ $values['teamName'] }}</span></p>
+                        <p>チームロゴ：　<img
                                 src="data:{{ $values['image_extension'] }};base64,{{ base64_encode(file_get_contents($values['teamLogo'])) }}"
-                                id="team-logo" width="100" height="100"></p>
-                        <p>チームURL：<a id="team-url" target="_blank">@if(!empty($values['teamUrl'])){{ $values['teamUrl']
+                                id="team-logo" class="team-logo"></p>
+                        <p>チームURL:　<a id="team-url" target="_blank">@if(!empty($values['teamUrl'])){{ $values['teamUrl']
                                 }}@enderror</a></p>
                     </div>
                 </div>
@@ -39,9 +40,9 @@
                         <h4>チーム拠点</h4>
                     </div>
                     <div class="card-body">
-                        <p>都道府県：<span id="team-prefecture">{{
+                        <p>都道府県：　<span id="team-prefecture">{{
                                 \App\Constants\FormConstant::PREFECTURES[$values['prefecture']] }}</span></p>
-                        <p>市町村区：<span id="team-address">{{ $values['address'] }}</span></p>
+                        <p>市町村区：　<span id="team-address">{{ $values['address'] }}</span></p>
                     </div>
                 </div>
                 <div class="card mt-3">

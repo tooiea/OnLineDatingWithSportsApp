@@ -7,53 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Bootstrap 4.5 Example</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/public/css/common.css">
-    <style>
-        /* LINE風のUI */
-        .card-header {
-            background-color: #d5f1d5;
-            color: #312b2b;
-            font-size: 1.2rem;
-            border-radius: 0.5rem 0.5rem 0 0;
-        }
-
-        .card-header:nth-child(2) {
-            margin-top: 10px;
-        }
-
-        .card-body {
-            background-color: #f2f2f2;
-            /* border-radius: 0 0 0.5rem 0.5rem; */
-        }
-
-        .list-group {
-            width: auto;
-        }
-
-        .message-bubble {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            background-color: #fff;
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-            max-width: 90%;
-        }
-
-        /* 送信者アイコンを左寄せに */
-        .media-sender .media-body {
-            margin-left: 0;
-            margin-right: auto;
-        }
-
-        /* 受信者アイコンを右寄せに */
-        .media-receiver .media-body {
-            margin-left: auto;
-            margin-right: 0;
-        }
-
-    </style>
-
-
+    <link rel="stylesheet" href="/public/css/common.css?q">
+    <link rel="stylesheet" href="/public/css/reply_ui.css?q">
 </head>
 
 <body class="body-with-nav">
@@ -165,13 +120,11 @@
                     </div>
                     @endif
                 @foreach ($replies->reply as $reply)
-                @if($replies->invitee_id === $replies->my_team_id)
+                @if($replies->invitee_id == $replies->my_team_id)
                     <!-- 招待した場合 -->
                     @if ($reply->team_id == $replies->my_team_id)
                     <div class="media mb-3 media-receiver">
-                        <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
-                            class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
-                        <div class="media-body">
+                        <div class="media-body text-right">
                             <div class="message-bubble">
                                 @if (empty($reply->message))
                                 <small>メッセージなし</small>
@@ -183,6 +136,8 @@
                                 {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日G時i分') }}
                             </div>
                         </div>
+                        <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
+                            class="ml-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
                     </div>
                     @else
                     <div class="media mb-3 media-sender">
@@ -243,11 +198,13 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <form>
+                    <form action="{{ route('reply.message') }}" method="post">
+                        @csrf
                         <div class="input-group">
-                            <input type="text" id="message" class="form-control" placeholder="メッセージを入力してください" aria-label="メッセージを入力してください" aria-describedby="button-send">
+                            <input type="hidden" name="consent_game_id" value="{{ request()->route('consent_game_id') }}">
+                            <input type="text" name="message" id="message" class="form-control" placeholder="メッセージを入力してください" aria-label="メッセージを入力してください" aria-describedby="button-send">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button" id="button-send">送信</button>
+                                <input class="btn btn-primary" type="submit" id="button-send" value="返信"></input>
                             </div>
                         </div>
                     </form>

@@ -6,13 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>返信画面</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/public/css/common.css">
+  <link rel="stylesheet" href="/public/css/common.css?q">
   <style>
     .card {
       margin: 10px;
     }
   </style>
-  <link rel="stylesheet" href="/public/css/common.css">
 </head>
 
 <body class="body-with-nav">
@@ -113,7 +112,7 @@
             <textarea class="form-control" id="reply" rows="3" name="message">{{ old('message') }}</textarea>
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary">確認する</button>
+            <input type="submit" class="btn btn-primary" value="確認する"></input>
           </div>
         </form>
       </div>

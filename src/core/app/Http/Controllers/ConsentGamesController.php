@@ -7,6 +7,7 @@ use App\Http\Requests\ConsentGameIdRequest;
 use App\Http\Requests\ConsentGameReplyRequest;
 use App\Http\Requests\ConsentScheduleRequest;
 use App\Http\Requests\InvitationCodeRequest;
+use App\Http\Requests\ReplyMessageRequest;
 use App\Models\ConsentGame;
 use App\Models\Reply;
 use App\Models\Team;
@@ -167,11 +168,22 @@ class ConsentGamesController extends Controller
         return redirect()->route('team.index');
     }
 
-    public function replyMessage(Request $request)
+    /**
+     * メッセージ返信のみを登録後、リダイレクト
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function replyMessage(ReplyMessageRequest $request)
     {
-        Log::info($request->all());
-        return response()->json([
-            'message' => 'complete_registered'
-        ], 200);
+        $myTeam = TeamMember::getTeamByUserId(Auth::id());
+        $replyModel = new Reply();
+        $replyModel->create([
+            'consent_game_id' => Crypt::decryptString($request->input('consent_game_id')),
+            'team_id' => $myTeam->team->id,
+            'message' => $request->input('message'),
+        ]);
+
+        return redirect()->route('reply.detail', $request->input('consent_game_id'));
     }
 }

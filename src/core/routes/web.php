@@ -117,6 +117,9 @@ Route::middleware('auth')->group(function () {
 
         // 招待とメール返信の詳細
         Route::get('reply_detail/{consent_game_id}', [ConsentGamesController::class, 'detail'])->name('reply.detail');
+
+        // メッセージ返信
+        Route::post('reply/message', [ConsentGamesController::class, 'replyMessage'])->name('reply.message');
     });
 
     // Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
