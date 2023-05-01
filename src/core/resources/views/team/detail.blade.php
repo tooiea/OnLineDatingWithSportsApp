@@ -12,7 +12,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="/public/css/common.css?q">
   <style>
-    .card-body h5 {
+    .card-body p {
       margin-bottom: 20px;
     }
   </style>
@@ -27,21 +27,20 @@
         <h4 class="card-title">チームプロフィール</h4>
       </div>
       <div class="card-body">
-        <h5>チーム名　　　{{ $myTeam->team->team_name }}</h5>
-        <h5>
-          チームロゴ　　<img
+        <p><span class="mr-5">チーム名</span>{{ $myTeam->team->team_name }}</p>
+        <p><span class="mr-4">チームロゴ</span><img
           src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents($myTeam->team->team_logo)) }}"
           class="img-fluid" alt="team logo" />
-        </h5>
-        <h5>登録人数　　　{{ $teamMembersNumber }}人</h5>
-        <h5>
-          チーム紹介URL<br>
-          <a href="{{ $myTeam->team->team_url }}">{{ $myTeam->team->team_url }}</a>
-          @empty($myTeam->team->team_url)
+        </p>
+        <p><span class="mr-5">登録人数</span>{{ $teamMembersNumber }}人</p>
+        <p><span class="mr-1">チーム紹介URL</span>
+          @if(!empty($myTeam->team->team_url))
+          <br><a href="{{ $myTeam->team->team_url }}">{{ $myTeam->team->team_url }}</a>
+          @else
           　未登録
-          @endempty
-        </h5>
-        <h5>他選手を登録(招待URL)</h5>
+          @endif
+        </p>
+        <p>このチームに招待する(ユーザ登録)</p>
         <div class="input-group mb-3">
           <input type="text" class="form-control" id="myInput" readonly disabled
             value="{{ sprintf(url(__('route_const.invite_in_team') . '%s'), $myTeam->team->invitation_code) }}">
@@ -49,6 +48,7 @@
             <button class="btn btn-outline-secondary copy-button" type="button">Copy<i
                 class="fas fa-angle-right ml-2"></i></button>
           </div>
+          <small class="small text-muted">*同じチームに招待したい場合、このリンクを共有してください</small>
         </div>
 
 
@@ -56,7 +56,7 @@
           コピーしました
         </div>
         <!-- TODO 後日実装 -->
-        <!-- <h5>アルバム画像:</h5>
+        <!-- <p>アルバム画像:</p>
           <div class="row">
             <div class="col-4">
               <img src="album_image_1.jpg" alt="album image 1" />

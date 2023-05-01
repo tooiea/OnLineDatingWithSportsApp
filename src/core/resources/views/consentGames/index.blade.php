@@ -23,14 +23,18 @@
             <div class="card-body">
                 <h5 class="card-title mb-4">▼招待するチームの詳細</h5>
                 <div class="form-group">
-                    <p>チーム名　　　{{ $guestTeam->team_name }}</p>
+                    <p><span class="mr-5">チーム名</span>{{ $guestTeam->team_name }}</p>
                 </div>
                 <div class="form-group">
-                    <label for="team-url">チームURL</label>
-                    <p><a id="team-url" href="{{ $guestTeam->team_url }}">{{ $guestTeam->team_url }}</a></p>
+                    <label for="team-url"><span class="mr-4">チームURL</span></label>
+                    @if(!empty($guestTeam->team_url))
+                    <p><a class="" href="{{ $guestTeam->team_url }}">{{ $guestTeam->team_url }}</a></p>
+                    @else
+                    未登録
+                    @endif
                 </div>
                 <div class="form-group">
-                    <p>チームロゴ　　<img id="team-logo"
+                    <p><span class="mr-4">チームロゴ</span><img id="team-logo"
                         src="data:{{ $guestTeam->image_extension }};base64,{{ base64_encode(file_get_contents($guestTeam->team_logo)) }}"
                         id="team-logo" width="100" height="100" alt="チームAロゴ" class="team-logo"></p>
                 </div>

@@ -20,7 +20,7 @@
             <h5 class="mb-0">Myチーム</h5>
           </div>
           <div class="card-body">
-            <p class="mt-2 ml-2">チーム名　
+            <p class="mt-2 ml-2"><span class="mr-4">チーム名</span>
               <a class="mr-5" href="{{ route('team.detail') }}">{{ $myTeam->team->team_name }}</a>
               <img src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents($myTeam->team->team_logo)) }}"
                  width="45px" height="45px" alt="team logo" class="img-fluid"/>

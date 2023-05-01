@@ -22,7 +22,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-4 text-center">
                                 @if($replies->invitee_id === $replies->my_team_id)
                                 <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
                                     class="card-img-top rounded-circle img-fluid" alt="ロゴ">
@@ -32,14 +32,14 @@
                                 @endif
                             </div>
                             <div class="col-12 col-md-8">
-                                <h5 class="card-title">
+                                <h5 class="card-title text-center">
                                     @if($replies->invitee_id === $replies->my_team_id)
                                     {{ $replies->guest_team_name }}
                                     @else
                                     {{ $replies->invite_team_name }}
                                     @endif
                                 </h5>
-                                <p class="card-text">
+                                <p class="card-text text-center">
                                     @if($replies->invitee_id === $replies->my_team_id)
                                     <a href="{{ $replies->guest_team_url }}">{{ $replies->guest_team_url }}</a>
                                     @else
@@ -47,15 +47,15 @@
                                     @endif
                                 </p>
                                 <ul class="list-group">
-                                    <li class="message-bubble mt-2">
-                                        <label for="">進捗状況　　</label>
-                                        <span>
+                                    <li class="list-group-item message-bubble mt-2 text-center">
+                                        <label for="">進捗状況　</label>
+                                        <span class="{{ 'status-' . \App\Enums\ConsentStatusTypeEnum::from($replies->consent_status)->className() }}">
                                             {{ \App\Enums\ConsentStatusTypeEnum::from($replies->consent_status)->label()
                                             }}
                                         </span>
                                     </li>
                                     @if ($replies->consent_status === \App\Enums\ConsentStatusTypeEnum::ACCEPTED->value)
-                                    <li class="message-bubble mt-2">
+                                    <li class="list-group-item message-bubble mt-2">
                                         <label for="">試合決定日時</label>
                                         <p>
                                             {{ \Carbon\Carbon::parse($replies->game_date)->format('Y年m月d日G時i分') }}
@@ -63,20 +63,22 @@
                                     </li>
                                     @elseif ($replies->consent_status ===
                                     \App\Enums\ConsentStatusTypeEnum::DECLINED->value)
-                                    <li class="message-bubble mt-2">
+                                    <li class="list-group-item message-bubble mt-2 text-center">
                                         <label for="">承認日程　-</label>
                                     </li>
                                     @else
-                                    <li class="message-bubble mt-2">
+                                    <li class="list-group-item message-bubble mt-2 text-center">
                                         <label for="">第一希望日程:</label>
                                         <p>{{ \Carbon\Carbon::parse($replies->first_preferered_date)->format('Y年m月d日
                                             G時i分') }}</p>
                                         <label for="">第二希望日程:</label>
                                         <p>{{ \Carbon\Carbon::parse($replies->second_preferered_date)->format('Y年m月d日
                                             G時i分') }}</p>
+                                        @if (!empty($replies->third_preferered_date))
                                         <label for="">第三希望日程:</label>
                                         <p>{{ \Carbon\Carbon::parse($replies->third_preferered_date)->format('Y年m月d日
                                             G時i分') }}</p>
+                                        @endif
                                     </li>
                                     @endif
                                 </ul>
@@ -161,6 +163,8 @@
                     @if ($reply->team_id == $replies->my_team_id)
                     <div class="media mb-3 media-receiver">
                         <div class="media-body text-right">
+                            <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
+                                class="ml-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
                             <div class="message-bubble">
                                 @if (empty($reply->message))
                                 <small>メッセージなし</small>
@@ -172,12 +176,12 @@
                                 {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日 G時i分') }}
                             </div>
                         </div>
-                        <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
-                            class="ml-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
                     </div>
                     @else
                     <div class="media mb-3 media-sender">
                         <div class="media-body">
+                            <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
+                                class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
                             <div class="message-bubble">
                                 @if (empty($reply->message))
                                 <small>メッセージなし</small>
@@ -189,8 +193,6 @@
                                 {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日G時i分') }}
                             </div>
                         </div>
-                        <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
-                            class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
                     </div>
                     @endif
                 @endif
