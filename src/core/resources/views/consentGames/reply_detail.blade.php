@@ -160,11 +160,9 @@
                     @endif
                 @else
                     <!-- 招待された場合 -->
-                    @if ($reply->team_id == $replies->my_team_id)
+                    @if ($reply->team_id === $replies->my_team_id)
                     <div class="media mb-3 media-receiver">
                         <div class="media-body text-right">
-                            <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
-                                class="ml-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
                             <div class="message-bubble">
                                 @if (empty($reply->message))
                                 <small>メッセージなし</small>
@@ -172,6 +170,8 @@
                                 {!! nl2br(e($reply->message)) !!}
                                 @endif
                             </div>
+                            <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
+                                class="ml-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
                             <div class="small text-muted text-right">
                                 {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日 G時i分') }}
                             </div>
