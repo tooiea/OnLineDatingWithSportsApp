@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+/* LINE風のUI */
+.card-header {
+    background-color: #d5f1d5;
+    color: #312b2b;
+    font-size: 1.2rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.card-header:nth-child(2) {
+    margin-top: 10px;
+}
+
+.card-body {
+    background-color: #f2f2f2;
+    /* border-radius: 0 0 0.5rem 0.5rem; */
+}
+
+.list-group {
+    width: auto;
+}
+
+.message-bubble {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    background-color: #fff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    max-width: 90%;
+}
+
+/* 送信者アイコンを左寄せに */
+.media-sender .media-body {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* 受信者アイコンを右寄せに */
+.media-receiver .media-body {
+    margin-left: auto;
+    margin-right: 0;
+}

@@ -207,5 +207,6 @@ return [
         'second_preferered_date' => '第二希望の日程',
         'third_preferered_date' => '第三希望の日程',
         'message' => 'メッセージ',
+        'consent_game_id' => '試合招待id',
     ],
 ];

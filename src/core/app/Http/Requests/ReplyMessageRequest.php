@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ConsentGame;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 class ReplyMessageRequest extends FormRequest
 {
@@ -26,11 +29,22 @@ class ReplyMessageRequest extends FormRequest
         return [
             'consent_game_id' => [
                 'bail',
-                'required'
+                'required',
+                function ($attribute, $value, $fail) {
+                    $decryptedId = Crypt::decryptString($value);
+                    $consentGame = ConsentGame::find($decryptedId);
+
+                    // 存在しない試合招待id
+                    if (is_null($consentGame)) {
+                        Log::alert(__('validation.exists'));
+                        $fail(__('validation.exists'));
+                    }
+                }
             ],
             'message' => [
                 'bail',
-                'required'
+                'required',
+                'string'
             ]
         ];
     }
