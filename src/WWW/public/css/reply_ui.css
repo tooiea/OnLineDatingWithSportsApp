@@ -41,3 +41,12 @@
     margin-left: auto;
     margin-right: 0;
 }
+
+.list-group-item {
+    border-top-left-radius: 2rem !important;
+    border-top-right-radius: 2rem !important;
+    border-bottom-right-radius: 2rem !important;
+    border-bottom-left-radius: 2rem !important;
+    margin: auto;
+    /* 既存のborder-radiusスタイルを上書き */
+}
