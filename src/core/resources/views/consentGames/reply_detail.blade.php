@@ -24,10 +24,10 @@
                         <div class="row">
                             <div class="col-12 col-md-4 text-center">
                                 @if($replies->invitee_id === $replies->my_team_id)
-                                <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
+                                <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($replies->guest_team_logo))) }}"
                                     class="card-img-top rounded-circle img-fluid" alt="ロゴ">
                                 @else
-                                <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
+                                <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($replies->invite_team_logo))) }}"
                                     class="card-img-top rounded-circle img-fluid" alt="ロゴ">
                                 @endif
                             </div>
@@ -100,12 +100,12 @@
                                 {{ \Carbon\Carbon::parse($replies->created_at)->format('Y年m月d日 G時i分') }}
                             </div>
                         </div>
-                        <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
+                        <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($replies->invite_team_logo))) }}"
                             class="ml-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
                     </div>
                     @else
                     <div class="media mb-3 media-receiver">
-                        <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
+                        <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($replies->invite_team_logo))) }}"
                             class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
                         <div class="media-body">
                             <div class="message-bubble">
@@ -138,12 +138,12 @@
                                 {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日G時i分') }}
                             </div>
                         </div>
-                        <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
+                        <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($replies->invite_team_logo))) }}"
                             class="ml-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
                     </div>
                     @else
                     <div class="media mb-3 media-sender">
-                        <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
+                        <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($replies->guest_team_logo))) }}"
                             class="mr-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
                         <div class="media-body">
                             <div class="message-bubble">
@@ -170,7 +170,7 @@
                                 {!! nl2br(e($reply->message)) !!}
                                 @endif
                             </div>
-                            <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents($replies->guest_team_logo)) }}"
+                            <img src="data:{{ $replies->guest_image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($replies->guest_team_logo))) }}"
                                 class="ml-3 rounded-circle" alt="自分のアイコン" width="50" height="50">
                             <div class="small text-muted text-right">
                                 {{ \Carbon\Carbon::parse($reply->created_at)->format('Y年m月d日 G時i分') }}
@@ -180,7 +180,7 @@
                     @else
                     <div class="media mb-3 media-sender">
                         <div class="media-body">
-                            <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents($replies->invite_team_logo)) }}"
+                            <img src="data:{{ $replies->invite_image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($replies->invite_team_logo))) }}"
                                 class="mr-3 rounded-circle" alt="送信者アイコン" width="50" height="50">
                             <div class="message-bubble">
                                 @if (empty($reply->message))

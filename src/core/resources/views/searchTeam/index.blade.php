@@ -88,7 +88,7 @@
               <td>
                 @if (!empty($value->image_extension))
                 <img
-                  src="data:{{ $value->image_extension }};base64,{{ base64_encode(file_get_contents($value->team_logo)) }}"
+                  src="data:{{ $value->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($value->team_logo))) }}"
                   id="team-logo" class="search-logo">
                 @endif
               </td>
