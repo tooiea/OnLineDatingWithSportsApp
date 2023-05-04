@@ -45,18 +45,15 @@ class GoogleLoginController extends Controller
                 $userModel = new User();
                 // googleログインしたときに同一メールアドレスが存在している
                 if (empty($user)) {
-                     // 新規のユーザ(メールアドレスも登録されていない)
-                    $user = $userModel->create([
-                        'name' => $loggedInUserByGoogle->name,
-                        'email' => $loggedInUserByGoogle->email,
-                        'google_login_id' => $loggedInUserByGoogle->id,
-                        'last_login_time' => $now,
+                    // メールアドレス, google_idの登録情報がない
+                    return redirect()->route('login.index')->withErrors([
+                        'sns_login' => __('validation.custom.user.google')
                     ]);
-                } else {
-                    $user->google_login_id = $loggedInUserByGoogle->id;
-                    $user->last_login_time = $now;
-                    $user->save();
                 }
+                // メールアドレスが存在している
+                $user->google_login_id = $loggedInUserByGoogle->id;
+                $user->last_login_time = $now;
+                $user->save();
             } else {
                 // 既に登録されている(ログイン日時のみ更新)
                 $user->last_login_time = $now;

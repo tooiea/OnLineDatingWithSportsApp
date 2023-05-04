@@ -33,7 +33,7 @@ class LineLoginController extends Controller
     {
         try {
             $loggeInUserByLine = Socialite::driver('line')->user();
-            $user = User::where('email', $loggeInUserByLine->email)->first();
+            $user = User::where('line_login_id', $loggeInUserByLine->id)->first();
             $now = Carbon::now();
 
             // TODO LINEログインした場合に、メールアドレスがない想定がないためケースを追加
@@ -41,18 +41,20 @@ class LineLoginController extends Controller
 
             // Lineログインで新規登録
             if (is_null($user)) {
-                $userModel = new User();
-                $user = $userModel->create([
-                    'name' => $loggeInUserByLine->name,
-                    'email' => $loggeInUserByLine->email,
-                    'line_login_id' => $loggeInUserByLine->id,
-                    'last_login_time' => $now,
-                ]);
+                $user = User::where('email', $loggeInUserByLine->email)->first();
+
+                // メールアドレス, line_idの登録情報がない
+                if (empty($user)) {
+                    return redirect()->route('login.index')->withErrors([
+                        'sns_login' => __('validation.custom.user.line')
+                    ]);
+                }
+                // 同一メールアドレスが存在する
+                $user->line_login_id = $loggeInUserByLine->id;
+                $user->last_login_time = $now;
+                $user->save();
             } else {
                 // 既に登録されている
-                if (is_null($user->line_login_id)) {
-                    $user->line_login_id = $loggeInUserByLine->id;
-                }
                 $user->last_login_time = $now;
                 $user->save();
             }
