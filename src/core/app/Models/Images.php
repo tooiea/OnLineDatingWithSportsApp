@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Storage;
-
 /**
  * 画像ファイルの保存
  */
@@ -24,9 +22,8 @@ class Images
         // ファイル名を生成
         $fileName = Files::getFileNameWithUniqueDate($image->guessExtension());
 
-        // 環境ごとに保存ディレクトリを対応(保存後にディレクトリを取得)
-        $savedDir = Storage::putFileAs(self::DIRECTORY_OLDWS_LOGO, $image, $fileName);
-
+        // 保存後にディレクトリを取得
+        $savedDir = $image->storeAs('public/' . self::DIRECTORY_OLDWS_LOGO, $fileName);
         $storeImage['teamLogo'] = $savedDir;
         $storeImage['image_extension'] = $image->getMimeType();
 
