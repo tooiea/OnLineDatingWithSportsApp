@@ -23,8 +23,8 @@ class Images
         $fileName = Files::getFileNameWithUniqueDate($image->guessExtension());
 
         // 保存後にディレクトリを取得
-        $savedDir = $image->storeAs('public/' . self::DIRECTORY_OLDWS_LOGO, $fileName);
-        $storeImage['teamLogo'] = $savedDir;
+        $path = $image->storeAs(self::DIRECTORY_OLDWS_LOGO, $fileName);
+        $storeImage['teamLogo'] = $path;
         $storeImage['image_extension'] = $image->getMimeType();
 
         return $storeImage;
