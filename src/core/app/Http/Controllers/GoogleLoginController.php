@@ -45,6 +45,8 @@ class GoogleLoginController extends Controller
                 $userModel = new User();
                 // googleログインしたときに同一メールアドレスが存在している
                 if (empty($user)) {
+                    // TODO チーム新規登録、チームへ登録の画面へ遷移する
+
                     // メールアドレス, google_idの登録情報がない
                     return redirect()->route('login.index')->withErrors([
                         'sns_login' => __('validation.custom.user.google')

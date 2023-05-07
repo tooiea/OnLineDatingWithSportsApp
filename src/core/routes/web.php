@@ -56,8 +56,7 @@ Route::middleware('guest')->group(function () {
         Route::get('notvalid/token', [UsersController::class, 'failedToken'])->name('users.failed'); // トークンなし
         Route::get('register/user/{token}', [UsersController::class, 'index'])->name('users.index');
         Route::get('login', [LoginController::class, 'index'])->name('login.index');
-        Route::post('login', [LoginController::class, 'login'])
-                ->name('login');
+        Route::post('login', [LoginController::class, 'login'])->name('login');
 
         // googleログイン
         Route::get('google/login', [GoogleLoginController::class, 'redirectToGoogle'])->name('google.login');

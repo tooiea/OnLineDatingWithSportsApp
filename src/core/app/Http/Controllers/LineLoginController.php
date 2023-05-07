@@ -45,6 +45,8 @@ class LineLoginController extends Controller
 
                 // メールアドレス, line_idの登録情報がない
                 if (empty($user)) {
+                    // TODO チーム新規登録、チームへ登録の画面へ遷移する
+
                     return redirect()->route('login.index')->withErrors([
                         'sns_login' => __('validation.custom.user.line')
                     ]);
