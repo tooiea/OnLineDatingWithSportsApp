@@ -19,8 +19,7 @@ ENV LANG="ja_JP.UTF-8" \
 RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime\
     && dnf -y install httpd\
     unzip\
-    vim\
-    mod_ssl
+    vim
 
 # httpd系の設定ファイル配置
 COPY ./httpd/conf/httpd.conf /etc/httpd/conf/
