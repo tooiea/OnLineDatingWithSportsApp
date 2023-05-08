@@ -7,9 +7,9 @@ namespace App\Models;
  */
 class Images
 {
-    private const DIRECTORY_OLDWS_TOP = 'oldwds';
-    private const DIRECTORY_OLDWS_LOGO = 'oldwds/images/logo';
-    private const DIRECTORY_OLDWS_ALBUM = 'oldwds/images/album';
+    private const DIRECTORY_OLDWS_TOP = 'oldws';
+    private const DIRECTORY_OLDWS_LOGO = 'oldws/images/logo';
+    private const DIRECTORY_OLDWS_ALBUM = 'oldws/images/album';
 
     /**
      *  画像からMIME TYPEとパスを取得
