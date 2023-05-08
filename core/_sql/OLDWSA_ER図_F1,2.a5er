@@ -31,7 +31,7 @@ RDBMSType=5
 RDBMSTypeName=MySQL
 BackupRestoreTempTable=0
 CreateFk=1
-FkOnDeleteOption=on delete no action
+FkOnDeleteOption=on delete cascade
 FkOnUpdateOption=on update cascade
 GenerateCommentStatement=0
 GenerateCommentStatement_LName=0
@@ -48,7 +48,7 @@ ShowCommonAttributes=0
 BugFixEntityWidth=1
 
 [Entity]
-PName=t_users.administrators
+PName=t_baseball.administrators
 LName=管理者
 Comment=
 TableOption=
@@ -67,12 +67,12 @@ Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP","",$F
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230214074437
+ModifiedDateTime=20230217131200
 Position="MAIN",450,200,344,497
 ZOrder=1
 
 [Entity]
-PName=t_users.temp_users
+PName=t_baseball.temp_users
 LName=仮ユーザ
 Comment=
 TableOption=
@@ -98,12 +98,12 @@ Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP  ON UP
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230214074433
+ModifiedDateTime=20230217131153
 Position="MAIN",1000,200,451,792
 ZOrder=2
 
 [Entity]
-PName=t_users.users
+PName=t_baseball.users
 LName=ユーザ
 Comment=
 TableOption=
@@ -122,7 +122,7 @@ Field="updated_at","updated_at","DATETIME",,,"CURRENT_TIMESTAMP  ON UPDATE CURRE
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230214074429
+ModifiedDateTime=20230217131143
 Position="MAIN",1500,200,405,741
 ZOrder=3
 
@@ -140,6 +140,7 @@ Field="sport_affiliation_type","sport_affiliation_type","INT","NOT NULL",,"","",
 Field="invitation_code","invitation_code","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
 Field="prefecture","prefecture","INT","NOT NULL",,"","",$00000000,""
 Field="address","address","VARCHAR(255)",,,"","",$FFFFFFFF,""
+Field="team_url","team_url","VARCHAR(255)",,,"","",$FFFFFFFF,""
 Field="team_logo","team_logo","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
 Field="image_extension","image_extension","VARCHAR(255)","NOT NULL",,"","",$FFFFFFFF,""
 Field="is_deleted","is_deleted","INT","NOT NULL",,"0","",$FFFFFFFF,""
@@ -148,7 +149,7 @@ Field="updated_at","updated_at","DATETIME","NOT NULL",,"CURRENT_TIMESTAMP  ON UP
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20230214074321
+ModifiedDateTime=20230217131127
 Position="MAIN",1000,1300,574,540
 ZOrder=4
 
@@ -173,7 +174,7 @@ Position="MAIN",1700,1300,328,437
 ZOrder=9
 
 [Relation]
-Entity1=t_users.users
+Entity1=t_baseball.users
 Entity2=t_baseball.team_members
 RelationType1=2
 RelationType2=3
@@ -566,7 +567,7 @@ PName=t_baseball.replies
 LName=返信
 Comment=
 TableOption=
-Page=Main
+Page=MAIN
 Left=800
 Top=2000
 Field="id","id","BIGINT","NOT NULL",0,"","",$FFFFFFFF,""
@@ -578,7 +579,7 @@ EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20230214074351
-Position="Main",800,2000,457,512
+Position="MAIN",800,2000,457,512
 ZOrder=31
 
 [Relation]

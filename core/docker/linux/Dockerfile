@@ -17,13 +17,13 @@ ENV LANG="ja_JP.UTF-8" \
 # タイムゾーンの設定
 # httpd、その他必要なモジュールのインストール
 RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime\
-    && dnf -y install dnf-plugin-config-manager httpd zip unzip vim tree git mod_ssl
- 
+    && dnf -y install httpd\
+    unzip\
+    vim\
+    mod_ssl
+
 # httpd系の設定ファイル配置
 COPY ./httpd/conf/httpd.conf /etc/httpd/conf/
-COPY ./httpd/conf.d/ssl.conf /etc/httpd/conf.d/
-COPY ./pki/tls/certs/localhost.crt /etc/pki/tls/certs/
-COPY ./pki/tls/private/localhost.key /etc/pki/tls/private/
 
 # yum repository追加
 # EPEL, remi, mysql ,phpインストール、バージョンに合わせて変更
@@ -31,11 +31,8 @@ COPY ./pki/tls/private/localhost.key /etc/pki/tls/private/
 RUN dnf install -y epel-release\
     https://rpms.remirepo.net/enterprise/remi-release-8.rpm\
     && dnf config-manager --set-enabled remi\
-    && dnf -y install https://dev.mysql.com/get/mysql80-community-release-el8-4.noarch.rpm\
-    && rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022\
-    && dnf -y module disable mysql\
-    && dnf config-manager --enable mysql80-community\
     && dnf module install -y php:remi-8.1\
+    composer\
     && dnf -y install php\
     php-pdo\
     php-mysqlnd\
@@ -46,30 +43,14 @@ RUN dnf install -y epel-release\
 COPY ./php/php.ini /etc/
 COPY ./php/www.conf /etc/php-fpm.d/www.conf
 
-# composerインストール
-COPY ./php/composer.sh /tmp/composer.sh
-RUN chmod +x /tmp/composer.sh && \
-    /tmp/composer.sh && \
-    mv composer.phar /usr/local/bin/composer && \
-    rm -rf /tmp/composer.sh\
-    && dnf clean all \
-    && rm -rf /var/cache/*
-
-# mysqlクライアントインストール
 # postfixのインストール
-RUN dnf -y install mysql-community-client\
-    postfix
-
-# sshdの起動設定
-# RUN systemctl enable sshd
+RUN dnf -y install postfix
 
 # httpdの起動設定
 RUN systemctl enable httpd
 
 # ポートを公開する
-EXPOSE 22
 EXPOSE 80
-EXPOSE 443
 
 # initを起動する
 CMD ["/sbin/init"]

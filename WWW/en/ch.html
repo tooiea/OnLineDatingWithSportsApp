@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/public/css/common.css?q">
+    <style>
+        .container {
+            height: 100vh;
+        }
+
+        h4 {
+            font-size: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            height: 100%;
+        }
+
+        .card-title {
+            margin-bottom: 0.5rem;
+        }
+
+        .card-text {
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary,
+        .btn-info {
+            width: 100%;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container h-100">
+        <h4>それではあなたのチームを登録しましょう！</h4>
+        <div class="row h-100 justify-content-around align-items-center">
+            <div class="col-12 col-lg-6">
+                <div class="card h-100 d-flex">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center flex-fill">
+                        <h5 class="card-title team">チームを登録する</h5>
+                        <p class="card-text"><small>新しいチームを登録する場合はこちらをクリックしてください。</small></p>
+                        <a href="{{ route('team.register') }}" class="btn btn-primary">チームを登録する</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="card h-100 d-flex">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center flex-fill">
+                        <h5 class="card-title team">チームに所属する</h5>
+                        <p class="card-text"><small>既に登録されているチームに所属する場合はこちらをクリックしてください。</small></p>
+                        <a href="{{ route('team.join') }}" class="btn btn-info">チームに所属する</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

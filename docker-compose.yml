@@ -2,16 +2,14 @@ version: '3.7'
 
 services:
   web:
-    build: "./linux"
+    build: "./core/docker/linux"
     container_name: "web_baseball"
     platform: linux/x86_64
     ports:
       - 80:80
-      - 443:443
-      - 22:22
     # コンテナに配置するファイルの場所、webアプリケーションの構成に合わせて変更
     volumes:
-      - ../src:/var/www/
+      - ./:/var/www/
     privileged: true
     tty: true
     stdin_open: true
@@ -46,8 +44,8 @@ services:
       PMA_HOST: mysql
     ports:
       - 8080:80
-    volumes: 
-            - ./phpmyadmin/phpmyadmin-misc.ini:/usr/local/etc/php/conf.d/phpmyadmin-misc.ini
+    volumes:
+      - ./core/docker/phpmyadmin/phpmyadmin-misc.ini:/usr/local/etc/php/conf.d/phpmyadmin-misc.ini
     networks:
       - br0
   mailhog:
@@ -60,7 +58,7 @@ services:
     networks:
       - br0
 volumes:
-    db_data: {}
+  db_data: {}
 
 networks:
   br0:
