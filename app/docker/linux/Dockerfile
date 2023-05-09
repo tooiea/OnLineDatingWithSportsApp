@@ -46,16 +46,13 @@ COPY ./php/www.conf /etc/php-fpm.d/www.conf
 RUN dnf -y install postfix
 
 # httpdの起動設定
-RUN systemctl enable httpd\
-    && cd /var/www\
-    && composer create-project laravel/laravel core\
-    && composer global require laravel/installer
+RUN systemctl enable httpd
 
 # ポートを公開する
 EXPOSE 80
 
 # ワークディレクトリ設定
-WORKDIR /var/www/core
+WORKDIR /var/www/app
 
 # initを起動する
 CMD ["/sbin/init"]
