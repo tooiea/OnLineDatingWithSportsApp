@@ -51,5 +51,8 @@ RUN systemctl enable httpd
 # ポートを公開する
 EXPOSE 80
 
+# ワークディレクトリ設定
+WORKDIR /var/www/core
+
 # initを起動する
 CMD ["/sbin/init"]
