@@ -48,9 +48,9 @@ services:
       - ./app/docker/phpmyadmin/phpmyadmin-misc.ini:/usr/local/etc/php/conf.d/phpmyadmin-misc.ini
     networks:
       - br0
-  mailhog:
-    image: mailhog/mailhog
-    container_name: oldws_mailhog
+  mailpit:
+    image: axllent/mailpit
+    container_name: oldws_mailpit
     restart: always
     ports:
       - '1025:1025'
