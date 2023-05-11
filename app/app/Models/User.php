@@ -115,7 +115,7 @@ class User extends Authenticatable
      */
     public function registrationNotification($user)
     {
-        $this->notify(new UserNotification($user, new SendMailer()));
+        $this->notify(new UserNotification($user));
     }
 
     /**
@@ -126,6 +126,6 @@ class User extends Authenticatable
      */
     public function sendPasswordResetNotification($token)
     {
-        $this->notify(new ResetPasswordNotification($token, new SendMailer()));
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

@@ -13,17 +13,15 @@ class UserNotification extends Notification
     use Queueable;
 
     private $user;
-    private $mail;
 
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param object $user
      */
-    public function __construct(object $user, SendMailer $mail)
+    public function __construct(object $user)
     {
         $this->user = $user;
-        $this->mail = $mail;
     }
 
     /**
@@ -45,16 +43,15 @@ class UserNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return $this->mail
-                    ->from(config('mail.from.address'))
-                    ->to($this->user->user->email)
-                    ->text('mail.user_register')
-                    ->subject(__('mail_messages.subject.user_register'))
-                    ->with([
-                        'name' => $this->user->user->name,
-                        'teamName' => $this->user->team->team_name,
-                        'admin' => config('mail.from.address')
-                    ]);
+        return (new MailMessage)
+            ->replyTo($this->user->user->email)
+            ->from(config('mail.from.address'))
+            ->subject(__('mail_messages.subject.user_register'))
+            ->view('mail.user_register', [
+                'name' => $this->user->user->name,
+                'teamName' => $this->user->team->team_name,
+                'admin' => config('mail.from.address'),
+            ]);
     }
 
     /**
