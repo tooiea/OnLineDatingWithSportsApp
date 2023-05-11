@@ -71,6 +71,7 @@ class TempUser extends Model
      * 仮登録メール送信
      *
      * @param string $token
+     * @param string $email
      * @return void
      */
     public function temporaryRegistrationNotification($token, $email)
