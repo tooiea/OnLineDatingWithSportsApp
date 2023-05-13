@@ -13,15 +13,17 @@ class ResetPasswordNotification extends Notification
     use Queueable;
 
     private $token;
+    private $sendMailerInstance;
 
     /**
      * トークンとsendmailerのインスタンスをセット
      *
      * @param string $token
      */
-    public function __construct(string $token)
+    public function __construct(string $token, SendMailer $sendMailerInstance)
     {
         $this->token = $token;
+        $this->sendMailerInstance = $sendMailerInstance;
     }
 
     /**
@@ -46,14 +48,15 @@ class ResetPasswordNotification extends Notification
         // パスワードリセット用のURLを生成
         $url = sprintf(url(__('route_const.reset_password') . "%s?email=%s"), $this->token, $notifiable->email);
 
-        return (new MailMessage)
-            ->replyTo($notifiable->email)
-            ->from(config('mail.from.address'))
-            ->subject(__('mail_messages.subject.reset_password'))
-            ->view('mail.reset_password', [
-                'url' => $url,
-                'admin' => config('mail.from.address')
-            ]);
+        return $this->sendMailerInstance
+                    ->from(config('mail.from.address'))
+                    ->to($notifiable->email)
+                    ->text('mail.reset_password')
+                    ->subject(__('mail_messages.subject.reset_password'))
+                    ->with([
+                        'url' => $url,
+                        'admin' => config('mail.from.address')
+                    ]);
     }
 
     /**
