@@ -26,7 +26,7 @@ class TempUserNotification extends Notification
     {
         $this->token = $token;
         $this->email = $email;
-        $this->mail = $sendMailerInstance;
+        $this->sendMailerInstance = $sendMailerInstance;
     }
 
     /**
