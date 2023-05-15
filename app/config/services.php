@@ -38,6 +38,10 @@ return [
     ],
 
     'line' => [
+        'message' => [
+            'channel_token' => env('LINE_MESSAGE_CHANNEL_TOKEN'),
+            'channel_secret' => env('LINE_MESSAGE_CHANNEL_SECRET'),
+        ],
         'client_id' => env('LINE_CLIENT_ID'),
         'client_secret' => env('LINE_CLIENT_SECRET'),
         'redirect' => env('LINE_REDIRECT_URL'),

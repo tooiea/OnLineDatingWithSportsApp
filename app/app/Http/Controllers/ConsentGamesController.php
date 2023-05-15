@@ -17,6 +17,23 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use LINE\LINEBot;
+use LINE\LINEBot\Constant\Flex\ComponentImageAspectMode;
+use LINE\LINEBot\Constant\Flex\ComponentImageAspectRatio;
+use LINE\LINEBot\Constant\Flex\ComponentImageSize;
+use LINE\LINEBot\Constant\Flex\ComponentLayout;
+use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+use LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\BoxComponentBuilder;
+use LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\ButtonComponentBuilder;
+use LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\ImageComponentBuilder;
+use LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\TextComponentBuilder;
+use LINE\LINEBot\MessageBuilder\Flex\ContainerBuilder\BubbleContainerBuilder;
+use LINE\LINEBot\MessageBuilder\Flex\ContainerBuilder\CarouselContainerBuilder;
+use LINE\LINEBot\MessageBuilder\FlexMessageBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 
 /**
  * 試合への招待 | 試合へ招待された
@@ -178,11 +195,17 @@ class ConsentGamesController extends Controller
     {
         $myTeam = TeamMember::getTeamByUserId(Auth::id());
         $replyModel = new Reply();
-        $replyModel->create([
+        $data = $replyModel->create([
             'consent_game_id' => Crypt::decryptString($request->input('consent_game_id')),
             'team_id' => $myTeam->team->id,
             'message' => $request->input('message'),
         ]);
+
+        // LINE登録有り
+        if (!empty($myTeam->user->line_login_id)) {
+            $replyModel::replyByLine($data, $myTeam);
+        }
+
 
         return redirect()->route('reply.detail', $request->input('consent_game_id'));
     }

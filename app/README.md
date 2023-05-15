@@ -32,6 +32,10 @@ composer require laravel/socialite
 
 composer require socialiteproviders/line
 
+### SNE:LINE_bot
+
+composer require linecorp/line-bot-sdk
+
 #### 全てインストール後に、設定ファイル反映
 
 php artisan config:cache
