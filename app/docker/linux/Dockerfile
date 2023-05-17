@@ -17,12 +17,17 @@ ENV LANG="ja_JP.UTF-8" \
 # タイムゾーンの設定
 # httpd、その他必要なモジュールのインストール
 RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime\
-    && dnf -y install httpd\
+    && dnf -y install dnf-plugin-config-manager\
+    httpd\
     unzip\
-    vim
+    vim\
+    mod_ssl
 
 # httpd系の設定ファイル配置
 COPY ./httpd/conf/httpd.conf /etc/httpd/conf/
+COPY ./httpd/conf.d/ssl.conf /etc/httpd/conf.d/
+COPY ./pki/tls/certs/localhost.crt /etc/pki/tls/certs/
+COPY ./pki/tls/private/localhost.key /etc/pki/tls/private/
 
 # yum repository追加
 # EPEL, remi, mysql ,phpインストール、バージョンに合わせて変更

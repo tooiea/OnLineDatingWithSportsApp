@@ -7,6 +7,7 @@ services:
     platform: linux/x86_64
     ports:
       - 80:80
+      - 443:443
     # コンテナに配置するファイルの場所、webアプリケーションの構成に合わせて変更
     volumes:
       - ./:/var/www/
