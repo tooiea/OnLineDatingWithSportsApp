@@ -3,6 +3,9 @@ version: '3.7'
 services:
   web:
     build: "./app/docker/linux"
+    # vscodeでデバッグするためにホスト追加
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     container_name: "web_baseball"
     platform: linux/x86_64
     ports:

@@ -40,15 +40,18 @@ RUN dnf install -y epel-release\
     && dnf -y install php\
     php-pdo\
     php-mysqlnd\
+    php-pear\
+    php-devel\
+    php-pecl-xdebug\
+    # postfixのインストール
+    postfix\
     && dnf clean all \
     && rm -rf /var/cache/*
+
 
 # php設定ファイル配置
 COPY ./php/php.ini /etc/
 COPY ./php/www.conf /etc/php-fpm.d/www.conf
-
-# postfixのインストール
-RUN dnf -y install postfix
 
 # httpdの起動設定
 RUN systemctl enable httpd
