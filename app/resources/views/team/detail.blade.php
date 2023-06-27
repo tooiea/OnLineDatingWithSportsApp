@@ -66,6 +66,7 @@
               <img src="album_image_2.jpg" alt="album image 2" />
             </div>
           </div> -->
+        <button class="btn btn-primary edit-button" type="button" onclick="location.href='{{ route('team.edit') }}'">編集する</button>
       </div>
     </div>
   </div>

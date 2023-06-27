@@ -1,0 +1,442 @@
+﻿# A5:ER FORMAT:17
+# A5:ER ENCODING:UTF8
+# A5:ER Mk-1 Copyright © 2007 m.matsubara
+# A5:SQL Mk-2 Version 2.18.3 Copyright © 1997 - 2023 m.matsubara
+#  https://a5m2.mmatsubara.com
+
+[Manager]
+ProjectName=
+Author=
+MaxEntityRowShow=1000
+ReadOnlyRecommend=0
+Page=Main
+PageInfo="Main",2,"A4Landscape",$FFFFFF
+LogicalView=1
+DecodeDomain=0
+ViewModePageIndividually=1
+ViewMode=2
+ViewFormat=0
+UseNondependenceDashLine=0
+FontName=メイリオ
+FontSize=6
+PaperSize=A4Landscape
+HeaderLeft=
+HeaderCenter=
+HeaderRight=
+FooterLeft=
+FooterCenter=
+FooterRight=
+ShowPageoutRelation=1
+DefaultPkName=%0:s_PKC
+DefaultPkIndexName=%0:s_PKI
+DefaultIndexName=%0:s_IX%1:d
+DefaultFkName=%0:s_FK%1:d
+SqlSeparator=0
+UpperCaseKeyword=0
+ShowTag=1
+ShowCommonAttributes=0
+BugFixEntityWidth=1
+
+[Entity]
+PName=administrators
+LName=administrators
+Comment=
+TableOption=
+Page=Main
+Left=450
+Top=1350
+Field="id","id","int auto_increment","NOT NULL",0,"","",$FFFFFFFF,""
+Field="email","email","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="admins_name","admins_name","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="salt","salt","varchar(100)","NOT NULL",,"","",$FFFFFFFF,""
+Field="password","password","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="reset_token","reset_token","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","int","NOT NULL",,"0","",$FFFFFFFF,""
+Field="created_at","created_at","datetime on update CURRENT_TIMESTAMP","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","datetime","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",450,1350,172,249
+ZOrder=-1
+
+[Entity]
+PName=consent_games
+LName=consent_games
+Comment=
+TableOption=
+Page=Main
+Left=350
+Top=50
+Field="id","id","bigint auto_increment","NOT NULL",0,"","",$FFFFFFFF,""
+Field="invitee_id","invitee_id","int","NOT NULL",,"","",$FFFFFFFF,""
+Field="guest_id","guest_id","int","NOT NULL",,"","",$FFFFFFFF,""
+Field="consent_status","consent_status","int","NOT NULL",,"","",$FFFFFFFF,""
+Field="game_date","game_date","datetime",,,"","",$FFFFFFFF,""
+Field="first_preferered_date","first_preferered_date","datetime","NOT NULL",,"","",$FFFFFFFF,""
+Field="second_preferered_date","second_preferered_date","datetime","NOT NULL",,"","",$FFFFFFFF,""
+Field="third_preferered_date","third_preferered_date","datetime",,,"","",$FFFFFFFF,""
+Field="message","message","text",,,"","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","int","NOT NULL",,"0","",$FFFFFFFF,""
+Field="created_at","created_at","datetime","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","datetime on update CURRENT_TIMESTAMP","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Index=consent_games_FK1=0,guest_id
+Index=consent_games_FK2=0,invitee_id
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",350,50,272,321
+ZOrder=-2
+
+[Entity]
+PName=password_resets
+LName=password_resets
+Comment=
+TableOption=
+Page=Main
+Left=400
+Top=900
+Field="email","email","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="token","token","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="created_at","created_at","timestamp",,,"null","",$FFFFFFFF,""
+Index=password_resets_email_index=0,email
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",400,900,153,93
+ZOrder=-4
+
+[Entity]
+PName=migrations
+LName=migrations
+Comment=
+TableOption=
+Page=Main
+Left=100
+Top=1200
+Field="id","id","int unsigned auto_increment","NOT NULL",0,"","",$FFFFFFFF,""
+Field="migration","migration","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="batch","batch","int","NOT NULL",,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",100,1200,132,91
+ZOrder=-3
+
+[Entity]
+PName=replies
+LName=replies
+Comment=
+TableOption=
+Page=Main
+Left=700
+Top=50
+Field="id","id","bigint auto_increment","NOT NULL",0,"","",$FFFFFFFF,""
+Field="consent_game_id","consent_game_id","bigint","NOT NULL",,"","",$FFFFFFFF,""
+Field="team_id","team_id","int","NOT NULL",,"","",$FFFFFFFF,""
+Field="message","message","text","NOT NULL",,"","",$FFFFFFFF,""
+Field="created_at","created_at","datetime","NOT NULL",,"","",$FFFFFFFF,""
+Field="updated_at","updated_at","datetime","NOT NULL",,"","",$FFFFFFFF,""
+Index=replies_FK1=0,consent_game_id
+Index=replies_FK2=0,team_id
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",700,50,256,170
+ZOrder=-6
+
+[Entity]
+PName=personal_access_tokens
+LName=personal_access_tokens
+Comment=
+TableOption=
+Page=Main
+Left=100
+Top=900
+Field="id","id","bigint unsigned auto_increment","NOT NULL",0,"","",$FFFFFFFF,""
+Field="tokenable_type","tokenable_type","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="tokenable_id","tokenable_id","bigint unsigned","NOT NULL",,"","",$FFFFFFFF,""
+Field="name","name","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="token","token","varchar(64)","NOT NULL",,"","",$FFFFFFFF,""
+Field="abilities","abilities","text",,,"","",$FFFFFFFF,""
+Field="last_used_at","last_used_at","timestamp",,,"null","",$FFFFFFFF,""
+Field="created_at","created_at","timestamp",,,"null","",$FFFFFFFF,""
+Field="updated_at","updated_at","timestamp",,,"null","",$FFFFFFFF,""
+Index=personal_access_tokens_token_unique=2,token
+Index=personal_access_tokens_tokenable_type_tokenable_id_index=0,tokenable_type,tokenable_id
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",100,900,184,240
+ZOrder=-5
+
+[Entity]
+PName=team_albums
+LName=team_albums
+Comment=
+TableOption=
+Page=Main
+Left=1200
+Top=500
+Field="id","id","int auto_increment","NOT NULL",0,"","",$FFFFFFFF,""
+Field="team_id","team_id","int","NOT NULL",,"","",$FFFFFFFF,""
+Field="album_type","album_type","int","NOT NULL",,"","",$FFFFFFFF,""
+Field="image_name","image_name","varchar(255)",,,"","",$FFFFFFFF,""
+Field="image_extension","image_extension","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","int","NOT NULL",,"0","",$FFFFFFFF,""
+Field="created_at","created_at","datetime","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","datetime on update CURRENT_TIMESTAMP","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Index=team_albums_FK1=0,team_id
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",1200,500,200,220
+ZOrder=-7
+
+[Entity]
+PName=team_members
+LName=team_members
+Comment=
+TableOption=
+Page=Main
+Left=450
+Top=500
+Field="id","id","bigint auto_increment","NOT NULL",0,"","",$FFFFFFFF,""
+Field="team_id","team_id","int","NOT NULL",,"","",$FFFFFFFF,""
+Field="user_id","user_id","int","NOT NULL",,"","",$FFFFFFFF,""
+Field="created_at","created_at","datetime","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","datetime on update CURRENT_TIMESTAMP","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Index=team_members_FK1=0,user_id
+Index=team_members_FK2=0,team_id
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",450,500
+ZOrder=-8
+
+[Entity]
+PName=temp_users
+LName=temp_users
+Comment=
+TableOption=
+Page=Main
+Left=100
+Top=1350
+Field="id","id","int auto_increment","NOT NULL",0,"","",$FFFFFFFF,""
+Field="name","name","varchar(20)","NOT NULL",,"","",$FFFFFFFF,""
+Field="email","email","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="password","password","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="token","token","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="expiration_date","expiration_date","datetime","NOT NULL",,"","",$FFFFFFFF,""
+Field="sport_affiliation_type","sport_affiliation_type","int",,,"","",$FFFFFFFF,""
+Field="team_name","team_name","varchar(255)",,,"","",$FFFFFFFF,""
+Field="team_logo","team_logo","varchar(255)",,,"","",$FFFFFFFF,""
+Field="image_extension","image_extension","varchar(255)",,,"","",$FFFFFFFF,""
+Field="team_url","team_url","varchar(255)",,,"","",$FFFFFFFF,""
+Field="prefecture","prefecture","int",,,"","",$FFFFFFFF,""
+Field="address","address","varchar(255)",,,"","",$FFFFFFFF,""
+Field="invitation_code","invitation_code","varchar(255)",,,"","",$FFFFFFFF,""
+Field="created_at","created_at","datetime","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","datetime on update CURRENT_TIMESTAMP","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",100,1350,240,431
+ZOrder=-10
+
+[Entity]
+PName=teams
+LName=teams
+Comment=
+TableOption=
+Page=Main
+Left=800
+Top=500
+Field="id","id","int auto_increment","NOT NULL",0,"","",$FFFFFFFF,""
+Field="team_name","team_name","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="sport_affiliation_type","sport_affiliation_type","int","NOT NULL",,"","",$FFFFFFFF,""
+Field="invitation_code","invitation_code","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="prefecture","prefecture","int","NOT NULL",,"","",$FFFFFFFF,""
+Field="address","address","varchar(255)",,,"","",$FFFFFFFF,""
+Field="team_url","team_url","varchar(255)",,,"","",$FFFFFFFF,""
+Field="team_logo","team_logo","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="image_extension","image_extension","varchar(255)","NOT NULL",,"","",$FFFFFFFF,""
+Field="is_deleted","is_deleted","int","NOT NULL",,"0","",$FFFFFFFF,""
+Field="created_at","created_at","datetime","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","datetime on update CURRENT_TIMESTAMP","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",800,500,240,323
+ZOrder=-9
+
+[Relation]
+Entity1=teams
+Entity2=team_albums
+RelationType1=1
+RelationType2=3
+Fields1=id
+Fields2=team_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,4586,5937,235,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=459
+Bar2=594
+Bar3=24
+TermPos1=R
+TermPos2=R
+ZOrder=-16
+
+[Relation]
+Entity1=teams
+Entity2=replies
+RelationType1=1
+RelationType2=3
+Fields1=id
+Fields2=team_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5000,4734,749,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=500
+Bar2=473
+Bar3=75
+TermPos1=R
+TermPos2=R
+ZOrder=-15
+
+[Relation]
+Entity1=users
+Entity2=team_members
+RelationType1=1
+RelationType2=3
+Fields1=id
+Fields2=user_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,1636,5880,2170,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=164
+Bar2=588
+Bar3=217
+TermPos1=R
+TermPos2=R
+ZOrder=-17
+
+[Relation]
+Entity1=teams
+Entity2=team_members
+RelationType1=1
+RelationType2=3
+Fields1=id
+Fields2=team_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5766,9500,3511,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=577
+Bar2=950
+Bar3=351
+TermPos1=R
+TermPos2=R
+ZOrder=-18
+
+[Entity]
+PName=users
+LName=users
+Comment=
+TableOption=
+Page=Main
+Left=100
+Top=500
+Field="id","id","int auto_increment","NOT NULL",0,"","",$FFFFFFFF,""
+Field="name","name","varchar(20)","NOT NULL",,"","",$FFFFFFFF,""
+Field="email","email","varchar(255)",,,"","",$FFFFFFFF,""
+Field="password","password","varchar(255)",,,"","",$FFFFFFFF,""
+Field="google_login_id","google_login_id","varchar(255)",,,"","",$FFFFFFFF,""
+Field="line_login_id","line_login_id","varchar(255)",,,"","",$FFFFFFFF,""
+Field="last_login_time","last_login_time","datetime","NOT NULL",,"","",$FFFFFFFF,""
+Field="remember_token","remember_token","varchar(255)",,,"","",$FFFFFFFF,""
+Field="created_at","created_at","datetime","NOT NULL",,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+Field="updated_at","updated_at","datetime on update CURRENT_TIMESTAMP",,,"CURRENT_TIMESTAMP","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+Position="Main",100,500
+ZOrder=-11
+
+[Relation]
+Entity1=teams
+Entity2=consent_games
+RelationType1=1
+RelationType2=3
+Fields1=id
+Fields2=guest_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,2610,3784,6247,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=261
+Bar2=378
+Bar3=625
+TermPos1=R
+TermPos2=R
+ZOrder=-12
+
+[Relation]
+Entity1=teams
+Entity2=consent_games
+RelationType1=1
+RelationType2=3
+Fields1=id
+Fields2=invitee_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,500,7583,500,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=50
+Bar2=758
+Bar3=50
+TermPos1=R
+TermPos2=R
+ZOrder=-13
+
+[Relation]
+Entity1=consent_games
+Entity2=replies
+RelationType1=1
+RelationType2=3
+Fields1=id
+Fields2=consent_game_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,4099,6965,2401,R,R,""
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=410
+Bar2=696
+Bar3=240
+TermPos1=R
+TermPos2=R
+ZOrder=-14

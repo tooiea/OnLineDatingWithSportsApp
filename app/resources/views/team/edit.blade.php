@@ -17,41 +17,63 @@
     <h1 class="text-center">チームプロフィール編集</h1>
     <div class="card">
       <div class="card-body">
-        <form>
+        <form action="{{ route('team.update') }}" method="post" enctype="multipart/form-data">
+          @method('put')
+          @csrf
           <div class="form-group">
             <label for="teamName">チーム名:</label>
-            <input type="text" class="form-control" id="teamName" value="[Team Name]" readonly />
+            <input type="text" name="teamName" class="form-control" id="teamName" value="{{ $myTeam->team->team_name }}"/>
+            @error('teamName')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <div class="form-group">
             <label for="teamLogo">チームロゴ画像:</label>
-            <input type="file" class="form-control-file" id="teamLogo" />
+            <p>
+              <img id="teamLogoImage" src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->team_logo))) }}"
+              class="img-fluid" alt="team logo" data-original-url="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->team_logo))) }}" />
+            </p>
+            <div class="custom-file">
+              <input type="file" name="teamLogo" class="custom-file-input" id="teamLogo" />
+              <label class="custom-file-label" for="teamLogo"><small>変更時は選択してください</small></label>
+              <div id="imagePreview" class="preview-container"></div>
+            </div>
+            <div id="updateNoticeText" class="notice-text" style="display: none;" >この画像はまだ更新されていません。</div>
+            <button id="cancelUploadButton" type="button" class="btn btn-outline-secondary" style="display: none;">
+              <i class="fas fa-times"></i> キャンセル
+            </button>
+            @error('teamLogo')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <div class="form-group">
             <label for="teamURL">チーム紹介URL:</label>
-            <input type="text" class="form-control" id="teamURL" value="[Team URL]" />
+            <input type="text" name="teamUrl" class="form-control" id="teamURL" value="{{ $myTeam->team->team_url }}" />
+            @error('teamUrl')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
+          @if (!$myTeamAlbums->isEmpty())
           <div class="form-group">
-            <label for="teamAlbum">アルバム画像:</label>
+            <label for="teamAlbum">アルバム画像を削除する:</label>
+             @foreach ($myTeamAlbums as $key => $value)
+            <p>
+              <img src="画像のURL" class="img-fluid" alt="team album" />
+            </p>
             <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="teamAlbum" />
-              <label class="form-check-label" for="teamAlbum">Delete</label>
+              <input type="checkbox" name="deleteAlbum" class="form-check-input" id="deleteAlbum" />
+              <label class="form-check-label" for="deleteAlbum">削除する</label>
             </div>
+            @endforeach
           </div>
+          @endif
           <div class="form-group">
-            <label for="teamAlbumAdd">Add to Team Album:</label>
-            <input type="file" class="form-control-file" id="teamAlbumAdd" />
-          </div>
-          <div class="form-group">
-            <label for="teamJoinURL">チーム招待用URL:</label>
-            <input type="text" class="form-control" id="teamJoinURL" value="[Team Join URL]" readonly />
+            <label for="teamAlbumAdd">アルバム画像を追加する:</label>
+            <input type="file" name="teamAlbum[]" class="form-control-file" id="teamAlbumAdd" multiple />
+            <div id="albumPreview" class="preview-container"></div>
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary">更新する</button>
+            <button type="submit" name="update_button" class="btn btn-primary">更新する</button>
           </div>
         </form>
       </div>
     </div>
   </div>
+    <script src="/public/js/preview.js"></script>
 </body>
 
 </html>

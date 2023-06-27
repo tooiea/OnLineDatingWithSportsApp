@@ -111,6 +111,19 @@ CREATE TABLE teams (
   , CONSTRAINT teams_PKC PRIMARY KEY (id)
 ) ;
 
+-- チームアルバム
+CREATE TABLE team_albums (
+  id INT NOT NULL AUTO_INCREMENT
+  , team_id INT NOT NULL
+  , album_type INT NOT NULL
+  , image_name VARCHAR(255) NOT NULL
+  , image_extension VARCHAR(255) NOT NULL
+  , is_deleted INT DEFAULT 0 NOT NULL
+  , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+  , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP  ON UPDATE CURRENT_TIMESTAMP NOT NULL
+  , CONSTRAINT team_albums_PKC PRIMARY KEY (id)
+) ;
+
 ALTER TABLE consent_games
   ADD CONSTRAINT consent_games_FK1 FOREIGN KEY (guest_id) REFERENCES teams(id)
   on delete cascade
@@ -137,3 +150,7 @@ ALTER TABLE team_members
   on delete cascade
   on update cascade;
 
+ALTER TABLE team_albums
+  ADD CONSTRAINT team_albums_FK1 FOREIGN KEY (team_id) REFERENCES teams(id)
+  on delete cascade
+  on update cascade;

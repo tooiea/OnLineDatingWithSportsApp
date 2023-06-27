@@ -89,6 +89,8 @@ Route::middleware('auth')->group(function () {
     Route::get('search/team', [SearchTeamController::class, 'index'])->name('search.index');
     Route::get('team/profile/top', [TeamsController::class, 'index'])->name('team.index');
     Route::get('team/profile/detail', [TeamsController::class, 'detail'])->name('team.detail');
+    Route::get('team/profile/edit', [TeamsController::class, 'edit'])->name('team.edit');
+    Route::put('team/profile/edit', [TeamsController::class, 'update'])->name('team.update');
 
     // 試合の招待
     Route::middleware('custom.cache.headers:no_store')->prefix('consent')->group(function () {

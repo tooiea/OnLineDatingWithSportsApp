@@ -48,6 +48,11 @@ body {
     z-index: 100;
 }
 
+/* フォームの間隔 */
+.form-group {
+    margin-bottom: 1.7rem;
+}
+
 .card-body {
     /* padding: 0.8rem; */
 }
@@ -292,4 +297,42 @@ label.btn-secondary {
 
 #city-list li:hover {
     background: #eee;
+}
+
+.edit-button {
+    float: right;
+}
+
+.custom-file-label::after {
+    content: "ファイルを選択";
+}
+
+.custom-file-label[data-browse]::after {
+    content: attr(data-browse);
+}
+
+/* 画像のプレビューサイズを指定 */
+.preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* プレビュー画像を中央に配置 */
+}
+
+.preview-image {
+    width: 60px;
+    /* プレビュー画像の幅を指定 */
+    height: 60px;
+    /* プレビュー画像の高さを指定 */
+    object-fit: cover;
+    /* アスペクト比を保ちつつプレビュー画像を表示 */
+    margin: 5px;
+    /* プレビュー画像の余白を指定 */
+}
+
+/* 注記 */
+.notice-text {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
 }

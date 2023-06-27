@@ -131,4 +131,13 @@ class Team extends Model
 
         return $teamIds;
     }
+
+
+    public static function getMyTeamMembersByUserId($userId)
+    {
+        $myTeam = TeamMember::getTeamByUserId($userId);
+        $myTeamMembers = Team::where('id', '=', $myTeam->team_id)->with('teamMembers')->get();
+
+        return $myTeamMembers;
+    }
 }
