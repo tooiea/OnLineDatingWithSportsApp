@@ -19,8 +19,8 @@ CREATE TABLE replies (
 -- チームメンバ
 CREATE TABLE team_members (
   id BIGINT NOT NULL AUTO_INCREMENT
-  , team_id INT NOT NULL
-  , user_id INT NOT NULL
+  , team_id BIGINT NOT NULL
+  , user_id BIGINT NOT NULL
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
   , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
   , CONSTRAINT team_members_PKC PRIMARY KEY (id)
@@ -42,7 +42,7 @@ CREATE TABLE administrators (
 
 -- 仮ユーザ
 CREATE TABLE temp_users (
-  id INT NOT NULL AUTO_INCREMENT
+  id BIGINT NOT NULL AUTO_INCREMENT
   , name VARCHAR(20) NOT NULL
   , email VARCHAR(255) NOT NULL
   , password VARCHAR(255) NOT NULL
@@ -63,7 +63,7 @@ CREATE TABLE temp_users (
 
 -- ユーザ
 CREATE TABLE users (
-  id INT NOT NULL AUTO_INCREMENT
+  id BIGINT NOT NULL AUTO_INCREMENT
   , name VARCHAR(20) NOT NULL
   , email VARCHAR(255)
   , password VARCHAR(255)
@@ -96,7 +96,7 @@ CREATE TABLE consent_games (
 
 -- チーム
 CREATE TABLE teams (
-  id INT NOT NULL AUTO_INCREMENT
+  id BIGINT NOT NULL AUTO_INCREMENT
   , team_name VARCHAR(255) NOT NULL
   , sport_affiliation_type INT NOT NULL
   , invitation_code VARCHAR(255) NOT NULL
@@ -113,8 +113,8 @@ CREATE TABLE teams (
 
 -- チームアルバム
 CREATE TABLE team_albums (
-  id INT NOT NULL AUTO_INCREMENT
-  , team_id INT NOT NULL
+  id BIGINT NOT NULL AUTO_INCREMENT
+  , team_id BIGINT NOT NULL
   , album_type INT NOT NULL
   , image_name VARCHAR(255) NOT NULL
   , image_extension VARCHAR(255) NOT NULL
