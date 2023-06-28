@@ -99,7 +99,7 @@ class TempUser extends Model
                 'sport_affiliation_type' => $customValues['sportAffiliationType'],
                 'team_name' => $customValues['teamName'],
                 'image_path' => $customValues['imagePath'],
-                'image_extension' => $customValues['image_extension'],
+                'image_extension' => $customValues['imageExtension'],
                 'team_url' => (isset($customValues['teamUrl'])) ? $customValues['teamUrl'] : null,
                 'prefecture' => $customValues['prefecture'],
                 'address' => $customValues['address'],

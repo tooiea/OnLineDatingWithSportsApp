@@ -36,7 +36,7 @@ class TempTeamUsersController extends BasesController
     public function confirm(TempTeamUserFormRequest $request)
     {
         // アップロードされた画像のmime_typeとパスを取得
-        $files = Images::getImageDetail($request->file('teamLogo'));
+        $files = Images::getImageDetail($request->file('imagePath'));
 
         // インスタンスをセッションへ
         $specifyFormRequestInputs = new SpecifyFormRequestInputsController();

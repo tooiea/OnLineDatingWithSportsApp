@@ -23,7 +23,7 @@ class FormConstant
         'sportAffiliationType',
         'teamName',
         'imagePath',
-        'image_extension',
+        'imageExtension',
         'teamUrl',
         'prefecture',
         'address',
