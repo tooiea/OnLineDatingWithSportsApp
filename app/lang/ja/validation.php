@@ -73,8 +73,8 @@ return [
         'string' => 'The :attribute must be greater than or equal to :value characters.',
         'array' => 'The :attribute must have :value items or more.',
     ],
-    'image' => 'The :attribute must be an image.',
-    'in' => ':attribute を正しく選択してください。',
+    'image' => '画像をアップロードしてください',
+    'in' => '正しく選択してください。',
     'in_array' => 'The :attribute field does not exist in :other.',
     'integer' => 'The :attribute must be an integer.',
     'ip' => 'The :attribute must be a valid IP address.',
@@ -97,10 +97,10 @@ return [
     'max' => [
         'numeric' => 'The :attribute must not be greater than :max.',
         'file' => 'The :attribute must not be greater than :max kilobytes.',
-        'string' => ':attribute を :max 文字以内で入力してください。',
+        'string' => ':max 文字以内で入力してください。',
         'array' => 'The :attribute must not have more than :max items.',
     ],
-    'mimes' => ':attribute を :values の形式でアップロードしてください。',
+    'mimes' => ':values の形式でアップロードしてください。',
     'mimetypes' => 'The :attribute must be a file of type: :values.',
     'min' => [
         'numeric' => 'The :attribute must be at least :min.',
@@ -118,7 +118,7 @@ return [
     'prohibited_if' => 'The :attribute field is prohibited when :other is :value.',
     'prohibited_unless' => 'The :attribute field is prohibited unless :other is in :values.',
     'prohibits' => 'The :attribute field prohibits :other from being present.',
-    'regex' => ':attribute を正しく入力してください。',
+    'regex' => '正しく入力してください。',
     'required' => ':attribute を入力してください。',
     'required_array_keys' => 'The :attribute field must contain entries for: :values.',
     'required_if' => 'The :attribute field is required when :other is :value.',
@@ -139,7 +139,7 @@ return [
     'timezone' => 'The :attribute must be a valid timezone.',
     'unique' => ':attribute はすでに本登録済みです。',
     'uploaded' => 'The :attribute failed to upload.',
-    'url' => ':attribute URL形式で入力してください。',
+    'url' => 'URL形式で入力してください。',
     'uuid' => 'The :attribute must be a valid UUID.',
 
     /*
@@ -161,6 +161,14 @@ return [
         ],
         'teamUrl' => [
             'url' => 'URL形式で入力してください。',
+        ],
+        'teamAlbum' => [
+            'max' => ' 1MB以下の画像を選択してください。',
+            'image' => 'jpeg, jpg, pngの形式をアップロードしてください。'
+        ],
+        'teamAlbum.*' => [
+            'max' => ' 1MB以下の画像を選択してください。',
+            'image' => 'jpeg, jpg, pngの形式をアップロードしてください。'
         ],
         'prefecture' => [
             'required' => ':attribute を選択してください。',

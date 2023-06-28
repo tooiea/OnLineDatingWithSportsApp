@@ -44,6 +44,7 @@ class TempTeamUserFormRequest extends FormRequest
                 'max:2048',
                 'file',
                 'image',
+                'mimes:jpeg,jpg,png',
                 'mimetypes:image/jpeg,image/jpg,image/png',
             ],
             'teamUrl' => [
