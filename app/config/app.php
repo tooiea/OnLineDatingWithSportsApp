@@ -168,6 +168,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        // バリデーション用provider
+        App\Providers\ValidatorServiceProvider::class,
     ])->toArray(),
 
     /*

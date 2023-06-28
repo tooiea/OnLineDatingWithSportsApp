@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TeamAlbumRequest;
 use App\Models\ConsentGame;
 use App\Models\Team;
 use App\Models\TeamAlbum;
 use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 /**
  * チーム情報の取得
@@ -69,11 +71,22 @@ class TeamsController extends Controller
      *
      * @return void
      */
-    public function update(Request $request)
+    public function update(TeamAlbumRequest $request)
     {
         var_dump($request->all());
-        // TODO バリデーション追加
-        // TODO アルバム処理追加
+
+        DB::transaction(function () use ($request) {
+            // TODO アルバム画像保存
+            // TODO DBから画像を削除
+
+            // TODO DBへ登録
+            if ($request->has('teamAlbum')) {
+                foreach ($request->file('teamAlbum') as $file) {
+
+                }
+            }
+        });
+
         // return redirect()->route('team.detail');
     }
 }

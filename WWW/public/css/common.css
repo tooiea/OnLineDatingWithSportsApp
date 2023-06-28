@@ -53,6 +53,10 @@ body {
     margin-bottom: 1.7rem;
 }
 
+.invalid-feedback {
+  display: block;
+}
+
 .card-body {
     /* padding: 0.8rem; */
 }

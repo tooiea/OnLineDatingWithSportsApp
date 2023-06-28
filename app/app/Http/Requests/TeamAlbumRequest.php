@@ -60,18 +60,20 @@ class TeamAlbumRequest extends FormRequest
                 'mimes:jpeg,jpg,png',
                 'mimetypes:image/jpeg,image/jpg,image/png',
             ],
+            'teamAlbumTotal' => [
+                // TODO 削除数と登録数を比較して5枚を超えないかをチェック
+            ],
         ];
     }
 
     protected function prepareForValidation()
     {
-        $deleteAlbumIds = $this->route('deleteAlbum');
+        $values = $this->only(['deleteAlbum', 'teamAlbum']);
         // Crypt::decryptString()
-        Log::info($deleteAlbumIds);
-        Log::info($this->route('teamAlbum'));
+        Log::info($values);
 
-        // $this->merge([
-        //     'consent_game_id' => $deleteAlbumIds,
-        // ]);
+        $this->merge([
+            'teamAlbumTotal' => $values,
+        ]);
     }
 }

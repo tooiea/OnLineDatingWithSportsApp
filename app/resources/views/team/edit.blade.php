@@ -5,8 +5,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="/public/css/common.css?q">
   <title>Team Edit Form</title>
 </head>
@@ -21,29 +24,29 @@
           @method('put')
           @csrf
           <div class="form-group">
-            <label for="teamName">チーム名:</label>
+            <label for="teamName">チーム名</label>
             <input type="text" name="teamName" class="form-control" id="teamName" value="{{ $myTeam->team->team_name }}"/>
             @error('teamName')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <div class="form-group">
-            <label for="teamLogo">チームロゴ画像:</label>
+            <label for="teamLogo">チームロゴ画像</label>
             <p>
-              <img id="teamLogoImage" src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->team_logo))) }}"
-              class="img-fluid" alt="team logo" data-original-url="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->team_logo))) }}" />
+              <img id="teamLogo" src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->image_path))) }}"
+              class="img-fluid" alt="team logo" data-original-url="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->image_path))) }}" />
             </p>
             <div class="custom-file">
-              <input type="file" name="teamLogo" class="custom-file-input" id="teamLogo" />
-              <label class="custom-file-label" for="teamLogo"><small>変更時は選択してください</small></label>
+              <input type="file" name="imagePath" class="custom-file-input" id="imagePath" />
+              <label class="custom-file-label" for="imagePath"><small>変更時は選択してください</small></label>
               <div id="imagePreview" class="preview-container"></div>
             </div>
             <div id="updateNoticeText" class="notice-text" style="display: none;" >この画像はまだ更新されていません。</div>
             <button id="cancelUploadButton" type="button" class="btn btn-outline-secondary" style="display: none;">
               <i class="fas fa-times"></i> キャンセル
             </button>
-            @error('teamLogo')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
+            @error('imagePath')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <div class="form-group">
-            <label for="teamURL">チーム紹介URL:</label>
+            <label for="teamURL">チーム紹介URL</label>
             <input type="text" name="teamUrl" class="form-control" id="teamURL" value="{{ $myTeam->team->team_url }}" />
             @error('teamUrl')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
@@ -52,7 +55,7 @@
             <label for="teamAlbum">アルバム画像を削除する:</label>
              @foreach ($myTeamAlbums as $key => $value)
             <p>
-              <img src="画像のURL" class="img-fluid" alt="team album" />
+              <img src="data:{{ $value->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->image_path))) }}" class="img-fluid" alt="team album" />
             </p>
             <div class="form-check">
               <input type="checkbox" name="deleteAlbum" class="form-check-input" id="deleteAlbum" />
@@ -62,9 +65,11 @@
           </div>
           @endif
           <div class="form-group">
-            <label for="teamAlbumAdd">アルバム画像を追加する:</label>
+            <label for="teamAlbumAdd">アルバム画像を追加する(5枚まで)</label>
             <input type="file" name="teamAlbum[]" class="form-control-file" id="teamAlbumAdd" multiple />
             <div id="albumPreview" class="preview-container"></div>
+            @error('teamAlbum')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
+            @error('teamAlbum.*')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <div class="text-center">
             <button type="submit" name="update_button" class="btn btn-primary">更新する</button>

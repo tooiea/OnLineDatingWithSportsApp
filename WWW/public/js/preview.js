@@ -35,7 +35,7 @@ function previewImages(event) {
     var preview = document.getElementById("imagePreview");
     preview.innerHTML = ""; // 一度プレビューをクリア
 
-    var files = document.getElementById("teamLogo").files;
+    var files = document.getElementById("imagePath").files;
 
     function readAndPreview(file) {
         // 画像ファイルであることを確認
@@ -49,7 +49,7 @@ function previewImages(event) {
                 image.src = this.result;
 
                 // 元のimgタグを取得し、src属性を変更する
-                var originalImage = document.querySelector("#teamLogoImage");
+                var originalImage = document.querySelector("#teamLogo");
                 originalImage.src = image.src;
 
                 // 注意文言とキャンセルボタンの表示を制御
@@ -70,17 +70,17 @@ function previewImages(event) {
     }
 }
 
-document.getElementById("teamLogo").addEventListener("change", previewImages);
+document.getElementById("imagePath").addEventListener("change", previewImages);
 
 document.getElementById("cancelUploadButton").addEventListener("click", function (event) {
     event.preventDefault(); // ボタンのデフォルトのクリック動作をキャンセル
 
     // 元のimgタグのsrc属性を元の画像に戻す
-    var originalImageUrl = document.getElementById("teamLogoImage").getAttribute("data-original-url");
-    document.getElementById("teamLogoImage").src = originalImageUrl;
+    var originalImageUrl = document.getElementById("teamLogo").getAttribute("data-original-url");
+    document.getElementById("teamLogo").src = originalImageUrl;
 
     // input要素の値を空にすることで選択したファイルをクリア
-    document.getElementById("teamLogo").value = "";
+    document.getElementById("imagePath").value = "";
 
     // 注意文言とキャンセルボタンの表示を制御
     var noticeText = document.getElementById("updateNoticeText");
