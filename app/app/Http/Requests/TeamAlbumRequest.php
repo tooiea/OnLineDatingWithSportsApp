@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class TeamAlbumRequest extends FormRequest
@@ -51,5 +53,16 @@ class TeamAlbumRequest extends FormRequest
                 'mimetypes:image/jpeg,image/jpg,image/png',
             ],
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $deleteAlbumIds = $this->route('deleteAlbum');
+        // Crypt::decryptString()
+        Log::info($deleteAlbumIds);
+
+        // $this->merge([
+        //     'consent_game_id' => $deleteAlbumIds,
+        // ]);
     }
 }
