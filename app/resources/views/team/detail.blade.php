@@ -29,7 +29,7 @@
       <div class="card-body">
         <p><span class="mr-5">チーム名</span>{{ $myTeam->team->team_name }}</p>
         <p><span class="mr-4">チームロゴ</span><img
-          src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->team_logo))) }}"
+          src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->image_path))) }}"
           class="img-fluid" alt="team logo" />
         </p>
         <p><span class="mr-5">登録人数</span>{{ $teamMembersNumber }}人</p>

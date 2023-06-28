@@ -38,7 +38,7 @@ class TempTeamUserFormRequest extends FormRequest
                 'required',
                 'max:50'
             ],
-            'teamLogo' => [
+            'imagePath' => [
                 'bail',
                 'required',
                 'max:2048',

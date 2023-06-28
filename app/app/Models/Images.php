@@ -24,7 +24,7 @@ class Images
 
         // 保存後にディレクトリを取得
         $path = $image->storeAs(self::DIRECTORY_OLDWS_LOGO, $fileName);
-        $storeImage['teamLogo'] = $path;
+        $storeImage['imagePath'] = $path;
         $storeImage['image_extension'] = $image->getMimeType();
 
         return $storeImage;

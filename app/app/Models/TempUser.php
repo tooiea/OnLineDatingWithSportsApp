@@ -28,7 +28,7 @@ class TempUser extends Model
         'expiration_date',
         'sport_affiliation_type',
         'team_name',
-        'team_logo',
+        'image_path',
         'image_extension',
         'team_url',
         'prefecture',
@@ -98,7 +98,7 @@ class TempUser extends Model
                 // 挿入データ
                 'sport_affiliation_type' => $customValues['sportAffiliationType'],
                 'team_name' => $customValues['teamName'],
-                'team_logo' => $customValues['teamLogo'],
+                'image_path' => $customValues['imagePath'],
                 'image_extension' => $customValues['image_extension'],
                 'team_url' => (isset($customValues['teamUrl'])) ? $customValues['teamUrl'] : null,
                 'prefecture' => $customValues['prefecture'],

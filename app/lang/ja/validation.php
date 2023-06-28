@@ -154,7 +154,7 @@ return [
     */
 
     'custom' => [
-        'teamLogo' => [
+        'imagePath' => [
             'required' => ':attribute を1点アップロードしてください。',
             'max' => ' 2MB以下の画像を選択してください。',
             'image' => 'jpeg, jpg, pngの形式をアップロードしてください。'
@@ -211,7 +211,7 @@ return [
         'token' => 'トークン',
         'sportAffiliationType' => 'スポーツ種別',
         'teamName' => 'チーム名',
-        'teamLogo' => 'チームロゴ画像',
+        'imagePath' => 'チームロゴ画像',
         'teamUrl' => 'チーム紹介サイトのURL',
         'prefecture' => '都道府県',
         'address' => '市町村区',

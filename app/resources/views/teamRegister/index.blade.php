@@ -40,11 +40,11 @@
             @error('teamName')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <div class="form-group">
-            <label for="teamLogo">チームロゴ画像</label>
-            <input type="file" name="teamLogo" value="{{ old('teamLogo') }}" id="teamLogo" aria-describedby="teamNameHelp"
-              class="form-control-file @error('teamLogo') is-invalid @enderror" placeholder="例：チーム名">
-            <small id="teamLogoHelp" class="form-text text-muted">jpg,jpeg,png形式のみ</small>
-            @error('teamLogo')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
+            <label for="imagePath">チームロゴ画像</label>
+            <input type="file" name="imagePath" value="{{ old('imagePath') }}" id="imagePath" aria-describedby="teamNameHelp"
+              class="form-control-file @error('imagePath') is-invalid @enderror" placeholder="例：チーム名">
+            <small id="imagePathHelp" class="form-text text-muted">jpg,jpeg,png形式のみ</small>
+            @error('imagePath')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <div class="form-group">
             <label for="teamURL">チームのサイトや紹介できるSNSサイト</label>

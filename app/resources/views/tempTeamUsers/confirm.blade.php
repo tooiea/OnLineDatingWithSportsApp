@@ -29,7 +29,7 @@
                                 }}</span></p>
                         <p>チーム名：　　<span id="team-name">{{ $values['teamName'] }}</span></p>
                         <p>チームロゴ：　<img
-                                src="data:{{ $values['image_extension'] }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($values['teamLogo']))) }}"
+                                src="data:{{ $values['image_extension'] }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($values['imagePath']))) }}"
                                 id="team-logo" class="team-logo"></p>
                         <p>チームURL:　<a id="team-url" target="_blank">@if(!empty($values['teamUrl'])){{ $values['teamUrl']
                                 }}@enderror</a></p>

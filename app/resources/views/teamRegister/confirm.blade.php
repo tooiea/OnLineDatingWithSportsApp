@@ -23,7 +23,7 @@
                     <div class="card-body">
                         <p>スポーツ種別：<span id="team-name">{{ \App\Enums\SportAffiliationTypeEnum::from($values['sportAffiliationType'])->label() }}</span></p>
                         <p>チーム名：<span id="team-name">{{ $values['teamName'] }}</span></p>
-                        <p>チームロゴ：<img src="{{ asset($values['teamLogo']) }}" id="team-logo" width="100" height="100"></p>
+                        <p>チームロゴ：<img src="{{ asset($values['imagePath']) }}" id="team-logo" width="100" height="100"></p>
                         <p>チームURL：<a id="team-url" target="_blank">@if(!empty($values['teamUrl'])){{ $values['teamUrl'] }}@enderror</a></p>
                     </div>
                 </div>

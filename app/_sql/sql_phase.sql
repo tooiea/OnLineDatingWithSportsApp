@@ -50,7 +50,7 @@ CREATE TABLE temp_users (
   , expiration_date DATETIME NOT NULL
   , sport_affiliation_type INT
   , team_name VARCHAR(255)
-  , team_logo VARCHAR(255)
+  , image_path VARCHAR(255)
   , image_extension VARCHAR(255)
   , team_url VARCHAR(255)
   , prefecture INT
@@ -103,7 +103,7 @@ CREATE TABLE teams (
   , prefecture INT NOT NULL
   , address VARCHAR(255)
   , team_url VARCHAR(255)
-  , team_logo VARCHAR(255) NOT NULL
+  , image_path VARCHAR(255) NOT NULL
   , image_extension VARCHAR(255) NOT NULL
   , is_deleted INT DEFAULT 0 NOT NULL
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL

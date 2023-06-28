@@ -18,6 +18,5 @@ class TeamAlbum extends Model
         'team_id',
         'album_type',
         'image_extension',
-        'is_deleted',
     ];
 }

@@ -22,7 +22,7 @@ class Team extends Model
         'invitation_code',
         'prefecture',
         'address',
-        'team_logo',
+        'image_path',
         'image_extension',
         'is_deleted',
     ];
@@ -65,7 +65,7 @@ class Team extends Model
             'prefecture' => $tempUser->prefecture,
             'address' => $tempUser->address,
             'team_url' => $tempUser->team_url,
-            'team_logo' => $tempUser->team_logo,
+            'image_path' => $tempUser->image_path,
             'image_extension' => $tempUser->image_extension,
         ]);
 

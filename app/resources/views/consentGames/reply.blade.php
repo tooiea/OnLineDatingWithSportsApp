@@ -26,7 +26,7 @@
         <div class="row">
           <div class="col-3">
             <img
-              src="data:{{ $consents->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($consents->team_logo))) }}"
+              src="data:{{ $consents->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($consents->image_path))) }}"
               id="team-logo" class="team-logo">
           </div>
           <div class="col-8">

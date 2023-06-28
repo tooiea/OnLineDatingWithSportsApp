@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-group">
                     <p><span class="mr-4">チームロゴ</span><img id="team-logo"
-                        src="data:{{ $guestTeam->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($guestTeam->team_logo))) }}"
+                        src="data:{{ $guestTeam->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($guestTeam->image_path))) }}"
                         id="team-logo" width="100" height="100" alt="チームAロゴ" class="team-logo"></p>
                 </div>
                 <hr>

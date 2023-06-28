@@ -26,30 +26,38 @@ class TeamAlbumRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'teamName' => [
+                'bail',
+                'required',
+                'max:50'
+            ],
             'teamUrl' => [
                 'bail',
+                'nullable',
                 'string',
                 'url',
             ],
-            'teamLogo' => [
+            'imagePath' => [
                 'bail',
-                'required',
                 'max:2048',
                 'file',
                 'image',
+                'mimes:jpeg,jpg,png',
                 'mimetypes:image/jpeg,image/jpg,image/png',
             ],
             'deleteAlbum.*' => [
                 'bail',
+                'nullable',
                 'integer',
                 // TODO 画像が存在するかチェック
             ],
             'teamAlbum.*' => [
                 'bail',
-                'required',
-                'max:2048',
+                'nullable',
+                'max:1024',
                 'file',
                 'image',
+                'mimes:jpeg,jpg,png',
                 'mimetypes:image/jpeg,image/jpg,image/png',
             ],
         ];
@@ -60,6 +68,7 @@ class TeamAlbumRequest extends FormRequest
         $deleteAlbumIds = $this->route('deleteAlbum');
         // Crypt::decryptString()
         Log::info($deleteAlbumIds);
+        Log::info($this->route('teamAlbum'));
 
         // $this->merge([
         //     'consent_game_id' => $deleteAlbumIds,

@@ -22,7 +22,6 @@ return new class extends Migration
             $table->integer('album_type');
             $table->string('image_name', 255);
             $table->string('image_extension', 255);
-            $table->integer('is_deleted')->default(0);
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

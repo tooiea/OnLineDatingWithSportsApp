@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('prefecture');
             $table->string('address', 255)->nullable();
             $table->string('team_url', 255)->nullable();
-            $table->string('team_logo', 255);
+            $table->string('image_path', 255);
             $table->string('image_extension', 255);
             $table->integer('is_deleted')->default(0);
             $table->dateTime('created_at')->useCurrent();

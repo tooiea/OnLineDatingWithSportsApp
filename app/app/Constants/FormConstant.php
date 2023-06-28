@@ -22,7 +22,7 @@ class FormConstant
     public const TEMP_TEAM_FORM_KEYS = [
         'sportAffiliationType',
         'teamName',
-        'teamLogo',
+        'imagePath',
         'image_extension',
         'teamUrl',
         'prefecture',
