@@ -80,6 +80,23 @@ class TeamsController extends Controller
         Log::info($request->input('deleteAlbum'));
 
         DB::transaction(function () use ($request) {
+            $teamId = TeamMember::query()->where(['user_id' => Auth::id()])->value('team_id');
+            $team = Team::find($teamId)->get()[0];
+            $team->team_name = $request->input('teamName');
+            $team->team_url = $request->input('teamUrl');
+
+            // チームのロゴをアップロードされた
+            if ($request->has('imagePath')) {
+                // 画像削除(現行)
+                Images::deleteImagefrom($team->image_path);
+
+                // 新規で保存
+                $image = Images::getImageDetail($request->file('imagePath'));
+
+                // レコード物理削除
+                $team->image_path = $image['imagePath'];
+                $team->image_extension = $image['imageExtension'];
+            }
 
             // 削除する画像が選択されたとき
             if ($request->has('deleteAlbum')) {
@@ -100,19 +117,21 @@ class TeamsController extends Controller
             if ($request->has('teamAlbum')) {
                 foreach ($request->file('teamAlbum') as $file) {
                     // 画像を保存する
-                    $image = Images::getAlbumImageDetail($file);
+                    $albumImage = Images::getAlbumImageDetail($file);
 
-                    $team = TeamMember::query()->where('user_id', Auth::id())->first();
+                    // チーム情報取得
+                    $teamId = TeamMember::query()->where('user_id', Auth::id())->value('id');
 
                     // チームアルバムとして画像を1枚ずつ登録
                     $teamAlbum = new TeamAlbum();
-                    $teamAlbum->team_id = $team->team_id;
+                    $teamAlbum->team_id = $teamId;
                     $teamAlbum->album_type = TeamAlbumTypeEnum::ALBUM->value;
-                    $teamAlbum->image_name = $image['imagePath'];
-                    $teamAlbum->image_extension = $image['imageExtension'];
+                    $teamAlbum->image_name = $albumImage['imagePath'];
+                    $teamAlbum->image_extension = $albumImage['imageExtension'];
                     $teamAlbum->save();
                 }
             }
+            $team->save();
         });
 
         return redirect()->route('team.detail');

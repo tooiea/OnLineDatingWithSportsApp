@@ -25,7 +25,7 @@
           @csrf
           <div class="form-group">
             <label for="teamName">チーム名</label>
-            <input type="text" name="teamName" class="form-control" id="teamName" value="{{ $myTeam->team->team_name }}"/>
+            <input type="text" name="teamName" class="form-control" id="teamName" value="{{ !empty(old('teamName')) ? old('teamName') :  $myTeam->team->team_name }}"/>
             @error('teamName')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <div class="form-group">
@@ -47,7 +47,7 @@
           </div>
           <div class="form-group">
             <label for="teamURL">チーム紹介URL</label>
-            <input type="text" name="teamUrl" class="form-control" id="teamURL" value="{{ $myTeam->team->team_url }}" />
+            <input type="text" name="teamUrl" class="form-control" id="teamURL" value="{{ !empty(old('teamUrl')) ? old('teamUrl') : $myTeam->team->team_url }}" />
             @error('teamUrl')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           @if (!$myTeamAlbums->isEmpty())
