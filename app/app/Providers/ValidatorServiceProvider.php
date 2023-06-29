@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\TeamAlbum;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,10 +21,17 @@ class ValidatorServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // チームアルバムのidが存在しているかをチェック
         Validator::extend(
-            'attribute_name_register', function ($attribute, $value, $parameters, $validator) {
-                return ;
+            'exist_album_id', function ($attribute, $value, $parameters, $validator) {
+                return TeamAlbum::isExistId($value);
+            }
+        );
+
+        // チームアルバム内の画像枚数チェック
+        Validator::extend(
+            'imageQtyWithinMax', function ($attribute, $value, $parameters, $validator) {
+                return TeamAlbum::isNumberOfImageWithinMaximum($value);
             }
         );
     }

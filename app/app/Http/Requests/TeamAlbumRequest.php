@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\TeamAlbum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Crypt;
@@ -50,6 +51,7 @@ class TeamAlbumRequest extends FormRequest
                 'nullable',
                 'integer',
                 // TODO 画像が存在するかチェック
+                'exist_album_id',
             ],
             'teamAlbum.*' => [
                 'bail',
@@ -62,18 +64,24 @@ class TeamAlbumRequest extends FormRequest
             ],
             'teamAlbumTotal' => [
                 // TODO 削除数と登録数を比較して5枚を超えないかをチェック
+                'imageQtyWithinMax'
             ],
         ];
     }
 
+    /**
+     * バリデーション前にリクエストにセット
+     *
+     * @return void
+     */
     protected function prepareForValidation()
     {
-        $values = $this->only(['deleteAlbum', 'teamAlbum']);
-        // Crypt::decryptString()
-        Log::info($values);
-
-        $this->merge([
-            'teamAlbumTotal' => $values,
-        ]);
+        $teamAlbumTotal = 0;
+        // 各変数で入力された画像の枚数を取得する
+        // teamAlbumは追加(加算)、deleteAlbumは削除(減算)
+        $teamAlbumTotal += count($this->input['teamAlbum']);
+        $teamAlbumTotal -= count($this->input['deleteAlbum']);
+        Log::info($teamAlbumTotal);
+        $this->merge(['teamAlbumTotal' => $teamAlbumTotal]);
     }
 }
