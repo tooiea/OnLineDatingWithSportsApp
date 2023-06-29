@@ -53,15 +53,17 @@
           @if (!$myTeamAlbums->isEmpty())
           <div class="form-group">
             <label for="teamAlbum">アルバム画像を削除する:</label>
-             @foreach ($myTeamAlbums as $key => $value)
+             @foreach ($myTeamAlbums as $image)
             <p>
-              <img src="data:{{ $value->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->image_path))) }}" class="img-fluid" alt="team album" />
+              <img src="data:{{ $image->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($image->image_name))) }}" class="img-fluid" alt="team album" />
             </p>
             <div class="form-check">
-              <input type="checkbox" name="deleteAlbum" class="form-check-input" id="deleteAlbum" />
+              <input type="checkbox" name="deleteAlbum[]" class="form-check-input" id="deleteAlbum" value="{{ Crypt::encryptString($image->id) }}" />
               <label class="form-check-label" for="deleteAlbum">削除する</label>
             </div>
             @endforeach
+            @error('deleteAlbum')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
+            @error('deleteAlbum.*')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           @endif
           <div class="form-group">
@@ -70,6 +72,7 @@
             <div id="albumPreview" class="preview-container"></div>
             @error('teamAlbum')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
             @error('teamAlbum.*')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
+            @error('teamAlbumTotal')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <div class="text-center">
             <button type="submit" name="update_button" class="btn btn-primary">更新する</button>

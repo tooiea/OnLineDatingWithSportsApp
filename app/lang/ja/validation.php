@@ -170,6 +170,9 @@ return [
             'max' => ' 1MB以下の画像を選択してください。',
             'image' => 'jpeg, jpg, pngの形式をアップロードしてください。'
         ],
+        'teamAlbumTotal' => [
+            'image_max_in_album' => 'アルバムの枚数が5枚を超えてます。'
+        ],
         'prefecture' => [
             'required' => ':attribute を選択してください。',
         ],

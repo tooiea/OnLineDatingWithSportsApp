@@ -3,8 +3,10 @@
 namespace App\Http\Requests;
 
 use App\Models\TeamAlbum;
+use App\Models\TeamMember;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
@@ -40,18 +42,23 @@ class TeamAlbumRequest extends FormRequest
             ],
             'imagePath' => [
                 'bail',
+                'nullable',
                 'max:2048',
                 'file',
                 'image',
                 'mimes:jpeg,jpg,png',
                 'mimetypes:image/jpeg,image/jpg,image/png',
             ],
+            'deleteAlbum' => [
+                'bail',
+                'nullable',
+                'array',
+                'exist_album_id',
+            ],
             'deleteAlbum.*' => [
                 'bail',
                 'nullable',
-                'integer',
-                // TODO 画像が存在するかチェック
-                'exist_album_id',
+                'string',
             ],
             'teamAlbum.*' => [
                 'bail',
@@ -63,8 +70,7 @@ class TeamAlbumRequest extends FormRequest
                 'mimetypes:image/jpeg,image/jpg,image/png',
             ],
             'teamAlbumTotal' => [
-                // TODO 削除数と登録数を比較して5枚を超えないかをチェック
-                'imageQtyWithinMax'
+                'imageMaxInAlbum'
             ],
         ];
     }
@@ -79,9 +85,19 @@ class TeamAlbumRequest extends FormRequest
         $teamAlbumTotal = 0;
         // 各変数で入力された画像の枚数を取得する
         // teamAlbumは追加(加算)、deleteAlbumは削除(減算)
-        $teamAlbumTotal += count($this->input['teamAlbum']);
-        $teamAlbumTotal -= count($this->input['deleteAlbum']);
-        Log::info($teamAlbumTotal);
+        if ($this->has('teamAlbum')) {
+            $teamAlbumTotal += count($this->file('teamAlbum'));
+        }
+
+        if ($this->has('deleteAlbum')) {
+            $teamAlbumTotal -= count($this->input('deleteAlbum'));
+        }
+
+        // 現在のチームのアルバムとして登録された画像の枚数を取得し加算する
+        $team = TeamMember::query()->where(['user_id' => Auth::id()])->first();
+        $imageAlbums = TeamAlbum::query()->where(['team_id' => $team->team_id])->get();
+        $teamAlbumTotal += count($imageAlbums);
+
         $this->merge(['teamAlbumTotal' => $teamAlbumTotal]);
     }
 }
