@@ -14,6 +14,12 @@
     .card-body p {
       margin-bottom: 20px;
     }
+
+    .col-12 {
+      flex-basis: 0;
+      flex-grow: 1;
+      max-width: 100%;
+    }
   </style>
   <title>Team Detail</title>
 </head>
@@ -39,32 +45,41 @@
           　未登録
           @endif
         </p>
-        <p>このチームに招待する(ユーザ登録)</p>
-        <div class="input-group">
-          <input type="text" class="form-control" id="myInput" readonly disabled
-            value="{{ sprintf(url(__('route_const.invite_in_team') . '%s'), $myTeam->team->invitation_code) }}">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary copy-button" type="button">Copy<i
-                class="fas fa-angle-right ml-2"></i></button>
+        <p><span class="mr-5">招待URL(ユーザ登録)</span>
+          <div class="input-group">
+            <input type="text" class="form-control" id="myInput" readonly
+              value="{{ sprintf(url(__('route_const.invite_in_team') . '%s'), $myTeam->team->invitation_code) }}">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary copy-button" type="button">Copy<i
+                  class="fas fa-angle-right ml-2"></i></button>
+            </div>
+            <br>
           </div>
-          <br>
-
-        </div>
-        <small class="small text-muted">*同じチームに招待したい場合、このリンクを共有してください</small>
-        <div class="alert alert-success fade" role="alert" id="copy-alert">
-          コピーしました
-        </div>
-
-        <!-- TODO 後日実装 -->
-        <!-- <p>アルバム画像:</p>
+          <small class="small text-muted">*同じチームに招待したい場合、このリンクを共有してください</small>
+          <div class="alert alert-success fade hidden" role="alert" id="copy-alert">コピーしました</div>
+        </p>
+        @if (!$myTeamAlbums->isEmpty())
+        <div>
+          <label for="teamAlbum">アルバム一覧</label>
           <div class="row">
-            <div class="col-4">
-              <img src="album_image_1.jpg" alt="album image 1" />
+            @php $count = 0; @endphp
+            <div class="d-flex">
+              @foreach ($myTeamAlbums as $image)
+                @if ($count < 5)
+                  <div class="album_container col-lg-2 col-md-4 col-sm-6 col-12 mb-4">
+                    <div class="position-relative">
+                      <div class="album-image-wrapper">
+                        <img src="data:{{ $image->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($image->image_name))) }}" class="img-fluid" alt="team album" />
+                      </div>
+                    </div>
+                  </div>
+                  @php $count++; @endphp
+                @endif
+              @endforeach
             </div>
-            <div class="col-4">
-              <img src="album_image_2.jpg" alt="album image 2" />
-            </div>
-          </div> -->
+          </div>
+        </div>
+        @endif
         <button class="btn btn-primary edit-button" type="button" onclick="location.href='{{ route('team.edit') }}'">編集する</button>
       </div>
     </div>
@@ -75,14 +90,19 @@
     const alert = document.querySelector('#copy-alert');
 
     copyButton.addEventListener('click', () => {
+      input.focus();
       input.select();
       document.execCommand('copy');
+      alert.classList.remove('hidden');
       alert.classList.add('show');
+      input.blur();
       setTimeout(() => {
         alert.classList.remove('show');
+        alert.classList.add('hidden');
       }, 3000);
     });
   </script>
+
 </body>
 
 </html>

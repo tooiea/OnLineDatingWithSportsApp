@@ -75,21 +75,6 @@
           </div>
           <h5 class="card-title mb-4 mt-5">User Information</h5>
           <div class="form-group">
-            <label for="name">ニックネーム</label>
-            <input type="text" name="name" value="{{ old('name') }}" id="name" aria-describedby="nameHelp"
-              class="form-control @error('name') is-invalid @enderror" placeholder="例：nickname">
-            <small id="nameHelp" class="form-text text-muted">※本名での登録はご遠慮願います</small>
-            @error('name')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
-          </div>
-          <div class="form-group">
-            <label for="email">メールアドレス</label>
-            <input type="email" name="email" value="{{ old('email') }}"
-              class="form-control @error('email') is-invalid @enderror" id="email"
-              aria-describedby="emailHelp" placeholder="例：oldws@gmail.com">
-            <small id="emailHelp" class="form-text text-muted">使用可能なメールアドレスを入力してください</small>
-            @error('email')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
-          </div>
-          <div class="form-group">
             <label for="password">パスワード</label>
             <input type="password" name="password"
               class="form-control @error('password') is-invalid @enderror" id="password"

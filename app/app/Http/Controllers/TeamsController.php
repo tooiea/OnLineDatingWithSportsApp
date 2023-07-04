@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Log;
 /**
  * チーム情報の取得
  */
-class TeamsController extends Controller
+class TeamsController extends BasesController
 {
     /**
      * チームのトップに、招待状況を表示させる
@@ -31,6 +31,7 @@ class TeamsController extends Controller
         // チームを作らずに、直接ログインした場合
         if (empty($myTeam)) {
             // TODO チームに登録する処理から、チーム登録
+            return redirect()->route('tmp_sns_top.index');
         }
         $myTeamInvites = ConsentGame::getMyTeamInvites($myTeam->id);
         $asGuestInvites = ConsentGame::getAsGuestInvites($myTeam->id);
@@ -51,7 +52,10 @@ class TeamsController extends Controller
         // 所属しているチームの人数を取得
         $myTeamMembers = Team::where('id', '=', $myTeam->team_id)->with('teamMembers')->get();
         $teamMembersNumber = $myTeamMembers[0]->teamMembers->count();
-        return view('team.detail', compact('myTeam', 'teamMembersNumber'));
+
+        // アルバム取得
+        $myTeamAlbums = TeamAlbum::query()->where('team_id', $myTeam->id)->get();
+        return view('team.detail', compact('myTeam', 'teamMembersNumber', 'myTeamAlbums'));
     }
 
     /**

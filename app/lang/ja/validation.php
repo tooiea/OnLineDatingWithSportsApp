@@ -163,12 +163,13 @@ return [
             'url' => 'URL形式で入力してください。',
         ],
         'teamAlbum' => [
-            'max' => ' 1MB以下の画像を選択してください。',
+            'max' => '1MB以下の画像を選択してください。',
             'image' => 'jpeg, jpg, pngの形式をアップロードしてください。'
         ],
         'teamAlbum.*' => [
-            'max' => ' 1MB以下の画像を選択してください。',
-            'image' => 'jpeg, jpg, pngの形式をアップロードしてください。'
+            'max' => '1MB以下の画像を選択してください。',
+            'image' => 'jpeg, jpg, pngの形式をアップロードしてください。',
+            'uploaded' => '1MB以下の画像を選択してください。',
         ],
         'teamAlbumTotal' => [
             'image_max_in_album' => 'アルバムの枚数が5枚を超えてます。'

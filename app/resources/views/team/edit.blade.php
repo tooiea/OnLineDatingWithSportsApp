@@ -10,6 +10,14 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="/public/css/common.css?q">
   <title>Team Edit Form</title>
+  <style>
+    .col-12 {
+      flex-basis: 0;
+      flex-grow: 1;
+      max-width: 100%;
+    }
+  </style>
+
 </head>
 
 <body class="body-with-nav">
@@ -49,32 +57,38 @@
             @error('teamUrl')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           @if (!$myTeamAlbums->isEmpty())
-          <div class="row justify-content-center">
-            @php $count = 0; @endphp
-            @foreach ($myTeamAlbums as $image)
-              <div class="col-lg-{{ floor(12 / min(count($myTeamAlbums), 5)) }} col-md-6 col-12 mb-4">
-                <div class="team-album-item">
-                  <div class="team-album-image">
-                    <img src="data:{{ $image->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($image->image_name))) }}" class="img-fluid" alt="team album" />
-                  </div>
-                  <div class="team-album-checkbox">
-                    <div class="form-check">
-                      <input type="checkbox" name="deleteAlbum[]" class="form-check-input" id="deleteAlbum{{ $image->id }}" value="{{ Crypt::encryptString($image->id) }}" />
+          <div class="form-group">
+            <label for="teamAlbum">アルバム画像を削除する↓</label>
+            <div class="row justify-content-center">
+              @php $count = 0; @endphp
+              <div class="d-flex justify-content-center">
+                @foreach ($myTeamAlbums as $image)
+                  @if ($count < 5)
+                    <div class="album_container col-lg-2 col-md-4 col-sm-6 col-12 mb-4">
+                      <div class="position-relative">
+                        <div class="album-image-wrapper">
+                          <img src="data:{{ $image->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($image->image_name))) }}" class="img-fluid" alt="team album" />
+                        </div>
+                        <div class="form-check position-absolute" style="top: 5px; right: 5px;">
+                          <input type="checkbox" name="deleteAlbum[]" class="form-check-input" id="deleteAlbum{{ $image->id }}" value="{{ Crypt::encryptString($image->id) }}" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                    @php $count++; @endphp
+                  @endif
+                @endforeach
               </div>
-              @php $count++; @endphp
-            @endforeach
-            @if ($count < 5)
-              @for ($i = $count; $i < 5; $i++)
-                <div class="col-lg-{{ floor(12 / min(count($myTeamAlbums), 5)) }} col-md-6 col-12 mb-4"></div>
-              @endfor
-            @endif
+              @if ($count < 5)
+                @for ($i = 0; $i < (5 - $count); $i++)
+                  <div class="col-lg-2 col-md-4 col-sm-6 col-12 mb-4"></div>
+                @endfor
+              @endif
+            </div>
           </div>
           @endif
           <div class="form-group">
-            <label for="teamAlbumAdd">アルバム画像を追加する(5枚まで)</label>
+            <label for="teamAlbumAdd">アルバム画像を追加する(5枚まで)↓</label>
+            <small>※画像1枚あたり1MB以内</small>
             <input type="file" name="teamAlbum[]" class="form-control-file" id="teamAlbumAdd" multiple />
             <div id="albumPreview" class="preview-container"></div>
             @error('teamAlbum')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror

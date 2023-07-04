@@ -74,4 +74,19 @@ class TempTeamUsersController extends BasesController
         });
         return view('tempTeamUsers.complete');
     }
+
+    public function teamCreate()
+    {
+        return view('teamRegister.team_index');
+    }
+
+    public function teamCreateConfirm()
+    {
+        return view('teamRegister.join_confirm');
+    }
+
+    public function teamCreateComplete()
+    {
+        return view('teamRegister.join_complete');
+    }
 }

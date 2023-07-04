@@ -81,4 +81,20 @@ class TempUsersController extends BasesController
     {
         return view('failed.invalid_invitation_code');
     }
+
+
+    public function join()
+    {
+        return view('teamRegister.join_index');
+    }
+
+    public function joinConfirm()
+    {
+        return view('teamRegister.join_confirm');
+    }
+
+    public function joinComplete()
+    {
+        return view('teamRegister.join_complete');
+    }
 }

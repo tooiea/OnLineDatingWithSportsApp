@@ -14,6 +14,7 @@ function previewAlbumImages() {
                 image.height = 60; // プレビュー画像の高さを設定
                 image.title = file.name;
                 image.src = this.result;
+                image.classList.add("img-fluid"); // クラス属性を追加
                 preview.appendChild(image);
             });
 

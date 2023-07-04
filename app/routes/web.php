@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\BasesController;
 use App\Http\Controllers\ConsentGamesController;
 use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\LineLoginController;
@@ -52,6 +53,32 @@ Route::middleware('guest')->group(function () {
                 return redirect()->route('tmp_user.index', $invitation_code)->withInput($values);
             })->name('tmp_user.back');
             Route::post('/user/register/complete', [TempUsersController::class, 'complete'])->name('tmp_user.registered');
+
+
+            // 初回ログインがSNSログインの場合、トップページを表示 teamRegister.top
+            Route::get('/sns/register', [BasesController::class, 'teamCreateTop'])->name('tmp_sns_top.index');
+
+            // 初回ログインがSNSログインでチームを作る
+            Route::get('/sns/team/user/register', [TempTeamUsersController::class, 'teamCreate'])->name('tmp_sns_create.index');
+            Route::post('/sns/team/user/register/confirm', [TempTeamUsersController::class, 'teamCreateConfirm'])->name('tmp_sns_create.confirm');
+            Route::post('/sns/team/user/register/back', function (Request $request) {
+                $specifyFormRequestInputs = $request->session()->pull('temp_user');
+                $values = $specifyFormRequestInputs->getAll();
+                $invitation_code = $values['invitation_code'];  // url再セット用に取得
+                return redirect()->route('tmp_user.index', $invitation_code)->withInput($values);
+            })->name('tmp_sns_create.back');
+            Route::post('/sns/team/user/register/complete', [TempTeamUsersController::class, 'teamCreateComplete'])->name('tmp_sns_create.complete');
+
+            // 初回ログインがSNSログインでチームに参加
+            Route::get('/sns/user/register', [TempUsersController::class, 'join'])->name('tmp_sns_join.index');
+            Route::post('/sns/user/register/confirm', [TempUsersController::class, 'joinConfirm'])->name('tmp_sns_join.confirm');
+            Route::post('/sns/user/register/back', function (Request $request) {
+                $specifyFormRequestInputs = $request->session()->pull('temp_user');
+                $values = $specifyFormRequestInputs->getAll();
+                $invitation_code = $values['invitation_code'];  // url再セット用に取得
+                return redirect()->route('tmp_sns_join.index', $invitation_code)->withInput($values);
+            })->name('tmp_sns_create.back');
+            Route::post('/sns/user/register/complete', [TempUsersController::class, 'joinComplete'])->name('tmp_sns_join.complete');
         });
 
         // 本登録
