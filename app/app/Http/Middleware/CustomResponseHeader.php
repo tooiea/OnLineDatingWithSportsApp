@@ -35,6 +35,9 @@ class CustomResponseHeader
         $csp = preg_replace('~(\s)+~u', ' ', trim($csp)); // スペースを整理して1行に
         $response->headers->set('Content-Security-Policy', $csp);
 
+        // X-Content-Type-Options
+        $response->headers->set('X-Content-Type-Options', 'nosniff');
+
         return $response;
     }
 }
