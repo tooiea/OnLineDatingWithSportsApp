@@ -49,19 +49,28 @@
             @error('teamUrl')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           @if (!$myTeamAlbums->isEmpty())
-          <div class="form-group">
-            <label for="teamAlbum">アルバム画像を削除する:</label>
-             @foreach ($myTeamAlbums as $image)
-            <p>
-              <img src="data:{{ $image->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($image->image_name))) }}" class="img-fluid" alt="team album" />
-            </p>
-            <div class="form-check">
-              <input type="checkbox" name="deleteAlbum[]" class="form-check-input" id="deleteAlbum" value="{{ Crypt::encryptString($image->id) }}" />
-              <label class="form-check-label" for="deleteAlbum">削除する</label>
-            </div>
+          <div class="row justify-content-center">
+            @php $count = 0; @endphp
+            @foreach ($myTeamAlbums as $image)
+              <div class="col-lg-{{ floor(12 / min(count($myTeamAlbums), 5)) }} col-md-6 col-12 mb-4">
+                <div class="team-album-item">
+                  <div class="team-album-image">
+                    <img src="data:{{ $image->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($image->image_name))) }}" class="img-fluid" alt="team album" />
+                  </div>
+                  <div class="team-album-checkbox">
+                    <div class="form-check">
+                      <input type="checkbox" name="deleteAlbum[]" class="form-check-input" id="deleteAlbum{{ $image->id }}" value="{{ Crypt::encryptString($image->id) }}" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              @php $count++; @endphp
             @endforeach
-            @error('deleteAlbum')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
-            @error('deleteAlbum.*')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
+            @if ($count < 5)
+              @for ($i = $count; $i < 5; $i++)
+                <div class="col-lg-{{ floor(12 / min(count($myTeamAlbums), 5)) }} col-md-6 col-12 mb-4"></div>
+              @endfor
+            @endif
           </div>
           @endif
           <div class="form-group">
