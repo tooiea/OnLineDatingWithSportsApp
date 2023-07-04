@@ -27,7 +27,7 @@ class CustomResponseHeader
         // css,img,jsのドメインは現状使用している読み込み先を限定した形で設定(他に追加が必要であれば追加する)
         $csp = <<<'END'
         default-src 'self';
-        style-src 'self' 'unsafe-inline' cdn.jsdelivr.net;
+        style-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com;
         img-src 'self' data:;
         script-src 'self' 'unsafe-inline' ajax.googleapis.com cdnjs.cloudflare.com maxcdn.bootstrapcdn.com;
         END;
