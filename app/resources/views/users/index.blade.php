@@ -1,6 +1,3 @@
-@php
-  // header("Content-Security-Policy: default-src 'self' 'unsafe-inline'");
-@endphp
 <!DOCTYPE html>
 <html>
   <head>
