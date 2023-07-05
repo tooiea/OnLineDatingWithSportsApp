@@ -34,6 +34,7 @@ class GoogleLoginController extends Controller
     {
         try {
             $loggedInUserByGoogle = Socialite::driver('google')->user();
+            Log::info($loggedInUserByGoogle->name);
 
             // google_idでユーザの存在確認(ユーザの上書き)
             $user = User::where('google_login_id', $loggedInUserByGoogle->id)->first();
@@ -42,15 +43,20 @@ class GoogleLoginController extends Controller
             // 初めてgoogleログインしたとき
             if (empty($user)) {
                 $user = User::where('email', $loggedInUserByGoogle->email)->first();
-                $userModel = new User();
-                // googleログインしたときに同一メールアドレスが存在している
-                if (empty($user)) {
-                    // TODO チーム新規登録、チームへ登録の画面へ遷移する
 
-                    // メールアドレス, google_idの登録情報がない
-                    return redirect()->route('login.index')->withErrors([
-                        'sns_login' => __('validation.custom.user.google')
-                    ]);
+                // ユーザ登録されていない
+                if (empty($user)) {
+                    // ユーザ新規登録
+                    $userModel = new User();
+                    $userModel->name = $loggedInUserByGoogle->name;
+                    $userModel->email = $loggedInUserByGoogle->email;
+                    $userModel->google_login_id = $loggedInUserByGoogle->id;
+                    $userModel->last_login_time = $now;
+                    $userModel->save();
+
+                    Auth::login($userModel);
+
+                    return redirect()->route('tmp_sns_top.index');
                 }
                 // メールアドレスが存在している
                 $user->google_login_id = $loggedInUserByGoogle->id;
