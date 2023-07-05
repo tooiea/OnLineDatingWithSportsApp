@@ -32,13 +32,14 @@ class GoogleLoginController extends Controller
      */
     public function handleGoogleCallback()
     {
+        $now = Carbon::now();
         try {
             $loggedInUserByGoogle = Socialite::driver('google')->user();
             Log::info($loggedInUserByGoogle->name);
 
             // google_idでユーザの存在確認(ユーザの上書き)
             $user = User::where('google_login_id', $loggedInUserByGoogle->id)->first();
-            $now = Carbon::now();
+
 
             // 初めてgoogleログインしたとき
             if (empty($user)) {
@@ -67,10 +68,15 @@ class GoogleLoginController extends Controller
                 $user->last_login_time = $now;
                 $user->save();
             }
+            $log = sprintf('logged_time:%s, email:%s', $now->format('Y-m-d-G:i:s'), $loggedInUserByGoogle->email);
+            Log::info($log);
             Auth::login($user);
             return redirect()->route('search.index');
         } catch (Exception $e) {
+            $log = sprintf('time:%s, email:%s', $now->format('Y-m-d-G:i:s'), $loggedInUserByGoogle->email);
             Log::error($e->getMessage());
+            Log::error('email: ' . $loggedInUserByGoogle->email);
+            throw $e;
         }
     }
 }
