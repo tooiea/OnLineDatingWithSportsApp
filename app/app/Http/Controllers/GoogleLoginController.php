@@ -71,7 +71,7 @@ class GoogleLoginController extends Controller
             $log = sprintf('logged_time:%s, email:%s', $now->format('Y-m-d-G:i:s'), $loggedInUserByGoogle->email);
             Log::info($log);
             Auth::login($user);
-            return redirect()->route('search.index');
+            return redirect()->route('team.index');
         } catch (Exception $e) {
             $log = sprintf('time:%s, email:%s', $now->format('Y-m-d-G:i:s'), $loggedInUserByGoogle->email);
             Log::error($e->getMessage());
