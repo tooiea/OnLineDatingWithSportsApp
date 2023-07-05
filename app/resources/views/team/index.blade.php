@@ -29,6 +29,8 @@
             <div class="alert alert-success" role="alert"> {!! session('consent.reply') !!} </div>
             @elseif (session('consent.sent'))
             <div class="alert alert-success" role="alert"> {!! session('consent.sent') !!} </div>
+            @elseif (session('team.registered'))
+            <div class="alert alert-success" role="alert"> {{ session('team.registered') }} </div>
             @endif
           </div>
         </div>

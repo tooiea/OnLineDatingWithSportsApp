@@ -15,15 +15,16 @@
         チームへ参加しましょう！
       </div>
       <div class="card-body">
-        <form action="{{ route('tmp_team_user.confirm') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('tmp_sns_join.confirm') }}" method="post">
           @csrf
           <h5 class="card-title mb-4">Team Information</h5>
           <div class="form-group">
-            <label for="teamName">チーム名</label>
-            <input type="text" name="teamName" value="{{ old('teamName') }}" id="teamName"
-              aria-describedby="teamNameHelp" class="form-control @error('teamName') is-invalid @enderror" placeholder="例：チーム名">
-            <small id="teamNameHelp" class="form-text text-muted">所属しているチーム名を入力してください</small>
-            @error('teamName')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
+            <label for="teamName">招待URL</label>
+            <input type="url" name="teamUrl" value="{{ old('teamUrl') }}" id="teamUrl"
+              aria-describedby="teamUrlHelp" class="form-control @error('teamUrl') is-invalid @enderror" placeholder="例：http://localhost/tmp/user/register/***">
+            <small id="teamUrlHelp" class="form-text text-muted">所属しているチーム名を入力してください</small>
+            @error('teamUrl')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
+            @error('teamUrlHost')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <button type="submit" class="btn btn-primary">確認する</button>
         </form>

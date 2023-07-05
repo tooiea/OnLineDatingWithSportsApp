@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Constants\FormConstant;
 use App\Http\Requests\InvitationCodeRequest;
+use App\Http\Requests\InvitationUrlRequest;
 use App\Http\Requests\TempUserFormRequest;
+use App\Models\Team;
+use App\Models\TeamMember;
 use App\Models\TempUser;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -82,19 +86,59 @@ class TempUsersController extends BasesController
         return view('failed.invalid_invitation_code');
     }
 
-
-    public function join()
+    /**
+     * 加入するチームの入力画面
+     *
+     * @return void
+     */
+    public function join(Request $request)
     {
+        // セッションが残っていれば削除
+        if($request->session()->exists('invitationCode')) {
+            $request->session()->forget('invitationCode');
+        }
         return view('teamRegister.join_index');
     }
 
-    public function joinConfirm()
+    /**
+     * 加入するチームの確認画面
+     *
+     * @param InvitationUrlRequest $request
+     * @return void
+     */
+    public function joinConfirm(InvitationUrlRequest $request)
     {
-        return view('teamRegister.join_confirm');
+        $invitationCode = $request->input('teamUrl');
+        session(['invitationCode' => $invitationCode]);
+
+        // 表示するチーム取得
+        $team = Team::getTeamInfoByInvitationCodeWithConsents($invitationCode);
+
+        return view('teamRegister.join_confirm', compact('team'));
     }
 
-    public function joinComplete()
+    /**
+     * 対象チームへ加入する_完了画面
+     *
+     * @return void
+     */
+    public function joinComplete(Request $request)
     {
-        return view('teamRegister.join_complete');
+        $invitationCode = session()->pull('invitationCode');
+
+        // 表示するチーム取得
+        $team = Team::getTeamInfoByInvitationCodeWithConsents($invitationCode);
+
+        // 招待コードのチームへユーザをチームメンバとして登録
+        $teamMember = new TeamMember();
+        $teamMember->create([
+            'team_id' => $team->id,
+            'user_id' => Auth::id(),
+        ]);
+
+        // チームトップへリダイレクトしセッションメッセージ表示
+        $request->session()->flash('team.registered', $team->team_name . __('user_messages.success.team_registered'));
+
+        return redirect()->route('team.index');
     }
 }

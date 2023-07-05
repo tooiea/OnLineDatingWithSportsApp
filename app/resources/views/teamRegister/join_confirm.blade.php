@@ -21,28 +21,17 @@
                         <h4>チーム登録</h4>
                     </div>
                     <div class="card-body">
-                        <p>スポーツ種別：<span id="team-name">{{ \App\Enums\SportAffiliationTypeEnum::from($values['sportAffiliationType'])->label() }}</span></p>
-                        <p>チーム名：<span id="team-name">{{ $values['teamName'] }}</span></p>
-                        <p>チームロゴ：<img src="{{ asset($values['imagePath']) }}" id="team-logo" width="100" height="100"></p>
-                        <p>チームURL：<a id="team-url" target="_blank">@if(!empty($values['teamUrl'])){{ $values['teamUrl'] }}@enderror</a></p>
+                        <p>チームURL：<a id="team-url" target="_blank">{{ $team->team_name }}</a></p>
+                        <p class="text-muted"><small>*このチームで登録する場合は登録ボタンを押してください</small></p>
                     </div>
                 </div>
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h4>チーム拠点</h4>
-                    </div>
-                    <div class="card-body">
-                        <p>都道府県：<span id="team-prefecture">{{ \App\Constants\FormConstant::PREFECTURES[$values['prefecture']] }}</span></p>
-                        <p>市町村区：<span id="team-address">{{ $values['address'] }}</span></p>
-                    </div>
-                </div>
-                <form action="{{route('tmp_team_user.complete')}}" method="post">
+                <form action="{{route('tmp_sns_join.complete')}}" method="post">
                     @csrf
                     <button type="submit" class="btn btn-primary mt-3">登録する</button>
                 </form>
-                <form action="{{route('tmp_team_user.back')}}" method="post">
+                <form action="{{route('tmp_sns_join.index')}}" method="get">
                     @csrf
-                    <button type="submit" class="btn btn-secondary mt-3">修正する</button>
+                    <button type="submit" class="btn btn-secondary mt-3">キャンセル</button>
                 </form>
             </div>
         </div>
