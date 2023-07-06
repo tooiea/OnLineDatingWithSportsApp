@@ -82,23 +82,10 @@ Route::middleware('guest')->group(function () {
 
 // ログイン認証必須
 Route::middleware('auth')->group(function () {
-
-    // ログイン後の検索画面
-    Route::get('search/team', [SearchTeamController::class, 'index'])->name('search.index');
-
-    // チーム関連
-    Route::prefix('team')->group(function () {
-        Route::get('/profile/top', [TeamsController::class, 'index'])->name('team.index');
-        Route::get('/profile/detail', [TeamsController::class, 'detail'])->name('team.detail');
-        Route::get('/profile/edit', [TeamsController::class, 'edit'])->name('team.edit');
-        Route::put('/profile/edit', [TeamsController::class, 'update'])->name('team.update');
-    });
-
-    // 試合の招待
+    // キャッシュをno_storeとして設定
     Route::middleware('custom.cache.headers:no_store')->group(function () {
-
-        // 仮ユーザ登録関連
-        Route::prefix('tmp')->group(function () {
+        // 仮ユーザ登録関連(チームに所属していない)
+        Route::middleware('no_team')->prefix('tmp')->group(function () {
             // 初回ログインがSNSログインの場合、トップページを表示 teamRegister.top
             Route::get('/sns/register', [BasesController::class, 'teamCreateTop'])->name('tmp_sns_top.index');
 
@@ -118,40 +105,54 @@ Route::middleware('auth')->group(function () {
             Route::post('/sns/register/team/complete', [TempTeamUsersController::class, 'teamCreateComplete'])->name('tmp_sns_create.complete');
         });
 
-        // consent
-        Route::prefix('consent')->group(function () {
+        // チームに所属しているユーザ
+        Route::middleware('registered_team')->group(function () {
+            // ログイン後の検索画面
+            Route::get('search/team', [SearchTeamController::class, 'index'])->name('search.index');
+
             // チーム関連
             Route::prefix('team')->group(function () {
-                // チームへ招待する
-                Route::get('/{invitation_code}', [ConsentGamesController::class, 'index'])->name('consent.index');
-                Route::post('/confirm', [ConsentGamesController::class, 'confirm'])->name('consent.confirm');
-                Route::post('/back', function (Request $request) {
-                    $specifyFormRequestInputs = $request->session()->pull('consent_team');
-                    $values = $specifyFormRequestInputs->getAll();
-                    $invitation_code = $values['invitation_code'];  // url再セット用に取得
-                    return redirect()->route('consent.index', $invitation_code)->withInput($values);
-                })->name('consent.back');
-                Route::post('/complete', [ConsentGamesController::class, 'complete'])->name('consent.complete');
+                Route::get('/profile/top', [TeamsController::class, 'index'])->name('team.index');
+                Route::get('/profile/detail', [TeamsController::class, 'detail'])->name('team.detail');
+                Route::get('/profile/edit', [TeamsController::class, 'edit'])->name('team.edit');
+                Route::put('/profile/edit', [TeamsController::class, 'update'])->name('team.update');
             });
 
-            // 返信関連
-            Route::prefix('reply')->group(function () {
-                // 招待に対する返信
-                Route::get('/{consent_game_id}', [ConsentGamesController::class, 'reply'])->name('reply.index');
-                Route::post('/confirm', [ConsentGamesController::class, 'confirmReply'])->name('reply.confirm');
-                Route::post('/back', function (Request $request) {
-                    $specifyFormRequestInputs = $request->session()->pull('consent_reply');
-                    $values = $specifyFormRequestInputs->getAll();
-                    $consent_game_id = $request->session()->pull('consent_game_id');  // url再セット用に取得
-                    return redirect()->route('reply.index', $consent_game_id)->withInput($values);
-                })->name('reply.back');
-                Route::post('/complete', [ConsentGamesController::class, 'completeReply'])->name('reply.complete');
+            // 試合の招待
+            Route::prefix('consent')->group(function () {
+                // チーム関連
+                Route::prefix('team')->group(function () {
+                    // チームへ招待する
+                    Route::get('/{invitation_code}', [ConsentGamesController::class, 'index'])->name('consent.index');
+                    Route::post('/confirm', [ConsentGamesController::class, 'confirm'])->name('consent.confirm');
+                    Route::post('/back', function (Request $request) {
+                        $specifyFormRequestInputs = $request->session()->pull('consent_team');
+                        $values = $specifyFormRequestInputs->getAll();
+                        $invitation_code = $values['invitation_code'];  // url再セット用に取得
+                        return redirect()->route('consent.index', $invitation_code)->withInput($values);
+                    })->name('consent.back');
+                    Route::post('/complete', [ConsentGamesController::class, 'complete'])->name('consent.complete');
+                });
 
-                // 招待とメール返信の詳細
-                Route::get('/detail/{consent_game_id}', [ConsentGamesController::class, 'detail'])->name('reply.detail');
+                // 返信関連
+                Route::prefix('reply')->group(function () {
+                    // 招待に対する返信
+                    Route::get('/{consent_game_id}', [ConsentGamesController::class, 'reply'])->name('reply.index');
+                    Route::post('/confirm', [ConsentGamesController::class, 'confirmReply'])->name('reply.confirm');
+                    Route::post('/back', function (Request $request) {
+                        $specifyFormRequestInputs = $request->session()->pull('consent_reply');
+                        $values = $specifyFormRequestInputs->getAll();
+                        $consent_game_id = $request->session()->pull('consent_game_id');  // url再セット用に取得
+                        return redirect()->route('reply.index', $consent_game_id)->withInput($values);
+                    })->name('reply.back');
+                    Route::post('/complete', [ConsentGamesController::class, 'completeReply'])->name('reply.complete');
 
-                // メッセージ返信
-                Route::post('/message', [ConsentGamesController::class, 'replyMessage'])->name('reply.message');
+                    // 招待とメール返信の詳細
+                    Route::get('/detail/{consent_game_id}', [ConsentGamesController::class, 'detail'])->name('reply.detail');
+
+                    // メッセージ返信
+                    Route::post('/message', [ConsentGamesController::class, 'replyMessage'])->name('reply.message');
+                });
             });
         });
     });
