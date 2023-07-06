@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 20);
             $table->string('email', 255)->unique();
-            $table->string('password', 255);
+            $table->string('password', 255)->nullable();
             $table->string('google_login_id', 255)->nullable();
             $table->string('line_login_id', 255)->nullable();
             $table->dateTime('last_login_time')->useCurrent();
