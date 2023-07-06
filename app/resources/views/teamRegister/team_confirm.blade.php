@@ -23,7 +23,9 @@
                     <div class="card-body">
                         <p>スポーツ種別：<span id="team-name">{{ \App\Enums\SportAffiliationTypeEnum::from($values['sportAffiliationType'])->label() }}</span></p>
                         <p>チーム名：<span id="team-name">{{ $values['teamName'] }}</span></p>
-                        <p>チームロゴ：<img src="{{ asset($values['imagePath']) }}" id="team-logo" width="100" height="100"></p>
+                        <p>チームロゴ：　<img
+                                src="data:{{ $values['imageExtension'] }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($values['imagePath']))) }}"
+                                id="team-logo" class="team-logo" width="100" height="100"></p>
                         <p>チームURL：<a id="team-url" target="_blank">@if(!empty($values['teamUrl'])){{ $values['teamUrl'] }}@enderror</a></p>
                     </div>
                 </div>
@@ -36,11 +38,11 @@
                         <p>市町村区：<span id="team-address">{{ $values['address'] }}</span></p>
                     </div>
                 </div>
-                <form action="{{route('tmp_team_user.complete')}}" method="post">
+                <form action="{{route('tmp_sns_create.complete')}}" method="post">
                     @csrf
                     <button type="submit" class="btn btn-primary mt-3">登録する</button>
                 </form>
-                <form action="{{route('tmp_team_user.back')}}" method="post">
+                <form action="{{route('tmp_sns_create.back')}}" method="post">
                     @csrf
                     <button type="submit" class="btn btn-secondary mt-3">修正する</button>
                 </form>

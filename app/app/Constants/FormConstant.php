@@ -33,6 +33,19 @@ class FormConstant
     ];
 
     /**
+     * チーム登録用
+     */
+    public const REGISTER_TEAM_FORM_KEYS = [
+        'sportAffiliationType',
+        'teamName',
+        'imagePath',
+        'imageExtension',
+        'teamUrl',
+        'prefecture',
+        'address',
+    ];
+
+    /**
      * チーム招待用
      */
     public const TEMP_FORM_KEYS = [

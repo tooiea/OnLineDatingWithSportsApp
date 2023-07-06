@@ -14,10 +14,10 @@
     <div class="row">
         <div class="col-md-6 mx-auto menu_button">
         <div class="btn-diagonal">
-            <button class="btn btn-primary rounded-circle-btn btn-block mb-3" type="button" onclick="location.href='{{ route('tmp_sns_join.index') }}'">
+            <button class="btn btn-primary rounded-circle-btn btn-block mb-3" type="button" onclick="location.href='{{ route('tmp_sns_create.index') }}'">
             新しくチームを作る
             </button>
-            <button class="btn btn-success rounded-circle-btn btn-block" type="button" onclick="location.href='{{ route('tmp_sns_create.index') }}'">
+            <button class="btn btn-success rounded-circle-btn btn-block" type="button" onclick="location.href='{{ route('tmp_sns_join.index') }}'">
             チームに参加する
             </button>
         </div>

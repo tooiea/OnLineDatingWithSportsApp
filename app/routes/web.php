@@ -53,18 +53,6 @@ Route::middleware('guest')->group(function () {
                 return redirect()->route('tmp_user.index', $invitation_code)->withInput($values);
             })->name('tmp_user.back');
             Route::post('/register/join/complete', [TempUsersController::class, 'complete'])->name('tmp_user.registered');
-
-
-            // 初回ログインがSNSログインでチームを作る
-            Route::get('/sns/register/team', [TempTeamUsersController::class, 'teamCreate'])->name('tmp_sns_create.index');
-            Route::post('/sns/register/team/confirm', [TempTeamUsersController::class, 'teamCreateConfirm'])->name('tmp_sns_create.confirm');
-            Route::post('/sns/register/team/back', function (Request $request) {
-                $specifyFormRequestInputs = $request->session()->pull('temp_user');
-                $values = $specifyFormRequestInputs->getAll();
-                $invitation_code = $values['invitation_code'];  // url再セット用に取得
-                return redirect()->route('tmp_user.index', $invitation_code)->withInput($values);
-            })->name('tmp_sns_create.back');
-            Route::post('/sns/register/team/complete', [TempTeamUsersController::class, 'teamCreateComplete'])->name('tmp_sns_create.complete');
         });
 
         // 本登録
@@ -118,6 +106,16 @@ Route::middleware('auth')->group(function () {
             Route::get('/sns/register/join', [TempUsersController::class, 'join'])->name('tmp_sns_join.index');
             Route::post('/sns/register/join/confirm', [TempUsersController::class, 'joinConfirm'])->name('tmp_sns_join.confirm');
             Route::post('/sns/register/join/complete', [TempUsersController::class, 'joinComplete'])->name('tmp_sns_join.complete');
+
+            // 初回ログインがSNSログインでチームを作る
+            Route::get('/sns/register/team', [TempTeamUsersController::class, 'teamCreate'])->name('tmp_sns_create.index');
+            Route::post('/sns/register/team/confirm', [TempTeamUsersController::class, 'teamCreateConfirm'])->name('tmp_sns_create.confirm');
+            Route::post('/sns/register/team/back', function (Request $request) {
+                $specifyFormRequestInputs = $request->session()->pull('temp_team_register');
+                $values = $specifyFormRequestInputs->getAll();
+                return redirect()->route('tmp_sns_create.index')->withInput($values);
+            })->name('tmp_sns_create.back');
+            Route::post('/sns/register/team/complete', [TempTeamUsersController::class, 'teamCreateComplete'])->name('tmp_sns_create.complete');
         });
 
         // consent

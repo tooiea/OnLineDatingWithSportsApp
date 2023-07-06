@@ -15,7 +15,7 @@
         チームの登録をしましょう！
       </div>
       <div class="card-body">
-        <form action="{{ route('tmp_team_user.confirm') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('tmp_sns_create.confirm') }}" method="post" enctype="multipart/form-data">
           @csrf
           <h5 class="card-title mb-4">Team Information</h5>
           <div class="form-group">
@@ -72,24 +72,6 @@
               placeholder="例：宮崎市">
             <small id="addressHelp" class="form-text text-muted">チームの拠点を入力してください</small>
             @error('address')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
-          </div>
-          <h5 class="card-title mb-4 mt-5">User Information</h5>
-          <div class="form-group">
-            <label for="password">パスワード</label>
-            <input type="password" name="password"
-              class="form-control @error('password') is-invalid @enderror" id="password"
-              aria-describedby="passwordHelp" placeholder="例：passW0rd">
-						<small id="passwordHelp"
-              class="form-text text-muted">半角英数字の小文字・大文字を最低1字含み、8文字以上で入力してください</small>
-						@error('password')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
-          </div>
-          <div class="form-group">
-            <label for="password2">パスワード：再入力</label>
-            <input type="password" name="password2"
-              class="form-control @error('password2') is-invalid @enderror" id="password2"
-              aria-describedby="passwordHelp" placeholder="例：passW0rd">
-            <small id="passwordHelp" class="form-text text-muted">上記のパスワードと同じ入力をしてください</small>
-            @error('password2')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <button type="submit" class="btn btn-primary">確認する</button>
         </form>
