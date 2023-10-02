@@ -44,14 +44,14 @@ class LineLoginController extends Controller
                 if (empty($user)) {
                     // ユーザ新規登録
                     $userModel = new User();
-                    $userModel->create([
-                        'name' => $loggeInUserByLine->name,
-                        'email' => $loggeInUserByLine->email,
-                        'line_login_id' => $loggeInUserByLine->id,
-                        'last_login_time' => $now,
-                    ]);
+                    $userModel->name = $loggeInUserByLine->name;
+                    $userModel->email = $loggeInUserByLine->email;
+                    $userModel->line_login_id = $loggeInUserByLine->id;
+                    $userModel->last_login_time = $now;
+                    $userModel->save();
                     Auth::login($userModel);
-                    Log::info('koko?');
+                    $log = sprintf('logged_time:%s, email:%s', $now->format('Y-m-d-G:i:s'), $loggeInUserByLine->email);
+                    Log::info($log);
                     return redirect()->route('tmp_sns_top.index');
                 }
                 // 同一メールアドレスが存在する
