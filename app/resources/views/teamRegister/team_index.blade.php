@@ -1,3 +1,7 @@
+@php
+use App\Enums\SportAffiliationTypeEnum;
+@endphp
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -24,7 +28,7 @@
               class="form-control @error('sportAffiliationType') is-invalid @enderror"
               id="sportAffiliationType" aria-describedby="nameHelp">
               <option value="" disabled selected>選択してください</option>
-              @foreach(\App\Enums\SportAffiliationTypeEnum::cases() as $value)
+              @foreach(SportAffiliationTypeEnum::cases() as $value)
               <option value="{{ $value->value }}" @if(old('sportAffiliationType')==$value->value))
                   selected @endif>{{ $value->name }}</option>
               @endforeach

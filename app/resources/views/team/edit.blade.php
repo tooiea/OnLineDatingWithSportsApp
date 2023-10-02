@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -37,8 +41,8 @@
           <div class="form-group">
             <label for="teamLogo">チームロゴ画像</label>
             <p>
-              <img id="teamLogo" src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->image_path))) }}"
-              class="img-fluid" alt="team logo" data-original-url="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->image_path))) }}" />
+              <img id="teamLogo" src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents(Storage::url($myTeam->team->image_path))) }}"
+              class="img-fluid" alt="team logo" data-original-url="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents(Storage::url($myTeam->team->image_path))) }}" />
             </p>
             <div class="custom-file">
               <input type="file" name="imagePath" class="custom-file-input" id="imagePath" />
@@ -67,7 +71,7 @@
                     <div class="album_container col-lg-2 col-md-4 col-sm-6 col-12 mb-4">
                       <div class="position-relative">
                         <div class="album-image-wrapper">
-                          <img src="data:{{ $image->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($image->image_name))) }}" class="img-fluid" alt="team album" />
+                          <img src="data:{{ $image->image_extension }};base64,{{ base64_encode(file_get_contents(Storage::url($image->image_name))) }}" class="img-fluid" alt="team album" />
                         </div>
                         <div class="form-check position-absolute" style="top: 5px; right: 5px;">
                           <input type="checkbox" name="deleteAlbum[]" class="form-check-input" id="deleteAlbum{{ $image->id }}" value="{{ Crypt::encryptString($image->id) }}" />

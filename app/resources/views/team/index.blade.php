@@ -1,3 +1,9 @@
+@php
+use Illuminate\Support\Facades\Storage;
+use App\Enums\ConsentStatusTypeEnum;
+use Carbon\Carbon;
+@endphp
+
 <!DOCTYPE html>
 <html>
 
@@ -22,7 +28,7 @@
           <div class="card-body">
             <p class="mt-2 ml-2"><span class="mr-4">チーム名</span>
               <a class="mr-5" href="{{ route('team.detail') }}">{{ $myTeam->team->team_name }}</a>
-              <img src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->image_path))) }}"
+              <img src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents(Storage::url($myTeam->team->image_path))) }}"
                  width="45px" height="45px" alt="team logo" class="img-fluid"/>
             </p>
             @if (session('consent.reply'))
@@ -57,7 +63,7 @@
                   @foreach ($myTeamInvites as $value)
                   <tr>
                     <td class="align-middle">{{
-                      \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日')
+                      Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日')
                       }}</td>
                     <td class="align-middle">
                         {{ $value['team_name'] }}
@@ -65,8 +71,8 @@
                     <td
                       class="align-middle">
                       <a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}"
-                      class=" {{ 'status-' . \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->className() }}">
-                        {{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
+                      class=" {{ 'status-' . ConsentStatusTypeEnum::from($value['consent_status'])->className() }}">
+                        {{ ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
                       </a>
                     </td>
                   </tr>
@@ -99,24 +105,24 @@
                   @foreach ($asGuestInvites as $value)
                   <tr>
                     <td class="align-middle">{{
-                      \Carbon\Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日')
+                      Carbon::parse($value['consent_games_created_at'])->format('Y年m月d日')
                       }}</td>
                     <td
                       class="align-middle">
                       {{ $value['team_name'] }}
                     </td>
-                    @if ($value['consent_status'] === \App\Enums\ConsentStatusTypeEnum::WAIT->value)
+                    @if ($value['consent_status'] === ConsentStatusTypeEnum::WAIT->value)
                     <td class="align-middle">
                       <a href="{{ route('reply.index', Crypt::encryptString($value->consent_games_id)) }}"
-                      class="{{ 'status-' . \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->className() }}">
-                        {{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
+                      class="{{ 'status-' . ConsentStatusTypeEnum::from($value['consent_status'])->className() }}">
+                        {{ ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
                       </a>
                     </td>
                     @else
                     <td class="align-middle">
                       <a href="{{ route('reply.detail', Crypt::encryptString($value->consent_games_id)) }}"
-                      class="{{ 'status-' . \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->className() }}">
-                        {{ \App\Enums\ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
+                      class="{{ 'status-' . ConsentStatusTypeEnum::from($value['consent_status'])->className() }}">
+                        {{ ConsentStatusTypeEnum::from($value['consent_status'])->label() }}
                       </a>
                     </td>
                     @endif

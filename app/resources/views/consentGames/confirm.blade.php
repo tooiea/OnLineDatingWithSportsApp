@@ -1,3 +1,7 @@
+@php
+use Carbon\Carbon;
+@endphp
+
 <!DOCTYPE html>
 <html>
 
@@ -22,9 +26,9 @@
                         <h4>招待日程</h4>
                     </div>
                     <div class="card-body">
-                        <p>第一希望日程：{{ $values['first_preferered_date'] }}</p>
-                        <p>第二希望日程：{{ $values['second_preferered_date'] }}</p>
-                        <p>第三希望日程：@isset($values['third_preferered_date']) {{ $values['third_preferered_date'] }} @endisset</p>
+                        <p>第一希望日程：{{ Carbon::parse($values['first_preferered_date'])->format('Y年m月d日 G時i分') }}</p>
+                        <p>第二希望日程：{{ Carbon::parse($values['second_preferered_date'])->format('Y年m月d日 G時i分') }}</p>
+                        <p>第三希望日程：@isset($values['third_preferered_date']) {{ Carbon::parse($values['third_preferered_date'])->format('Y年m月d日 G時i分') }} @endisset</p>
                         <p class="mb-0">メッセージ：</p>
                         <p>@if(!is_null($values['message'])) {!! nl2br(htmlspecialchars($values['message'])) !!} @endif</p>
                     </div>

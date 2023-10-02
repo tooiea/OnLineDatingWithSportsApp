@@ -1,3 +1,9 @@
+@php
+use Illuminate\Support\Facades\Storage;
+use App\Constants\FormConstant;
+use Carbon\Carbon;
+@endphp
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -26,24 +32,24 @@
         <div class="row">
           <div class="col-3">
             <img
-              src="data:{{ $consents->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($consents->image_path))) }}"
+              src="data:{{ $consents->image_extension }};base64,{{ base64_encode(file_get_contents(Storage::url($consents->image_path))) }}"
               id="team-logo" class="team-logo">
           </div>
           <div class="col-8">
             <p>第一希望<br>
               <span style="white-space: nowrap; overflow: hidden;">
-              {{ \Carbon\Carbon::parse($consents->first_preferered_date)->format('Y年m月d日 G時i分') }}
+              {{ Carbon::parse($consents->first_preferered_date)->format('Y年m月d日 G時i分') }}
               </span>
             </p>
             <p>第二希望<br>
               <span style="white-space: nowrap; overflow: hidden;">
-              {{ \Carbon\Carbon::parse($consents->second_preferered_date)->format('Y年m月d日 G時i分') }}
+              {{ Carbon::parse($consents->second_preferered_date)->format('Y年m月d日 G時i分') }}
               </span>
             </p>
             @if (!empty($consents->third_preferered_date))
             <p>第三希望<br>
               <span style="white-space: nowrap; overflow: hidden;">
-              {{ \Carbon\Carbon::parse($consents->third_preferered_date)->format('Y年m月d日 G時i分') }}
+              {{ Carbon::parse($consents->third_preferered_date)->format('Y年m月d日 G時i分') }}
               </span>
             </p>
             @endif
@@ -60,13 +66,13 @@
           <div class="form-group">
             <label>第一希望</label>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              @foreach (\App\Constants\FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT as $key => $value)
+              @foreach (FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT as $key => $value)
               <label
                 class="btn btn-secondary
-               @if (old('first_preferered_date') == $key || empty(old('first_preferered_date')) && array_key_first(\App\Constants\FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT) == $key ) active @endif ">
+               @if (old('first_preferered_date') == $key || empty(old('first_preferered_date')) && array_key_first(FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT) == $key ) active @endif ">
                 <input type="radio" name="first_preferered_date" value="{{ $key }}"
                 @if (old('first_preferered_date') == $key || empty(old('first_preferered_date'))
-                 && array_key_first(\App\Constants\FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT) == $key ) checked @endif>
+                 && array_key_first(FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT) == $key ) checked @endif>
                 {{ $value }}
               </label>
               @endforeach
@@ -76,12 +82,12 @@
           <div class="form-group">
             <label>第二希望</label>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              @foreach (\App\Constants\FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT as $key => $value)
-              <label class="btn btn-secondary @if (old('second_preferered_date') == $key || empty(old('second_preferered_date')) && array_key_first(\App\Constants\FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT) === $key ) active @endif
+              @foreach (FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT as $key => $value)
+              <label class="btn btn-secondary @if (old('second_preferered_date') == $key || empty(old('second_preferered_date')) && array_key_first(FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT) === $key ) active @endif
                   ">
                 <input type="radio" name="second_preferered_date" value="{{ $key }}"
                 @if (old('second_preferered_date') == $key || empty(old('second_preferered_date')) &&
-                 array_key_first(\App\Constants\FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT) == $key) checked @endif>
+                 array_key_first(FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT) == $key) checked @endif>
                 {{ $value }}
               </label>
               @endforeach
@@ -92,13 +98,13 @@
           <div class="form-group">
             <label>第三希望</label>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              @foreach (\App\Constants\FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT as $key => $value)
+              @foreach (FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT as $key => $value)
               <label class="btn btn-secondary
               @if (old('third_preferered_date') == $key || empty(old('third_preferered_date'))
-                && array_key_first(\App\Constants\FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT) == $key ) active @endif ">
+                && array_key_first(FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT) == $key ) active @endif ">
                 <input type="radio" name="third_preferered_date" value="{{ $key }}"
                 @if (old('third_preferered_date') == $key || empty(old('third_preferered_date')) &&
-                 array_key_first(\App\Constants\FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT) == $key ) checked @endif>
+                 array_key_first(FormConstant::CONSENT_REPLY_FORM_VALUE_TEXT) == $key ) checked @endif>
                 {{ $value }}
               </label>
               @endforeach

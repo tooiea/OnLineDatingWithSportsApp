@@ -1,3 +1,8 @@
+@php
+use Illuminate\Support\Facades\Storage;
+use App\Constants\FormConstant;
+@endphp
+
 <!DOCTYPE html>
 <html>
 
@@ -30,7 +35,7 @@
                 <select name="prefecture" class="form-control @error('prefecture') is-invalid @enderror" id="prefecture"
                   aria-describedby="nameHelp">
                   <option value="">選択してください</option>
-                  @foreach (\App\Constants\FormConstant::PREFECTURES as $key => $value)
+                  @foreach (FormConstant::PREFECTURES as $key => $value)
                   <option value="{{ $key }}" @if(old('prefecture')==$key || $prefecture==$key) selected @endif>{{ $value
                     }}
                   </option>
@@ -80,12 +85,12 @@
             <tr>
               <th>{{ $key+1 }}</th>
               <td>{{ $value->team_name }}</td>
-              <td>{{ \App\Constants\FormConstant::PREFECTURES[$value->prefecture] . $value->address }}
+              <td>{{ FormConstant::PREFECTURES[$value->prefecture] . $value->address }}
               </td>
               <td>
                 @if (!empty($value->image_extension))
                 <img
-                  src="data:{{ $value->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($value->image_path))) }}"
+                  src="data:{{ $value->image_extension }};base64,{{ base64_encode(file_get_contents(Storage::url($value->image_path))) }}"
                   id="team-logo" class="search-logo">
                 @endif
               </td>

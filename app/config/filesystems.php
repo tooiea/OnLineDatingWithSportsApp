@@ -73,4 +73,10 @@ return [
         public_path('storage') => storage_path('app'),
     ],
 
+    'dir' => [
+        'local' => 'test/',
+        'staging' => 'stage/',
+        'production' => 'prod/'
+    ]
+
 ];

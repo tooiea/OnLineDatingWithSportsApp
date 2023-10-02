@@ -1,3 +1,9 @@
+@php
+use App\Enums\SportAffiliationTypeEnum;
+use Illuminate\Support\Facades\Storage;
+use App\Constants\FormConstant;
+@endphp
+
 <!DOCTYPE html>
 <html>
 
@@ -24,12 +30,10 @@
                         <h4>チーム登録</h4>
                     </div>
                     <div class="card-body">
-                        <p>スポーツ種別：<span id="team-name">{{
-                                \App\Enums\SportAffiliationTypeEnum::from($values['sportAffiliationType'])->label()
-                                }}</span></p>
+                        <p>スポーツ種別：<span id="team-name">{{ SportAffiliationTypeEnum::from($values['sportAffiliationType'])->label() }}</span></p>
                         <p>チーム名：　　<span id="team-name">{{ $values['teamName'] }}</span></p>
                         <p>チームロゴ：　<img
-                                src="data:{{ $values['imageExtension'] }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($values['imagePath']))) }}"
+                                src="data:{{ $values['imageExtension'] }};base64,{{ base64_encode(file_get_contents(Storage::url($values['imagePath']))) }}"
                                 id="team-logo" class="team-logo"></p>
                         <p>チームURL:　<a id="team-url" target="_blank">@if(!empty($values['teamUrl'])){{ $values['teamUrl']
                                 }}@enderror</a></p>
@@ -40,8 +44,7 @@
                         <h4>チーム拠点</h4>
                     </div>
                     <div class="card-body">
-                        <p>都道府県：　<span id="team-prefecture">{{
-                                \App\Constants\FormConstant::PREFECTURES[$values['prefecture']] }}</span></p>
+                        <p>都道府県：　<span id="team-prefecture">{{ FormConstant::PREFECTURES[$values['prefecture']] }}</span></p>
                         <p>市町村区：　<span id="team-address">{{ $values['address'] }}</span></p>
                     </div>
                 </div>

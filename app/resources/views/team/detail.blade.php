@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -34,7 +38,7 @@
       <div class="card-body">
         <p><span class="mr-5">チーム名</span>{{ $myTeam->team->team_name }}</p>
         <p><span class="mr-4">チームロゴ</span><img
-          src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($myTeam->team->image_path))) }}"
+          src="data:{{ $myTeam->team->image_extension }};base64,{{ base64_encode(file_get_contents(Storage::url($myTeam->team->image_path))) }}"
           class="img-fluid" alt="team logo" />
         </p>
         <p><span class="mr-5">登録人数</span>{{ $teamMembersNumber }}人</p>
@@ -69,7 +73,7 @@
                   <div class="album_container col-lg-2 col-md-4 col-sm-6 col-12 mb-4">
                     <div class="position-relative">
                       <div class="album-image-wrapper">
-                        <img src="data:{{ $image->image_extension }};base64,{{ base64_encode(file_get_contents('public' . Illuminate\Support\Facades\Storage::url($image->image_name))) }}" class="img-fluid" alt="team album" />
+                        <img src="data:{{ $image->image_extension }};base64,{{ base64_encode(file_get_contents(Storage::url($image->image_name))) }}" class="img-fluid" alt="team album" />
                       </div>
                     </div>
                   </div>

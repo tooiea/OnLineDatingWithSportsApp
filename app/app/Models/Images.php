@@ -25,7 +25,7 @@ class Images
         $fileName = Files::getFileNameWithUniqueDate($image->guessExtension());
 
         // 保存後にディレクトリを取得
-        $storeImage = Images::saveImage($image, $fileName, self::DIRECTORY_OLDWS_LOGO);
+        $storeImage = Images::saveImage($image, $fileName, self::getDir(self::DIRECTORY_OLDWS_LOGO));
 
         return $storeImage;
     }
@@ -42,7 +42,7 @@ class Images
         $fileName = Files::getFileNameWithUniqueDate($image->guessExtension());
 
         // 保存後にディレクトリを取得
-        $storeImage = Images::saveImage($image, $fileName, self::DIRECTORY_OLDWS_ALBUM);
+        $storeImage = Images::saveImage($image, $fileName, self::getDir(self::DIRECTORY_OLDWS_ALBUM));
 
         return $storeImage;
     }
@@ -65,8 +65,28 @@ class Images
         return $storeImage;
     }
 
+    /**
+     * ファイル削除
+     *
+     * @param  string $path
+     * @return void
+     */
     public static function deleteImagefrom($path)
     {
         Storage::delete($path);
+    }
+
+    /**
+     * 環境によって、保存するディレクトリを動的に生成
+     *
+     * @param  string $saveDir
+     * @return string
+     */
+    private static function getDir($saveDir)
+    {
+        // 環境によってS3の保存ディレクトリを変更
+        $env = config('app.env');
+        $baseDir = config('filesystems.dir')[$env];
+        return $baseDir . $saveDir;
     }
 }
