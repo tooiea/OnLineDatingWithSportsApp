@@ -170,6 +170,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         // バリデーション用provider
         App\Providers\ValidatorServiceProvider::class,
+        // Apiレスポンス
+        App\Providers\ApiResponseServiceProvider::class,
     ])->toArray(),
 
     /*
