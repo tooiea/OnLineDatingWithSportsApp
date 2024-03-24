@@ -128,4 +128,15 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPasswordNotification($token, new SendMailer()));
     }
+
+    /**
+     * LINEログイン時のカラムセット
+     * ログインIDをLINEログインIDに置き換え
+     *
+     * @return string
+     */
+    public function routeNotificationForLine(): string
+    {
+        return $this->line_login_id;
+    }
 }
