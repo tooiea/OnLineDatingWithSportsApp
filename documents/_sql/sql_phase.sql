@@ -30,8 +30,7 @@ CREATE TABLE team_members (
 CREATE TABLE administrators (
   id INT NOT NULL AUTO_INCREMENT
   , email VARCHAR(255) NOT NULL
-  , admins_name VARCHAR(255) NOT NULL
-  , salt VARCHAR(100) NOT NULL
+  , name VARCHAR(255) NOT NULL
   , password VARCHAR(255) NOT NULL
   , reset_token VARCHAR(255) NOT NULL
   , is_deleted INT DEFAULT 0 NOT NULL
@@ -50,10 +49,10 @@ CREATE TABLE temp_users (
   , expiration_date DATETIME NOT NULL
   , sport_affiliation_type INT
   , team_name VARCHAR(255)
-  , team_logo VARCHAR(255)
+  , image_path VARCHAR(255)
   , image_extension VARCHAR(255)
   , team_url VARCHAR(255)
-  , prefecture INT
+  , prefecture_code INT
   , address VARCHAR(255)
   , invitation_code VARCHAR(255)
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
@@ -100,10 +99,10 @@ CREATE TABLE teams (
   , team_name VARCHAR(255) NOT NULL
   , sport_affiliation_type INT NOT NULL
   , invitation_code VARCHAR(255) NOT NULL
-  , prefecture INT NOT NULL
+  , prefecture_code INT NOT NULL
   , address VARCHAR(255)
   , team_url VARCHAR(255)
-  , team_logo VARCHAR(255) NOT NULL
+  , image_path VARCHAR(255) NOT NULL
   , image_extension VARCHAR(255) NOT NULL
   , is_deleted INT DEFAULT 0 NOT NULL
   , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
