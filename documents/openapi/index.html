@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>API ドキュメント一覧</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 10px; border: 1px solid #ddd; margin-bottom: 10px; cursor: pointer; }
+    li:hover { background-color: #f0f0f0; }
+    .new-api { margin-bottom: 20px; display: inline-block; padding: 10px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; }
+    .new-api:hover { background-color: #218838; }
+    .message { margin-top: 20px; color: #ff0000; }
+  </style>
+</head>
+<body>
+  <h1>📄 API ドキュメント一覧</h1>
+  <!-- ✅ 新規作成ボタンは常に表示 -->
+  <a href="/create/index.html" class="new-api">＋ 新規APIドキュメント作成</a>
+  
+  <p id="message" class="message">🔄 データを取得中...</p>
+  <ul id="api-list"></ul>
+
+  <script>
+    async function fetchApiList() {
+      const apiList = document.getElementById('api-list');
+      const message = document.getElementById('message');
+
+      try {
+        console.log('✅ API取得開始:', `http://localhost/api/openapi-specs`);
+        const response = await fetch(`http://localhost/api/openapi-specs`);
+        const specs = await response.json();
+        console.log('✅ 取得結果:', specs);
+
+        message.textContent = ''; // ローディングメッセージをクリア
+
+        // ✅ 空配列の場合のメッセージ表示
+        if (Array.isArray(specs) && specs.length === 0) {
+          message.textContent = '⚠ APIドキュメントが見つかりません。新規作成してください。';
+        } else {
+          specs.forEach(spec => {
+            const li = document.createElement('li');
+            li.textContent = `${spec.name} - ${spec.description ?? '説明なし'}`;
+            li.onclick = () => window.location.href = `/detail/index.html?id=${spec.id}`;
+            apiList.appendChild(li);
+          });
+        }
+      } catch (error) {
+        console.error('⚡ エラー:', error);
+        message.textContent = `⚠ エラー: ${error.message}。新規作成を試してください。`;
+      }
+    }
+    fetchApiList();
+  </script>
+</body>
+</html>

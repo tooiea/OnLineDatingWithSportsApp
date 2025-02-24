@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>API 詳細ドキュメント</title>
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css">
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    a { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #007bff; }
+    a:hover { text-decoration: underline; }
+    #swagger-ui { height: 100vh; overflow: auto; }
+    .topbar { display: none; } /* SwaggerUIのデフォルトヘッダーを非表示 */
+  </style>
+</head>
+<body>
+  <a href="/index.html">← 一覧に戻る</a>
+  <button id="toggle-mode">🔄 モード切替</button>
+  <div id="swagger-ui"></div>
+
+  <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
+  <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-standalone-preset.js"></script>
+  <script>
+    function getQueryParam(param) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(param);
+    }
+
+    let swaggerUIInstance;
+
+    async function loadSpec() {
+      const id = getQueryParam('id');
+      if (!id) {
+        document.getElementById('swagger-ui').innerHTML = '<p>⚠ APIドキュメントIDが指定されていません。</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost/api/openapi-specs/${id}`);
+        if (!response.ok) throw new Error('APIドキュメントを取得できませんでした。');
+        const spec = await response.json();
+        const escapedContent = spec.data.content;
+
+        // 二重エスケープ解除
+        const decodedContent = JSON.parse(JSON.parse(`"${escapedContent}"`));
+
+        initSwaggerUI(decodedContent, false); // デフォルトは読み取り専用モード
+      } catch (error) {
+        console.error(error);
+        document.getElementById('swagger-ui').innerHTML = `<p>⚠ エラー: ${error.message}</p>`;
+      }
+    }
+
+    function initSwaggerUI(spec, enableTryItOut) {
+      if (swaggerUIInstance) {
+        document.getElementById('swagger-ui').innerHTML = '';
+      }
+      swaggerUIInstance = SwaggerUIBundle({
+        spec: spec,
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        supportedSubmitMethods: enableTryItOut ? ['get', 'post', 'put', 'delete', 'patch'] : [],
+        presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+        layout: "BaseLayout"
+      });
+    }
+
+    document.getElementById('toggle-mode').addEventListener('click', function () {
+      const currentSubmitMethods = swaggerUIInstance.getConfigs().supportedSubmitMethods;
+      const enableTryItOut = currentSubmitMethods.length === 0;
+      initSwaggerUI(swaggerUIInstance.spec, enableTryItOut);
+    });
+
+    loadSpec();
+  </script>
+</body>
+</html>
