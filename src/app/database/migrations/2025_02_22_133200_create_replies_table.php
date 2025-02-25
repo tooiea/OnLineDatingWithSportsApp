@@ -17,7 +17,6 @@ return new class extends Migration
             $table->uuid()->primary();
             $table->foreignIdFor(ConsentGame::class, 'consent_game_id');
             $table->foreignIdFor(Team::class, 'team_id');
-            $table->text('message');
             $table->timestampsTz(precision: 0);
         });
     }

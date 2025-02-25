@@ -20,8 +20,6 @@ return new class extends Migration
             $table->dateTime('expiration_date', precision: 0);
             $table->integer('sport_affiliation_type');
             $table->string('team_name', 255)->nullable();
-            $table->string('image_path', 255)->nullable();
-            $table->string('image_extension', 255)->nullable();
             $table->string('team_url', 255)->nullable();
             $table->integer('prefecture_code')->nullable();
             $table->string('address', 255)->nullable();

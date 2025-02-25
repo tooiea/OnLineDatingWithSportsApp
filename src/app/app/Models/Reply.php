@@ -8,13 +8,13 @@ use App\Models\Team;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
 
 /**
  * @property string $id
  * @property string $consent_game_id
  * @property string $team_id
- * @property string $message
  * @property Carbon $created_at
  * @property Carbon $update_at
  * @property ConsentGame $consent_game
@@ -27,7 +27,6 @@ class Reply extends Model
     protected $fillable = [
         'consent_game_id',
         'team_id',
-        'message',
     ];
 
     public function consent_game()
@@ -38,5 +37,10 @@ class Reply extends Model
     public function team()
     {
         return $this->belongsTo(Team::class);
+    }
+
+    public function comment() : MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 }

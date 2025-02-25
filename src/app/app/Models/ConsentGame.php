@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
 
 /**
@@ -18,7 +19,6 @@ use Illuminate\Notifications\Notifiable;
  * @property Carbon $first_preferered_date
  * @property Carbon $second_preferered_date
  * @property Carbon $third_preferered_date
- * @property string $message
  * @property Carbon $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -55,5 +55,10 @@ class ConsentGame extends Model
     public function guest()
     {
         return $this->belongsTo(Team::class, 'guest_id');
+    }
+
+    public function comment() : morphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 }

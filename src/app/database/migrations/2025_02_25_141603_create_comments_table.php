@@ -11,15 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teams', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name', 50);
-            $table->integer('sport_affiliation_type');
-            $table->string('invitation_code', 255);
-            $table->integer('prefecture_code');
-            $table->string('address', 255);
-            $table->string('url', 255);
-            $table->softDeletesTz('deleted_at', precision: 0);
+            $table->uuidMorphs('commentable');
             $table->timestampsTz(precision: 0);
         });
     }
@@ -29,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('teams');
+        Schema::dropIfExists('comments');
     }
 };

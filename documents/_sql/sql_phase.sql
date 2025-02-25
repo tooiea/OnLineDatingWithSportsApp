@@ -121,7 +121,7 @@ ALTER TABLE consent_games
   on update cascade;
 
 ALTER TABLE replies
-  ADD CONSTRAINT replies_FK1 FOREIGN KEY (consent_game_id) REFERENCES consent_games(id)
+  ADD CONSTRAINT replies_FK1 FOREIGN KEY (consent_game_id) REFERENCES consent_games(id),
   ADD CONSTRAINT replies_FK2 FOREIGN KEY (team_id) REFERENCES teams(id)
   on delete cascade
   on update cascade;

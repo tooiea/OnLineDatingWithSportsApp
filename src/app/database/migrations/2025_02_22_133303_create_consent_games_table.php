@@ -21,7 +21,6 @@ return new class extends Migration
             $table->dateTime('first_preferered_date');
             $table->dateTime('second_preferered_date');
             $table->dateTime('third_preferered_date')->nullable();
-            $table->text('message')->nullable();
             $table->softDeletes('deleted_at', precision: 0);
             $table->timestampsTz(precision: 0);
         });

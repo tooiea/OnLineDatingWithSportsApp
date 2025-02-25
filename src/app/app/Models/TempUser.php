@@ -7,7 +7,7 @@ use App\Enums\Prefecture;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @property string $id
@@ -18,8 +18,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon $expiration_date
  * @property SportAffiliationTypeEnum $sport_affiliation_type
  * @property string $team_name
- * @property string $image_path
- * @property string $image_extension
  * @property string $team_url
  * @property Prefecture $prefecture_code
  * @property string $address
@@ -39,11 +37,14 @@ class TempUser extends Model
         'expiration_date',
         'sport_affiliation_type',
         'team_name',
-        'image_path',
-        'image_extension',
         'team_url',
         'prefecture_code',
         'address',
         'invitation_code',
     ];
+
+    public function image() : MorphOne
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
 }
