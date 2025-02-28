@@ -7,5 +7,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ApiBaseResource extends JsonResource
 {
-    public static $wrap = 'data';
+    // wrapするプロパティーを指定する場合は以下で指定
+    // public static $wrap = 'data';
 }

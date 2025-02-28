@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SuccessAuthenticateResource extends JsonResource
+class SuccessAuthenticateResource extends ApiBaseResource
 {
     /**
      * Transform the resource into an array.
