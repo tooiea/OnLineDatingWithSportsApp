@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property string $id
  * @property string $name
  * @property SportAffiliationTypeEnum $sport_affiliation_type
- * @property string $invitation_code
  * @property Prefecture $prefecture_code
  * @property string $address
  * @property string $url
@@ -30,7 +29,6 @@ class Team extends Model
     protected $fillable = [
         'name',
         'sport_affiliation_type',
-        'invitation_code',
         'prefecture_code',
         'address',
         'url',
@@ -50,5 +48,10 @@ class Team extends Model
     public function image() : MorphMany
     {
         return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function codes()
+    {
+        return $this->morphMany(Code::class, 'codeable');
     }
 }

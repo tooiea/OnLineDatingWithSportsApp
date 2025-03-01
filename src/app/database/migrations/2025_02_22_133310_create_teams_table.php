@@ -15,7 +15,6 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name', 50);
             $table->integer('sport_affiliation_type');
-            $table->string('invitation_code', 255);
             $table->integer('prefecture_code');
             $table->string('address', 255);
             $table->string('url', 255);
