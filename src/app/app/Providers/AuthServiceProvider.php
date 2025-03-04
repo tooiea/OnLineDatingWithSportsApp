@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\CustomSanctumAccessToken;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
 
@@ -22,5 +23,9 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Sanctum::usePersonalAccessTokenModel(CustomSanctumAccessToken::class);
+
+        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
+            $event->extendSocialite('line', \SocialiteProviders\Line\Provider::class);
+        });
     }
 }

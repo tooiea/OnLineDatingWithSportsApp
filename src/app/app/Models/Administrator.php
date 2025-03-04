@@ -5,6 +5,8 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @property string $id
@@ -16,7 +18,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class Administrator extends Model
+class Administrator extends Authenticatable
 {
-    use HasUuids;
+    use Notifiable, HasUuids;
+
+    public function casts(): array
+    {
+        return [
+            'password' => 'hashed',
+        ];
+    }
 }
