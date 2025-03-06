@@ -7,9 +7,10 @@ use App\Http\Controllers\TempTeamJoinController;
 use App\Http\Controllers\TempTeamRegisterController;
 use App\Http\Controllers\UserLoginController;
 use App\Models\User;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-
-require __DIR__.'/auth.php';
+use Inertia\Inertia;
 
 Route::prefix('temp_register')->group(function () {
     // チーム登録 (仮登録)
@@ -29,10 +30,32 @@ Route::prefix('temp_register')->group(function () {
         });
     });
 });
-Route::get('register/{token}', [TeamController::class, 'register'])->name('team.register');
 
+Route::get('register/{token}', [TeamController::class, 'register'])->name('team.register');
 Route::get('login',[UserLoginController::class, 'index'])->name('login');
 Route::get('line/login',[LineLoginController::class, 'redirectTo'])->name('line.login');
 Route::get('line/login/callback', [LineLoginController::class, 'callback']);
 Route::get('google/login',[GoogleLoginController::class, 'redirectTo'])->name('google.login');
 Route::get('google/login/callback', [GoogleLoginController::class, 'callback']);
+
+
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
