@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Sns\GoogleLoginController;
 use App\Http\Controllers\Sns\LineLoginController;
 use App\Http\Controllers\TempTeamJoinController;
@@ -8,6 +7,7 @@ use App\Http\Controllers\TempTeamRegisterController;
 use App\Http\Controllers\UserLoginController;
 use App\Models\User;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TeamController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,11 +32,12 @@ Route::prefix('temp_register')->group(function () {
 });
 
 Route::get('register/{token}', [TeamController::class, 'register'])->name('team.register');
-Route::get('login',[UserLoginController::class, 'index'])->name('login');
+Route::get('login',[UserLoginController::class, 'index'])->name('email_login.index');
+Route::post('login',[UserLoginController::class, 'login'])->name('email_login.login');
 Route::get('line/login',[LineLoginController::class, 'redirectTo'])->name('line.login');
-Route::get('line/login/callback', [LineLoginController::class, 'callback']);
+Route::get('line/login/callback', [LineLoginController::class, 'line.callback']);
 Route::get('google/login',[GoogleLoginController::class, 'redirectTo'])->name('google.login');
-Route::get('google/login/callback', [GoogleLoginController::class, 'callback']);
+Route::get('google/login/callback', [GoogleLoginController::class, 'google.callback']);
 
 
 Route::get('/', function () {
@@ -46,6 +47,10 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
+});
+
+Route::middleware(['auth:user'])->group(function () {
+    Route::get('teams', [TeamController::class, 'list'])->name('team.list');
 });
 
 Route::get('/dashboard', function () {

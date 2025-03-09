@@ -1,4 +1,3 @@
-import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -23,7 +22,7 @@ export default function Login({
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('login'), {
+        post(route('email_login.login'), {
             onFinish: () => reset('password'),
         });
     };
@@ -40,8 +39,7 @@ export default function Login({
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
+                    <InputLabel htmlFor="email">メールアドレス</InputLabel>
                     <TextInput
                         id="email"
                         type="email"
@@ -52,12 +50,11 @@ export default function Login({
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
                     />
-
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password">パスワード</InputLabel>
 
                     <TextInput
                         id="password"
@@ -72,37 +69,56 @@ export default function Login({
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4 block">
-                    <label className="flex items-center">
-                        <Checkbox
-                            name="remember"
-                            checked={data.remember}
-                            onChange={(e) =>
-                                setData(
-                                    'remember',
-                                    (e.target.checked || false) as false,
-                                )
-                            }
-                        />
-                        <span className="ms-2 text-sm text-gray-600">
-                            Remember me
-                        </span>
-                    </label>
-                </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    {canResetPassword && (
+                {canResetPassword && (
+                    <div className="mt-4 text-center">
                         <Link
                             href={route('password.request')}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="text-sm text-gray-600 underline hover:text-gray-900"
                         >
-                            Forgot your password?
+                            パスワードをお忘れですか？
                         </Link>
-                    )}
+                    </div>
+                )}
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
+                <div className="mt-6">
+                    <PrimaryButton className="w-full justify-center" disabled={processing}>
+                        ログイン
                     </PrimaryButton>
+                </div>
+
+                <div className="mt-6 flex items-center">
+                    <hr className="flex-grow border-t border-gray-300" />
+                    <span className="mx-2 text-sm text-gray-500">または</span>
+                    <hr className="flex-grow border-t border-gray-300" />
+                </div>
+
+                <div className="mt-4 flex justify-center gap-4">
+                    <Link href={route('google.login')}>
+                        <img
+                            src="/images/btn_google_signin_dark_normal_web@2x.png"
+                            alt="google"
+                            className="h-10"
+                        />
+                    </Link>
+
+                    <Link href={route('line.login')}>
+                        <img
+                            src="/images/btn_login_base.png"
+                            alt="line"
+                            className="h-10"
+                        />
+                    </Link>
+                </div>
+
+                {/* チーム作成への導線ボタン */}
+                <div className="mt-6 text-center">
+                    <span className="text-sm text-gray-600">アカウントをお持ちではありませんか？</span>
+                    <Link
+                        href={route('register')}
+                        className="ml-2 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                    >
+                        新しくチームを作成
+                    </Link>
                 </div>
             </form>
         </GuestLayout>

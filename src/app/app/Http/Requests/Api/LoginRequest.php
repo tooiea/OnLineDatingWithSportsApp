@@ -7,5 +7,5 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends AuthLoginRequest
 {
-    protected $guard = 'user';
+    // protected $guard = 'user';
 }

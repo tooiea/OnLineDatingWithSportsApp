@@ -29,6 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->replace(SetCacheHeaders::class, CustomSetCacheHeaders::class);
+        $middleware->redirectGuestsTo(fn () => route('email_login.index'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Exception $e, Request $request) {
