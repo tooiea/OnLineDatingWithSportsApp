@@ -6,8 +6,10 @@ use App\Enums\SportAffiliationTypeEnum;
 use App\Enums\Prefecture;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @property string $id
@@ -24,7 +26,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  */
 class Team extends Model
 {
-    use HasUuids;
+    use HasUuids, HasFactory;
 
     protected $fillable = [
         'name',
@@ -45,13 +47,13 @@ class Team extends Model
         return $this->hasMany(TeamMember::class);
     }
 
-    public function image() : MorphMany
+    public function image() : MorphOne
     {
-        return $this->morphMany(Image::class, 'imageable');
+        return $this->morphOne(Image::class, 'imageable');
     }
 
-    public function codes()
+    public function code() : MorphOne
     {
-        return $this->morphMany(Code::class, 'codeable');
+        return $this->morphOne(Code::class, 'codeable');
     }
 }

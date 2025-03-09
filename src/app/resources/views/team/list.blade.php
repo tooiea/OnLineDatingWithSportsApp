@@ -1,3 +1,6 @@
+@php
+use App\Enums\Prefecture;
+@endphp
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -21,14 +24,15 @@
             <h3>招待チームを検索</h3>
           </div>
           <div class="card-body">
-            <form action="{{ route('search.index') }}">
+            <form action="{{ route('team.list') }}">
               @csrf
               <div class="mb-3">
                 <label for="prefecture" class="form-label">都道府県</label>
                 <select name="prefecture" class="form-control @error('prefecture') is-invalid @enderror" id="prefecture">
                   <option value="">選択してください</option>
-                  @foreach (\App\Constants\FormConstant::PREFECTURES as $key => $value)
-                  <option value="{{ $key }}" @if(old('prefecture')==$key || $prefecture==$key) selected @endif>{{ $value }}</option>
+                  @php $prefecture = old('prefecture') ?? $prefecture @endphp
+                  @foreach (Prefecture::cases() as $value)
+                  <option value="{{ $value }}" {{ $prefecture == $value->value ? "selected" : '' }} >{{ $value->label() }}</option>
                   @endforeach
                 </select>
                 <div class="form-text">検索したいチームの都道府県を選択してください。</div>
@@ -70,19 +74,19 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($teams as $key => $value)
+            @foreach ($teams as $key => $team)
             <tr>
               <th>{{ $key+1 }}</th>
-              <td>{{ $value->team_name }}</td>
-              <td>{{ \App\Constants\FormConstant::PREFECTURES[$value->prefecture] . $value->address }}</td>
+              <td>{{ $team->name }}</td>
+              <td>{{ Prefecture::tryFrom($team->prefecture_code)->label() . $team->address }}</td>
               <td>
-                @if (!empty($value->image_extension))
-                <img src="data:{{ $value->image_extension }};base64,{{ base64_encode(file_get_contents($value->team_logo)) }}"
+                @if (!empty($team->image_extension))
+                <img src="data:{{ $team->image_extension }};base64,{{ base64_encode(file_get_contents($team->team_logo)) }}"
                   id="team-logo" width="50" height="50" class="img-fluid">
                 @endif
               </td>
               <td>
-                <a href="{{ sprintf(url(__('route_const.consent_link') . '%s'), $value->invitation_code) }}">招待する</a>
+                <a href="{{ sprintf(url(__('route_const.consent_link') . '%s'), $team->code->code?? null) }}">招待する</a>
               </td>
             </tr>
             @endforeach
