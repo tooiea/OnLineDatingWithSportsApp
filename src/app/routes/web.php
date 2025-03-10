@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MyTeamController;
 use App\Http\Controllers\Sns\GoogleLoginController;
 use App\Http\Controllers\Sns\LineLoginController;
 use App\Http\Controllers\TempTeamJoinController;
@@ -50,7 +51,19 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:user'])->group(function () {
-    Route::get('teams', [TeamController::class, 'list'])->name('team.list');
+    Route::prefix('myteam')->name('myteam.')->group(function () {
+        Route::get('/', [MyTeamController::class, 'index'])->name('index');
+        Route::get('detail', [MyTeamController::class, 'detail'])->name('detail');
+    });
+
+    Route::prefix('teams')->name('team.')->group(function () {
+        // チーム一覧
+        Route::get('/', [TeamController::class, 'list'])->name('list');
+        // チーム詳細
+        Route::get('{team_id}', [TeamController::class, 'index'])->name('index');
+        // チーム招待
+        Route::get('{team_id}/invite_game', [TeamController::class, 'inviteGame'])->name('invite_game');
+    });
 });
 
 Route::get('/dashboard', function () {
