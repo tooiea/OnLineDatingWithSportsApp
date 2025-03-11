@@ -15,19 +15,19 @@ use Inertia\Inertia;
 
 Route::prefix('temp_register')->group(function () {
     // チーム登録 (仮登録)
-    Route::prefix('team')->group(function () {
+    Route::prefix('team')->name('temp_register.team.')->group(function () {
         // チーム作成 (仮登録)
-        Route::get('/', [TempTeamRegisterController::class, 'index'])->name('temp_register.team.index');
-        Route::post('confirm', [TempTeamRegisterController::class, 'confirm'])->name('temp_register.team.confirm');
-        Route::post('complete', [TempTeamRegisterController::class, 'complete'])->name('temp_register.team.complete');
-        Route::post('back', [TempTeamRegisterController::class, 'back'])->name('temp_register.team.back');
+        Route::get('/', [TempTeamRegisterController::class, 'index'])->name('index');
+        Route::post('confirm', [TempTeamRegisterController::class, 'confirm'])->name('confirm');
+        Route::post('complete', [TempTeamRegisterController::class, 'complete'])->name('complete');
+        Route::post('back', [TempTeamRegisterController::class, 'back'])->name('back');
 
         // チーム参加 (仮登録)
         Route::prefix('join')->group(function () {
-            Route::get('/', [TempTeamJoinController::class, 'index'])->name('temp_register.team.join');
-            Route::post('confirm', [TempTeamJoinController::class, 'confirm'])->name('temp_register.team.join.confirm');
-            Route::post('complete', [TempTeamJoinController::class, 'complete'])->name('temp_register.team.join.complete');
-            Route::post('back', [TempTeamJoinController::class, 'back'])->name('temp_register.team.join.back');
+            Route::get('{invitation_code}', [TempTeamJoinController::class, 'index'])->name('join.index');
+            Route::post('{invitation_code}/confirm', [TempTeamJoinController::class, 'confirm'])->name('join.confirm');
+            Route::post('{invitation_code}/complete', [TempTeamJoinController::class, 'complete'])->name('join.complete');
+            Route::post('{invitation_code}/back', [TempTeamJoinController::class, 'back'])->name('join.back');
         });
     });
 });
@@ -50,7 +50,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth:user'])->group(function () {
+Route::middleware('auth:user')->group(function () {
     Route::prefix('myteam')->name('myteam.')->group(function () {
         Route::get('/', [MyTeamController::class, 'index'])->name('index');
         Route::get('detail', [MyTeamController::class, 'detail'])->name('detail');
@@ -60,7 +60,7 @@ Route::middleware(['auth:user'])->group(function () {
         // チーム一覧
         Route::get('/', [TeamController::class, 'list'])->name('list');
         // チーム詳細
-        Route::get('{team_id}', [TeamController::class, 'index'])->name('index');
+        Route::get('{team_id}', [MyTeamController::class, 'detail'])->name('detail');
         // チーム招待
         Route::get('{team_id}/invite_game', [TeamController::class, 'inviteGame'])->name('invite_game');
     });
