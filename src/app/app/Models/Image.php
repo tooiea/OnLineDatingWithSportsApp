@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Image extends Model
 {
+    use HasUuids;
     public function imageable() : MorphTo
     {
         return $this->morphTo();
