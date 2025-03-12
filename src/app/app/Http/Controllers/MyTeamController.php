@@ -8,6 +8,7 @@ use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class MyTeamController extends Controller
@@ -37,25 +38,20 @@ class MyTeamController extends Controller
     public function detail()
     {
         // ログイン中の所属チームを取得
-        $myTeam = Team::whereHas('team_members', function ($query) {
-            $query->where('user_id', '=', Auth::id());
-        })->with('code')->first();
+        $myTeam = Team::getMyTeamByUserId(userId: Auth::id());
 
-        // 所属しているチームの人数を取得
-        $myTeamMembers = Team::where('id', '=', $myTeam->id)->with('team_members')->first();
-        $teamMembersNumber = $myTeamMembers->team_members->count();
         return inertia('MyTeam/TeamDetail', [
             'myTeam' => [
                 'team' => [
                     'id' => $myTeam->id,
                     'name' => $myTeam->name,
-                    // 'logo' => base64_encode(file_get_contents($myTeam->team_logo)),
-                    // 'image_extension' => $myTeam->image_extension,
+                    'logo' => base64_encode(file_get_contents(Storage::path($myTeam->image->path))),
+                    'extension' => $myTeam->image->extension,
                     'team_url' => $myTeam->url,
                     'code' => $myTeam->code->code,
                 ],
             ],
-            'teamMembersNumber' => $teamMembersNumber,
+            'teamMembersNumber' => $myTeam->team_members->count(),
         ]);
     }
 }

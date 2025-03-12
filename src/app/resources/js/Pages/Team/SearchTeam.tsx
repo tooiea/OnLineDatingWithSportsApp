@@ -1,26 +1,37 @@
+import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
-import { useState } from 'react';
 import { PageProps } from '@/types';
-
-interface Team {
-    id: number;
-    name: string;
-    prefecture_code: number;
-    address: string;
-    team_logo?: string;
-    image_extension?: string;
-    code?: { code?: string };
-}
 
 interface Prefecture {
     value: number;
     label: string;
 }
 
-export default function SearchTeam({ auth, teams, filters, prefectures }: PageProps<{ teams: any, filters: any, prefectures: Prefecture[] }>) {
-    const [prefecture, setPrefecture] = useState<string>(filters.prefecture || '');
-    const [address, setAddress] = useState<string>(filters.address || '');
+interface Team {
+    id: number;
+    name: string;
+    code: string;
+    logo?: string;
+    extension?: string;
+}
+
+interface PaginationLink {
+    url: string | null;
+    label: string;
+    active: boolean;
+}
+
+interface Props extends Record<string, unknown> {
+    prefectures: Prefecture[];
+    teams: { data: Team[]; links: PaginationLink[] };
+    filters: { prefecture?: number; address?: string };
+    myTeam?: any;
+}
+
+export default function SearchTeam({ auth, teams, filters, prefectures, myTeam }: PageProps<Props>) {
+    const [prefecture, setPrefecture] = React.useState(filters.prefecture || '');
+    const [address, setAddress] = React.useState(filters.address || '');
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -47,7 +58,6 @@ export default function SearchTeam({ auth, teams, filters, prefectures }: PagePr
                                     <option key={pref.value} value={pref.value}>{pref.label}</option>
                                 ))}
                             </select>
-                            <span className="text-sm text-gray-500">検索したいチームの都道府県を選択してください。</span>
                         </div>
 
                         <div>
@@ -57,85 +67,49 @@ export default function SearchTeam({ auth, teams, filters, prefectures }: PagePr
                                 value={address}
                                 onChange={(e) => setAddress(e.target.value)}
                                 className="block w-full border-gray-300 rounded-md shadow-sm"
-                                placeholder="例：宮崎市"
                             />
-                            <span className="text-sm text-gray-500">市町村区を入力してください。</span>
                         </div>
 
                         <button type="submit" className="col-span-full bg-indigo-500 hover:bg-indigo-600 text-white rounded-md py-2 font-semibold">
                             検索する
                         </button>
                     </form>
-                </div>
 
-                <div className="mt-8">
-                    {teams.data.length === 0 ? (
-                        <div className="text-center text-gray-600">
-                            該当するチームが登録されていません。
-                        </div>
-                    ) : (
-                        <div className="overflow-x-auto">
-                            <table className="hidden md:table w-full table-auto shadow-sm rounded-xl overflow-hidden">
-                                <thead className="bg-gray-100 text-left">
-                                    <tr>
-                                        <th className="px-4 py-2">No</th>
-                                        <th className="px-4 py-2">チーム名</th>
-                                        <th className="px-4 py-2">活動拠点</th>
-                                        <th className="px-4 py-2">ロゴ</th>
-                                        <th className="px-4 py-2">招待</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {teams.data.map((team: Team, index: number) => (
-                                        <tr key={team.id} className="border-t">
-                                            <td className="px-4 py-2">{index + 1}</td>
-                                            <td className="px-4 py-2 font-medium">{team.name}</td>
-                                            <td className="px-4 py-2">{team.address}</td>
-                                            <td className="px-4 py-2">
-                                                {team.team_logo && (
-                                                    <img src={team.team_logo} alt="logo" className="w-10 h-10 object-cover rounded-md" />
-                                                )}
-                                            </td>
-                                            <td className="px-4 py-2">
-                                                <Link href={route('team.invite_game', team.code?.code)} className="text-indigo-500 hover:underline">
-                                                    招待する
-                                                </Link>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                    <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {teams.data.length > 0 ? (
+                            teams.data.map((team) => (
+                                <div key={team.id} className="bg-white border rounded-lg shadow-sm hover:shadow-lg transition p-4 flex flex-col items-center">
+                                    {team.logo && (
+                                        <img src={team.logo} className="w-16 h-16 rounded-full object-cover mb-3" alt="team logo" />
+                                    )}
+                                    <div className="text-center font-semibold mb-2">{team.name}</div>
+                                    <Link href={route('team.invite_game', team.id)} className="text-indigo-500 hover:underline">
+                                        招待する
+                                    </Link>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="col-span-full text-center text-gray-600">該当するチームが登録されていません。</div>
+                        )}
+                    </div>
 
-                            <div className="md:hidden space-y-4">
-                                {teams.data.map((team: Team) => (
-                                    <div key={team.id} className="bg-white shadow rounded-lg p-4">
-                                        <div className="font-semibold">{team.name}</div>
-                                        <div className="text-sm text-gray-600">{team.address}</div>
-                                        <div className="mt-2 flex justify-between items-center">
-                                            {team.team_logo && <img src={team.team_logo} alt="logo" className="w-10 h-10 rounded-md" />}
-                                            <Link href={route('team.invite_game', team.code?.code)} className="text-indigo-500 text-sm font-medium hover:underline">
-                                                招待する
-                                            </Link>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                    {teams.links && (
+                        <div className="mt-6 flex justify-center gap-1 flex-wrap text-sm">
+                            {teams.links.filter(link => link.url !== null).map((link, index) => (
+                                <span
+                                    key={index}
+                                    className={`px-2 py-1 rounded-md border ${link.active ? 'bg-indigo-500 text-white' : 'bg-white text-gray-700 hover:bg-indigo-200'}`}
+                                >
+                                    {link.active ? (
+                                        <span dangerouslySetInnerHTML={{ __html: link.label }} />
+                                    ) : (
+                                        <Link href={link.url || '#'} dangerouslySetInnerHTML={{ __html: link.label }} />
+                                    )}
+                                </span>
+                            ))}
                         </div>
                     )}
                 </div>
-
-                {teams.links && (
-                    <div className="mt-4 flex justify-center flex-wrap gap-2">
-                        {teams.links.map((link: any, index: number) => (
-                            <Link
-                                key={index}
-                                href={link.url || '#'}
-                                className={`px-3 py-1 border rounded ${link.active ? 'bg-indigo-500 text-white' : 'bg-white text-gray-600'} hover:bg-indigo-400 hover:text-white transition-colors duration-200 text-sm`}
-                                dangerouslySetInnerHTML={{ __html: link.label }}
-                            />
-                        ))}
-                    </div>
-                )}
             </div>
         </AuthenticatedLayout>
     );

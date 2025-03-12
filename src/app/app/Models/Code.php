@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Code extends Model
 {
     use HasUuids;
+
     public function codeable()
     {
         return $this->morphTo();

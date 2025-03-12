@@ -7,6 +7,7 @@ use App\Models\Team;
 use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class TeamController extends Controller
@@ -34,31 +35,24 @@ class TeamController extends Controller
         $address = $request->input('address') ?? null;
 
         // じぶんのチームを取得
-        $myTeam = Team::whereHas('team_members', function ($query) {
-            $query->where('user_id', '=', Auth::id());
-        })->first();
+        $myTeam = Team::getMyTeamByUserId(Auth::id());
 
         // チーム一覧取得
-        $team = Team::query();
-
-        // 検索条件
-        $prefecture ? $team->where('prefecture_code', '=', $prefecture) : null;
-        $address ? $team->where('address', 'like', '%' . $address . '%') : null;
-
-        // 自チームを除外
-        $myTeam ? $team->where('id', '<>', $myTeam->id) : null;
-        $teams = $team->with('code')->paginate(20);
-
-        // ページネーションのクエリパラメータを設定
-        $prefecture ? $teams->appends(['prefecture_code' => $prefecture]) : null;
-        $address ? $teams->appends(['address' => $address]) : null;
+        $teams = Team::getOtherTeamsForPaginator(myTeam: $myTeam, prefecture: $prefecture, address: $address);
 
         return Inertia::render('Team/SearchTeam', [
             'prefectures' => collect(Prefecture::cases())->map(fn($item) => [
                 'value' => $item->value,
                 'label' => $item->label(),
             ]),
-            'teams' => $teams,
+            'teams' => $teams->through(fn($team) => [
+                'id' => $team->id,
+                'name' => $team->name,
+                'address' => $team->address,
+                'logo' => $team->image ? $team->image->path_base64 : null,
+                'extension' => $team->image ? $team->image->mime_type : null,
+                'code' => $team->code,
+            ]),
             'filters' => compact('prefecture', 'address'),
             'myTeam' => $myTeam ?? null,
         ]);

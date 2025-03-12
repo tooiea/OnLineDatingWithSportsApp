@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\SportAffiliationTypeEnum;
 use App\Enums\Prefecture;
 use Carbon\Carbon;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -55,5 +56,45 @@ class Team extends Model
     public function code() : MorphOne
     {
         return $this->morphOne(Code::class, 'codeable');
+    }
+
+    /**
+     * 自チームの情報を取得
+     *
+     * @param string $userId
+     * @return Team
+     */
+    public static function getMyTeamByUserId(string $userId): Team
+    {
+        return self::whereHas('team_members', function ($query) use ($userId) {
+            $query->where('user_id', '=', $userId);
+        })->first();
+    }
+
+    /**
+     * 自チーム以外のチームを取得
+     * 表示件数: 20件/ページ
+     *
+     * @param Team $myTeam
+     * @param integer|null $prefecture
+     * @param string|null $address
+     * @return LengthAwarePaginator
+     */
+    public static function getOtherTeamsForPaginator(Team $myTeam, ?int $prefecture, ?string $address): LengthAwarePaginator
+    {
+        $team = Team::query();
+
+        // 検索条件
+        $prefecture ? $team->where('prefecture_code', '=', $prefecture) : null;
+        $address ? $team->where('address', 'like', '%' . $address . '%') : null;
+
+        // 自チームを除外
+        $myTeam ? $team->where('id', '<>', $myTeam->id) : null;
+        $teams = $team->with(['code', 'image'])->paginate(20);
+
+        // ページネーションのクエリパラメータを設定
+        $prefecture ? $teams->appends(['prefecture_code' => $prefecture]) : null;
+        $address ? $teams->appends(['address' => $address]) : null;
+        return $teams;
     }
 }

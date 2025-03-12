@@ -7,7 +7,7 @@ interface Team {
   id: string;
   name: string;
   logo: string;
-  image_extension: string;
+  extension: string;
   team_url?: string;
   code: string;
 }
@@ -54,7 +54,7 @@ export default function TeamDetail({ auth, myTeam, teamMembersNumber }: Props) {
           {myTeam.team.logo && (
             <div className="mb-4">
               <img
-                src={`data:${myTeam.team.image_extension};base64,${myTeam.team.logo}`}
+                src={`data:${myTeam.team.extension};base64,${myTeam.team.logo}`}
                 className="max-w-xs h-auto"
                 alt="team logo"
               />
