@@ -33,12 +33,19 @@ class TeamController extends Controller
         $values = $request->only(['prefecture', 'address']);
         $prefecture = $request->input('prefecture') ?? null;
         $address = $request->input('address') ?? null;
+        $teamName = $request->input('teamName') ?? null;
 
         // じぶんのチームを取得
         $myTeam = Team::getMyTeamByUserId(Auth::id());
 
         // チーム一覧取得
-        $teams = Team::getOtherTeamsForPaginator(myTeam: $myTeam, prefecture: $prefecture, address: $address);
+        $teams = Team::getOtherTeamsForPaginator(
+            pageNum: 15,
+            myTeam: $myTeam,
+            prefecture: $prefecture,
+            address: $address,
+            teamName: $teamName
+        );
 
         return Inertia::render('Team/SearchTeam', [
             'prefectures' => collect(Prefecture::cases())->map(fn($item) => [
@@ -53,7 +60,7 @@ class TeamController extends Controller
                 'extension' => $team->image ? $team->image->mime_type : null,
                 'code' => $team->code,
             ]),
-            'filters' => compact('prefecture', 'address'),
+            'filters' => compact('prefecture', 'address', 'teamName'),
             'myTeam' => $myTeam ?? null,
         ]);
     }

@@ -24,18 +24,19 @@ interface PaginationLink {
 
 interface Props extends Record<string, unknown> {
     prefectures: Prefecture[];
-    teams: { data: Team[]; links: PaginationLink[] };
-    filters: { prefecture?: number; address?: string };
+    teams: { data: Team[]; links: PaginationLink[]; total: number };
+    filters: { prefecture?: number; address?: string; teamName?: string };
     myTeam?: any;
 }
 
 export default function SearchTeam({ auth, teams, filters, prefectures, myTeam }: PageProps<Props>) {
     const [prefecture, setPrefecture] = React.useState(filters.prefecture || '');
     const [address, setAddress] = React.useState(filters.address || '');
+    const [teamName, setTeamName] = React.useState(filters.teamName || '');
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        router.get(route('team.list'), { prefecture, address });
+        router.get(route('team.list'), { prefecture, address, teamName });
     };
 
     return (
@@ -45,10 +46,13 @@ export default function SearchTeam({ auth, teams, filters, prefectures, myTeam }
             <div className="max-w-5xl mx-auto px-6 py-10">
                 <div className="bg-white shadow-md rounded-xl p-8">
                     <h2 className="text-xl font-semibold mb-4 border-b pb-2">招待チームを検索</h2>
-                    <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <p className="text-sm text-gray-600 mb-4">検索結果: {teams.total} 件</p>
+                    <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label className="block mb-1 text-sm font-medium">都道府県</label>
+                            <label className="block mb-1 text-sm font-medium" htmlFor="prefecture">都道府県</label>
                             <select
+                                id="prefecture"
+                                name="prefecture"
                                 value={prefecture}
                                 onChange={(e) => setPrefecture(e.target.value)}
                                 className="block w-full border-gray-300 rounded-md shadow-sm"
@@ -61,11 +65,25 @@ export default function SearchTeam({ auth, teams, filters, prefectures, myTeam }
                         </div>
 
                         <div>
-                            <label className="block mb-1 text-sm font-medium">住所（市町村区）</label>
+                            <label className="block mb-1 text-sm font-medium" htmlFor="address">住所（市町村区）</label>
                             <input
+                                id="address"
+                                name="address"
                                 type="text"
                                 value={address}
                                 onChange={(e) => setAddress(e.target.value)}
+                                className="block w-full border-gray-300 rounded-md shadow-sm"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block mb-1 text-sm font-medium" htmlFor="teamName">チーム名</label>
+                            <input
+                                id="teamName"
+                                name="teamName"
+                                type="text"
+                                value={teamName}
+                                onChange={(e) => setTeamName(e.target.value)}
                                 className="block w-full border-gray-300 rounded-md shadow-sm"
                             />
                         </div>

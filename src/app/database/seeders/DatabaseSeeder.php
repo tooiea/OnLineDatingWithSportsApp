@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
                 'expired_at' => \Carbon\Carbon::now()->addDay(7),
             ]);
 
-            // 画像のパス
+            // 画像の保存パス
             $path = "images/teams/{$team->id}.png";
 
             // 画像サイズの設定
@@ -35,24 +35,50 @@ class DatabaseSeeder extends Seeder
             // 画像リソースを作成
             $image = imagecreatetruecolor($width, $height);
 
-            // 背景色を設定 (グレー色)
-            $bgColor = imagecolorallocate($image, 204, 204, 204);
+            // ランダムな背景色を作成
+            $bgColor = imagecolorallocate($image, rand(150, 255), rand(150, 255), rand(150, 255));
             imagefill($image, 0, 0, $bgColor);
 
-            // テキスト色（黒色）を設定
-            $textColor = imagecolorallocate($image, 0, 0, 0);
+            // ランダムなテキスト色を設定 (背景との差を考慮)
+            $textColor = imagecolorallocate($image, rand(0, 100), rand(0, 100), rand(0, 100));
 
-            // テキストを画像に描画 (GDのデフォルトフォント)
-            $fontSize = 5; // GD標準フォントサイズ (1〜5)
+            // フォントサイズ設定（ランダム）
+            $fontSize = rand(20, 30);
             $text = 'Team ' . $team->id;
-            $textWidth = imagefontwidth($fontSize) * strlen($text);
-            $textHeight = imagefontheight($fontSize);
+
+            // 使用フォント (適切なフォントファイルを指定)
+            $fontPath = public_path('fonts/kingyolanternmini.otf'); // Laravelの `public/fonts/arial.ttf` を指定
+
+            // テキストの幅と高さを取得
+            $bbox = imagettfbbox($fontSize, 0, $fontPath, $text);
+            $textWidth = $bbox[2] - $bbox[0];
+            $textHeight = $bbox[1] - $bbox[7];
 
             // テキストを中央に配置
-            $x = ($width - $textWidth) / 2;
-            $y = ($height - $textHeight) / 2;
-            imagestring($image, $fontSize, $x, $y, $text, $textColor);
+            $textX = ($width - $textWidth) / 2;
+            $textY = ($height - $textHeight) / 2 + $textHeight;
 
+            // テキストを描画
+            imagettftext($image, $fontSize, 0, $textX, $textY, $textColor, $fontPath, $text);
+
+            // ランダムな形（円 or 長方形 or ライン）を描画
+            switch (rand(1, 3)) {
+                case 1: // 円
+                    $circleColor = imagecolorallocate($image, rand(50, 150), rand(50, 150), rand(50, 150));
+                    imagefilledellipse($image, rand(50, 250), rand(50, 250), rand(50, 150), rand(50, 150), $circleColor);
+                    break;
+                case 2: // 長方形
+                    $rectColor = imagecolorallocate($image, rand(100, 200), rand(100, 200), rand(100, 200));
+                    imagerectangle($image, rand(10, 100), rand(10, 100), rand(200, 290), rand(200, 290), $rectColor);
+                    break;
+                case 3: // 斜線
+                    $lineColor = imagecolorallocate($image, rand(0, 255), rand(0, 255), rand(0, 255));
+                    imageline($image, 0, 0, 300, 300, $lineColor);
+                    imageline($image, 300, 0, 0, 300, $lineColor);
+                    break;
+            }
+
+            // 画像を保存
             // 出力バッファリングを開始
             ob_start();
 
@@ -67,6 +93,8 @@ class DatabaseSeeder extends Seeder
 
             // メモリを解放
             imagedestroy($image);
+
+            // データベースに画像情報を登録
             $team->image()->create([
                 'imageable_id' => $team->id,
                 'imageable_type' => Team::class,

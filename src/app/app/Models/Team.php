@@ -73,24 +73,27 @@ class Team extends Model
 
     /**
      * 自チーム以外のチームを取得
-     * 表示件数: 20件/ページ
+     * 表示件数: 指定件数/ページ
      *
+     * @param integer $pageNum
      * @param Team $myTeam
      * @param integer|null $prefecture
      * @param string|null $address
+     * @param string|null $teamName
      * @return LengthAwarePaginator
      */
-    public static function getOtherTeamsForPaginator(Team $myTeam, ?int $prefecture, ?string $address): LengthAwarePaginator
+    public static function getOtherTeamsForPaginator(int $pageNum, Team $myTeam, ?int $prefecture, ?string $address, ?string $teamName): LengthAwarePaginator
     {
         $team = Team::query();
 
         // 検索条件
         $prefecture ? $team->where('prefecture_code', '=', $prefecture) : null;
         $address ? $team->where('address', 'like', '%' . $address . '%') : null;
+        $teamName ? $team->where('name', 'like', '%' . $teamName . '%') : null;
 
         // 自チームを除外
         $myTeam ? $team->where('id', '<>', $myTeam->id) : null;
-        $teams = $team->with(['code', 'image'])->paginate(20);
+        $teams = $team->with(['code', 'image'])->paginate($pageNum);
 
         // ページネーションのクエリパラメータを設定
         $prefecture ? $teams->appends(['prefecture_code' => $prefecture]) : null;
