@@ -41,11 +41,11 @@ class LineLoginController extends Controller
                 if (is_null($user->line_login_id)) {
                     $user->line_login_id = $loggeInUserByLine->id;
                 }
-                $user->last_login_time = $now;
+                $user->last_login_at = $now;
                 $user->save();
             }
-            Auth::login($user);
-            return redirect()->route('team.index');
+            Auth::guard('user')->login($user);
+            return redirect()->intended(route('team.list', absolute: false));
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }

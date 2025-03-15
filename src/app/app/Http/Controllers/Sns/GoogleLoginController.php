@@ -49,8 +49,8 @@ class GoogleLoginController extends Controller
                 $user->last_login_at = $now;
                 $user->save();
             }
-            Auth::login($user);
-            return redirect()->route('search.index');
+            Auth::guard('user')->login($user);
+            return redirect()->intended(route('team.list', absolute: false));
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }

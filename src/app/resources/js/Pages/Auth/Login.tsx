@@ -85,7 +85,7 @@ export default function Login({
                         ログイン
                     </PrimaryButton>
                 </div>
-
+            </form>
                 <div className="mt-6 flex items-center">
                     <hr className="flex-grow border-t border-gray-300" />
                     <span className="mx-2 text-sm text-gray-500">または</span>
@@ -93,21 +93,21 @@ export default function Login({
                 </div>
 
                 <div className="mt-4 flex justify-center gap-4">
-                    <Link href={route('google.login')}>
+                    <a href={route('google.login')}>
                         <img
                             src="/images/btn_google_signin_dark_normal_web@2x.png"
                             alt="google"
                             className="h-10"
                         />
-                    </Link>
+                    </a>
 
-                    <Link href={route('line.login')}>
+                    <a href={route('line.login')}>
                         <img
                             src="/images/btn_login_base.png"
                             alt="line"
                             className="h-10"
                         />
-                    </Link>
+                    </a>
                 </div>
 
                 {/* チーム作成への導線ボタン */}
@@ -120,7 +120,6 @@ export default function Login({
                         新しくチームを作成
                     </Link>
                 </div>
-            </form>
         </GuestLayout>
     );
 }

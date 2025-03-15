@@ -36,9 +36,9 @@ Route::get('register/{token}', [TeamController::class, 'register'])->name('team.
 Route::get('login',[UserLoginController::class, 'index'])->name('email_login.index');
 Route::post('login',[UserLoginController::class, 'login'])->name('email_login.login');
 Route::get('line/login',[LineLoginController::class, 'redirectTo'])->name('line.login');
-Route::get('line/login/callback', [LineLoginController::class, 'line.callback']);
+Route::get('line/login/callback', [LineLoginController::class, 'callback'])->name('line.callback');
 Route::get('google/login',[GoogleLoginController::class, 'redirectTo'])->name('google.login');
-Route::get('google/login/callback', [GoogleLoginController::class, 'google.callback']);
+Route::get('google/login/callback', [GoogleLoginController::class, 'callback'])->name('google.callback');
 
 
 Route::get('/', function () {
