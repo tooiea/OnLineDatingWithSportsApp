@@ -12,9 +12,9 @@ use Inertia\Inertia;
 
 class TeamController extends Controller
 {
-    public function register()
+    public function create()
     {
-        return view('team.register');
+        return view('team.create');
     }
 
     public function index()

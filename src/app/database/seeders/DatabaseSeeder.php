@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ConsentStatusTypeEnum;
+use App\Models\ConsentGame;
 use App\Models\Team;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -104,9 +107,34 @@ class DatabaseSeeder extends Seeder
             ]);
         });
 
+        $teams = Team::all();
+
+        foreach ($teams as $team) {
+            // 招待するチームを取得
+            $invitees = Team::where('id', '!=', $team->id)->inRandomOrder()->take(3)->get();
+            $guests = Team::where('id', '!=', $team->id)->inRandomOrder()->take(3)->get();
+
+            // 招待を送る側のデータを作成
+            foreach ($invitees as $invitee) {
+                ConsentGame::factory()->create([
+                    'invitee_id' => $team->id,
+                    'guest_id' => $invitee->id,
+                ]);
+            }
+
+            // 招待を受ける側のデータを作成
+            foreach ($guests as $guest) {
+                ConsentGame::factory()->create([
+                    'invitee_id' => $guest->id,
+                    'guest_id' => $team->id,
+                ]);
+            }
+        }
+
         User::factory(10)->create()->each(function ($user) {
+            $myTeamId = Team::inRandomOrder()->first()->id;
             $user->teamMember()->create([
-                'team_id' => Team::inRandomOrder()->first()->id,
+                'team_id' => $myTeamId,
                 'user_id' => $user->id,
             ]);
         });

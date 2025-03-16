@@ -9,6 +9,16 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TeamFactory extends Factory
 {
+    protected static $teamNames = [
+        'ファイターズ', 'ドラゴンズ', 'ジャイアンツ', 'ホークス', 'ライオンズ',
+        'マリーンズ', 'バファローズ', 'スワローズ', 'ベイスターズ', 'カープ'
+    ];
+
+    public function baseballTeam()
+    {
+        return fake()->streetName() . ' ' . fake()->randomElement(self::$teamNames);
+    }
+
     /**
      * Define the model's default state.
      *
@@ -17,10 +27,10 @@ class TeamFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->word(),
+            'name' => $this->baseballTeam(),
             'sport_affiliation_type' => 1,
             'prefecture_code' => fake()->numberBetween(1, 47),
-            'address' => fake()->address(),
+            'address' => fake()->city() . fake()->streetAddress(),
             'url' => fake()->url(),
         ];
     }

@@ -17,7 +17,8 @@ export default function AuthenticatedLayout({
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <nav className="bg-white border-b border-gray-200">
+            {/* ナビゲーションバーを固定表示 */}
+            <nav className="bg-white border-b border-gray-200 fixed top-0 w-full z-50 shadow">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
@@ -75,7 +76,12 @@ export default function AuthenticatedLayout({
                     </div>
                 </div>
 
-                <div className={showingNavigationDropdown ? 'block sm:hidden' : 'hidden sm:hidden'}>
+                {/* ドロップダウンメニュー（修正: `absolute` + `top-16` + `z-50` で確実に表示） */}
+                <div
+                    className={`absolute top-16 w-full bg-white shadow-md z-50 transition-opacity duration-300 ease-in-out ${
+                        showingNavigationDropdown ? 'block' : 'hidden'
+                    } sm:hidden`}
+                >
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink href={route('dashboard')} active={isActive('dashboard')}>
                             ホーム
@@ -102,15 +108,18 @@ export default function AuthenticatedLayout({
                 </div>
             </nav>
 
-            {header && (
-                <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {header}
-                    </div>
-                </header>
-            )}
+            {/* コンテンツ部分の位置調整（ナビゲーションの高さ分だけ余白を追加） */}
+            <div className="pt-16">
+                {header && (
+                    <header className="bg-white shadow">
+                        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                            {header}
+                        </div>
+                    </header>
+                )}
 
-            <main>{children}</main>
+                <main>{children}</main>
+            </div>
         </div>
     );
 }

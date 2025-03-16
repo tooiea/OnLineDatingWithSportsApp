@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConsentGameInviteController;
 use App\Http\Controllers\MyTeamController;
 use App\Http\Controllers\Sns\GoogleLoginController;
 use App\Http\Controllers\Sns\LineLoginController;
@@ -10,6 +11,7 @@ use App\Models\User;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -51,18 +53,47 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth:user')->group(function () {
+    Route::prefix('new_team')->name('new_team.')->group(function() {
+        Route::get('/', [TeamController::class, 'create'])->name('index');
+        Route::post('confirm', [TeamController::class, 'confirm'])->name('confirm');
+        Route::post('complete', [TeamController::class, 'creacompletete'])->name('complete');
+    });
+
     Route::prefix('myteam')->name('myteam.')->group(function () {
         Route::get('/', [MyTeamController::class, 'index'])->name('index');
         Route::get('detail', [MyTeamController::class, 'detail'])->name('detail');
+
+        // 招待された試合
+        Route::prefix('consent_games/{consent_game_id}')->name('consent_game.')->group(function() {
+            Route::get('/', [ConsentGameInviteController::class, 'index'])->name('detail');
+            Route::get('reply', [ConsentGameInviteController::class, 'reply'])->name('reply.index');
+            Route::get('reply/back', function (Request $request) {
+
+            })->name('reply.back');
+            Route::get('reply/confirm', [ConsentGameInviteController::class, 'confirm'])->name('reply.confirm');
+            Route::get('reply/complete', [ConsentGameInviteController::class, 'complete'])->name('reply.complete');
+        });
     });
 
     Route::prefix('teams')->name('team.')->group(function () {
         // チーム一覧
         Route::get('/', [TeamController::class, 'list'])->name('list');
-        // チーム詳細
-        Route::get('{team_id}', [MyTeamController::class, 'detail'])->name('detail');
-        // チーム招待
-        Route::get('{team_id}/invite_game', [TeamController::class, 'inviteGame'])->name('invite_game');
+
+        // 招待する試合
+        Route::prefix('{team_id}')->group(function() {
+            // チーム詳細
+            Route::get('/', [MyTeamController::class, 'detail'])->name('detail');
+
+            // チームへ招待
+            Route::prefix('invite_game')->name('invite_game.')->group(function () {
+                Route::get('/', [ConsentGameInviteController::class, 'index'])->name('index');
+                Route::get('back', function (Request $request) {
+
+                })->name('back');
+                Route::get('confirm', [ConsentGameInviteController::class, 'confirm'])->name('confirm');
+                Route::get('complete', [ConsentGameInviteController::class, 'complete'])->name('complete');
+            });
+        });
     });
 });
 

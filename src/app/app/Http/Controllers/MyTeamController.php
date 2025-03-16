@@ -4,16 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\ConsentGame;
 use App\Models\Team;
-use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class MyTeamController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * チームトップ
+     *
+     * @param Request $request
+     * @return \Inertia\Response
+     */
+    public function index(Request $request): Response
     {
         $myTeam = Team::whereHas('team_members', function ($query) {
             $query->where('user_id', '=', Auth::id());
@@ -35,12 +40,17 @@ class MyTeamController extends Controller
         ]);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     public function detail()
     {
         // ログイン中の所属チームを取得
         $myTeam = Team::getMyTeamByUserId(userId: Auth::id());
 
-        return inertia('MyTeam/TeamDetail', [
+        return Inertia::render('MyTeam/TeamDetail', [
             'myTeam' => [
                 'team' => [
                     'id' => $myTeam->id,

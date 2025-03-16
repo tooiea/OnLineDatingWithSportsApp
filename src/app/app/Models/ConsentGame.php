@@ -72,23 +72,21 @@ class ConsentGame extends Model
     public static function getMyTeamInvites($teamId)
     {
         $now = CarbonImmutable::now();
-        $query = self::where('invitee_id', $teamId);
-        $query->where(function ($query) use ($now) {
-            $query->orwhere('first_preferered_date', '>=', $now);
-            $query->orwhere('second_preferered_date', '>=', $now);
-            $query->orwhere('third_preferered_date', '>=', $now);
-        });
-        $query->join('teams', 'teams.id', '=', 'consent_games.guest_id');
-        $query->select(
-            'consent_games.id as consent_games_id',
-            'consent_games.*',
-            'consent_games.created_at as consent_games_created_at',
-            'teams.id as team_id',
-            'teams.*',
-            'teams.created_at as team_created_at'
-        );
-        $myTeam = $query->get();
-        return $myTeam;
+        return self::where('invitee_id', $teamId)
+                ->where(function ($query) use ($now) {
+                    $query->orwhere('first_preferered_date', '>=', $now);
+                    $query->orwhere('second_preferered_date', '>=', $now);
+                    $query->orwhere('third_preferered_date', '>=', $now);
+                })
+                ->whereHas('guest')
+                ->with('guest.image')
+                ->orderByRaw("
+                    LEAST(
+                        first_preferered_date,
+                        COALESCE(second_preferered_date, '9999-12-31'),
+                        COALESCE(third_preferered_date, '9999-12-31')
+                    ) ASC
+                ")->get();
     }
 
     /**
@@ -100,22 +98,20 @@ class ConsentGame extends Model
     public static function getAsGuestInvites($teamId)
     {
         $now = CarbonImmutable::now();
-        $query = self::where('guest_id', $teamId);
-        $query->Where(function ($query) use ($now) {
-            $query->orwhere('first_preferered_date', '>=', $now);
-            $query->orwhere('second_preferered_date', '>=', $now);
-            $query->orwhere('third_preferered_date', '>=', $now);
-        });
-        $query->join('teams', 'teams.id', '=', 'consent_games.invitee_id');
-        $query->select(
-            'consent_games.id as consent_games_id',
-            'consent_games.*',
-            'consent_games.created_at as consent_games_created_at',
-            'teams.id as team_id',
-            'teams.*',
-            'teams.created_at as team_created_at'
-        );
-        $myTeam = $query->get();
-        return $myTeam;
+        return self::where('guest_id', $teamId)
+                ->where(function ($query) use ($now) {
+                    $query->orwhere('first_preferered_date', '>=', $now);
+                    $query->orwhere('second_preferered_date', '>=', $now);
+                    $query->orwhere('third_preferered_date', '>=', $now);
+                })
+                ->whereHas('invitee')
+                ->with('invitee.image')
+                ->orderByRaw("
+                    LEAST(
+                        first_preferered_date,
+                        COALESCE(second_preferered_date, '9999-12-31'),
+                        COALESCE(third_preferered_date, '9999-12-31')
+                    ) ASC
+                ")->get();
     }
 }

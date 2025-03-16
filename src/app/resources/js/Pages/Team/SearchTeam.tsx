@@ -13,6 +13,7 @@ interface Team {
     name: string;
     code: string;
     logo?: string;
+    address: string;
     extension?: string;
 }
 
@@ -29,7 +30,7 @@ interface Props extends Record<string, unknown> {
     myTeam?: any;
 }
 
-export default function SearchTeam({ auth, teams, filters, prefectures, myTeam }: PageProps<Props>) {
+export default function SearchTeam({ teams, filters, prefectures }: PageProps<Props>) {
     const [prefecture, setPrefecture] = React.useState(filters.prefecture || '');
     const [address, setAddress] = React.useState(filters.address || '');
     const [teamName, setTeamName] = React.useState(filters.teamName || '');
@@ -44,9 +45,8 @@ export default function SearchTeam({ auth, teams, filters, prefectures, myTeam }
             <Head title="招待チームを検索" />
 
             <div className="max-w-5xl mx-auto px-6 py-10">
-                <div className="bg-white shadow-md rounded-xl p-8">
+                <div className="bg-white shadow-lg rounded-xl p-8">
                     <h2 className="text-xl font-semibold mb-4 border-b pb-2">招待チームを検索</h2>
-                    <p className="text-sm text-gray-600 mb-4">検索結果: {teams.total} 件</p>
                     <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label className="block mb-1 text-sm font-medium" htmlFor="prefecture">都道府県</label>
@@ -92,17 +92,30 @@ export default function SearchTeam({ auth, teams, filters, prefectures, myTeam }
                             検索する
                         </button>
                     </form>
+                </div>
 
-                    <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="border-t border-gray-200 mt-10 pt-6">
+                    <h3 className="text-lg font-semibold mb-4">検索結果<span className="text-sm text-gray-600 mb-4"> :  {teams.total} 件</span></h3>
+                    {/* チーム一覧 */}
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {teams.data.length > 0 ? (
                             teams.data.map((team) => (
-                                <div key={team.id} className="bg-white border rounded-lg shadow-sm hover:shadow-lg transition p-4 flex flex-col items-center">
-                                    {team.logo && (
-                                        <img src={team.logo} className="w-16 h-16 rounded-full object-cover mb-3" alt="team logo" />
+                                <div key={team.id} className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center min-h-[160px] w-full">
+                                    {team.logo ? (
+                                        <img src={team.logo} className="w-20 h-20 rounded-full object-cover mb-3" alt="team logo" />
+                                    ) : (
+                                        <div className="w-20 h-20 bg-gray-200 rounded-full mb-3"></div>
                                     )}
-                                    <div className="text-center font-semibold mb-2">{team.name}</div>
-                                    <Link href={route('team.invite_game', team.id)} className="text-indigo-500 hover:underline">
-                                        招待する
+                                    {/* チーム名 */}
+                                    <div className="font-semibold mb-1 text-center text-sm">{team.name}</div>
+                                    {/* 住所 */}
+                                    {team.address && (
+                                        <div className="text-gray-500 text-[10px] sm:text-xs text-center">{team.address}</div>
+                                    )}
+                                    {/* マッチングボタン */}
+                                    <Link href={route('team.invite_game.index', team.id)}
+                                        className="mt-2 px-3 py-1 bg-gray-100 text-gray-700 text-[10px] sm:text-xs font-medium rounded-md hover:bg-gray-200 transition-all duration-150">
+                                        マッチする
                                     </Link>
                                 </div>
                             ))
@@ -111,12 +124,13 @@ export default function SearchTeam({ auth, teams, filters, prefectures, myTeam }
                         )}
                     </div>
 
+                    {/* ページネーション */}
                     {teams.links && (
                         <div className="mt-6 flex justify-center gap-1 flex-wrap text-sm">
                             {teams.links.filter(link => link.url !== null).map((link, index) => (
                                 <span
                                     key={index}
-                                    className={`px-2 py-1 rounded-md border ${link.active ? 'bg-indigo-500 text-white' : 'bg-white text-gray-700 hover:bg-indigo-200'}`}
+                                    className={`px-2 py-1 rounded-md border ${link.active ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                                 >
                                     {link.active ? (
                                         <span dangerouslySetInnerHTML={{ __html: link.label }} />
