@@ -1,0 +1,40 @@
+openapi: '3.0.3'
+info:
+  title: ログインAPI
+  version: '1.0'
+  description: メールアドレスによるログイン認証
+servers:
+  - url: https://oldws.sakura.ne.jp/api/v1
+  - url: http://localhost/api/v1
+paths:
+  /login:
+    post:
+      description: 'メールアドレスによるログイン'
+      requestBody:
+        description: メールアドレス、パスワードを入力
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/LoginEmail/content/application~1json/schema'
+      responses:
+        '200':
+          description: OK
+
+components:
+  requestBodies:
+    LoginEmail:
+      description: メールアドレスによるログイン認証
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: メールアドレス
+              password:
+                type: string
+                description: パスワード
+            required:
+              - email
+              - password

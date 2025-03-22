@@ -1,0 +1,194 @@
+@charset "UTF-8";
+
+/* フォント統一 */
+body {
+    font-family:  游ゴシック, "Yu Gothic", メイリオ, Meiryo, Verdana, Helvetica, Arial, sans-serif;
+}
+
+/* ボタンの色を上書き */
+.btn-info {
+    background-color: #dbdeaf;
+    color: #ffffff;
+    border: solid white;
+    border-radius: 10px;
+}
+
+.btn-info:hover {
+    background-color: #d2d87c;
+    border: solid white;
+}
+
+.btn-primary {
+    background-color: #dcd7e7;
+    color: #ffffff;
+    border: solid white;
+    border-radius: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #c7b9e5;
+    border: solid white;
+}
+
+/* ナビゲーション */
+.nav-item.active a {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-item.active .nav-link {
+    color: cadetblue;
+}
+
+/* ナビゲーションバーを固定 */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+/* ページ上部にスペースを作るためのパディング */
+.body-with-nav {
+    padding-top: 60px;
+    /* ナビゲーションバーの高さに合わせて調整 */
+}
+
+/* お問い合わせフォームのユーザについての画像調整 */
+h5.sports {
+    position: relative;
+    padding-left: 50px;
+}
+
+h5.sports::before {
+    content: url(/images/sports.jpeg);
+    display: inline-block;
+    vertical-align: middle;
+    transform: scale(0.07);
+    position: absolute;
+    top: -237px;
+    left: -290px;
+}
+
+h5.team {
+    position: relative;
+    padding-left: 50px;
+}
+
+h5.team::before {
+    content: url(/images/team.png);
+    display: inline-block;
+    vertical-align: middle;
+    transform: scale(0.2);
+    position: absolute;
+    top: -102px;
+    left: -95px;
+}
+
+h5.user {
+    position: relative;
+    padding-left: 50px;
+}
+
+h5.user::before {
+    content: url(/images/human.jpeg);
+    display: inline-block;
+    vertical-align: middle;
+    transform: scale(0.15);
+    position: absolute;
+    top: -102px;
+    left: -100px;
+}
+
+/* ステータス表示 */
+@media screen and (max-width: 767px) {
+    table {
+        font-size: 12px;
+    }
+
+    thead th {
+        font-size: 10px;
+    }
+}
+
+.status-wait {
+    color: orange;
+}
+
+.status-accepted {
+    color: green;
+}
+
+.status-declined {
+    color: red;
+}
+
+.table {
+    display: table;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.table thead th,
+.table tbody th,
+.table tbody td {
+    vertical-align: middle;
+}
+
+/* テーブル内の文字サイズを幅に合わせて自動調整 */
+.table-responsive table {
+    table-layout: auto;
+    width: 100%;
+}
+
+.table-responsive table td,
+.table-responsive table th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* テーブル内の文字サイズを幅に合わせて自動調整 */
+.table-responsive table td span,
+.table-responsive table th span {
+    display: inline-block;
+    width: 100%;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* テーブル内の文字サイズを幅に合わせて自動調整 */
+@media screen and (min-width: 576px) {
+
+    .table-responsive table td span,
+    .table-responsive table th span {
+        font-size: calc(16px + (20 - 16) * ((100vw - 576px) / (1920 - 576)));
+    }
+}
+
+/* テーブル内の文字サイズを幅に合わせて自動調整 */
+@media screen and (min-width: 768px) {
+
+    .table-responsive table td span,
+    .table-responsive table th span {
+        font-size: calc(16px + (20 - 16) * ((100vw - 768px) / (1920 - 768)));
+    }
+}
+
+/* テーブル内の文字サイズを幅に合わせて自動調整 */
+@media screen and (min-width: 992px) {
+
+    .table-responsive table td span,
+    .table-responsive table th span {
+        font-size: calc(16px + (20 - 16) * ((100vw - 992px) / (1920 - 992)));
+    }
+}
+
+/* テーブル内の文字サイズを幅に合わせて自動調整 */
+@media screen and (min-width: 1200px) {
+
+    .table-responsive table td span,
+    .table-responsive table th span {
+        font-size: 20px;
+    }
+}
