@@ -23,5 +23,5 @@ jobs:
 
     - name: Push to Backlog
       run: |
-        ssh-keyscan -H tooiea.backlog.com >> ~/.ssh/known_hosts
+        ssh-keyscan -H tooiea.git.backlog.jp >> ~/.ssh/known_hosts
         git push backlog
