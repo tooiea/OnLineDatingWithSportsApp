@@ -7,18 +7,18 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout source
-      uses: actions/checkout@v3
+        - uses: actions/checkout@v4
+        # Make sure the @v0.9.0 matches the current version of the action
+        - uses: webfactory/ssh-agent@v0.9.0
+          with:
+              ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Setup SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.BACKLOG_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H tooiea.git.backlog.jp >> ~/.ssh/known_hosts
+        # - name: Setup SSH
+        #   run: |
+        #     ssh-keyscan -H tooiea.git.backlog.jp >> ~/.ssh/known_hosts
 
-    - name: Push to Backlog
-      run: |
-        git remote add mirror ssh://git@tooiea.git.backlog.jp:22/OLDWS/system_php.git
-        git push mirror --all
-        git push mirror --tags
+        - name: Push to Backlog
+          run: |
+            git remote add mirror ssh://git@tooiea.git.backlog.jp:22/OLDWS/system_php.git
+            git push mirror --all
+            git push mirror --tags
