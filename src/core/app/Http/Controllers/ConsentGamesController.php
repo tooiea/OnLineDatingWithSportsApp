@@ -7,6 +7,7 @@ use App\Http\Requests\ConsentGameIdRequest;
 use App\Http\Requests\ConsentGameReplyRequest;
 use App\Http\Requests\ConsentScheduleRequest;
 use App\Http\Requests\InvitationCodeRequest;
+use App\Http\Requests\ReplyMessageRequest;
 use App\Models\ConsentGame;
 use App\Models\Reply;
 use App\Models\Team;
@@ -15,6 +16,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use LINE\LINEBot;
+use LINE\LINEBot\Constant\Flex\ComponentImageAspectMode;
+use LINE\LINEBot\Constant\Flex\ComponentImageAspectRatio;
+use LINE\LINEBot\Constant\Flex\ComponentImageSize;
+use LINE\LINEBot\Constant\Flex\ComponentLayout;
+use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+use LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\BoxComponentBuilder;
+use LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\ButtonComponentBuilder;
+use LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\ImageComponentBuilder;
+use LINE\LINEBot\MessageBuilder\Flex\ComponentBuilder\TextComponentBuilder;
+use LINE\LINEBot\MessageBuilder\Flex\ContainerBuilder\BubbleContainerBuilder;
+use LINE\LINEBot\MessageBuilder\Flex\ContainerBuilder\CarouselContainerBuilder;
+use LINE\LINEBot\MessageBuilder\FlexMessageBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 
 /**
  * 試合への招待 | 試合へ招待された
@@ -72,7 +91,7 @@ class ConsentGamesController extends Controller
         DB::transaction(function () use ($customValues, $teamIds) {
             // 試合招待テーブルへ登録、メール送信
             $consentGameModel = new ConsentGame();
-            $$consentGameModel->createConsent($customValues, $teamIds);
+            $consentGameModel->createConsent($customValues, $teamIds);
         });
 
         // 招待されるチームの情報
@@ -164,5 +183,30 @@ class ConsentGamesController extends Controller
         // チームトップへリダイレクトしセッションメッセージ表示
         $request->session()->flash('consent.reply', $invitee->team_name . __('user_messages.success.reply_sent'));
         return redirect()->route('team.index');
+    }
+
+    /**
+     * メッセージ返信のみを登録後、リダイレクト
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function replyMessage(ReplyMessageRequest $request)
+    {
+        $myTeam = TeamMember::getTeamByUserId(Auth::id());
+        $replyModel = new Reply();
+        $data = $replyModel->create([
+            'consent_game_id' => Crypt::decryptString($request->input('consent_game_id')),
+            'team_id' => $myTeam->team->id,
+            'message' => $request->input('message'),
+        ]);
+
+        // LINE登録有り
+        if (!empty($myTeam->user->line_login_id)) {
+            $replyModel::replyByLine($data, $myTeam);
+        }
+
+
+        return redirect()->route('reply.detail', $request->input('consent_game_id'));
     }
 }

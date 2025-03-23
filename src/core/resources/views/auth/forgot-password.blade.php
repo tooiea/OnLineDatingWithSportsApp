@@ -3,12 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <title>パスワード再設定</title>
   </head>
   <body>
@@ -30,9 +25,8 @@
                       placeholder="メールアドレス" aria-describedby="emailHelp">
                   @error('email')<small id="emailHelp" class="invalid-feedback" role="alert"> {{ $message }} </small> @enderror
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">
-                  送信
-                </button>
+                <input type="submit" class="btn btn-primary btn-block" value="送信">
+              </input>
               </form>
               <div class="mt-3">
                 <p class="text-center">*登録しているメールアドレスを入力してください</p>

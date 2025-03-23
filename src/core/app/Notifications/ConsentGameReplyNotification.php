@@ -14,18 +14,18 @@ class ConsentGameReplyNotification extends Notification
 
     private $user;
     private $myTeam;
-    private $mail;
+    private $sendMailerInstance;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(object $user, object $myTeam, SendMailer $mail)
+    public function __construct(object $user, object $myTeam, SendMailer $sendMailerInstance)
     {
         $this->user = $user;
         $this->myTeam = $myTeam;
-        $this->mail = $mail;
+        $this->sendMailerInstance = $sendMailerInstance;
     }
 
     /**
@@ -48,7 +48,7 @@ class ConsentGameReplyNotification extends Notification
     public function toMail($notifiable)
     {
         $url = url(__('route_const.login'));
-        return $this->mail
+        return $this->sendMailerInstance
                 ->from(config('mail.from.address'))
                 ->to($this->user->user->email)
                 ->text('mail.consent_game_reply')

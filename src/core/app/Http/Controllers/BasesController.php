@@ -17,4 +17,14 @@ class BasesController extends Controller
         $uuid = Str::uuid();
         return $uuid;
     }
+
+    /**
+     * チーム登録していない
+     *
+     * @return void
+     */
+    public function teamCreateTop()
+    {
+        return view('teamRegister.top');
+    }
 }

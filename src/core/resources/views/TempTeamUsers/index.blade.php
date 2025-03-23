@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/public/css/common.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <link rel="stylesheet" href="/public/css/common.css?q">
   <title>Team Registration Form</title>
 </head>
 <body>
@@ -42,11 +42,11 @@
             @error('teamName')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <div class="form-group">
-            <label for="teamLogo">チームロゴ画像</label>
-            <input type="file" name="teamLogo" value="{{ old('teamLogo') }}" id="teamLogo" aria-describedby="teamNameHelp"
-              class="form-control-file @error('teamLogo') is-invalid @enderror" placeholder="例：チーム名">
-            <small id="teamLogoHelp" class="form-text text-muted">jpg,jpeg,png形式のみ</small>
-            @error('teamLogo')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
+            <label for="imagePath">チームロゴ画像</label>
+            <input type="file" name="imagePath" value="{{ old('imagePath') }}" id="imagePath" aria-describedby="teamNameHelp"
+              class="form-control-file @error('imagePath') is-invalid @enderror" placeholder="例：チーム名">
+            <small id="imagePathHelp" class="form-text text-muted">jpg,jpeg,png形式のみ</small>
+            @error('imagePath')<div class="invalid-feedback" role="alert"> {{ $message }} </div>@enderror
           </div>
           <div class="form-group">
             <label for="teamURL">チームのサイトや紹介できるSNSサイト</label>

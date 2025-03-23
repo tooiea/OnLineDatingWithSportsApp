@@ -9,14 +9,17 @@
       <li class="nav-item {{ (request()->is('/')) ? 'active' : '' }}">
         <a class="nav-link" href="#">ホーム</a>
       </li>
-      <li class="nav-item {{ (request()->routeIs('team.index')) ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('team.index') }}">Myチームトップ</a>
-      </li>
       <li class="nav-item {{ (request()->routeIs('search.index')) ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('search.index') }}">チーム検索画面</a>
       </li>
+      <li class="nav-item {{ (request()->routeIs('team.index')) ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('team.index') }}">Myチームトップ</a>
+      </li>
       <li class="nav-item {{ (request()->routeIs('team.detail')) ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('team.detail') }}">チームプロフィール</a>
+      </li>
+      <li class="nav-item {{ (request()->routeIs('team.edit')) ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('team.edit') }}">チームプロフィール編集</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ route('logout') }}">ログアウト</a>
