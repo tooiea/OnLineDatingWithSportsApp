@@ -25,5 +25,6 @@ jobs:
           git push mirror --tags
       
       - name: Stop SSH Agent
+        if: always()  # このステップが常に実行されるようにする
         run: |
           pkill ssh-agent || true
