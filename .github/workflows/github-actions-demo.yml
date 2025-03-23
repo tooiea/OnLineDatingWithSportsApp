@@ -1,8 +1,10 @@
 name: Sync to Backlog
 on:
   push:
-    branches:
-      - master
+    # branches:
+    #   - master
+    #   - develop
+    #   - feature/*
 jobs:
   sync:
     runs-on: ubuntu-latest
