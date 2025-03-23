@@ -194,6 +194,14 @@ return [
     'attributes' => [
         'email' => 'メールアドレス',
         'password' => 'パスワード',
+        'nickname' => 'ニックネーム',
+        'password2' => 'パスワード（再入力）',
+        'sportAffiliationType' => 'スポーツ種別',
+        'teamName' => 'チーム名',
+        'teamLogo' => 'チームロゴ画像',
+        'teamUrl' => 'チーム紹介用URL',
+        'prefecture' => '都道府県',
+        'address' => '市区町村'
     ],
 
 ];

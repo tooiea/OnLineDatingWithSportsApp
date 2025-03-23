@@ -1,13 +1,15 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\SportAffiliationTypeEnum;
 use App\Enums\Prefecture;
+use App\Notifications\TempTeamRegisterNotification;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @property string $id
@@ -21,13 +23,12 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  * @property string $team_url
  * @property Prefecture $prefecture_code
  * @property string $address
- * @property string $invitation_code
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
 class TempUser extends Model
 {
-    use HasUuids;
+    use HasUuids, Notifiable;
 
     protected $fillable = [
         'name',
@@ -40,11 +41,30 @@ class TempUser extends Model
         'team_url',
         'prefecture_code',
         'address',
-        'invitation_code',
     ];
 
     public function image() : MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');
+    }
+
+    public function code() : MorphOne
+    {
+        return $this->morphOne(Image::class, 'codeable');
+    }
+
+    /**
+     * 仮登録メール送信
+     *
+     * @param string $uuid
+     * @param string $email
+     * @return void
+     */
+    public function temporaryRegistrationNotification(string $uuid, string $email)
+    {
+        $this->notify(new TempTeamRegisterNotification([
+            'admin' => $email,
+            'url' => route('team.register', [$uuid]),
+        ]));
     }
 }

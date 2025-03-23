@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Storage;
  * @property string $imageable_type
  * @property string $imageable_id
  * @property string $path
+ * @property string $extension
+ * @property string $mime_type
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
@@ -27,6 +29,14 @@ class Image extends Model
      * @var array
      */
     protected $appends = ['path_base64'];
+
+    protected $fillable = [
+        'imageable_type',
+        'imageable_id',
+        'path',
+        'extension',
+        'mime_type'
+    ];
 
     public function imageable() : MorphTo
     {

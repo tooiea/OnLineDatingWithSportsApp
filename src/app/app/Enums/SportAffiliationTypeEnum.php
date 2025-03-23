@@ -18,4 +18,15 @@ enum SportAffiliationTypeEnum: int
             self::VOLLEY_BALL => 'バレーボール',
         };
     }
+
+        /**
+     * 都道府県リストを配列で取得
+     */
+    public static function list(): array
+    {
+        return array_map(
+            fn($type) => ['value' => $type->value, 'label' => $type->label()],
+            self::cases()
+        );
+    }
 }
