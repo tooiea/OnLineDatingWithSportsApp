@@ -20,7 +20,7 @@ jobs:
       
       - name: Push to Backlog
         run: |
-          git remote add mirror ssh://git@tooiea.git.backlog.com:22/OLDWS/system_php.git
+          git remote add mirror ssh://git@tooiea.git.backlog.jp:22/OLDWS/system_php.git
           git push mirror --all
           git push mirror --tags
       
