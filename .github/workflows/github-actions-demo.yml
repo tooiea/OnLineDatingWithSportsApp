@@ -1,30 +1,25 @@
 name: Sync to Backlog
 on:
   push:
-
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Start SSH Agent
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.BACKLOG_SSH_PRIVATE_KEY }}
-      
-      - name: Add SSH Host Key to known_hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H tooiea.git.backlog.com >> ~/.ssh/known_hosts
-      
-      - name: Push to Backlog
-        run: |
-          git remote add mirror ssh://git@tooiea.git.backlog.jp:22/OLDWS/system_php.git
-          git push mirror --all
-          git push mirror --tags
-      
-      - name: Stop SSH Agent
-        if: always()
-        run: |
-          pkill ssh-agent || true
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # TODO 要件に合わせて調整する
+
+    - name: Set up SSH key
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.BACKLOG_SSH_PRIVATE_KEY }}
+
+    - name: Add Backlog remote
+      run: |
+        git remote add backlog https://tooiea.backlog.com/git/OLDWS/system_php.git
+
+    - name: Push to Backlog
+      run: |
+        ssh-keyscan -H tooiea.git.backlog.jp >> ~/.ssh/known_hosts
+        git push backlog
