@@ -9,6 +9,15 @@ class Code extends Model
 {
     use HasUuids;
 
+    protected $fillable = [
+        'codeable_type',
+        'codeable_id',
+        'code',
+        'expired_at',
+        'is_used',
+        'used_at'
+    ];
+
     public function codeable()
     {
         return $this->morphTo();

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
+use Ramsey\Uuid\Lazy\LazyUuidFromString;
 
 /**
  * @property string $id
@@ -56,11 +57,11 @@ class TempUser extends Model
     /**
      * 仮登録メール送信
      *
-     * @param string $uuid
+     * @param Ramsey\Uuid\Lazy\LazyUuidFromString $uuid
      * @param string $email
      * @return void
      */
-    public function temporaryRegistrationNotification(string $uuid, string $email)
+    public function temporaryRegistrationNotification(LazyUuidFromString $uuid, string $email)
     {
         $this->notify(new TempTeamRegisterNotification([
             'admin' => $email,

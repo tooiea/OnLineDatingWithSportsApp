@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\Prefecture;
 use App\Enums\SportAffiliationTypeEnum;
 use App\Http\Requests\TempTeamRegisterRequest;
+use App\Models\Code;
 use App\Models\Image;
 use App\Models\TempFile;
 use App\Models\TempTeamRegister;
@@ -50,11 +51,11 @@ class TempTeamRegisterController extends Controller
             email: $request->validated('email'),
             password: $request->validated('password'),
             password2: $request->validated('password2'),
-            sportAffiliationType: $request->validated('sportAffiliationType'),
+            sportAffiliationType: (int)$request->validated('sportAffiliationType'),
             teamName: $request->validated('teamName'),
             tempFile: $tempFile,
             teamUrl: $request->validated('teamUrl'),
-            prefecture: $request->validated('prefecture'),
+            prefecture: (int)$request->validated('prefecture'),
             address: $request->validated('address')
         );
         // セッションへ保存
@@ -62,7 +63,7 @@ class TempTeamRegisterController extends Controller
         return Inertia::render('Register/TeamRegistrationConfirm', [
             'values' => [
                 'sportAffiliationType' => $request->validated('sportAffiliationType'),
-                'sportAffiliationLabel' => SportAffiliationTypeEnum::from($request->validated('sportAffiliationType'))->label(),
+                'sportAffiliationLabel' => SportAffiliationTypeEnum::from((int)$request->validated('sportAffiliationType'))->label(),
                 'teamName' => $request->validated('teamName'),
                 'teamLogoUrl' => $tempFile->pathFromBase64(),
                 'teamUrl' => $request->validated('teamUrl'),
@@ -134,6 +135,13 @@ class TempTeamRegisterController extends Controller
                 'mime_type' => $tempTeamRegister['tempFile']->mimeType()
             ]));
 
+            // 本登録用の認証コード
+            $tempUser->code()->save(new Code([
+                'codeable_type' => TempUser::class,
+                'codeable_id' => $tempUser->id,
+                'code' => $uuid,
+                'expired_at' => Carbon::now()->addHour()
+            ]));
             $tempUser->temporaryRegistrationNotification($uuid, config('mail.from.address'));
         });
 
