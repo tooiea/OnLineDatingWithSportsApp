@@ -175,9 +175,48 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'imagePath' => [
+            'required' => ':attributeを1点アップロードしてください',
+            'max' => ' 2MB以下の画像を選択してください',
+            'image' => 'jpeg,jpg,pngの形式をアップロードしてください'
         ],
+        'sportAffiliationType' => [
+            'required' => ':attributeを選択してください'
+        ],
+        'teamUrl' => [
+            'url' => 'URL形式で入力してください',
+        ],
+        'teamAlbum' => [
+            'max' => '1MB以下の画像を選択してください',
+            'image' => 'jpeg,jpg,pngの形式をアップロードしてください'
+        ],
+        'teamAlbum.*' => [
+            'max' => '1MB以下の画像を選択してください',
+            'image' => 'jpeg,jpg,pngの形式をアップロードしてください',
+            'uploaded' => '1MB以下の画像を選択してください',
+        ],
+        'teamAlbumTotal' => [
+            'image_max_in_album' => 'アルバムの枚数が5枚を超えてます'
+        ],
+        'prefecture' => [
+            'required' => ':attributeを選択してください',
+        ],
+        'invitationCode' => [
+            'exists' => '入力されたチームが存在しません <br>再度、URLをご確認ください'
+        ],
+        'token' => [
+            'expired' => 'トークンの有効期限切れです 再度、仮登録フォームより登録してください',
+            'exists' => '不正な入力がありました 再度、URLをご確認ください',
+            'notvalid' => '不正な入力がありました 再度、URLをご確認ください',
+            'registered' => 'すでに本登録済みです',
+        ],
+        'error' => [
+            'register' => 'サーバーエラーが発生しました<br>大変申し訳ありませんが再度、ご登録をお願いします'
+        ],
+        'user' => [
+            'google' => '*このメールアドレスは登録されていません<br>*同じチームメンバーに共有されたURLで登録、<br>もしくは「新しくチームを作る」から登録してください',
+            'line' => '*このメールアドレスは登録されていません<br>*同じチームメンバーに共有されたURLで登録、<br>もしくは「新しくチームを作る」から登録してください<br>*すでにOLDwsへ登録されていてる場合は、LINEのアカウントに同一のメールアドレスが登録されているかを確認してください'
+        ]
     ],
 
     /*

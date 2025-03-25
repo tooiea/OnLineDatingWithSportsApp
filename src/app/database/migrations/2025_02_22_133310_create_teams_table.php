@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('sport_affiliation_type');
             $table->integer('prefecture_code');
             $table->string('address', 255);
-            $table->string('url', 255);
+            $table->string('url', 255)->nullable();
             $table->softDeletesTz('deleted_at', precision: 0);
             $table->timestampsTz(precision: 0);
         });

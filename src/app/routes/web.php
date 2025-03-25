@@ -10,6 +10,7 @@ use App\Http\Controllers\UserLoginController;
 use App\Models\User;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +35,10 @@ Route::prefix('temp_register')->group(function () {
     });
 });
 
-Route::get('register/{token}', [TeamController::class, 'register'])->name('team.register');
+Route::get('register/user/{token}', [UsersController::class, 'index'])->name('user.register');
+Route::get('register/user/error', [UsersController::class, 'errorRegister'])->name('user.error'); // エラー発生時
+Route::get('register/user/notvalid', [UsersController::class, 'failedToken'])->name('user.failed'); // トークンなし
+
 Route::get('login',[UserLoginController::class, 'index'])->name('email_login.index');
 Route::post('login',[UserLoginController::class, 'login'])->name('email_login.login');
 Route::get('line/login',[LineLoginController::class, 'redirectTo'])->name('line.login');

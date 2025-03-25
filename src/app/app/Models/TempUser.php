@@ -65,7 +65,7 @@ class TempUser extends Model
     {
         $this->notify(new TempTeamRegisterNotification([
             'admin' => $email,
-            'url' => route('team.register', [$uuid]),
+            'url' => route('user.register', [$uuid]),
         ]));
     }
 }

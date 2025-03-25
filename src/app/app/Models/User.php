@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Notifications\UserRegisterNotification;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -66,5 +68,16 @@ class User extends Authenticatable
     public function teamMember()
     {
         return $this->hasOne(TeamMember::class);
+    }
+
+    /**
+     * 本登録メール送信
+     *
+     * @param array $values
+     * @return void
+     */
+    public function registrationNotification(array $values)
+    {
+        $this->notify(new UserRegisterNotification($values));
     }
 }

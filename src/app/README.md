@@ -11,7 +11,9 @@
 /temp_register/team/join/{invitation_code}/complete
 
 ## チーム作成 (本登録)
-/register/{token}
+/register/user/{token}
+/register/user/error
+/register/user/notvalid
 
 ## ログイン
 /login
