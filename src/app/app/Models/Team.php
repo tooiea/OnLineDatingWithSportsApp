@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\SportAffiliationTypeEnum;
@@ -9,6 +9,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
@@ -38,21 +39,41 @@ class Team extends Model
         'deleted_at',
     ];
 
-    public function consent_games()
+    /**
+     * 招待試合
+     *
+     * @return HasMany
+     */
+    public function consent_games(): HasMany
     {
         return $this->hasMany(ConsentGame::class);
     }
 
-    public function team_members()
+    /**
+     * チームメンバー
+     *
+     * @return HasMany
+     */
+    public function team_members(): HasMany
     {
         return $this->hasMany(TeamMember::class);
     }
 
+    /**
+     * チーム画像
+     *
+     * @return MorphOne
+     */
     public function image() : MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');
     }
 
+    /**
+     * チームコード
+     *
+     * @return MorphOne
+     */
     public function code() : MorphOne
     {
         return $this->morphOne(Code::class, 'codeable');

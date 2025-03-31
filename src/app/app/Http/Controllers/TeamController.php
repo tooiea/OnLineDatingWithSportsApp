@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class TeamController extends Controller
 {
@@ -28,7 +29,7 @@ class TeamController extends Controller
      * @param Request $request
      * @return \Inertia\Response
      */
-    public function list(Request $request)
+    public function list(Request $request): Response
     {
         $values = $request->only(['prefecture', 'address']);
         $prefecture = $request->input('prefecture') ?? null;

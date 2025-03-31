@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -8,6 +8,7 @@ use App\Models\Team;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
 
@@ -29,16 +30,31 @@ class Reply extends Model
         'team_id',
     ];
 
-    public function consent_game()
+    /**
+     * 招待試合
+     *
+     * @return BelongsTo
+     */
+    public function consent_game(): BelongsTo
     {
         return $this->belongsTo(ConsentGame::class);
     }
 
-    public function team()
+    /**
+     * チーム
+     *
+     * @return BelongsTo
+     */
+    public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
     }
 
+    /**
+     * コメント
+     *
+     * @return MorphMany
+     */
     public function comment() : MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');

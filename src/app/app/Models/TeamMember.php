@@ -1,10 +1,11 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $id
@@ -18,18 +19,28 @@ use Illuminate\Database\Eloquent\Model;
 class TeamMember extends Model
 {
     use HasUuids;
-    
+
     protected $fillable = [
         'user_id',
         'team_id',
     ];
 
-    public function team()
+    /**
+     * チーム
+     *
+     * @return BelongsTo
+     */
+    public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
     }
 
-    public function user()
+    /**
+     * ユーザ
+     *
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

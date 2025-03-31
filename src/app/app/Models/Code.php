@@ -1,9 +1,10 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Code extends Model
 {
@@ -18,7 +19,12 @@ class Code extends Model
         'used_at'
     ];
 
-    public function codeable()
+    /**
+     * 共通コード
+     *
+     * @return MorphTo
+     */
+    public function codeable(): MorphTo
     {
         return $this->morphTo();
     }

@@ -128,8 +128,6 @@ class TempTeamRegisterController extends Controller
 
             // チーム画像を保存
             $tempUser->image()->save(new Image([
-                'imageable_type' => TempUser::class,
-                'imageable_id' => $tempUser->id,
                 'path' => $tempTeamRegister['tempFile']->path(),
                 'extension' => $tempTeamRegister['tempFile']->extension(),
                 'mime_type' => $tempTeamRegister['tempFile']->mimeType()
@@ -137,8 +135,6 @@ class TempTeamRegisterController extends Controller
 
             // 本登録用の認証コード
             $tempUser->code()->save(new Code([
-                'codeable_type' => TempUser::class,
-                'codeable_id' => $tempUser->id,
                 'code' => $uuid,
                 'expired_at' => Carbon::now()->addHour()
             ]));

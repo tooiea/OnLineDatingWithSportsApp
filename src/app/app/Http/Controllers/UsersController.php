@@ -11,6 +11,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -23,9 +24,9 @@ class UsersController extends Controller
      *
      * @param UserTokenRequest $request
      * @param string $token
-     * @return void
+     * @return RedirectResponse
      */
-    public function index(UserTokenRequest $request, $token)
+    public function index(UserTokenRequest $request, string $token): RedirectResponse
     {
         try {
              DB::transaction(function () use ($token) {
@@ -55,8 +56,6 @@ class UsersController extends Controller
 
                     // チームの招待用コードを生成
                     $team->code()->save(new Code([
-                        'codeable_type' => Team::class,
-                        'codeable_id' => $team->id,
                         'code' => Str::uuid(),
                         'expired_at' => Carbon::now()->addYear()
                     ]));

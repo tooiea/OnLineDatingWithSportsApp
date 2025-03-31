@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ConsentStatusTypeEnum;
 use App\Models\ConsentGame;
 use App\Models\Team;
 use Illuminate\Http\Request;
@@ -37,15 +38,21 @@ class MyTeamController extends Controller
             'myTeamInvites' => $myTeamInvites,
             'asGuestInvites' => $asGuestInvites,
             'session' => $request->session()->all(),
+        ])->with([
+            'inviteStatuses' => [
+                ConsentStatusTypeEnum::WAIT->value => ConsentStatusTypeEnum::WAIT->label(),
+                ConsentStatusTypeEnum::ACCEPTED->value => ConsentStatusTypeEnum::ACCEPTED->label(),
+                ConsentStatusTypeEnum::DECLINED->value => ConsentStatusTypeEnum::DECLINED->label(),
+            ],
         ]);
     }
 
     /**
-     * Undocumented function
+     * マイチーム詳細
      *
-     * @return void
+     * @return \Inertia\Response
      */
-    public function detail()
+    public function detail(): Response
     {
         // ログイン中の所属チームを取得
         $myTeam = Team::getMyTeamByUserId(userId: Auth::id());
