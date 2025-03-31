@@ -99,8 +99,6 @@ class DatabaseSeeder extends Seeder
 
             // データベースに画像情報を登録
             $team->image()->create([
-                'imageable_id' => $team->id,
-                'imageable_type' => Team::class,
                 'path' => $path,
                 'extension' => 'png',
                 'mime_type' => 'image/png',
@@ -116,17 +114,31 @@ class DatabaseSeeder extends Seeder
 
             // 招待を送る側のデータを作成
             foreach ($invitees as $invitee) {
-                ConsentGame::factory()->create([
+                $consentGame = ConsentGame::factory()->create([
                     'invitee_id' => $team->id,
                     'guest_id' => $invitee->id,
+                ]);
+                $consentGame->notification()->create([
+                    'notifiable_type' => Team::class,
+                    'notifiable_id' => $team->id,
+                    'senderable_type' => Team::class,
+                    'senderable_id' => $invitee->id,
+                    'read_at' => null
                 ]);
             }
 
             // 招待を受ける側のデータを作成
             foreach ($guests as $guest) {
-                ConsentGame::factory()->create([
+                $consentGame = ConsentGame::factory()->create([
                     'invitee_id' => $guest->id,
                     'guest_id' => $team->id,
+                ]);
+                $consentGame->notification()->create([
+                    'notifiable_type' => Team::class,
+                    'notifiable_id' => $team->id,
+                    'senderable_type' => Team::class,
+                    'senderable_id' => $invitee->id,
+                    'read_at' => null
                 ]);
             }
         }

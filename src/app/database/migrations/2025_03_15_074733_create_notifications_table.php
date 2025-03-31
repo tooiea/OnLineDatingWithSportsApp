@@ -15,8 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuidMorphs('notifiable');
             $table->uuidMorphs('senderable');
-            $table->timestamp('read_at', precision: 0);
-            $table->softDeletes();
+            $table->timestamp('read_at', precision: 0)->nullable();
             $table->timestamps();
         });
     }
