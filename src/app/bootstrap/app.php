@@ -30,6 +30,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->replace(SetCacheHeaders::class, CustomSetCacheHeaders::class);
         $middleware->redirectGuestsTo(fn () => route('email_login.index'));
+        $middleware->alias([
+            'custom_guest' => \App\Http\Middleware\CustomRedirectIfAuthenticated::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Exception $e, Request $request) {
@@ -44,7 +47,7 @@ return Application::configure(basePath: dirname(__DIR__))
                         break;
                     case $e instanceof NotFoundHttpException:
                         $status = $e->getStatusCode();
-                        break; 
+                        break;
                     case $e instanceof MethodNotAllowedHttpException:
                         $status = $e->getStatusCode();
                         break;
