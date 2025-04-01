@@ -41,7 +41,7 @@ class TeamController extends Controller
 
         // チーム一覧取得
         $teams = Team::getOtherTeamsForPaginator(
-            pageNum: 15,
+            pageNum: 12,
             myTeam: $myTeam,
             prefecture: $prefecture,
             address: $address,
