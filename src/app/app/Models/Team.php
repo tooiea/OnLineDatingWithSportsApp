@@ -80,6 +80,16 @@ class Team extends Model
     }
 
     /**
+     * チームアルバム
+     *
+     * @return MorphMany
+     */
+    public function album(): MorphMany
+    {
+        return $this->morphMany(Album::class, 'albumable');
+    }
+
+    /**
      * 自チームの情報を取得
      *
      * @param string $userId

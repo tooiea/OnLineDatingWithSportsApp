@@ -67,6 +67,8 @@ Route::middleware('auth:user')->group(function () {
     Route::prefix('myteam')->name('myteam.')->group(function () {
         Route::get('/', [MyTeamController::class, 'index'])->name('index');
         Route::get('detail', [MyTeamController::class, 'detail'])->name('detail');
+        Route::get('edit', [MyTeamController::class, 'edit'])->name('edit');
+        Route::post('edit', [MyTeamController::class, 'update'])->name('update');
 
         // 招待された試合
         Route::prefix('consent_games/{consent_game_id}')->name('consent_game.')->group(function() {

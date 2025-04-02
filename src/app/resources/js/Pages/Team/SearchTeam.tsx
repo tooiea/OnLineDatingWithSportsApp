@@ -44,18 +44,18 @@ export default function SearchTeam({ teams, filters, prefectures }: PageProps<Pr
         <AuthenticatedLayout>
             <Head title="招待チームを検索" />
 
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
-                <div className="bg-white shadow-lg rounded-xl p-6 sm:p-8">
-                    <h2 className="text-lg sm:text-xl font-semibold mb-4 border-b pb-2">招待チームを検索</h2>
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+                <div className="bg-white shadow-lg rounded-2xl p-6 sm:p-8">
+                    <h2 className="text-xl font-bold mb-4 border-b pb-2">招待チームを検索</h2>
                     <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label className="block mb-1 text-sm font-medium" htmlFor="prefecture">都道府県</label>
+                            <label className="block mb-1 text-sm font-semibold" htmlFor="prefecture">都道府県</label>
                             <select
                                 id="prefecture"
                                 name="prefecture"
                                 value={prefecture}
                                 onChange={(e) => setPrefecture(e.target.value)}
-                                className="block w-full border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm"
+                                className="block w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-sm"
                             >
                                 <option value="">選択してください</option>
                                 {prefectures.map((pref) => (
@@ -65,53 +65,55 @@ export default function SearchTeam({ teams, filters, prefectures }: PageProps<Pr
                         </div>
 
                         <div>
-                            <label className="block mb-1 text-sm font-medium" htmlFor="address">住所（市町村区）</label>
+                            <label className="block mb-1 text-sm font-semibold" htmlFor="address">住所（市町村区）</label>
                             <input
                                 id="address"
                                 name="address"
                                 type="text"
                                 value={address}
                                 onChange={(e) => setAddress(e.target.value)}
-                                className="block w-full border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm"
+                                className="block w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-sm"
                             />
                         </div>
 
                         <div>
-                            <label className="block mb-1 text-sm font-medium" htmlFor="teamName">チーム名</label>
+                            <label className="block mb-1 text-sm font-semibold" htmlFor="teamName">チーム名</label>
                             <input
                                 id="teamName"
                                 name="teamName"
                                 type="text"
                                 value={teamName}
                                 onChange={(e) => setTeamName(e.target.value)}
-                                className="block w-full border-gray-300 rounded-md shadow-sm px-3 py-2 text-sm"
+                                className="block w-full border-gray-300 rounded-lg shadow-sm px-3 py-2 text-sm"
                             />
                         </div>
 
-                        <button type="submit" className="col-span-full bg-indigo-500 hover:bg-indigo-600 text-white rounded-md py-2 font-semibold">
+                        <button type="submit" className="col-span-full bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg py-2 font-semibold">
                             検索する
                         </button>
                     </form>
                 </div>
 
                 <div className="border-t border-gray-200 mt-10 pt-6">
-                    <h3 className="text-lg font-semibold mb-4">検索結果<span className="text-sm text-gray-600 mb-4"> :  {teams.total} 件</span></h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <h3 className="text-lg font-semibold mb-4">検索結果<span className="text-sm text-gray-600 ml-2">{teams.total} 件</span></h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                         {teams.data.length > 0 ? (
                             teams.data.map((team) => (
-                                <div key={team.id} className="bg-white shadow-md rounded-lg p-4 flex flex-col items-center justify-between min-h-[180px]">
+                                <div key={team.id} className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center justify-between min-h-[140px]">
+                                    <div className="font-semibold mb-1 text-center text-sm text-gray-800 leading-snug">{team.name}</div>
+
                                     {team.logo ? (
-                                        <img src={team.logo} className="w-16 h-16 rounded-full object-cover mb-3" alt="team logo" />
+                                        <img src={team.logo} className="w-25 h-25 object-cover rounded-xl mb-3" alt="team logo" />
                                     ) : (
-                                        <div className="w-16 h-16 bg-gray-200 rounded-full mb-3"></div>
+                                        <div className="w-20 h-20 bg-gray-200 rounded-xl mb-3"></div>
                                     )}
-                                    <div className="font-semibold mb-1 text-center text-sm text-gray-800">{team.name}</div>
+
                                     {team.address && (
-                                        <div className="text-gray-500 text-xs text-center mb-2">{team.address}</div>
+                                        <div className="text-gray-500 text-xs text-center mb-2 leading-tight">{team.address}</div>
                                     )}
                                     <div className="mt-auto">
                                         <Link href={route('team.invite_game.index', team.id)}
-                                            className="inline-block px-4 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded hover:bg-gray-200 transition">
+                                            className="inline-block px-4 py-1.5 bg-gray-100 text-gray-700 text-xs font-medium rounded-md hover:bg-gray-200 transition">
                                             マッチする
                                         </Link>
                                     </div>

@@ -24,6 +24,8 @@ export default function TeamDetail({ auth, myTeam, teamMembersNumber }: Props) {
     ? route('temp_register.team.join.index', myTeam.team.code)
     : '';
 
+  const teamEditUrl = route('myteam.edit');
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(inviteUrl);
@@ -49,8 +51,14 @@ export default function TeamDetail({ auth, myTeam, teamMembersNumber }: Props) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             <div className="space-y-4">
               <div>
-                <p className="text-sm font-semibold text-gray-600">チーム名</p>
-                <p className="text-gray-800">{myTeam.team.name}</p>
+                <p className="text-sm font-semibold text-gray-600">
+                    チーム名
+                </p>
+                <p className="text-gray-800">
+                  <a href={teamEditUrl} className="text-indigo-500 hover:underline break-all">
+                    {myTeam.team.name}
+                  </a>
+                </p>
               </div>
 
               <div>

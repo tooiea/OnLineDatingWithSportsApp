@@ -71,4 +71,48 @@ class MyTeamController extends Controller
             'teamMembersNumber' => $myTeam->team_members->count(),
         ]);
     }
+
+    /**
+     * マイチーム編集画面
+     *
+     * @return \Inertia\Response
+     */
+    public function edit(): Response
+    {
+        $userId = Auth::id();
+        $team = Team::whereHas('team_members', function ($query) use ($userId) {
+            $query->where('user_id', '=', $userId);
+        })->with('album.image')->first();
+
+        return Inertia::render('MyTeam/TeamEdit', [
+            'team' => [
+                'id' => $team->id,
+                'name' => $team->name,
+                'team_url' => $team->url,
+                'image' => $team->image ? [
+                    'id' => $team->image->id,
+                    'path_base64' => $team->image->getPathBase64Attribute(),
+                    'extension' => $team->image->extension,
+                    'mime_type' => $team->image->mime_type,
+                ] : null,
+            ],
+            'albumImages' => $team->album->flatMap(function ($album) {
+                return collect($album->image)->map(function ($image) {
+                    return [
+                        'id' => $image->id,
+                        'path_base64' => $image->getPathBase64Attribute(),
+                        'extension' => $image->extension,
+                        'mime_type' => $image->mime_type,
+                    ];
+                });
+            })->values(),
+        ]);
+    }
+
+    public function update()
+    {
+        return Inertia::render('MyTeam/TeamEdit', [
+            'myTeam' => Team::getMyTeamByUserId(userId: Auth::id()),
+        ]);
+    }
 }

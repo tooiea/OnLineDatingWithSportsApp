@@ -3,8 +3,8 @@ import { Head, Link, router } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
-
 import duration from 'dayjs/plugin/duration';
+
 dayjs.extend(duration);
 dayjs.locale('ja');
 
@@ -116,12 +116,12 @@ export default function TeamInvitations({ myTeam, myTeamInvites, asGuestInvites,
     return (
       <li
         key={invite.id}
-        className="bg-blue-50 shadow-lg rounded-lg flex flex-col min-h-[420px] p-6"
+        className="bg-blue-50 shadow rounded-xl w-[350px] flex flex-col min-h-[400px] p-6"
       >
         <div className="flex-1 flex flex-col justify-between">
           <div>
             <div className="flex justify-between items-center mb-2">
-              <div className="text-xl font-bold">{invite.team.name}</div>
+              <div className="text-lg font-bold truncate max-w-[250px]">{invite.team.name}</div>
               <span className={`text-xs font-bold px-2 py-1 rounded ${getConsentStatusClass(invite.consent_status)}`}>
                 {inviteStatuses[invite.consent_status]}
               </span>
@@ -131,7 +131,7 @@ export default function TeamInvitations({ myTeam, myTeamInvites, asGuestInvites,
               <img
                 src={invite.team.image.path_base64}
                 alt="チーム画像"
-                className="w-full h-40 object-cover rounded-lg mb-4"
+                className="w-full aspect-square object-cover rounded-xl mb-3"
               />
             )}
 
@@ -163,7 +163,7 @@ export default function TeamInvitations({ myTeam, myTeamInvites, asGuestInvites,
     <AuthenticatedLayout>
       <Head title="チーム招待状況" />
 
-      <div className="max-w-4xl mx-auto py-8 px-4">
+      <div className="max-w-7xl mx-auto py-8 px-4">
         {!myTeam ? (
           <div className="bg-white shadow-md rounded-lg p-6 text-center">
             <h2 className="text-xl font-semibold">チームに所属していません</h2>
@@ -178,24 +178,25 @@ export default function TeamInvitations({ myTeam, myTeamInvites, asGuestInvites,
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h2 className="text-lg font-semibold border-b pb-2 text-blue-700">あなたが招待したチーム</h2>
-              <ul className="mt-4 space-y-4">
-                {myTeamInvites.length > 0 ? myTeamInvites.map(renderInviteCard) : (
-                  <p className="text-gray-500">まだ招待したチームはありません。</p>
-                )}
-              </ul>
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold border-b pb-2 text-green-700">あなたを招待したチーム</h2>
-              <ul className="mt-4 space-y-4">
-                {asGuestInvites.length > 0 ? asGuestInvites.map(renderInviteCard) : (
-                  <p className="text-gray-500">まだ招待されているチームはありません。</p>
-                )}
-              </ul>
-            </div>
-          </div>
+          <>
+            <h2 className="text-lg font-semibold border-b pb-2 text-blue-700 mb-4">あなたが招待したチーム</h2>
+            <ul className="flex flex-wrap gap-6 justify-center">
+              {myTeamInvites.length > 0 ? (
+                myTeamInvites.map(renderInviteCard)
+              ) : (
+                <p className="text-gray-500">まだ招待したチームはありません。</p>
+              )}
+            </ul>
+
+            <h2 className="text-lg font-semibold border-b pb-2 text-green-700 mt-12 mb-4">あなたを招待したチーム</h2>
+            <ul className="flex flex-wrap gap-6 justify-center">
+              {asGuestInvites.length > 0 ? (
+                asGuestInvites.map(renderInviteCard)
+              ) : (
+                <p className="text-gray-500">まだ招待されているチームはありません。</p>
+              )}
+            </ul>
+          </>
         )}
       </div>
     </AuthenticatedLayout>
