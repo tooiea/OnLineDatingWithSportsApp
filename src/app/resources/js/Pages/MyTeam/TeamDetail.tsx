@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Team {
   id: string;
@@ -15,10 +15,26 @@ interface Team {
 interface Props extends PageProps {
   myTeam?: { team?: Team };
   teamMembersNumber: number;
+  message?: {
+    success?: string;
+  };
 }
 
-export default function TeamDetail({ auth, myTeam, teamMembersNumber }: Props) {
+export default function TeamDetail({ auth, myTeam, teamMembersNumber, message }: Props) {
   const [copySuccess, setCopySuccess] = useState(false);
+  const [visibleMessage, setVisibleMessage] = useState<string | null>(message?.success ?? null);
+
+  useEffect(() => {
+    if (message?.success) {
+      setVisibleMessage(message.success);
+
+      const timer = setTimeout(() => {
+        setVisibleMessage(null);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
   const inviteUrl = myTeam?.team?.code
     ? route('temp_register.team.join.index', myTeam.team.code)
@@ -45,15 +61,19 @@ export default function TeamDetail({ auth, myTeam, teamMembersNumber }: Props) {
       <Head title="チームプロフィール詳細" />
 
       <div className="max-w-4xl mx-auto px-4 py-10">
+        {visibleMessage && (
+          <div className="mb-6 px-4 py-3 bg-green-100 border border-green-300 text-green-800 rounded-md shadow-sm transition-opacity duration-500 ease-in-out">
+            {visibleMessage}
+          </div>
+        )}
+
         <div className="bg-white shadow-lg rounded-xl p-6 md:p-8">
           <h3 className="text-xl font-bold border-b pb-3 mb-6">チームプロフィール詳細</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             <div className="space-y-4">
               <div>
-                <p className="text-sm font-semibold text-gray-600">
-                    チーム名
-                </p>
+                <p className="text-sm font-semibold text-gray-600">チーム名</p>
                 <p className="text-gray-800">
                   <a href={teamEditUrl} className="text-indigo-500 hover:underline break-all">
                     {myTeam.team.name}

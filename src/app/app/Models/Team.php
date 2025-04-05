@@ -30,6 +30,18 @@ class Team extends Model
 {
     use HasUuids, HasFactory;
 
+    /**
+     * チーム画像の保存先
+     * @var string
+     */
+    public const MAIN_IMAGE_PATH = 'images/teams';
+
+    /**
+     * チームアルバム画像の保存先
+     * @var string
+     */
+    public const ALBUM_IMAGE_PATH = 'images/teams/album';
+
     protected $fillable = [
         'name',
         'sport_affiliation_type',

@@ -175,7 +175,7 @@ return [
     */
 
     'custom' => [
-        'imagePath' => [
+        'team_main_image' => [
             'required' => ':attributeを1点アップロードしてください',
             'max' => ' 2MB以下の画像を選択してください',
             'image' => 'jpeg,jpg,pngの形式をアップロードしてください'
@@ -185,6 +185,13 @@ return [
         ],
         'teamUrl' => [
             'url' => 'URL形式で入力してください',
+        ],
+        'albums.*' => [
+            'max_in_album' => '1つのアルバムに登録できる画像は5枚までです',
+        ],
+        'albums.*.name' => [
+            'required' => 'アルバム名を入力してください',
+            'max' => 'アルバム名は:max文字以内で入力してください'
         ],
         'teamAlbum' => [
             'max' => '1MB以下の画像を選択してください',
@@ -237,10 +244,12 @@ return [
         'password2' => 'パスワード（再入力）',
         'sportAffiliationType' => 'スポーツ種別',
         'teamName' => 'チーム名',
-        'teamLogo' => 'チームロゴ画像',
+        'teamMainImage' => 'チームロゴ画像',
         'teamUrl' => 'チーム紹介用URL',
         'prefecture' => '都道府県',
-        'address' => '市区町村'
+        'address' => '市区町村',
+        'albums.*.addImages.*' => 'アルバム画像',
+        'albums.*.deleteImages.*' => 'アルバム画像',
     ],
 
 ];

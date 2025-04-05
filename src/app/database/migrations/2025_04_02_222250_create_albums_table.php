@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('albums', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuidMorphs('albumable');
-            $table->string('name')->comment('アルバム名');
+            $table->string('name', 30)->comment('アルバム名');
             $table->timestamps();
         });
     }

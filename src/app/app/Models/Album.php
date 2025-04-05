@@ -47,4 +47,17 @@ class Album extends Model
     {
         return $this->morphMany(Image::class, 'imageable');
     }
+
+    /**
+     * アルバムに紐づく画像の存在チェック
+     *
+     * @param string $imageId
+     * @return boolean
+     */
+    public static function existTeamAlbum(string $imageId): bool
+    {
+        return self::where('albumable_type', Team::class)
+            ->whereRelation('image', 'id', $imageId)
+            ->exists();
+    }
 }
