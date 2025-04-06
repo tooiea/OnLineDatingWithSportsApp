@@ -65,5 +65,21 @@ return Application::configure(basePath: dirname(__DIR__))
                     status: $status
                 );
             }
+
+            $status = 500;
+
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface) {
+                $status = $e->getStatusCode();
+            }
+
+            $errorPage = match ($status) {
+                403 => 'Errors/403',
+                404 => 'Errors/404',
+                405 => 'Errors/405',
+                500 => 'Errors/500',
+                default => 'Errors/500',
+            };
+
+            return inertia($errorPage)->toResponse($request)->setStatusCode($status);
         });
     })->create();
