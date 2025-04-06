@@ -28,6 +28,7 @@ Route::middleware('custom_guest:user')->group(function () {
 
             // チーム参加 (仮登録)
             Route::prefix('join')->group(function () {
+                Route::get('invalid', [TempTeamJoinController::class, 'invalid'])->name('join.invalid');
                 Route::get('{invitation_code}', [TempTeamJoinController::class, 'index'])->name('join.index');
                 Route::post('{invitation_code}/confirm', [TempTeamJoinController::class, 'confirm'])->name('join.confirm');
                 Route::post('{invitation_code}/complete', [TempTeamJoinController::class, 'complete'])->name('join.complete');

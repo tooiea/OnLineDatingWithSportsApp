@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Album;
-use Illuminate\Support\Facades\Log;
+use App\Models\Code;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
@@ -49,6 +49,14 @@ class ValidatorServiceProvider extends ServiceProvider
             $countOut = ! empty($value['deleteImages']) ? count($value['deleteImages']) : 0;
             $count = $currentInAlbum + $countIn - $countOut;
             return $count <= $max;
+        });
+
+        /**
+         * バリデーションルール
+         * チームの招待コード存在確認
+         */
+        Validator::extend('exist_team_code', function ($attribute, $value, $parameters, $validator) {
+            return Code::existTeamCode($value);
         });
     }
 }

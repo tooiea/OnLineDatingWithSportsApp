@@ -11,7 +11,6 @@ interface Props {
   address: string;
   name: string;
   email: string;
-  password: string;
   teamLogoUrl?: string;
 }
 

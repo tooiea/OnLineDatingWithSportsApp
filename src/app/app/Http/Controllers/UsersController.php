@@ -44,7 +44,7 @@ class UsersController extends Controller
                 $user->save();
 
                 // 存在するチームへ登録
-                if (! empty($tempUser->code()->code)) {
+                if (! empty($tempUser->invitation_code)) {
                     $team = Team::whereRelation('code', 'code', $tempUser->invitation_code)->first();
                 } else {
                     // 新規チーム登録

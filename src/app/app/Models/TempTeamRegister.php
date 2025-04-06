@@ -53,7 +53,12 @@ class TempTeamRegister
         $this->address = $address;
     }
 
-    public function getAll()
+    /**
+     * セッションから取得した値を返す
+     *
+     * @return array
+     */
+    public function getAll(): array
     {
         return [
             'nickname' => $this->nickname,
