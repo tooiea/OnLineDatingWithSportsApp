@@ -66,6 +66,12 @@ return Application::configure(basePath: dirname(__DIR__))
                 );
             }
 
+            // バリデーションエラー時はLaravelのロジックで処理する
+            // 403,404,405,500エラーはInertiaのエラーページを表示
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                return null;
+            }
+
             $status = 500;
 
             if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface) {

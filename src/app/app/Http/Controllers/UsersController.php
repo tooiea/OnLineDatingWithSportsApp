@@ -94,9 +94,9 @@ class UsersController extends Controller
              });
         } catch (Exception $e) {
             Log::error($e);
-            return redirect()->route('email_login.index')->with('status', __('messages.failed.registered'));
+            return redirect()->route('login.index')->with('status', __('messages.failed.registered'));
         }
-        return redirect()->route('email_login.index')->with('status', __('messages.success.registered'));
+        return redirect()->route('login.index')->with('status', __('messages.success.registered'));
     }
 
     /**
