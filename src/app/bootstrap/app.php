@@ -29,7 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->replace(SetCacheHeaders::class, CustomSetCacheHeaders::class);
-        $middleware->redirectGuestsTo(fn () => route('email_login.index'));
+        $middleware->redirectGuestsTo(fn () => route('login.index'));
         $middleware->alias([
             'custom_guest' => \App\Http\Middleware\CustomRedirectIfAuthenticated::class
         ]);

@@ -36,4 +36,17 @@ class UserLoginController extends Controller
         $request->session()->regenerate();
         return redirect()->intended(route('team.list', absolute: false));
     }
+
+    /**
+     * ログアウト処理
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function logout(Request $request): RedirectResponse
+    {
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect(route('login.index', absolute: false));
+    }
 }

@@ -40,7 +40,7 @@ Route::middleware('custom_guest:user')->group(function () {
     Route::get('register/user/notvalid', [UsersController::class, 'failedToken'])->name('user.failed'); // トークンなし
     Route::get('register/user/{token}', [UsersController::class, 'index'])->name('user.register');
 
-    Route::get('login',[UserLoginController::class, 'index'])->name('email_login.index');
+    Route::get('login',[UserLoginController::class, 'index'])->name('login.index');
     Route::post('login',[UserLoginController::class, 'login'])->name('email_login.login');
     Route::get('line/login',[LineLoginController::class, 'redirectTo'])->name('line.login');
     Route::get('line/login/callback', [LineLoginController::class, 'callback'])->name('line.callback');
@@ -102,6 +102,8 @@ Route::middleware('auth:user')->group(function () {
             });
         });
     });
+
+    Route::post('logout', [UserLoginController::class, 'logout'])->name('logout');
 });
 
 Route::get('/dashboard', function () {
