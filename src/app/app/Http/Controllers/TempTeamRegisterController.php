@@ -61,16 +61,14 @@ class TempTeamRegisterController extends Controller
         // セッションへ保存
         session(['temp_team_register.form' => $tempTeamRegister]);
         return Inertia::render('Register/TeamRegistrationConfirm', [
-            'values' => [
-                'sportAffiliationType' => $request->validated('sportAffiliationType'),
-                'sportAffiliationLabel' => SportAffiliationTypeEnum::from((int)$request->validated('sportAffiliationType'))->label(),
-                'teamName' => $request->validated('teamName'),
-                'teamLogoUrl' => $tempFile->pathFromBase64(),
-                'teamUrl' => $request->validated('teamUrl'),
-                'prefecture' => $request->validated('prefecture'),
-                'prefectureLabel' => Prefecture::from((int)$request->validated('prefecture'))->label(),
-                'address' => $request->validated('address'),
-            ]
+            'sportAffiliationType' => $request->validated('sportAffiliationType'),
+            'sportAffiliationLabel' => SportAffiliationTypeEnum::from((int)$request->validated('sportAffiliationType'))->label(),
+            'teamName' => $request->validated('teamName'),
+            'teamLogoUrl' => $tempFile->pathFromBase64(),
+            'teamUrl' => $request->validated('teamUrl'),
+            'prefecture' => $request->validated('prefecture'),
+            'prefectureLabel' => Prefecture::from((int)$request->validated('prefecture'))->label(),
+            'address' => $request->validated('address'),
         ]);
     }
 
@@ -113,12 +111,11 @@ class TempTeamRegisterController extends Controller
         DB::transaction(function () use ($tempTeamRegister) {
             $uuid = Str::uuid();
 
+            // 仮登録情報を保存
             $tempUser = new TempUser();
             $tempUser->nickname = $tempTeamRegister['nickname'];
             $tempUser->email = $tempTeamRegister['email'];
             $tempUser->password = Hash::make($tempTeamRegister['password']);
-            $tempUser->token = $uuid;
-            $tempUser->expiration_date = Carbon::now()->addHour();
             $tempUser->sport_affiliation_type = $tempTeamRegister['sportAffiliationType'];
             $tempUser->team_name = $tempTeamRegister['teamName'];
             $tempUser->team_url = $tempTeamRegister['teamUrl'];

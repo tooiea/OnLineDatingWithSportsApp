@@ -17,8 +17,6 @@ use Ramsey\Uuid\Lazy\LazyUuidFromString;
  * @property string $name
  * @property string $email
  * @property string $password
- * @property string $token
- * @property Carbon $expiration_date
  * @property SportAffiliationTypeEnum $sport_affiliation_type
  * @property string $team_name
  * @property string $team_url
@@ -35,8 +33,6 @@ class TempUser extends Model
         'name',
         'email',
         'password',
-        'token',
-        'expiration_date',
         'sport_affiliation_type',
         'team_name',
         'team_url',
@@ -51,7 +47,7 @@ class TempUser extends Model
 
     public function code() : MorphOne
     {
-        return $this->morphOne(Image::class, 'codeable');
+        return $this->morphOne(Code::class, 'codeable');
     }
 
     /**

@@ -15,7 +15,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class UsersController extends Controller
 {
@@ -31,13 +33,13 @@ class UsersController extends Controller
         try {
              DB::transaction(function () use ($token) {
                 // URLのトークンから仮ユーザを取得
-                $tempUser = TempUser::where('token', $token)->first();
+                $tempUser = TempUser::whereRelation('code', 'code', $token)->first();
 
                 // 新規登録
                 $user = new User();
                 $user->name = $tempUser->nickname;
                 $user->email = $tempUser->email;
-                $user->password = $tempUser->email;
+                $user->password = $tempUser->password;
                 $user->last_login_at = CarbonImmutable::now();
                 $user->save();
 
@@ -59,6 +61,19 @@ class UsersController extends Controller
                         'code' => Str::uuid(),
                         'expired_at' => Carbon::now()->addYear()
                     ]));
+
+                    // 仮ユーザの画像をチームの画像として移動
+                    Storage::move($tempUser->image->path, Team::MAIN_IMAGE_PATH . '/' . basename($tempUser->image->path));
+                    $team->image()->create([
+                        'imageable_id' => $team->id,
+                        'imageable_type' => 'team',
+                        'path'  => Team::MAIN_IMAGE_PATH . '/' . basename($tempUser->image->path),
+                        'extension' => $tempUser->image->extension,
+                        'mime_type' => $tempUser->image->mime_type,
+                    ]);
+
+                    // 画像移動後に削除
+                    $tempUser->image()->delete();
                 }
 
                 // チームメンバー登録
@@ -85,17 +100,26 @@ class UsersController extends Controller
     }
 
     /**
-     * トークンチェック後のエラー画面
+     * エラー画面
      *
-     * @return void
+     * @return \Inertia\Response
      */
     public function failedToken()
     {
-        return view('failed.lost_token');
+        return Inertia::render('Errors/500', [
+            'message' => __('messages.failed.token'),
+        ]);
     }
 
-    public function errorRegister()
+    /**
+     * エラー画面
+     *
+     * @return \Inertia\Response
+     */
+    public function error()
     {
-        return view('failed.error');
+        return Inertia::render('Errors/500', [
+            'message' => __('messages.failed.token'),
+        ]);
     }
 }

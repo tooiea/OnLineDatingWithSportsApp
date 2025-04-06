@@ -36,9 +36,9 @@ Route::middleware('custom_guest:user')->group(function () {
         });
     });
 
-    Route::get('register/user/{token}', [UsersController::class, 'index'])->name('user.register');
     Route::get('register/user/error', [UsersController::class, 'errorRegister'])->name('user.error'); // エラー発生時
     Route::get('register/user/notvalid', [UsersController::class, 'failedToken'])->name('user.failed'); // トークンなし
+    Route::get('register/user/{token}', [UsersController::class, 'index'])->name('user.register');
 
     Route::get('login',[UserLoginController::class, 'index'])->name('email_login.index');
     Route::post('login',[UserLoginController::class, 'login'])->name('email_login.login');

@@ -111,7 +111,7 @@ export default function Login({
             <div className="mt-6 text-center">
                 <span className="text-sm text-gray-600">アカウントをお持ちではありませんか？</span>
                 <Link
-                    href={route('register')}
+                    href={route('temp_register.team.index')}
                     className="ml-2 text-sm font-medium text-indigo-600 hover:text-indigo-500"
                 >
                     新しくチームを作成

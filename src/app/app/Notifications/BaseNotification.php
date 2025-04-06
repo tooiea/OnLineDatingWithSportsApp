@@ -7,13 +7,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class BaseNotification extends Notification
+abstract class BaseNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    private string $template;
-    private string $subject;
-    private array $values;
+    protected string $template;
+    protected string $subject;
+    protected array $values;
 
     /**
      * Create a new notification instance.

@@ -9,11 +9,11 @@ use Illuminate\Notifications\Notification;
 
 class TempTeamRegisterNotification extends BaseNotification
 {
-    private string $template = 'mail.temp_user_register';
-    private string $subject = 'OLDWsへの仮登録いただきありがとうございます';
+    const TEMPLATE = 'mail.temp_user_register';
+    const SUBJECT = 'OLDWsへの仮登録いただきありがとうございます';
 
     public function __construct(array $values)
     {
-        parent::__construct($this->template, $this->subject, $values);
+        parent::__construct(self::TEMPLATE, self::SUBJECT, $values);
     }
 }

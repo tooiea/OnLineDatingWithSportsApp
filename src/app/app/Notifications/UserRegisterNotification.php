@@ -9,11 +9,11 @@ use Illuminate\Notifications\Notification;
 
 class UserRegisterNotification extends BaseNotification
 {
-    private string $template = 'mail.user_register';
-    private string $subject = 'OLDWsへの本登録いただきありがとうございます';
+    const TEMPLATE = 'mail.user_register';
+    const SUBJECT = 'OLDWsへの本登録いただきありがとうございます';
 
     public function __construct(array $values)
     {
-        parent::__construct($this->template, $this->subject, $values);
+        parent::__construct(self::TEMPLATE, self::SUBJECT, $values);
     }
 }

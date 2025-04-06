@@ -2,22 +2,29 @@ import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
 
 interface Props {
-  values: {
-    sportAffiliationType: string;
-    sportAffiliationLabel: string;
-    teamName: string;
-    teamUrl: string;
-    prefecture: string;
-    prefectureLabel: string;
-    address: string;
-    name: string;
-    email: string;
-    password: string;
-    teamLogoUrl?: string;
-  };
+  sportAffiliationType: string;
+  sportAffiliationLabel: string;
+  teamName: string;
+  teamUrl: string;
+  prefecture: string;
+  prefectureLabel: string;
+  address: string;
+  name: string;
+  email: string;
+  password: string;
+  teamLogoUrl?: string;
 }
 
-export default function TeamRegistrationConfirm({ values }: Props) {
+export default function TeamRegistrationConfirm({
+  sportAffiliationLabel,
+  teamName,
+  teamUrl,
+  prefectureLabel,
+  address,
+  name,
+  email,
+  teamLogoUrl,
+}: Props) {
   const { post, processing } = useForm({});
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -46,11 +53,11 @@ export default function TeamRegistrationConfirm({ values }: Props) {
           <div className="space-y-3">
             <div>
               <label className="font-semibold">ニックネーム</label>
-              <div className="text-gray-800">{values.name}</div>
+              <div className="text-gray-800">{name}</div>
             </div>
             <div>
               <label className="font-semibold">メールアドレス</label>
-              <div className="text-gray-800">{values.email}</div>
+              <div className="text-gray-800">{email}</div>
             </div>
             <div>
               <label className="font-semibold">パスワード</label>
@@ -64,30 +71,30 @@ export default function TeamRegistrationConfirm({ values }: Props) {
           <div className="space-y-3">
             <div>
               <label className="font-semibold">スポーツ種別</label>
-              <div className="text-gray-800">{values.sportAffiliationLabel}</div>
+              <div className="text-gray-800">{sportAffiliationLabel}</div>
             </div>
             <div>
               <label className="font-semibold">チーム名</label>
-              <div className="text-gray-800">{values.teamName}</div>
+              <div className="text-gray-800">{teamName}</div>
             </div>
             <div>
               <label className="font-semibold">チーム紹介SNS</label>
-              <div className="text-blue-600 underline">{values.teamUrl}</div>
+              <div className="text-blue-600 underline break-all">{teamUrl}</div>
             </div>
             <div>
               <label className="font-semibold">活動エリア（都道府県）</label>
-              <div className="text-gray-800">{values.prefectureLabel}</div>
+              <div className="text-gray-800">{prefectureLabel}</div>
             </div>
             <div>
               <label className="font-semibold">市町村区</label>
-              <div className="text-gray-800">{values.address}</div>
+              <div className="text-gray-800">{address}</div>
             </div>
-            {values.teamLogoUrl && (
+            {teamLogoUrl && (
               <div>
                 <label className="font-semibold">チームロゴ</label>
                 <div>
                   <img
-                    src={values.teamLogoUrl}
+                    src={teamLogoUrl}
                     alt="Team Logo"
                     className="w-32 h-auto mt-2 border rounded"
                   />

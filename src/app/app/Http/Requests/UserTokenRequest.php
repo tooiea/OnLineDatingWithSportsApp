@@ -39,23 +39,19 @@ class UserTokenRequest extends FormRequest
         return [
             'token' => [
                 'bail',
-                'exists:App\Models\TempUser,token',
+                'exists:App\Models\Code,code',
                 function ($attribute, $value, $fail) {
-                    $tempUser = TempUser::where([
-                        ['expiration_date','>=', CarbonImmutable::now()],
-                        ['token', '=', $value],
-                    ])->first();
+                    $tempUser = TempUser::whereRelation('code', function ($query) use ($value) {
+                        // トークンの有効期限チェック
+                        $query->where('expired_at', '>=', CarbonImmutable::now());
+                        // トークンの存在チェック
+                        $query->where('code', $value);
+                        $query->where('is_used', false);
+                    })->first();
 
-                    // トークン有効期限切れ
-                    if (is_null($tempUser)) {
+                    // 有効なトークンでない場合
+                    if (empty($tempUser)) {
                         return $fail(__('validation.custom.token.expired'));
-                    }
-
-                    $registeredUser = User::where('email', $tempUser->email)->first();
-
-                    // 本登録済み
-                    if (! empty($registeredUser)) {
-                        $fail(__('validation.custom.token.registered'));
                     }
                 },
             ],
