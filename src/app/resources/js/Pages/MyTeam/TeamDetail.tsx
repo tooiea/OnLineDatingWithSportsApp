@@ -10,28 +10,44 @@ interface Team {
   extension: string;
   team_url?: string;
   code: string;
+  prefectureLabel?: string;
+  address?: string;
+  favoriteFacility?: string;
+}
+
+interface AlbumImage {
+  id: number;
+  path_base64: string;
+}
+
+interface Album {
+  id: string;
+  name: string;
+  images: AlbumImage[];
+}
+
+interface Prefecture {
+  value: number;
+  label: string;
 }
 
 interface Props extends PageProps {
   myTeam?: { team?: Team };
   teamMembersNumber: number;
+  albums: Album[];
   message?: {
     success?: string;
   };
 }
 
-export default function TeamDetail({ auth, myTeam, teamMembersNumber, message }: Props) {
+export default function TeamDetail({ auth, myTeam, teamMembersNumber, albums, message }: Props) {
   const [copySuccess, setCopySuccess] = useState(false);
   const [visibleMessage, setVisibleMessage] = useState<string | null>(message?.success ?? null);
 
   useEffect(() => {
     if (message?.success) {
       setVisibleMessage(message.success);
-
-      const timer = setTimeout(() => {
-        setVisibleMessage(null);
-      }, 3000);
-
+      const timer = setTimeout(() => setVisibleMessage(null), 3000);
       return () => clearTimeout(timer);
     }
   }, [message]);
@@ -79,6 +95,21 @@ export default function TeamDetail({ auth, myTeam, teamMembersNumber, message }:
                     {myTeam.team.name}
                   </a>
                 </p>
+              </div>
+
+              <div>
+                <p className="text-sm font-semibold text-gray-600">都道府県</p>
+                <p className="text-gray-800">{myTeam.team.prefectureLabel}</p>
+              </div>
+
+              <div>
+                <p className="text-sm font-semibold text-gray-600">住所</p>
+                <p className="text-gray-800">{myTeam.team.address || '-'}</p>
+              </div>
+
+              <div>
+                <p className="text-sm font-semibold text-gray-600">よく使う施設名</p>
+                <p className="text-gray-800">{myTeam.team.favoriteFacility || '-'}</p>
               </div>
 
               <div>
@@ -132,6 +163,44 @@ export default function TeamDetail({ auth, myTeam, teamMembersNumber, message }:
             </div>
           </div>
         </div>
+
+        {/* アルバム一覧 */}
+        {albums.length > 0 && (
+          <div className="bg-white shadow-lg rounded-xl p-6 mt-8">
+            <h3 className="text-xl font-bold border-b pb-3 mb-6">アルバム</h3>
+
+            {albums.length === 0 ? (
+              <p className="text-gray-500">アルバムはまだ作成されていません。</p>
+            ) : (
+              albums.map((album) => (
+                <div key={album.id} className="mb-8">
+                  <h4 className="text-md font-semibold text-gray-800 mb-3">{album.name}</h4>
+                  {album.images.length === 0 ? (
+                    <div className="flex justify-center">
+                      <img
+                        src="/images/no_image.png"
+                        alt="画像未登録"
+                        className="w-32 h-32 object-contain opacity-60"
+                      />
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                      {album.images.map((img) => (
+                        <div key={img.id}>
+                          <img
+                            src={img.path_base64}
+                            alt="アルバム画像"
+                            className="w-full h-24 object-cover rounded border"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        )}
       </div>
     </AuthenticatedLayout>
   );

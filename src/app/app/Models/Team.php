@@ -51,6 +51,11 @@ class Team extends Model
         'deleted_at',
     ];
 
+    protected $casts = [
+        'sport_affiliation_type' => SportAffiliationTypeEnum::class,
+        'prefecture_code' => Prefecture::class,
+    ];
+
     /**
      * 招待試合
      *
@@ -109,9 +114,9 @@ class Team extends Model
      */
     public static function getMyTeamByUserId(string $userId): Team
     {
-        return self::whereHas('team_members', function ($query) use ($userId) {
+        return self::whereRelation('team_members', function ($query) use ($userId) {
             $query->where('user_id', '=', $userId);
-        })->first();
+        })->with('album.image')->first();
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\ConsentStatusTypeEnum;
@@ -12,7 +12,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -68,6 +67,9 @@ class MyTeamController extends Controller
                 'team' => [
                     'id' => $myTeam->id,
                     'name' => $myTeam->name,
+                    'prefectureLabel' => $myTeam->prefecture_code->label(),
+                    'address' => $myTeam->address,
+                    'favoriteFacility' => $myTeam->favorite_facility,
                     'logo' => base64_encode(file_get_contents(Storage::path($myTeam->image->path))),
                     'extension' => $myTeam->image->extension,
                     'team_url' => $myTeam->url,
@@ -75,6 +77,20 @@ class MyTeamController extends Controller
                 ],
             ],
             'teamMembersNumber' => $myTeam->team_members->count(),
+            'albums' => $myTeam->album->map(function ($album) {
+                return [
+                    'id' => $album->id,
+                    'name' => $album->name,
+                    'images' => collect($album->image)->map(function ($image) {
+                        return [
+                            'id' => $image->id,
+                            'path_base64' => $image->getPathBase64Attribute(),
+                            'extension' => $image->extension,
+                            'mime_type' => $image->mime_type,
+                        ];
+                    })->values(),
+                ];
+            })->values(),
             'message' => [
                 'success' => session('flash_message'),
             ],
@@ -168,33 +184,48 @@ class MyTeamController extends Controller
             }
 
             // アルバム登録、更新
-            foreach ($request->input('albums') as $index => $albumData) {
-                $albumId = $albumData['id'] ?? null;
-                $album = Album::find($albumId)?? new Album([
-                    'albumable_type' => Team::class,
-                    'albumable_id' => $team->id,
-                ]);
-                $album->name = $albumData['name'];
-                $album->save();
-
-                // アルバムの画像を削除
-                $deleteImages = $albumData['deleteImages'] ?? [];
-                foreach ($deleteImages as $image) {
-                    $albumImage = $album->image()->find($image);
-                    if ($albumImage) {
-                        Storage::delete($albumImage->path);
-                        $albumImage->delete();
+            $albums = $request->input('albums') ?? [];
+            foreach ($albums as $index => $albumData) {
+                // アルバムの削除
+                if ($albumData['isDelete']) {
+                    $album = Album::find($albumData['id']);
+                    if ($album) {
+                        // アルバムの画像を削除
+                        foreach ($album->image as $image) {
+                            Storage::delete($image->path);
+                            $image->delete();
+                        }
+                        $album->delete();
                     }
-                }
-
-                // アルバムの画像を登録
-                $addImages = $request->file("albums.{$index}.addImages") ?? [];
-                foreach ($addImages as $image) {
-                    $album->image()->create([
-                        'path' => Storage::putFile(Team::ALBUM_IMAGE_PATH, $image),
-                        'extension' => $image->extension(),
-                        'mime_type' => $image->getMimeType(),
+                } else {
+                    // アルバムの登録、更新
+                    $albumId = $albumData['id'] ?? null;
+                    $album = Album::find($albumId)?? new Album([
+                        'albumable_type' => Team::class,
+                        'albumable_id' => $team->id,
                     ]);
+                    $album->name = $albumData['name'];
+                    $album->save();
+
+                    // アルバムの画像を削除
+                    $deleteImages = $albumData['deleteImages'] ?? [];
+                    foreach ($deleteImages as $image) {
+                        $albumImage = $album->image()->find($image);
+                        if ($albumImage) {
+                            Storage::delete($albumImage->path);
+                            $albumImage->delete();
+                        }
+                    }
+
+                    // アルバムの画像を登録
+                    $addImages = $request->file("albums.{$index}.addImages") ?? [];
+                    foreach ($addImages as $image) {
+                        $album->image()->create([
+                            'path' => Storage::putFile(Team::ALBUM_IMAGE_PATH, $image),
+                            'extension' => $image->extension(),
+                            'mime_type' => $image->getMimeType(),
+                        ]);
+                    }
                 }
             }
         });

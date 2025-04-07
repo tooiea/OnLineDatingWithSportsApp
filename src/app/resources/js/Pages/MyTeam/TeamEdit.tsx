@@ -65,6 +65,7 @@ export default function TeamEdit({ auth, team, albums, prefectures }: Props) {
     deleteImageIds: string[];
     expanded: boolean;
     isNew: boolean;
+    isDelete?: boolean;
     existingImages?: AlbumImage[];
   }>>(() => {
     const initial: Record<string, any> = {};
@@ -76,12 +77,13 @@ export default function TeamEdit({ auth, team, albums, prefectures }: Props) {
         expanded: false,
         isNew: false,
         existingImages: album.images || [],
+        isDelete: false,
       };
     });
     return initial;
   });
 
-  const { data, setData, processing, errors, setError, clearErrors } = useForm<FormDataType>({
+  const { data, setData, processing, errors, setError } = useForm<FormDataType>({
     teamName: team.name || '',
     teamUrl: team.team_url || '',
     prefecture: team.prefecture ? Number(team.prefecture) : 0,
@@ -135,6 +137,16 @@ export default function TeamEdit({ auth, team, albums, prefectures }: Props) {
     });
   };
 
+  const toggleDeleteAlbum = (albumId: string) => {
+    setAlbumData((prev) => ({
+      ...prev,
+      [albumId]: {
+        ...prev[albumId],
+        isDelete: !prev[albumId].isDelete,
+      },
+    }));
+  };
+
   const addNewAlbum = () => {
     const newId = uuidv4();
     setAlbumData((prev) => ({
@@ -145,6 +157,7 @@ export default function TeamEdit({ auth, team, albums, prefectures }: Props) {
         deleteImageIds: [],
         expanded: true,
         isNew: true,
+        isDelete: false,
       },
     }));
   };
@@ -167,6 +180,7 @@ export default function TeamEdit({ auth, team, albums, prefectures }: Props) {
     Object.entries(albumData).forEach(([albumId, album]) => {
       formData.append(`albums[${albumIndex}][id]`, albumId);
       formData.append(`albums[${albumIndex}][name]`, album.name);
+      formData.append(`albums[${albumIndex}][isDelete]`, album.isDelete ? '1' : '0');
       album.newImages.forEach((img) => {
         formData.append(`albums[${albumIndex}][addImages][]`, img);
       });
@@ -241,13 +255,23 @@ export default function TeamEdit({ auth, team, albums, prefectures }: Props) {
             <h2 className="text-lg font-bold mb-2">アルバム</h2>
             <button type="button" onClick={addNewAlbum} className="mb-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">＋ アルバム追加</button>
             {Object.entries(albumData).map(([albumId, album], index) => (
-              <div key={albumId} className="border p-4 rounded-md shadow-sm mb-4">
+              <div key={albumId} className={`border p-4 rounded-md shadow-sm mb-4 ${album.isDelete ? 'bg-red-100' : ''}`}>
                 <div className="flex justify-between items-center">
-                  <h3 className="font-semibold">{album.name || '新規アルバム'}</h3>
-                  <button type="button" onClick={() => toggleAlbumExpand(albumId)} className="text-sm text-blue-600">{album.expanded ? '閉じる' : '編集'}</button>
+                  <div className="flex items-center space-x-2">
+                    <h3 className="font-semibold">{album.name || '新規アルバム'}</h3>
+                    {album.isDelete && <span className="text-red-600 text-xs">（削除予定）</span>}
+                  </div>
+                  <div className="flex gap-2">
+                    <button type="button" onClick={() => toggleAlbumExpand(albumId)} className="text-sm text-blue-600">{album.expanded ? '閉じる' : '編集'}</button>
+                    {!album.isNew && (
+                      <button type="button" onClick={() => toggleDeleteAlbum(albumId)} className="text-sm text-red-500">
+                        {album.isDelete ? '削除を取消' : '削除'}
+                      </button>
+                    )}
+                  </div>
                 </div>
 
-                {album.expanded ? (
+                {album.expanded && !album.isDelete && (
                   <div className="mt-4 space-y-4">
                     <input
                       type="text"
@@ -289,16 +313,6 @@ export default function TeamEdit({ auth, team, albums, prefectures }: Props) {
                     />
                     {errors[`albums.${index}.addImages.0`] && <p className="text-sm text-red-500">{errors[`albums.${index}.addImages.0`]}</p>}
                   </div>
-                ) : (
-                  (album.existingImages ?? []).length > 0 && (
-                    <div className="grid grid-cols-5 gap-2 mt-2">
-                      {(album.existingImages ?? []).map((img) => (
-                        <div key={img.id} className="relative">
-                          <img src={img.path_base64} className="w-full h-full object-cover rounded" />
-                        </div>
-                      ))}
-                    </div>
-                  )
                 )}
               </div>
             ))}

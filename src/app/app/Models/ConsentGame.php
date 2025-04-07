@@ -46,6 +46,10 @@ class ConsentGame extends Model
         'deleted_at',
     ];
 
+    protected $casts = [
+        'consent_status' => ConsentStatusTypeEnum::class,
+    ];
+
     /**
      * 返信
      *
@@ -124,7 +128,7 @@ class ConsentGame extends Model
                     'id' => $invite->id,
                     'created_at' => $invite->created_at,
                     'consent_status' => $invite->consent_status,
-                    'consent_status_label' => ConsentStatusTypeEnum::from($invite->consent_status)->label(),
+                    'consent_status_label' => $invite->consent_status->label(),
                     'game_date' => $invite->game_date,
                     'first_preferered_date' => $invite->first_preferered_date,
                     'second_preferered_date' => $invite->second_preferered_date,
@@ -167,7 +171,7 @@ class ConsentGame extends Model
                     'id' => $invite->id,
                     'created_at' => $invite->created_at,
                     'consent_status' => $invite->consent_status,
-                    'consent_status_label' => ConsentStatusTypeEnum::from($invite->consent_status)->label(),
+                    'consent_status_label' => $invite->consent_status->label(),
                     'game_date' => $invite->game_date,
                     'first_preferered_date' => $invite->first_preferered_date,
                     'second_preferered_date' => $invite->second_preferered_date,
