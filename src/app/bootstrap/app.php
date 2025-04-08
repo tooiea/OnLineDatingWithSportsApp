@@ -72,6 +72,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 return null;
             }
 
+            // 認証エラー時はLaravelのロジックで処理する
+            if ($e instanceof \Illuminate\Auth\AuthenticationException) {
+                return null;
+            }
+
             $status = 500;
 
             if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface) {
