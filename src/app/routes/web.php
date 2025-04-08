@@ -72,7 +72,7 @@ Route::middleware('auth:user')->group(function () {
         Route::post('edit', [MyTeamController::class, 'update'])->name('update');
 
         // 招待された試合
-        Route::prefix('consent_games/{team_id}')->name('consent_game.')->group(function() {
+        Route::prefix('consent_games/{consent_game_id}')->name('consent_game.')->group(function() {
             Route::get('/', [ConsentGameInviteController::class, 'index'])->name('detail');
             Route::get('reply', [ConsentGameInviteController::class, 'reply'])->name('reply.index');
             Route::get('reply/back', function (Request $request) {

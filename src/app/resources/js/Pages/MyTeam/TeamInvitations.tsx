@@ -80,7 +80,7 @@ export default function TeamInvitations({
             <ul className="flex flex-wrap gap-6 justify-center">
               {myTeamInvites.length > 0 ? (
                 myTeamInvites.map((invite) => (
-                  <InviteCard key={invite.id} invite={invite} inviteStatuses={inviteStatuses} />
+                  <InviteCard key={invite.id} invite={invite} inviteStatuses={inviteStatuses} isInviter={true} />
                 ))
               ) : (
                 <p className="text-gray-500">まだ招待したチームはありません。</p>
@@ -91,7 +91,7 @@ export default function TeamInvitations({
             <ul className="flex flex-wrap gap-6 justify-center">
               {asGuestInvites.length > 0 ? (
                 asGuestInvites.map((invite) => (
-                  <InviteCard key={invite.id} invite={invite} inviteStatuses={inviteStatuses} />
+                  <InviteCard key={invite.id} invite={invite} inviteStatuses={inviteStatuses} isInviter={false} />
                 ))
               ) : (
                 <p className="text-gray-500">まだ招待されているチームはありません。</p>
