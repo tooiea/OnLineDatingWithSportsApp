@@ -250,6 +250,10 @@ return [
         'address' => '市区町村',
         'albums.*.addImages.*' => 'アルバム画像',
         'albums.*.deleteImages.*' => 'アルバム画像',
+        'first_preferered_date' => '第一希望日',
+        'second_preferered_date' => '第二希望日',
+        'third_preferered_date' => '第三希望日',
+        'message' => 'メッセージ',
     ],
 
 ];

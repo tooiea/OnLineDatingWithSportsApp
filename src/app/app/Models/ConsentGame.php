@@ -95,9 +95,9 @@ class ConsentGame extends Model
      *
      * @return morphMany
      */
-    public function comment() : morphMany
+    public function message() : morphMany
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany(Message::class, 'messageable');
     }
 
     /**

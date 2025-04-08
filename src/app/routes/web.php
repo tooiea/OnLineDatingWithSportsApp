@@ -72,7 +72,7 @@ Route::middleware('auth:user')->group(function () {
         Route::post('edit', [MyTeamController::class, 'update'])->name('update');
 
         // 招待された試合
-        Route::prefix('consent_games/{consent_game_id}')->name('consent_game.')->group(function() {
+        Route::prefix('consent_games/{team_id}')->name('consent_game.')->group(function() {
             Route::get('/', [ConsentGameInviteController::class, 'index'])->name('detail');
             Route::get('reply', [ConsentGameInviteController::class, 'reply'])->name('reply.index');
             Route::get('reply/back', function (Request $request) {
@@ -95,11 +95,9 @@ Route::middleware('auth:user')->group(function () {
             // チームへ招待
             Route::prefix('invite_game')->name('invite_game.')->group(function () {
                 Route::get('/', [ConsentGameInviteController::class, 'index'])->name('index');
-                Route::get('back', function (Request $request) {
-
-                })->name('back');
-                Route::get('confirm', [ConsentGameInviteController::class, 'confirm'])->name('confirm');
-                Route::get('complete', [ConsentGameInviteController::class, 'complete'])->name('complete');
+                Route::post('back', [ConsentGameInviteController::class, 'back'])->name('back');
+                Route::post('confirm', [ConsentGameInviteController::class, 'confirm'])->name('confirm');
+                Route::post('complete', [ConsentGameInviteController::class, 'complete'])->name('complete');
             });
         });
     });

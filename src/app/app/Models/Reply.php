@@ -55,8 +55,8 @@ class Reply extends Model
      *
      * @return MorphMany
      */
-    public function comment() : MorphMany
+    public function message() : MorphMany
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany(Message::class, 'messageable');
     }
 }

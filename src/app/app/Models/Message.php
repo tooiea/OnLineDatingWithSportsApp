@@ -9,21 +9,21 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * @property string $uuid
- * @property string $commentable_type
- * @property string $commentable_id
+ * @property string $messageable_type
+ * @property string $messageable_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class Comment extends Model
+class Message extends Model
 {
     use HasUuids;
 
     /**
-     * 共通コメント
+     * 共通メッセージ
      *
      * @return MorphTo
      */
-    public function commentable(): MorphTo
+    public function messageable(): MorphTo
     {
         return $this->morphTo();
     }
