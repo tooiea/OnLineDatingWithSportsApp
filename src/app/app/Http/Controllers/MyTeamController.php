@@ -43,11 +43,13 @@ class MyTeamController extends Controller
             'myTeamInvites' => $myTeamInvites,
             'asGuestInvites' => $asGuestInvites,
             'session' => $request->session()->all(),
-        ])->with([
             'inviteStatuses' => [
                 ConsentStatusTypeEnum::WAIT->value => ConsentStatusTypeEnum::WAIT->label(),
                 ConsentStatusTypeEnum::ACCEPTED->value => ConsentStatusTypeEnum::ACCEPTED->label(),
                 ConsentStatusTypeEnum::DECLINED->value => ConsentStatusTypeEnum::DECLINED->label(),
+            ],
+            'message' => [
+                'success' => session('flash_message'),
             ],
         ]);
     }
