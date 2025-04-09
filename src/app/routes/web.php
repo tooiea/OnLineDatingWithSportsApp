@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\ConsentGameInviteController;
+use App\Http\Controllers\ConsentGameReplyController;
 use App\Http\Controllers\MyTeamController;
 use App\Http\Controllers\Sns\GoogleLoginController;
 use App\Http\Controllers\Sns\LineLoginController;
 use App\Http\Controllers\TempTeamJoinController;
 use App\Http\Controllers\TempTeamRegisterController;
 use App\Http\Controllers\UserLoginController;
-use App\Models\User;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UsersController;
@@ -73,13 +73,12 @@ Route::middleware('auth:user')->group(function () {
 
         // 招待された試合
         Route::prefix('consent_games/{consent_game_id}')->name('consent_game.')->group(function() {
-            Route::get('/', [ConsentGameInviteController::class, 'index'])->name('detail');
-            Route::get('reply', [ConsentGameInviteController::class, 'reply'])->name('reply.index');
-            Route::get('reply/back', function (Request $request) {
-
-            })->name('reply.back');
-            Route::get('reply/confirm', [ConsentGameInviteController::class, 'confirm'])->name('reply.confirm');
-            Route::get('reply/complete', [ConsentGameInviteController::class, 'complete'])->name('reply.complete');
+            Route::get('/', [ConsentGameReplyController::class, 'detail'])->name('detail');
+            Route::get('reply', [ConsentGameReplyController::class, 'index'])->name('reply.index');
+            Route::post('reply/back', [ConsentGameReplyController::class, 'back'])->name('reply.back');
+            Route::post('reply/confirm', [ConsentGameReplyController::class, 'confirm'])->name('reply.confirm');
+            Route::post('reply/complete', [ConsentGameReplyController::class, 'complete'])->name('reply.complete');
+            Route::post('reply/message', [ConsentGameReplyController::class, 'replyMessage'])->name('reply.message');
         });
     });
 

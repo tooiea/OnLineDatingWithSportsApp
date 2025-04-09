@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 
 /**
@@ -53,10 +54,10 @@ class Reply extends Model
     /**
      * コメント
      *
-     * @return MorphMany
+     * @return MorphOne
      */
-    public function message() : MorphMany
+    public function message() : MorphOne
     {
-        return $this->morphMany(Message::class, 'messageable');
+        return $this->morphOne(Message::class, 'messageable');
     }
 }

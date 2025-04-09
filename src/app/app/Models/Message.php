@@ -11,12 +11,19 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $uuid
  * @property string $messageable_type
  * @property string $messageable_id
+ * @property string $message
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
 class Message extends Model
 {
     use HasUuids;
+
+    protected $fillable = [
+        'messageable_type',
+        'messageable_id',
+        'message',
+    ];
 
     /**
      * 共通メッセージ

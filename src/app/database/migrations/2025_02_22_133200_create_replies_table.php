@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('replies', function (Blueprint $table) {
-            $table->uuid()->primary();
+            $table->uuid('id')->primary();
             $table->foreignIdFor(ConsentGame::class, 'consent_game_id');
             $table->foreignIdFor(Team::class, 'team_id');
             $table->timestampsTz(precision: 0);

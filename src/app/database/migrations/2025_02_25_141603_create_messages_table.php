@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuidMorphs('messageable');
+            $table->text('message');
             $table->timestampsTz(precision: 0);
         });
     }
