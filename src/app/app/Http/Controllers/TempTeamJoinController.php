@@ -84,21 +84,20 @@ class TempTeamJoinController extends Controller
     public function complete(InvitationCodeRequest $request, string $invitation_code): RedirectResponse | Response
     {
         // セッションから取得
-        $form = $request->session()->pull('temp_team_register.form');
+        $tempTeamRegister = $request->session()->pull('temp_team_register.form');
 
-        if (is_null($form)) {
+        if (is_null($tempTeamRegister)) {
             // セッションに値がない場合、初期ページへリダイレクト
             return redirect()->route('temp_register.team.index');
         }
-        $tempTeamRegister = $form->getAll();
 
         // DB登録とメール送信を実行
         DB::transaction(function () use ($tempTeamRegister, $invitation_code) {
             // temp_usersモデルでDB登録とメール送信
             $tempUser = new TempUser();
-            $tempUser->nickname = $tempTeamRegister['nickname'];
-            $tempUser->email = $tempTeamRegister['email'];
-            $tempUser->password = Hash::make($tempTeamRegister['password']);
+            $tempUser->nickname = $tempTeamRegister->nickname;
+            $tempUser->email = $tempTeamRegister->email;
+            $tempUser->password = Hash::make($tempTeamRegister->password);
             $tempUser->invitation_code = $invitation_code;
             $tempUser->save();
             $uuid = Str::uuid();

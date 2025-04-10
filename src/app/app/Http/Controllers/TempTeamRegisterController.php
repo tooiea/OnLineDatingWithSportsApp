@@ -80,16 +80,11 @@ class TempTeamRegisterController extends Controller
      */
     public function back(Request $request): RedirectResponse
     {
-        $form = $request->session()->pull('temp_team_register.form');
-
-        if (is_null($form)) {
-            // セッションに値がない場合、初期ページへリダイレクト
-            return redirect()->route('temp_register.team.index');
-        }
-        $tempTeamRegister = $form->getAll();
-        $tempFile = $tempTeamRegister['tempFile'];
+        $tempTeamRegister = $request->session()->pull('temp_team_register.form');
+        $values = $tempTeamRegister? $tempTeamRegister->getAll() : null;
+        $tempFile = $tempTeamRegister->tempFile;
         $tempFile->delete(); // 仮保存ファイルの削除
-        return redirect()->route('temp_register.team.index')->withInput($tempTeamRegister);
+        return redirect()->route('temp_register.team.index')->withInput($values);
     }
 
     /**
@@ -100,34 +95,33 @@ class TempTeamRegisterController extends Controller
      */
     public function complete(Request $request): Response|RedirectResponse
     {
-        $form = $request->session()->pull('temp_team_register.form');
+        $tempTeamRegister = $request->session()->pull('temp_team_register.form');
 
-        if (is_null($form)) {
+        if (is_null($tempTeamRegister)) {
             // セッションに値がない場合、初期ページへリダイレクト
             return redirect()->route('temp_register.team.index');
         }
 
-        $tempTeamRegister = $form->getAll();
         DB::transaction(function () use ($tempTeamRegister) {
             $uuid = Str::uuid();
 
             // 仮登録情報を保存
             $tempUser = new TempUser();
-            $tempUser->nickname = $tempTeamRegister['nickname'];
-            $tempUser->email = $tempTeamRegister['email'];
-            $tempUser->password = Hash::make($tempTeamRegister['password']);
-            $tempUser->sport_affiliation_type = $tempTeamRegister['sportAffiliationType'];
-            $tempUser->team_name = $tempTeamRegister['teamName'];
-            $tempUser->team_url = $tempTeamRegister['teamUrl'];
-            $tempUser->prefecture_code = $tempTeamRegister['prefecture'];
-            $tempUser->address = $tempTeamRegister['address'];
+            $tempUser->nickname = $tempTeamRegister->nickname;
+            $tempUser->email = $tempTeamRegister->email;
+            $tempUser->password = Hash::make($tempTeamRegister->password);
+            $tempUser->sport_affiliation_type = $tempTeamRegister->sportAffiliationType;
+            $tempUser->team_name = $tempTeamRegister->teamName;
+            $tempUser->team_url = $tempTeamRegister->teamUrl;
+            $tempUser->prefecture_code = $tempTeamRegister->prefecture;
+            $tempUser->address = $tempTeamRegister->address;
             $tempUser->save();
 
             // チーム画像を保存
             $tempUser->image()->save(new Image([
-                'path' => $tempTeamRegister['tempFile']->path(),
-                'extension' => $tempTeamRegister['tempFile']->extension(),
-                'mime_type' => $tempTeamRegister['tempFile']->mimeType()
+                'path' => $tempTeamRegister->tempFile->path(),
+                'extension' => $tempTeamRegister->tempFile->extension(),
+                'mime_type' => $tempTeamRegister->tempFile->mimeType()
             ]));
 
             // 本登録用の認証コード
