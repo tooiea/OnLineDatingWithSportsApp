@@ -121,9 +121,9 @@ class ConsentGameReplyController extends Controller
     {
         $consentGame = ConsentGame::findorFail($consent_game_id);
         session(['consent_game_reply' => new ConsentGameReply(
-            first_preferered_date: $request->validated('first_preferered_date'),
-            second_preferered_date: $request->validated('second_preferered_date'),
-            third_preferered_date: $request->validated('third_preferered_date'),
+            first_preferered_date: (int)$request->validated('first_preferered_date'),
+            second_preferered_date: (int)$request->validated('second_preferered_date'),
+            third_preferered_date: (int)$request->validated('third_preferered_date'),
             message: $request->validated('message'),
         )]);
 
@@ -131,9 +131,9 @@ class ConsentGameReplyController extends Controller
         $opponentTeam = $consentGame->invitee()->where('id', '!=', $myTeam->id)->first() ?? $consentGame->guest()->where('id', '!=', $myTeam->id)->first();
         return Inertia::render('ConsentGame/ConsentReplyConfirm', [
             'form' => [
-                'first_preferered_date' => ConsentStatusTypeEnum::from($request->validated('first_preferered_date'))->replyLabel(),
-                'second_preferered_date' => ConsentStatusTypeEnum::from($request->validated('second_preferered_date'))->replyLabel(),
-                'third_preferered_date' => $request->validated('third_preferered_date') ? ConsentStatusTypeEnum::from($request->validated('third_preferered_date'))->replyLabel() : null,
+                'first_preferered_date' => ConsentStatusTypeEnum::from((int)$request->validated('first_preferered_date'))->replyLabel(),
+                'second_preferered_date' => ConsentStatusTypeEnum::from((int)$request->validated('second_preferered_date'))->replyLabel(),
+                'third_preferered_date' => $request->validated('third_preferered_date') ? ConsentStatusTypeEnum::from((int)$request->validated('third_preferered_date'))->replyLabel() : null,
                 'message' => $request->validated('message'),
             ],
             'consent_game' => [
