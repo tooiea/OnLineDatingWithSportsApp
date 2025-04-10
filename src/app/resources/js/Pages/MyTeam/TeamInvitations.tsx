@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
 import { PageProps } from '@/types';
@@ -50,14 +51,27 @@ export default function TeamInvitations({
     router.post(route('myteam.markAsRead', id));
   };
 
+  // x秒後にsuccessメッセージを非表示
+  const [showSuccess, setShowSuccess] = useState(!!message?.success);
+
+  useEffect(() => {
+    if (showSuccess) {
+      const timer = setTimeout(() => {
+        setShowSuccess(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccess]);
+
   return (
     <AuthenticatedLayout>
       <Head title="チーム招待状況" />
 
       <div className="max-w-7xl mx-auto py-8 px-4">
-        {message?.success && (
-          <div className="mb-6 px-4 py-3 bg-green-100 border border-green-300 text-green-800 rounded-md shadow-sm transition-opacity duration-500 ease-in-out">
-            {message.success}
+        {/* メッセージの一時表示 */}
+        {showSuccess && (
+          <div className="mb-6 px-4 py-3 bg-green-100 border border-green-300 text-green-800 rounded-md shadow-sm transition-opacity duration-300 ease-in-out">
+            {message?.success}
           </div>
         )}
 

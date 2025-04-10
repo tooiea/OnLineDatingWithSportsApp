@@ -3,6 +3,7 @@ import { Head, useForm } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import ConsentStatusClass from '@/Components/ConsentStatusClass';
 dayjs.locale('ja');
 
 interface TeamInfo {
@@ -23,7 +24,8 @@ interface ConsentGame {
   id: string;
   invitee: TeamInfo;
   guest: TeamInfo;
-  consent_status: string;
+  consent_status: number;
+  consent_status_label: string;
   game_date?: string;
   first_preferered_date?: string;
   second_preferered_date?: string;
@@ -60,6 +62,9 @@ const ConsentDetail: React.FC<Props> = ({ myTeam, consentGame }) => {
     e.preventDefault();
     post(route('myteam.consent_game.reply.message', consentGame.id), {
       preserveScroll: true,
+      onSuccess: () => {
+        setData('message', ''); // 入力欄をクリア
+      },
     });
   };
 
@@ -87,8 +92,8 @@ const ConsentDetail: React.FC<Props> = ({ myTeam, consentGame }) => {
 
               <div className="flex flex-col items-center justify-center space-y-1 md:space-y-0 md:space-x-4 md:flex-row">
                 <div className="text-sm text-gray-500">進捗状況</div>
-                <span className="inline-block px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded-full whitespace-nowrap">
-                  {consentGame.consent_status}
+                <span className={`inline-block px-3 py-1 text-sm rounded-full whitespace-nowrap ${ConsentStatusClass(consentGame.consent_status)}`}>
+                  {consentGame.consent_status_label}
                 </span>
                 <div className="text-2xl text-gray-400 md:hidden">↓</div>
                 <div className="hidden md:block text-2xl text-gray-400">→</div>
@@ -105,31 +110,47 @@ const ConsentDetail: React.FC<Props> = ({ myTeam, consentGame }) => {
             </div>
 
             <div className="space-y-4">
-              {consentGame.consent_status === '承諾' ? (
+              {consentGame.consent_status_label === '承諾' ? (
                 <div className="space-y-2">
                   <div className="font-semibold mb-1">試合決定日時:</div>
                   <p>{getFormattedDateTime(consentGame.game_date)}</p>
                 </div>
-              ) : consentGame.consent_status === '辞退' ? (
+              ) : consentGame.consent_status_label === '辞退' ? (
                 <div className="text-center text-gray-500">承認日程 -</div>
               ) : (
                 <div className="space-y-1">
                   <div className="font-semibold">希望日程</div>
-                  <div><span className="font-semibold">希望①：</span>{getFormattedDateTime(consentGame.first_preferered_date)}</div>
-                  <div><span className="font-semibold">希望②：</span>{getFormattedDateTime(consentGame.second_preferered_date)}</div>
-                  {consentGame.third_preferered_date && (
-                    <div><span className="font-semibold">希望③：</span>{getFormattedDateTime(consentGame.third_preferered_date)}</div>
-                  )}
+                  {[consentGame.first_preferered_date, consentGame.second_preferered_date, consentGame.third_preferered_date]
+                    .map((date, index) => {
+                      if (!date) return null;
+                      const label = `${['①', '②', '③'][index]}`;
+                      const formattedDate = getFormattedDateTime(date);
+                      const isDecided = consentGame.consent_status_label === '試合日時決定' && consentGame.game_date === date;
+
+                      return (
+                        <div key={index} className="flex items-center space-x-2">
+                          <div><span className="font-semibold">{label} </span>{formattedDate}</div>
+                          {isDecided && (
+                            <span className="px-2 py-0.5 bg-yellow-100 text-yellow-800 text-xs rounded border border-yellow-300">
+                              決定
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
                 </div>
               )}
             </div>
 
             <div className="mt-6">
               <div className="font-semibold mb-2">メッセージ履歴</div>
+
+              {/* 最初のメッセージ（招待時メッセージ） */}
               {consentGame.message && (
-                <div className={`flex mt-4 ${isInviter ? 'justify-end' : ''}`}>
+                <div className={`flex mt-4 ${consentGame.invitee.id === myTeam.id ? 'justify-end' : ''}`}>
                   <div className="flex items-start space-x-2">
-                    {!isInviter && (
+                    {/* 相手チームのアイコン */}
+                    {myTeam.id !== consentGame.invitee.id && (
                       <img src={consentGame.invitee.image_path} className="w-10 h-10 rounded-full" />
                     )}
                     <div className="bg-gray-100 p-3 rounded-lg max-w-md">
@@ -138,13 +159,15 @@ const ConsentDetail: React.FC<Props> = ({ myTeam, consentGame }) => {
                         {getFormattedDateTime(consentGame.created_at)}
                       </div>
                     </div>
-                    {isInviter && (
+                    {/* 自チームのアイコン */}
+                    {myTeam.id === consentGame.invitee.id && (
                       <img src={consentGame.invitee.image_path} className="w-10 h-10 rounded-full" />
                     )}
                   </div>
                 </div>
               )}
 
+              {/* 返信メッセージ一覧 */}
               {consentGame.replies.map((reply) => {
                 if (!reply.message) return null;
                 const isOwn = reply.team_id === myTeam.id;

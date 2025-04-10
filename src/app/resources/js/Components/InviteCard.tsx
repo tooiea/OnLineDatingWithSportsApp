@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
+import ConsentStatusClass from './ConsentStatusClass';
 dayjs.locale('ja');
 
 export interface InviteData {
@@ -73,22 +74,9 @@ const getDeadlineLabel = (
   return null;
 };
 
-const getConsentStatusClass = (status: number) => {
-  switch (status) {
-    case 1:
-      return 'bg-red-100 text-red-800 border border-yellow-400';
-    case 2:
-      return 'bg-green-100 text-green-800 border border-green-400';
-    case 3:
-      return 'bg-gray-100 text-gray-800 border border-gray-400';
-    default:
-      return 'bg-gray-100 text-gray-700';
-  }
-};
-
 const InviteCard: React.FC<InviteCardProps> = ({ invite, inviteStatuses, isInviter }) => {
   const deadlineLabel =
-    invite.consent_status === 1
+    invite.consent_status === 0
       ? getDeadlineLabel(
           invite.first_preferered_date,
           invite.second_preferered_date,
@@ -99,7 +87,7 @@ const InviteCard: React.FC<InviteCardProps> = ({ invite, inviteStatuses, isInvit
   // ルートの切り替え
   const detailRoute = isInviter
     ? route('myteam.consent_game.detail', invite.id)
-    : invite.consent_status === 1
+    : invite.consent_status === 0
       ? route('myteam.consent_game.reply.index', invite.id)
       : route('myteam.consent_game.detail', invite.id);
 
@@ -109,7 +97,7 @@ const InviteCard: React.FC<InviteCardProps> = ({ invite, inviteStatuses, isInvit
         <div>
           <div className="flex justify-between items-center mb-2">
             <div className="text-lg font-bold truncate max-w-[250px]">{invite.team.name}</div>
-            <span className={`text-xs font-bold px-2 py-1 rounded ${getConsentStatusClass(invite.consent_status)}`}>
+            <span className={`text-xs font-bold px-2 py-1 rounded ${ConsentStatusClass(invite.consent_status)}`}>
               {inviteStatuses[invite.consent_status]}
             </span>
           </div>
