@@ -13,6 +13,7 @@ use App\Models\Team;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -171,33 +172,36 @@ class ConsentGameReplyController extends Controller
     public function complete(ConsentGameIdRequest $request, string $consent_game_id): RedirectResponse
     {
         try {
-            $form = session()->pull('consent_game_reply');
-            $values = $form ? $form->getAll() : [];
+            DB::transaction(function () use ($consent_game_id) {
+                $consentGameReply = session()->pull('consent_game_reply');
 
-            if (empty($values)) {
-                return redirect()->route('myteam.consent_game.reply.index', [
-                    'consent_game_id' => $consent_game_id
-                ]);
-            }
+                if (empty($consentGameReply)) {
+                    return redirect()->route('myteam.consent_game.reply.index', [
+                        'consent_game_id' => $consent_game_id
+                    ]);
+                }
 
-            $consentGame = ConsentGame::with(['invitee', 'guest'])->findOrFail($consent_game_id);
-            if (! empty($form->getPreferedDate())) {
-                $consentGame->game_date = $consentGame->{$form->getPreferedDate()} ?? null;
-            }
-            $consentGame->consent_status = $form->getStatus();
-            $consentGame->save();
+                $consentGame = ConsentGame::with(['invitee', 'guest'])->findOrFail($consent_game_id);
 
-            $myTeam = Team::whereRelation('team_members', 'user_id', Auth::id())->firstOrFail();
-            $opponentTeam = $consentGame->invitee()->where('id', '!=', $myTeam->id)->first() ?? $consentGame->guest()->where('id', '!=', $myTeam->id)->first();
+                // 受諾した日程があれば試合日を登録
+                if (! empty($consentGameReply->getPreferedDate())) {
+                    $consentGame->game_date = $consentGame->{$consentGameReply->getPreferedDate()};
+                }
+                $consentGame->consent_status = $consentGameReply->status;
+                $consentGame->save();
 
-            $reply = new Reply();
-            $reply->consent_game_id = $consentGame->id;
-            $reply->team_id = $myTeam->id;
-            $reply->save();
+                $myTeam = Team::whereRelation('team_members', 'user_id', Auth::id())->firstOrFail();
+                $opponentTeam = $consentGame->invitee()->where('id', '!=', $myTeam->id)->first() ?? $consentGame->guest()->where('id', '!=', $myTeam->id)->first();
 
-            // メッセージがあれば登録
-            $values['message'] ? $reply->message()->create(['message' => $values['message']]) : null;
-            session()->flash('flash_message', $opponentTeam->name . __('messages.success.reply'));
+                $reply = new Reply();
+                $reply->consent_game_id = $consentGame->id;
+                $reply->team_id = $myTeam->id;
+                $reply->save();
+
+                // メッセージがあれば登録
+                $consentGameReply->message ? $reply->message()->create(['message' => $consentGameReply->message]) : null;
+                session()->flash('flash_message', $opponentTeam->name . __('messages.success.reply'));
+            });
         } catch (\Exception $e) {
             Log::error('Reply registration failed: ' . $e->getMessage());
             return redirect()->route('myteam.consent_game.detail', [

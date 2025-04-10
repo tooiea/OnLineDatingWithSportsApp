@@ -6,11 +6,11 @@ use App\Enums\ConsentStatusTypeEnum;
 
 class ConsentGameReply
 {
-    private readonly int $first_preferered_date;
-    private readonly int $second_preferered_date;
-    private readonly ?int $third_preferered_date;
-    private readonly ?string $message;
-    private ?int $status;
+    public readonly int $first_preferered_date;
+    public readonly int $second_preferered_date;
+    public readonly ?int $third_preferered_date;
+    public readonly ?string $message;
+    public ?int $status;
 
     public function __construct(
         int $first_preferered_date,
@@ -22,6 +22,7 @@ class ConsentGameReply
         $this->second_preferered_date = $second_preferered_date;
         $this->third_preferered_date = $third_preferered_date;
         $this->message = $message;
+        $this->status = ConsentStatusTypeEnum::DECLINED->value; // 初期値
     }
 
     /**
@@ -48,7 +49,6 @@ class ConsentGameReply
     {
         // 優先が高くかつ、受諾した日付を取得
         $preferedDate = '';
-        $this->status = ConsentStatusTypeEnum::DECLINED->value; // 初期値
         $prefereDates = [
             'first_preferered_date' => $this->first_preferered_date,
             'second_preferered_date' => $this->second_preferered_date,
@@ -63,15 +63,5 @@ class ConsentGameReply
             }
         }
         return $preferedDate;
-    }
-
-    /**
-     * 返信ステータスを取得
-     *
-     * @return string|null
-     */
-    public function getStatus(): ?int
-    {
-        return $this->status;
     }
 }
