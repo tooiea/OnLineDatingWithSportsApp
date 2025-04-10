@@ -16,11 +16,6 @@ use Inertia\Response;
 
 class ConsentGameInviteController extends Controller
 {
-    public function detail()
-    {
-
-    }
-
     /**
      * 試合招待画面
      *
@@ -75,16 +70,12 @@ class ConsentGameInviteController extends Controller
      */
     public function back(ConsentGameTeamIdRequest $request, string $team_id): RedirectResponse
     {
-        $form = $request->session()->get('consent_game_invite');
-        if (is_null($form)) {
-            return redirect()->route('team.invite_game.index', [
-                'team_id' => $team_id,
-            ]);
-        }
+        $ConsentGameInvite = $request->session()->get('consent_game_invite');
+        $values = $ConsentGameInvite? $ConsentGameInvite->getAll() : [];
         $guestTeam = Team::findOrFail($team_id);
         return redirect()->route('team.invite_game.index', [
             'team_id' => $guestTeam->id,
-        ])->withInput($form->getAll());
+        ])->withInput($values);
     }
 
     /**
@@ -96,14 +87,13 @@ class ConsentGameInviteController extends Controller
      */
     public function complete(ConsentGameTeamIdRequest $request, string $team_id): RedirectResponse
     {
-        $form = $request->session()->pull('consent_game_invite');
-        if (is_null($form)) {
+        $consentGameInvite = $request->session()->pull('consent_game_invite');
+        if (is_null($consentGameInvite)) {
             return redirect()->route('team.invite_game.index', [
                 'team_id' => $team_id,
             ]);
         }
 
-        $consentGameInvite = $form->getAll();
         $myTeam = Team::whereRelation('team_members', 'user_id', Auth::id())->first();
         $guestTeam = Team::findOrFail($team_id);
 
@@ -111,10 +101,10 @@ class ConsentGameInviteController extends Controller
         $consentGame->invitee_id = $myTeam->id;
         $consentGame->guest_id = $team_id;
         $consentGame->consent_status = ConsentStatusTypeEnum::WAIT;
-        $consentGame->first_preferered_date = $consentGameInvite['first_preferered_date'];
-        $consentGame->second_preferered_date = $consentGameInvite['second_preferered_date'];
-        $consentGame->third_preferered_date = $consentGameInvite['third_preferered_date'];
-        $consentGame->message = $consentGameInvite['message'];
+        $consentGame->first_preferered_date = $consentGameInvite->first_preferered_date;
+        $consentGame->second_preferered_date = $consentGameInvite->second_preferered_date;
+        $consentGame->third_preferered_date = $consentGameInvite->third_preferered_date;
+        $consentGame->message = $consentGameInvite->message;
         $consentGame->save();
 
         $request->session()->flash('flash_message', $guestTeam->name . __('messages.success.consent_sent'));

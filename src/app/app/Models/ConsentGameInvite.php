@@ -4,10 +4,10 @@ namespace App\Models;
 
 class ConsentGameInvite
 {
-    private readonly string $first_preferered_date;
-    private readonly string $second_preferered_date;
-    private readonly ?string $third_preferered_date;
-    private readonly ?string $message;
+    public readonly string $first_preferered_date;
+    public readonly string $second_preferered_date;
+    public readonly ?string $third_preferered_date;
+    public readonly ?string $message;
 
     /**
      * 必要な入力値のみ受付
