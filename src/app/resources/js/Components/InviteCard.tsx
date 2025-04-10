@@ -3,6 +3,8 @@ import { Link } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import ConsentStatusClass from './ConsentStatusClass';
+import getFormattedFullDateTime from './FormattedFullDateTime';
+
 dayjs.locale('ja');
 
 export interface InviteData {
@@ -29,12 +31,6 @@ export interface InviteCardProps {
   isInviter?: boolean;
 }
 
-const formatFullDate = (date?: string) =>
-  date ? dayjs(date).format('YYYY年MM月DD日（ddd）') : 'ー';
-
-const formatTime = (date?: string) =>
-  date ? `${dayjs(date).format('HH:mm')}～` : 'ー';
-
 const renderDate = (label: string, date?: string, highlightDate?: string) => {
   const isPast = date ? dayjs(date).isBefore(dayjs()) : false;
   const isHighlight = highlightDate && date && dayjs(date).isSame(highlightDate, 'day');
@@ -46,7 +42,7 @@ const renderDate = (label: string, date?: string, highlightDate?: string) => {
       <span
         className={`$${isPast ? 'line-through text-gray-400' : ''} ${faded ? 'text-gray-400' : ''} ${isHighlight ? 'font-bold text-blue-700' : ''}`.trim()}
       >
-        {formatFullDate(date)} {formatTime(date)}
+        {getFormattedFullDateTime(date)}
       </span>
     </li>
   );

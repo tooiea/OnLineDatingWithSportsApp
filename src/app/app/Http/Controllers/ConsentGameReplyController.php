@@ -125,6 +125,9 @@ class ConsentGameReplyController extends Controller
             third_preferered_date: $request->validated('third_preferered_date'),
             message: $request->validated('message'),
         )]);
+
+        $myTeam = Team::whereRelation('team_members', 'user_id', Auth::id())->firstOrFail();
+        $opponentTeam = $consentGame->invitee()->where('id', '!=', $myTeam->id)->first() ?? $consentGame->guest()->where('id', '!=', $myTeam->id)->first();
         return Inertia::render('ConsentGame/ConsentReplyConfirm', [
             'form' => [
                 'first_preferered_date' => ConsentStatusTypeEnum::from($request->validated('first_preferered_date'))->replyLabel(),
@@ -134,6 +137,7 @@ class ConsentGameReplyController extends Controller
             ],
             'consent_game' => [
                 'id' => $consentGame->id,
+                'team_name' => $opponentTeam->name,
                 'first_preferered_date' => $consentGame->first_preferered_date,
                 'second_preferered_date' => $consentGame->second_preferered_date,
                 'third_preferered_date' => $consentGame->third_preferered_date,

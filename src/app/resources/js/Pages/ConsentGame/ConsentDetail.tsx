@@ -4,7 +4,9 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ConsentStatusClass from '@/Components/ConsentStatusClass';
+import getFormattedFullDateTime from '@/Components/FormattedFullDateTime';
 dayjs.locale('ja');
+
 
 interface TeamInfo {
   id: string;
@@ -54,9 +56,6 @@ const ConsentDetail: React.FC<Props> = ({ myTeam, consentGame }) => {
     consent_game_id: consentGame.id,
     message: '',
   });
-
-  const getFormattedDateTime = (date?: string) =>
-    date ? dayjs(date).format('YYYY年MM月DD日 HH時mm分') : 'ー';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -113,7 +112,7 @@ const ConsentDetail: React.FC<Props> = ({ myTeam, consentGame }) => {
               {consentGame.consent_status_label === '承諾' ? (
                 <div className="space-y-2">
                   <div className="font-semibold mb-1">試合決定日時:</div>
-                  <p>{getFormattedDateTime(consentGame.game_date)}</p>
+                  <p>{getFormattedFullDateTime(consentGame.game_date)}</p>
                 </div>
               ) : consentGame.consent_status_label === '辞退' ? (
                 <div className="text-center text-gray-500">承認日程 -</div>
@@ -124,7 +123,7 @@ const ConsentDetail: React.FC<Props> = ({ myTeam, consentGame }) => {
                     .map((date, index) => {
                       if (!date) return null;
                       const label = `${['①', '②', '③'][index]}`;
-                      const formattedDate = getFormattedDateTime(date);
+                      const formattedDate = getFormattedFullDateTime(date);
                       const isDecided = consentGame.consent_status_label === '試合日時決定' && consentGame.game_date === date;
 
                       return (
@@ -156,7 +155,7 @@ const ConsentDetail: React.FC<Props> = ({ myTeam, consentGame }) => {
                     <div className="bg-gray-100 p-3 rounded-lg max-w-md">
                       {renderMessage(consentGame.message)}
                       <div className="text-right text-xs text-gray-500 mt-1">
-                        {getFormattedDateTime(consentGame.created_at)}
+                        {getFormattedFullDateTime(consentGame.created_at)}
                       </div>
                     </div>
                     {/* 自チームのアイコン */}
@@ -182,7 +181,7 @@ const ConsentDetail: React.FC<Props> = ({ myTeam, consentGame }) => {
                       <div className="bg-gray-100 p-3 rounded-lg max-w-md">
                         {renderMessage(reply.message)}
                         <div className="text-right text-xs text-gray-500 mt-1">
-                          {getFormattedDateTime(reply.created_at)}
+                          {getFormattedFullDateTime(reply.created_at)}
                         </div>
                       </div>
                       {isOwn && (

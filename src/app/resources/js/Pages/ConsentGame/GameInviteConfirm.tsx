@@ -1,5 +1,6 @@
 import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
+import getFormattedFullDateTime from '@/Components/FormattedFullDateTime';
 
 interface Props {
   first_preferered_date: string;
@@ -35,15 +36,15 @@ export default function InviteGameConfirm({ first_preferered_date, second_prefer
           <div className="space-y-3 text-gray-800">
             <div>
               <label className="font-semibold">第一希望日程</label>
-              <div>{first_preferered_date || '—'}</div>
+              <div>{getFormattedFullDateTime(first_preferered_date)}</div>
             </div>
             <div>
               <label className="font-semibold">第二希望日程</label>
-              <div>{second_preferered_date || '—'}</div>
+              <div>{getFormattedFullDateTime(second_preferered_date)}</div>
             </div>
             <div>
               <label className="font-semibold">第三希望日程</label>
-              <div>{third_preferered_date || '—'}</div>
+              <div>{getFormattedFullDateTime(third_preferered_date)}</div>
             </div>
             <div>
               <label className="font-semibold">メッセージ</label>
