@@ -28,7 +28,7 @@ class TempUser extends Model
         'expiration_date',
         'sport_affiliation_type',
         'team_name',
-        'team_logo',
+        'image_path',
         'image_extension',
         'team_url',
         'prefecture',
@@ -71,6 +71,7 @@ class TempUser extends Model
      * 仮登録メール送信
      *
      * @param string $token
+     * @param string $email
      * @return void
      */
     public function temporaryRegistrationNotification($token, $email)
@@ -97,8 +98,8 @@ class TempUser extends Model
                 // 挿入データ
                 'sport_affiliation_type' => $customValues['sportAffiliationType'],
                 'team_name' => $customValues['teamName'],
-                'team_logo' => $customValues['teamLogo'],
-                'image_extension' => $customValues['image_extension'],
+                'image_path' => $customValues['imagePath'],
+                'image_extension' => $customValues['imageExtension'],
                 'team_url' => (isset($customValues['teamUrl'])) ? $customValues['teamUrl'] : null,
                 'prefecture' => $customValues['prefecture'],
                 'address' => $customValues['address'],

@@ -26,6 +26,7 @@ class ConsentGameFactory extends Factory
             'third_preferered_date' => rand(0, 1) ? CarbonImmutable::now()
                                         ->addDays(rand(1, 30))
                                         ->setTime(rand(0, 23), rand(0, 59), rand(0, 59)) : null,
+            'message' => fake()->realText(100),
         ];
     }
 }

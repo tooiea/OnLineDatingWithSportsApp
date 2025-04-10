@@ -1,21 +1,26 @@
+@php
+use Illuminate\Support\Facades\Storage;
+use App\Constants\FormConstant;
+@endphp
+
 <!DOCTYPE html>
 <html>
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="/public/css/common.css">
+  <link rel="stylesheet" href="/public/css/common.css?q">
   <title>Search Team</title>
 </head>
 
 <body class="body-with-nav">
+  <script src="/public/js/ajax.js"></script>
   @include('layouts.nav')
-  <div class="container mt-5">
+  <div class="container mt-3">
     <div class="row justify-content-center">
       <div class="col-sm-6">
         <div class="card">
@@ -30,7 +35,7 @@
                 <select name="prefecture" class="form-control @error('prefecture') is-invalid @enderror" id="prefecture"
                   aria-describedby="nameHelp">
                   <option value="">選択してください</option>
-                  @foreach (\App\Constants\FormConstant::PREFECTURES as $key => $value)
+                  @foreach (FormConstant::PREFECTURES as $key => $value)
                   <option value="{{ $key }}" @if(old('prefecture')==$key || $prefecture==$key) selected @endif>{{ $value
                     }}
                   </option>
@@ -42,7 +47,7 @@
               </div>
               <div class="form-group">
                 <label for="address">住所</label>
-                <input type="text" name="address" value="{{ old('address')  . $address }}" id="address"
+                <input type="text" name="address" value="{{ old('address') ?: $address }}" id="address"
                   aria-describedby="nameHelp" class="form-control @error('address') is-invalid @enderror"
                   placeholder="例：宮崎市">
                 <small id="nameHelp" class="form-text text-muted">市町村区を入力してください。</small>
@@ -72,7 +77,7 @@
               <th>チーム名</th>
               <th>チーム活動拠点</th>
               <th>チームロゴ</th>
-              <th>招待する</th>
+              <th>チーム選択</th>
             </tr>
           </thead>
           <tbody>
@@ -80,13 +85,13 @@
             <tr>
               <th>{{ $key+1 }}</th>
               <td>{{ $value->team_name }}</td>
-              <td>{{ \App\Constants\FormConstant::PREFECTURES[$value->prefecture] . $value->address }}
+              <td>{{ FormConstant::PREFECTURES[$value->prefecture] . $value->address }}
               </td>
               <td>
                 @if (!empty($value->image_extension))
                 <img
-                  src="data:{{ $value->image_extension }};base64,{{ base64_encode(file_get_contents($value->team_logo)) }}"
-                  id="team-logo" width="50" height="50">
+                  src="data:{{ $value->image_extension }};base64,{{ base64_encode(file_get_contents(Storage::url($value->image_path))) }}"
+                  id="team-logo" class="search-logo">
                 @endif
               </td>
               <td>

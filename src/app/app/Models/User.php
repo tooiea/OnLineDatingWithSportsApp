@@ -1,11 +1,14 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Notifications\UserRegisterNotification;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -63,8 +66,24 @@ class User extends Authenticatable
         ];
     }
 
-    public function teamMember()
+    /**
+     * チームメンバー
+     *
+     * @return HasOne
+     */
+    public function teamMember(): HasOne
     {
         return $this->hasOne(TeamMember::class);
+    }
+
+    /**
+     * 本登録メール送信
+     *
+     * @param array $values
+     * @return void
+     */
+    public function registrationNotification(array $values)
+    {
+        $this->notify(new UserRegisterNotification($values));
     }
 }

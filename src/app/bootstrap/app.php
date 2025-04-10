@@ -29,7 +29,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->replace(SetCacheHeaders::class, CustomSetCacheHeaders::class);
-        $middleware->redirectGuestsTo(fn () => route('email_login.index'));
+        $middleware->redirectGuestsTo(fn () => route('login.index'));
+        $middleware->alias([
+            'custom_guest' => \App\Http\Middleware\CustomRedirectIfAuthenticated::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Exception $e, Request $request) {
@@ -44,7 +47,7 @@ return Application::configure(basePath: dirname(__DIR__))
                         break;
                     case $e instanceof NotFoundHttpException:
                         $status = $e->getStatusCode();
-                        break; 
+                        break;
                     case $e instanceof MethodNotAllowedHttpException:
                         $status = $e->getStatusCode();
                         break;
@@ -62,5 +65,32 @@ return Application::configure(basePath: dirname(__DIR__))
                     status: $status
                 );
             }
+
+            // バリデーションエラー時はLaravelのロジックで処理する
+            // 403,404,405,500エラーはInertiaのエラーページを表示
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                return null;
+            }
+
+            // 認証エラー時はLaravelのロジックで処理する
+            if ($e instanceof \Illuminate\Auth\AuthenticationException) {
+                return null;
+            }
+
+            $status = 500;
+
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface) {
+                $status = $e->getStatusCode();
+            }
+
+            $errorPage = match ($status) {
+                403 => 'Errors/403',
+                404 => 'Errors/404',
+                405 => 'Errors/405',
+                500 => 'Errors/500',
+                default => 'Errors/500',
+            };
+
+            return inertia($errorPage)->toResponse($request)->setStatusCode($status);
         });
     })->create();

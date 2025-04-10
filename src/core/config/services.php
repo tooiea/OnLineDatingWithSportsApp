@@ -18,6 +18,7 @@ return [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        'scheme' => 'https',
     ],
 
     'postmark' => [
@@ -31,12 +32,16 @@ return [
     ],
 
     'google' => [
-        'client_id' => '439276644387-o3ab9pod52k9orh6ld7dp330i0qip4p2.apps.googleusercontent.com',
-        'client_secret' => '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',
-        'redirect' => 'http://localhost/google/login/callback',
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URL'),
     ],
 
     'line' => [
+        'message' => [
+            'channel_token' => env('LINE_MESSAGE_CHANNEL_TOKEN'),
+            'channel_secret' => env('LINE_MESSAGE_CHANNEL_SECRET'),
+        ],
         'client_id' => env('LINE_CLIENT_ID'),
         'client_secret' => env('LINE_CLIENT_SECRET'),
         'redirect' => env('LINE_REDIRECT_URL'),

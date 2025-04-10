@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name', 50);
+            $table->string('name', 30);
             $table->integer('sport_affiliation_type');
-            $table->integer('prefecture_code');
-            $table->string('address', 255);
-            $table->string('url', 255);
+            $table->integer('prefecture_code')->nullable();
+            $table->string('address', 100)->nullable();
+            $table->string('favorite_facility', 30)->nullable();
+            $table->string('url', 255)->nullable();
             $table->softDeletesTz('deleted_at', precision: 0);
             $table->timestampsTz(precision: 0);
         });

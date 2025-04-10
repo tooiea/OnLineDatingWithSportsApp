@@ -3,8 +3,9 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { FormEventHandler, useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Login({
     status,
@@ -21,21 +22,27 @@ export default function Login({
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
         post(route('email_login.login'), {
             onFinish: () => reset('password'),
         });
     };
 
+    // 🔥 トースト表示（statusがある時のみ）
+    useEffect(() => {
+        if (status) {
+            toast.custom(
+                <div className="bg-green-100 text-green-800 px-4 py-2 rounded shadow text-sm" dangerouslySetInnerHTML={{ __html: status }} />,
+                { duration: 5000 }
+              );
+        }
+    }, [status]);
+
     return (
         <GuestLayout>
             <Head title="Log in" />
 
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
+            {/* 🔔 トーストを描画 */}
+            <Toaster position="top-center" reverseOrder={false} />
 
             <form onSubmit={submit}>
                 <div>
@@ -55,7 +62,6 @@ export default function Login({
 
                 <div className="mt-4">
                     <InputLabel htmlFor="password">パスワード</InputLabel>
-
                     <TextInput
                         id="password"
                         type="password"
@@ -65,7 +71,6 @@ export default function Login({
                         autoComplete="current-password"
                         onChange={(e) => setData('password', e.target.value)}
                     />
-
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
@@ -86,40 +91,32 @@ export default function Login({
                     </PrimaryButton>
                 </div>
             </form>
-                <div className="mt-6 flex items-center">
-                    <hr className="flex-grow border-t border-gray-300" />
-                    <span className="mx-2 text-sm text-gray-500">または</span>
-                    <hr className="flex-grow border-t border-gray-300" />
-                </div>
 
-                <div className="mt-4 flex justify-center gap-4">
-                    <a href={route('google.login')}>
-                        <img
-                            src="/images/btn_google_signin_dark_normal_web@2x.png"
-                            alt="google"
-                            className="h-10"
-                        />
-                    </a>
+            {/* ソーシャルログインなどはそのまま */}
+            <div className="mt-6 flex items-center">
+                <hr className="flex-grow border-t border-gray-300" />
+                <span className="mx-2 text-sm text-gray-500">または</span>
+                <hr className="flex-grow border-t border-gray-300" />
+            </div>
 
-                    <a href={route('line.login')}>
-                        <img
-                            src="/images/btn_login_base.png"
-                            alt="line"
-                            className="h-10"
-                        />
-                    </a>
-                </div>
+            <div className="mt-4 flex justify-center gap-4">
+                <a href={route('google.login')}>
+                    <img src="/images/btn_google_signin_dark_normal_web@2x.png" alt="google" className="h-10" />
+                </a>
+                <a href={route('line.login')}>
+                    <img src="/images/btn_login_base.png" alt="line" className="h-10" />
+                </a>
+            </div>
 
-                {/* チーム作成への導線ボタン */}
-                <div className="mt-6 text-center">
-                    <span className="text-sm text-gray-600">アカウントをお持ちではありませんか？</span>
-                    <Link
-                        href={route('register')}
-                        className="ml-2 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                    >
-                        新しくチームを作成
-                    </Link>
-                </div>
+            <div className="mt-6 text-center">
+                <span className="text-sm text-gray-600">アカウントをお持ちではありませんか？</span>
+                <Link
+                    href={route('temp_register.team.index')}
+                    className="ml-2 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                >
+                    新しくチームを作成
+                </Link>
+            </div>
         </GuestLayout>
     );
 }

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ResetPasswordRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use Illuminate\View\View;
 
 /**
  * パスワードリセット
@@ -13,20 +15,15 @@ use Illuminate\Support\Facades\Password;
 class PasswordResetLinkController extends Controller
 {
     /**
-     * 入力画面表示
-     *
-     * @return \Illuminate\View\View
+     *入力画面表示
      */
-    public function create()
+    public function create(): View
     {
         return view('auth.forgot-password');
     }
 
     /**
      * メールアドレスが登録されている場合、リセットメールを送信する
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Illuminate\Validation\ValidationException
      */

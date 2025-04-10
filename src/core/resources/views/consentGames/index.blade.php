@@ -1,44 +1,49 @@
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="/public/css/common.css?q">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/public/css/common.css">
     <title>練習試合の招待フォーム</title>
 </head>
 
 <body class="body-with-nav">
     @include('layouts.nav')
     <div class="container my-5">
-        <h2 class="text-center">Let's invite to GAME!</h2>
+        <h4 class="text-center">早速、試合に招待してみよう！</h4>
         <div class="card">
-            <div class="card-header">
-                招待カード
-            </div>
+            <h3 class="card-header">
+                招待内容
+            </h3>
             <div class="card-body">
-                <h5 class="card-title mb-4">▼チーム詳細</h5>
+                <h5 class="card-title mb-4">▼招待するチームの詳細</h5>
                 <div class="form-group">
-                    <label for="team-name">招待チーム名</label>
-                    <p id="team-name">{{ $guestTeam->team_name }}</p>
+                    <p><span class="mr-5">チーム名</span>{{ $guestTeam->team_name }}</p>
                 </div>
                 <div class="form-group">
-                    <label for="team-url">招待チームURL</label>
-                    <p><a id="team-url" href="{{ $guestTeam->team_url }}">{{ $guestTeam->team_url }}</a></p>
+                    <label for="team-url"><span class="mr-4">チームURL</span></label>
+                    @if(!empty($guestTeam->team_url))
+                    <p><a class="" href="{{ $guestTeam->team_url }}">{{ $guestTeam->team_url }}</a></p>
+                    @else
+                    未登録
+                    @endif
                 </div>
                 <div class="form-group">
-                    <label for="team-logo">招待チームロゴ</label>
-                    <p><img id="team-logo"
-                            src="data:{{ $guestTeam->image_extension }};base64,{{ base64_encode(file_get_contents($guestTeam->team_logo)) }}"
-                            id="team-logo" width="100" height="100" alt="チームAロゴ"></p>
+                    <p><span class="mr-4">チームロゴ</span><img id="team-logo"
+                        src="data:{{ $guestTeam->image_extension }};base64,{{ base64_encode(file_get_contents(Storage::url($guestTeam->image_path))) }}"
+                        id="team-logo" width="100" height="100" alt="チームAロゴ" class="team-logo"></p>
                 </div>
                 <hr>
-                <h5 class="card-title mb-4">▼招待希望日程</h5>
-                <p>※以下の第一希望から第三希望の日程を選択してください。</p>
+                <h5 class="card-title mb-4">▼希望する日程</h5>
+                <p><small>※第二希望まで必ず選択してください</small></p>
                 <form action="{{ route('consent.confirm') }}" method="post">
                     @csrf
                     <div class="form-group">

@@ -31,6 +31,7 @@ class TeamFactory extends Factory
             'sport_affiliation_type' => 1,
             'prefecture_code' => fake()->numberBetween(1, 47),
             'address' => fake()->city() . fake()->streetAddress(),
+            'favorite_facility' => fake()->streetName() . ' ' . fake()->randomElement(self::$teamNames),
             'url' => fake()->url(),
         ];
     }

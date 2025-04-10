@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\SportAffiliationTypeEnum;
@@ -9,6 +9,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
@@ -29,6 +30,18 @@ class Team extends Model
 {
     use HasUuids, HasFactory;
 
+    /**
+     * チーム画像の保存先
+     * @var string
+     */
+    public const MAIN_IMAGE_PATH = 'images/teams';
+
+    /**
+     * チームアルバム画像の保存先
+     * @var string
+     */
+    public const ALBUM_IMAGE_PATH = 'images/teams/album';
+
     protected $fillable = [
         'name',
         'sport_affiliation_type',
@@ -38,24 +51,59 @@ class Team extends Model
         'deleted_at',
     ];
 
-    public function consent_games()
+    protected $casts = [
+        'sport_affiliation_type' => SportAffiliationTypeEnum::class,
+        'prefecture_code' => Prefecture::class,
+    ];
+
+    /**
+     * 招待試合
+     *
+     * @return HasMany
+     */
+    public function consent_games(): HasMany
     {
         return $this->hasMany(ConsentGame::class);
     }
 
-    public function team_members()
+    /**
+     * チームメンバー
+     *
+     * @return HasMany
+     */
+    public function team_members(): HasMany
     {
         return $this->hasMany(TeamMember::class);
     }
 
+    /**
+     * チーム画像
+     *
+     * @return MorphOne
+     */
     public function image() : MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');
     }
 
+    /**
+     * チームコード
+     *
+     * @return MorphOne
+     */
     public function code() : MorphOne
     {
         return $this->morphOne(Code::class, 'codeable');
+    }
+
+    /**
+     * チームアルバム
+     *
+     * @return MorphMany
+     */
+    public function album(): MorphMany
+    {
+        return $this->morphMany(Album::class, 'albumable');
     }
 
     /**
@@ -66,9 +114,9 @@ class Team extends Model
      */
     public static function getMyTeamByUserId(string $userId): Team
     {
-        return self::whereHas('team_members', function ($query) use ($userId) {
+        return self::whereRelation('team_members', function ($query) use ($userId) {
             $query->where('user_id', '=', $userId);
-        })->first();
+        })->with('album.image')->first();
     }
 
     /**

@@ -14,18 +14,19 @@ class TempUserNotification extends Notification
 
     private $token;
     private $email;
-    private $mail;
+    private $sendMailerInstance;
 
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param string $token
+     * @param string $email
      */
-    public function __construct(string $token, string $email, SendMailer $mail)
+    public function __construct(string $token, string $email, SendMailer $sendMailerInstance)
     {
         $this->token = $token;
         $this->email = $email;
-        $this->mail = $mail;
+        $this->sendMailerInstance = $sendMailerInstance;
     }
 
     /**
@@ -48,17 +49,16 @@ class TempUserNotification extends Notification
     public function toMail($notifiable)
     {
         $url = sprintf(url(__('route_const.temp_mail.register') . "%s"), $this->token);
-        return $this->mail
+
+        return $this->sendMailerInstance
                     ->from(config('mail.from.address'))
                     ->to($this->email)
                     ->text('mail.temp_user_register')
                     ->subject(__('mail_messages.subject.temp_user_register'))
-                    ->with(
-                        [
+                    ->with([
                             'admin' => config('mail.from.address'),
                             'url' => $url,
-                        ]
-                    );
+                    ]);
     }
 
     /**

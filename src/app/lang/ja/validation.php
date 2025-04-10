@@ -175,9 +175,55 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'team_main_image' => [
+            'required' => ':attributeを1点アップロードしてください',
+            'max' => ' 2MB以下の画像を選択してください',
+            'image' => 'jpeg,jpg,pngの形式をアップロードしてください'
         ],
+        'sportAffiliationType' => [
+            'required' => ':attributeを選択してください'
+        ],
+        'teamUrl' => [
+            'url' => 'URL形式で入力してください',
+        ],
+        'albums.*' => [
+            'max_in_album' => '1つのアルバムに登録できる画像は5枚までです',
+        ],
+        'albums.*.name' => [
+            'required' => 'アルバム名を入力してください',
+            'max' => 'アルバム名は:max文字以内で入力してください'
+        ],
+        'teamAlbum' => [
+            'max' => '1MB以下の画像を選択してください',
+            'image' => 'jpeg,jpg,pngの形式をアップロードしてください'
+        ],
+        'teamAlbum.*' => [
+            'max' => '1MB以下の画像を選択してください',
+            'image' => 'jpeg,jpg,pngの形式をアップロードしてください',
+            'uploaded' => '1MB以下の画像を選択してください',
+        ],
+        'teamAlbumTotal' => [
+            'image_max_in_album' => 'アルバムの枚数が5枚を超えてます'
+        ],
+        'prefecture' => [
+            'required' => ':attributeを選択してください',
+        ],
+        'invitationCode' => [
+            'exists' => '入力されたチームが存在しません <br>再度、URLをご確認ください'
+        ],
+        'token' => [
+            'expired' => 'トークンの有効期限切れです 再度、仮登録フォームより登録してください',
+            'exists' => '不正な入力がありました 再度、URLをご確認ください',
+            'notvalid' => '不正な入力がありました 再度、URLをご確認ください',
+            'registered' => 'すでに本登録済みです',
+        ],
+        'error' => [
+            'register' => 'サーバーエラーが発生しました<br>大変申し訳ありませんが再度、ご登録をお願いします'
+        ],
+        'user' => [
+            'google' => '*このメールアドレスは登録されていません<br>*同じチームメンバーに共有されたURLで登録、<br>もしくは「新しくチームを作る」から登録してください',
+            'line' => '*このメールアドレスは登録されていません<br>*同じチームメンバーに共有されたURLで登録、<br>もしくは「新しくチームを作る」から登録してください<br>*すでにOLDwsへ登録されていてる場合は、LINEのアカウントに同一のメールアドレスが登録されているかを確認してください'
+        ]
     ],
 
     /*
@@ -194,6 +240,20 @@ return [
     'attributes' => [
         'email' => 'メールアドレス',
         'password' => 'パスワード',
+        'nickname' => 'ニックネーム',
+        'password2' => 'パスワード（再入力）',
+        'sportAffiliationType' => 'スポーツ種別',
+        'teamName' => 'チーム名',
+        'teamMainImage' => 'チームロゴ画像',
+        'teamUrl' => 'チーム紹介用URL',
+        'prefecture' => '都道府県',
+        'address' => '市区町村',
+        'albums.*.addImages.*' => 'アルバム画像',
+        'albums.*.deleteImages.*' => 'アルバム画像',
+        'first_preferered_date' => '第一希望日',
+        'second_preferered_date' => '第二希望日',
+        'third_preferered_date' => '第三希望日',
+        'message' => 'メッセージ',
     ],
 
 ];

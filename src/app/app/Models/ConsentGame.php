@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\ConsentStatusTypeEnum;
@@ -8,7 +8,10 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 
 /**
@@ -43,24 +46,58 @@ class ConsentGame extends Model
         'deleted_at',
     ];
 
-    public function replies()
+    protected $casts = [
+        'consent_status' => ConsentStatusTypeEnum::class,
+    ];
+
+    /**
+     * 返信
+     *
+     * @return HasMany
+     */
+    public function replies(): HasMany
     {
         return $this->hasMany(Reply::class, 'consent_game_id');
     }
 
-    public function invitee()
+    /**
+     * 招待者
+     *
+     * @return BelongsTo
+     */
+    public function invitee(): BelongsTo
     {
         return $this->belongsTo(Team::class, 'invitee_id');
     }
 
-    public function guest()
+    /**
+     * ゲスト
+     *
+     * @return BelongsTo
+     */
+    public function guest(): BelongsTo
     {
         return $this->belongsTo(Team::class, 'guest_id');
     }
 
-    public function comment() : morphMany
+    /**
+     * 試合招待通知(招待、返事)
+     *
+     * @return MorphOne
+     */
+    public function notification(): MorphOne
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphOne(Notification::class, 'notifiable');
+    }
+
+    /**
+     * コメント
+     *
+     * @return morphMany
+     */
+    public function message() : morphMany
+    {
+        return $this->morphMany(Message::class, 'messageable');
     }
 
     /**
@@ -79,14 +116,31 @@ class ConsentGame extends Model
                     $query->orwhere('third_preferered_date', '>=', $now);
                 })
                 ->whereHas('guest')
-                ->with('guest.image')
+                ->with(['guest.image', 'notification'])
                 ->orderByRaw("
                     LEAST(
                         first_preferered_date,
                         COALESCE(second_preferered_date, '9999-12-31'),
                         COALESCE(third_preferered_date, '9999-12-31')
                     ) ASC
-                ")->get();
+                ")->get()
+                ->map(fn ($invite) => [
+                    'id' => $invite->id,
+                    'created_at' => $invite->created_at,
+                    'consent_status' => $invite->consent_status,
+                    'consent_status_label' => $invite->consent_status->label(),
+                    'game_date' => $invite->game_date,
+                    'first_preferered_date' => $invite->first_preferered_date,
+                    'second_preferered_date' => $invite->second_preferered_date,
+                    'third_preferered_date' => $invite->third_preferered_date,
+                    'team' => [
+                        'id' => $invite->guest->id,
+                        'name' => $invite->guest->name,
+                        'image' => $invite->guest->image ? [
+                            'path_base64' => $invite->guest->image->path_base64,
+                        ] : null,
+                    ],
+                ]);
     }
 
     /**
@@ -105,13 +159,30 @@ class ConsentGame extends Model
                     $query->orwhere('third_preferered_date', '>=', $now);
                 })
                 ->whereHas('invitee')
-                ->with('invitee.image')
+                ->with(['invitee.image', 'notification'])
                 ->orderByRaw("
                     LEAST(
                         first_preferered_date,
                         COALESCE(second_preferered_date, '9999-12-31'),
                         COALESCE(third_preferered_date, '9999-12-31')
                     ) ASC
-                ")->get();
+                ")->get()
+                ->map(fn ($invite) => [
+                    'id' => $invite->id,
+                    'created_at' => $invite->created_at,
+                    'consent_status' => $invite->consent_status,
+                    'consent_status_label' => $invite->consent_status->label(),
+                    'game_date' => $invite->game_date,
+                    'first_preferered_date' => $invite->first_preferered_date,
+                    'second_preferered_date' => $invite->second_preferered_date,
+                    'third_preferered_date' => $invite->third_preferered_date,
+                    'team' => [
+                        'id' => $invite->invitee->id,
+                        'name' => $invite->invitee->name,
+                        'image' => $invite->invitee->image ? [
+                            'path_base64' => $invite->invitee->image->path_base64,
+                        ] : null,
+                    ],
+                ]);
     }
 }

@@ -137,10 +137,10 @@ class ConsentGame extends Model
      * @param int $consentId
      * @return object
      */
-    public function getConsentsGameById($consentId)
+    public static function getConsentsGameById($consentId)
     {
         $now = Carbon::now();
-        $query = $this->where('consent_games.id', $consentId);
+        $query = ConsentGame::where('consent_games.id', $consentId);
         $query->where(function ($query) use ($now) {
             $query->orwhere('first_preferered_date', '>=', $now);
             $query->orwhere('second_preferered_date', '>=', $now);
@@ -245,11 +245,11 @@ class ConsentGame extends Model
             'consent_games.*',
             'it.team_name as invite_team_name',
             'it.team_url as invite_team_url',
-            'it.team_logo as invite_team_logo',
+            'it.image_path as invite_image_path',
             'it.image_extension as invite_image_extension',
             'gt.team_name as guest_team_name',
             'gt.team_url as guest_team_url',
-            'gt.team_logo as guest_team_logo',
+            'gt.image_path as guest_image_path',
             'gt.image_extension as guest_image_extension',
             'myt.id as my_team_id',
         );

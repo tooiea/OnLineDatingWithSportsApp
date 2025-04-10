@@ -16,19 +16,19 @@ class ConsentGameNotification extends Notification
     private $customValues;
     private $guest;
     private $invitee;
-    private $mail;
+    private $sendMailerInstance;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(array $customValues, object $guest, $invitee, SendMailer $mail)
+    public function __construct(array $customValues, object $guest, $invitee, SendMailer $sendMailerInstance)
     {
         $this->customValues = $customValues;
         $this->guest = $guest;
         $this->invitee = $invitee;
-        $this->mail = $mail;
+        $this->sendMailerInstance = $sendMailerInstance;
     }
 
     /**
@@ -51,13 +51,12 @@ class ConsentGameNotification extends Notification
     public function toMail($notifiable)
     {
         $url = url(__('route_const.login'));
-        return $this->mail
+        return $this->sendMailerInstance
                 ->from(config('mail.from.address'))
                 ->to($this->guest->user->email)
                 ->text('mail.consent_game')
                 ->subject(__('mail_messages.subject.consent_game'))
-                ->with(
-                    [
+                    ->with([
                         'teamName' => $this->invitee->team->team_name,
                         'firstPrefereredDate' => Carbon::parse($this->customValues['first_preferered_date'])->format('Y年m月d日 G時i分'),
                         'secondPrefereredDate' => Carbon::parse($this->customValues['second_preferered_date'])->format('Y年m月d日 G時i分'),
@@ -65,8 +64,7 @@ class ConsentGameNotification extends Notification
                         'comment' => (isset($this->customValues['message'])) ? $this->customValues['message'] : '',
                         'admin' => config('mail.from.address'),
                         'url' => $url,
-                    ]
-                );
+                    ]);
     }
 
     /**
