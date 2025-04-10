@@ -1,13 +1,11 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\Prefecture;
 use App\Models\Team;
-use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -43,7 +41,7 @@ class TeamController extends Controller
         $teams = Team::getOtherTeamsForPaginator(
             pageNum: 12,
             myTeam: $myTeam,
-            prefecture: $prefecture,
+            prefecture: (int)$prefecture,
             address: $address,
             teamName: $teamName
         );
@@ -64,10 +62,5 @@ class TeamController extends Controller
             'filters' => compact('prefecture', 'address', 'teamName'),
             'myTeam' => $myTeam ?? null,
         ]);
-    }
-
-    public function inviteGame()
-    {
-
     }
 }
