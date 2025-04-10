@@ -69,6 +69,7 @@ class ConsentGameReplyController extends Controller
                 'second_preferered_date' => $consentGame->second_preferered_date,
                 'third_preferered_date' => $consentGame->third_preferered_date,
                 'message' => $consentGame->message,
+                'created_at' => $consentGame->created_at,
             ]
         ]);
     }
