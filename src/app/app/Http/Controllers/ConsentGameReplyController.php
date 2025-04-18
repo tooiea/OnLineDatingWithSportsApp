@@ -7,12 +7,16 @@ use App\Http\Requests\ConsentGameIdRequest;
 use App\Http\Requests\ConsentGameReplyMessageRequest;
 use App\Http\Requests\ConsentGameReplyRequest;
 use App\Models\ConsentGame;
+use App\Models\ConsentGameMarkNotificationAsRead;
 use App\Models\ConsentGameReply;
 use App\Models\Reply;
 use App\Models\Team;
+use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Concurrency;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -30,14 +34,34 @@ class ConsentGameReplyController extends Controller
     public function detail(ConsentGameIdRequest $request, string $consent_game_id): Response
     {
         $myTeam = Team::whereRelation('team_members', 'user_id', Auth::id())->firstOrFail();
+        $userId = Auth::id();
         $consentGame = ConsentGame::whereHas('invitee')
                     ->whereHas('guest')
                     ->where('id', $consent_game_id)
                     ->with([
                         'invitee',
                         'guest',
-                        'replies.message'
+                        'notification' => function ($query) use ($userId) {
+                            $query->where('senderable_type', User::class);
+                            $query->where('senderable_id', $userId);
+                            $query->whereNull('read_at');
+                        },
+                        'replies' => function ($query) {
+                            $query->orderBy('created_at');
+                        },
+                        'replies.message.notification' => function ($query) use ($userId) {
+                            $query->where('senderable_type', User::class);
+                            $query->where('senderable_id', $userId);
+                            $query->whereNull('read_at');
+                        },
                     ])->firstOrFail();
+
+        // 未読通知があれば、非同期でリクエスト
+        if (ConsentGame::hasUnreadNotification($consentGame)) {
+            Concurrency::defer([
+                fn () => ConsentGameMarkNotificationAsRead::consentGameMarkAsRead($consent_game_id, $userId)
+            ]);
+        }
 
         return Inertia::render('ConsentGame/ConsentDetail', [
             'myTeam' => [

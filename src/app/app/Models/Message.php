@@ -5,6 +5,8 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
@@ -33,5 +35,15 @@ class Message extends Model
     public function messageable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * 通知
+     *
+     * @return morphOne
+     */
+    public function notification(): MorphOne
+    {
+        return $this->morphOne(Notification::class, 'notifiable');
     }
 }
