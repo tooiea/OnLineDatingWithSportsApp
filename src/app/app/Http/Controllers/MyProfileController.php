@@ -26,8 +26,8 @@ class MyProfileController extends Controller
         $sportType = $user->teamMember->team->sport_affiliation_type;
         return Inertia::render('Profile/Detail', [
             'nickname' => $user->name,
-            'positionLabel' => $sportType->positionFrom($user->teamMember->position),
-            'handednessLabel' => $sportType->handednessFrom($user->teamMember->handedness),
+            'positionLabel' => $user->teamMember->position ? $sportType->positionFrom($user->teamMember->position) : null,
+            'handednessLabel' => $user->teamMember->handedness ? $sportType->handednessFrom($user->teamMember->handedness) : null,
             'imagePath' => $user->image?->path_base64,
             'message' => [
                 'success' => session('flash_message'),
