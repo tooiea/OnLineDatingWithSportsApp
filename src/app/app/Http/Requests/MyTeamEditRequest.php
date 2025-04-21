@@ -55,7 +55,7 @@ class MyTeamEditRequest extends FormRequest
             'teamMainImage' => [
                 'bail',
                 'nullable',
-                'max:2048',
+                'max:3072',
                 'file',
                 'image',
                 'mimes:jpeg,jpg,png',
@@ -79,7 +79,7 @@ class MyTeamEditRequest extends FormRequest
             'albums.*.addImages.*' => [
                 'bail',
                 'nullable',
-                'max:1024',
+                'max:3072',
                 'file',
                 'image',
                 'mimes:jpeg,jpg,png',
