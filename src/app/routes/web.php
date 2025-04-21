@@ -2,13 +2,13 @@
 
 use App\Http\Controllers\ConsentGameInviteController;
 use App\Http\Controllers\ConsentGameReplyController;
+use App\Http\Controllers\MyProfileController;
 use App\Http\Controllers\MyTeamController;
 use App\Http\Controllers\Sns\GoogleLoginController;
 use App\Http\Controllers\Sns\LineLoginController;
 use App\Http\Controllers\TempTeamJoinController;
 use App\Http\Controllers\TempTeamRegisterController;
 use App\Http\Controllers\UserLoginController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Foundation\Application;
@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// 認証不要
 Route::middleware('custom_guest:user')->group(function () {
     Route::prefix('temp_register')->group(function () {
         // チーム登録 (仮登録)
@@ -37,10 +38,12 @@ Route::middleware('custom_guest:user')->group(function () {
         });
     });
 
+    // ユーザ本登録
     Route::get('register/user/error', [UsersController::class, 'errorRegister'])->name('user.error'); // エラー発生時
     Route::get('register/user/notvalid', [UsersController::class, 'failedToken'])->name('user.failed'); // トークンなし
     Route::get('register/user/{token}', [UsersController::class, 'index'])->name('user.register');
 
+    // ログイン処理
     Route::get('login',[UserLoginController::class, 'index'])->name('login.index');
     Route::post('login',[UserLoginController::class, 'login'])->name('email_login.login');
     Route::get('line/login',[LineLoginController::class, 'redirectTo'])->name('line.login');
@@ -58,7 +61,9 @@ Route::get('/', function () {
     ]);
 });
 
+// 認証必要
 Route::middleware('auth:user')->group(function () {
+    // チームなしユーザ(チーム作成 or チーム参加)
     Route::prefix('new_team')->name('new_team.')->group(function() {
         Route::get('/', [TeamController::class, 'create'])->name('index');
         Route::post('confirm', [TeamController::class, 'confirm'])->name('confirm');
@@ -66,6 +71,7 @@ Route::middleware('auth:user')->group(function () {
     });
 
     Route::prefix('myteam')->name('myteam.')->group(function () {
+        // チームプロフィール
         Route::get('/', [MyTeamController::class, 'index'])->name('index');
         Route::get('detail', [MyTeamController::class, 'detail'])->name('detail');
         Route::get('edit', [MyTeamController::class, 'edit'])->name('edit');
@@ -88,10 +94,10 @@ Route::middleware('auth:user')->group(function () {
 
         // 招待する試合
         Route::prefix('{team_id}')->group(function() {
-            // チーム詳細
+            // 招待詳細
             Route::get('/', [MyTeamController::class, 'detail'])->name('detail');
 
-            // チームへ招待
+            // 試合の招待
             Route::prefix('invite_game')->name('invite_game.')->group(function () {
                 Route::get('/', [ConsentGameInviteController::class, 'index'])->name('index');
                 Route::post('back', [ConsentGameInviteController::class, 'back'])->name('back');
@@ -99,6 +105,13 @@ Route::middleware('auth:user')->group(function () {
                 Route::post('complete', [ConsentGameInviteController::class, 'complete'])->name('complete');
             });
         });
+    });
+
+    // マイプロフィール
+    Route::name('my-profile.')->group(function () {
+        Route::get('my-profile', [MyProfileController::class, 'detail'])->name('detail');
+        Route::get('my-profile/edit', [MyProfileController::class, 'edit'])->name('edit');
+        Route::post('my-profile/edit', [MyProfileController::class, 'update'])->name('update');
     });
 
     Route::post('logout', [UserLoginController::class, 'logout'])->name('logout');

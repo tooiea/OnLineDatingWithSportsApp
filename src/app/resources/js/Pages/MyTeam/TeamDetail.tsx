@@ -2,6 +2,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import { useState, useEffect } from 'react';
+import { Pencil } from 'lucide-react';
+import { Link } from '@inertiajs/react';
 
 interface Team {
   id: string;
@@ -40,7 +42,7 @@ interface Props extends PageProps {
   };
 }
 
-export default function TeamDetail({ auth, myTeam, teamMembersNumber, albums, message }: Props) {
+export default function TeamDetail({ myTeam, teamMembersNumber, albums, message }: Props) {
   const [copySuccess, setCopySuccess] = useState(false);
   const [visibleMessage, setVisibleMessage] = useState<string | null>(message?.success ?? null);
 
@@ -90,11 +92,12 @@ export default function TeamDetail({ auth, myTeam, teamMembersNumber, albums, me
             <div className="space-y-4">
               <div>
                 <p className="text-sm font-semibold text-gray-600">チーム名</p>
-                <p className="text-gray-800">
-                  <a href={teamEditUrl} className="text-indigo-500 hover:underline break-all">
-                    {myTeam.team.name}
-                  </a>
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="text-gray-800 break-all">{myTeam.team.name}</p>
+                  <Link href={teamEditUrl} className="text-indigo-500 hover:text-indigo-700">
+                    <Pencil size={16} />
+                  </Link>
+                </div>
               </div>
 
               <div>

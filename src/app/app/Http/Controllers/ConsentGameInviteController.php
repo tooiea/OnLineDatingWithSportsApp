@@ -8,6 +8,7 @@ use App\Http\Requests\ConsentGameTeamIdRequest;
 use App\Models\ConsentGame;
 use App\Models\ConsentGameInvite;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +31,7 @@ class ConsentGameInviteController extends Controller
                 'id' => $guestTeam->id,
                 'name' => $guestTeam->name,
                 'url' => $guestTeam->url,
-                'image_path' => $guestTeam->image->getPathBase64Attribute(),
+                'image_path' => $guestTeam->image->path_base64,
             ],
             'old' => session()->getOldInput(),
         ]);
@@ -95,7 +96,7 @@ class ConsentGameInviteController extends Controller
         }
 
         $myTeam = Team::whereRelation('team_members', 'user_id', Auth::id())->first();
-        $guestTeam = Team::findOrFail($team_id);
+        $guestTeam = Team::with('team_members')->findOrFail($team_id);
 
         $consentGame = new ConsentGame();
         $consentGame->invitee_id = $myTeam->id;
@@ -106,6 +107,14 @@ class ConsentGameInviteController extends Controller
         $consentGame->third_preferered_date = $consentGameInvite->third_preferered_date;
         $consentGame->message = $consentGameInvite->message;
         $consentGame->save();
+
+        // 所属中のチームメンバ全てに通知
+        foreach ($guestTeam->team_members as $teamMember) {
+            $consentGame->notification()->create([
+                'senderable_type' => User::class,
+                'senderable_id' => $teamMember->user_id
+            ]);
+        }
 
         $request->session()->flash('flash_message', $guestTeam->name . __('messages.success.consent_sent'));
         return redirect()->route('myteam.index');

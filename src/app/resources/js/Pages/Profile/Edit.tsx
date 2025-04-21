@@ -1,43 +1,192 @@
+import { useForm, router } from '@inertiajs/react';
+import { useRef, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { PageProps } from '@/types';
 import { Head } from '@inertiajs/react';
-import DeleteUserForm from './Partials/DeleteUserForm';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 
-export default function Edit({
-    mustVerifyEmail,
-    status,
-}: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
-    return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Profile
-                </h2>
-            }
+interface Option {
+  value: number;
+  label: string;
+}
+
+interface Props {
+  positionOptions: Option[];
+  handednessOptions: Option[];
+  userProfile: {
+    nickname: string;
+    position: number | null;
+    handedness: number | null;
+    image_path: string | null;
+  };
+}
+
+export default function ProfileEdit({
+  positionOptions,
+  handednessOptions,
+  userProfile,
+}: Props) {
+  interface FormData {
+    [key: string]: string | number | boolean | File | null;
+    nickname: string;
+    position: number | null;
+    handedness: number | null;
+    image: File | null;
+    deleteImage: boolean;
+  }
+
+  const { data, setData, processing, errors } = useForm<FormData>({
+    nickname: userProfile.nickname || '',
+    position: userProfile.position ?? null,
+    handedness: userProfile.handedness ?? null,
+    image: null,
+    deleteImage: false,
+  });
+
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(userProfile.image_path || null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setData('image', file);
+      setData('deleteImage', true); // 新しい画像がある場合も削除フラグをtrueに
+      const reader = new FileReader();
+      reader.onloadend = () => setPreviewImage(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageDelete = () => {
+    setPreviewImage(null);
+    setData('image', null);
+    setData('deleteImage', true);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('nickname', data.nickname);
+    formData.append('position', data.position !== null ? String(data.position) : '');
+    formData.append('handedness', data.handedness !== null ? String(data.handedness) : '');
+    formData.append('deleteImage', data.deleteImage ? '1' : '0');
+    if (data.image instanceof File) {
+      formData.append('image', data.image);
+    }
+
+    router.post(route('my-profile.update'), formData, {
+      forceFormData: true,
+    });
+  };
+
+  return (
+    <AuthenticatedLayout>
+      <Head title="マイプロフィール編集" />
+      <div className="max-w-3xl mx-auto py-10 px-4">
+        <form
+          onSubmit={handleSubmit}
+          encType="multipart/form-data"
+          className="bg-white shadow rounded-lg p-6 space-y-6"
         >
-            <Head title="Profile" />
+          <h1 className="text-xl font-bold text-gray-800 border-b pb-2">
+            マイプロフィール編集
+          </h1>
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <UpdateProfileInformationForm
-                            mustVerifyEmail={mustVerifyEmail}
-                            status={status}
-                            className="max-w-xl"
-                        />
-                    </div>
+          <div>
+            <label className="block font-semibold mb-1">ニックネーム</label>
+            <input
+              type="text"
+              value={data.nickname}
+              onChange={(e) => setData('nickname', e.target.value)}
+              className="w-full border rounded px-3 py-2"
+            />
+            {errors.nickname && (
+              <p className="text-sm text-red-500 mt-1">{errors.nickname}</p>
+            )}
+          </div>
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <UpdatePasswordForm className="max-w-xl" />
-                    </div>
+          <div>
+            <label className="block font-semibold mb-1">ポジション</label>
+            <select
+              value={data.position ?? ''}
+              onChange={(e) =>
+                setData('position', e.target.value === '' ? null : Number(e.target.value))
+              }
+              className="w-full border rounded px-3 py-2"
+            >
+              <option value="">選択してください</option>
+              {positionOptions.map((p) => (
+                <option key={p.value} value={p.value}>
+                  {p.label}
+                </option>
+              ))}
+            </select>
+            {errors.position && (
+              <p className="text-sm text-red-500 mt-1">{errors.position}</p>
+            )}
+          </div>
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <DeleteUserForm className="max-w-xl" />
-                    </div>
-                </div>
-            </div>
-        </AuthenticatedLayout>
-    );
+          <div>
+            <label className="block font-semibold mb-1">利き手</label>
+            <select
+              value={data.handedness ?? ''}
+              onChange={(e) =>
+                setData('handedness', e.target.value === '' ? null : Number(e.target.value))
+              }
+              className="w-full border rounded px-3 py-2"
+            >
+              <option value="">選択してください</option>
+              {handednessOptions.map((h) => (
+                <option key={h.value} value={h.value}>
+                  {h.label}
+                </option>
+              ))}
+            </select>
+            {errors.handedness && (
+              <p className="text-sm text-red-500 mt-1">{errors.handedness}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block font-semibold mb-1">プロフィール画像</label>
+            {previewImage && (
+              <div className="mb-2">
+                <img
+                  src={previewImage}
+                  alt="プロフィール画像"
+                  className="w-32 h-32 object-contain border rounded mb-2"
+                />
+                <button
+                  type="button"
+                  onClick={handleImageDelete}
+                  className="text-sm text-red-600 hover:underline"
+                >
+                  画像を削除
+                </button>
+              </div>
+            )}
+            <input
+              type="file"
+              ref={imageInputRef}
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full"
+            />
+            {errors.image && (
+              <p className="text-sm text-red-500 mt-1">{errors.image}</p>
+            )}
+          </div>
+
+          <div className="text-center">
+            <button
+              type="submit"
+              className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700"
+              disabled={processing}
+            >
+              保存
+            </button>
+          </div>
+        </form>
+      </div>
+    </AuthenticatedLayout>
+  );
 }

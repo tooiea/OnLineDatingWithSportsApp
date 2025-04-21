@@ -203,51 +203,51 @@ export default function TeamEdit({ auth, team, albums, prefectures }: Props) {
   return (
     <AuthenticatedLayout>
       <Head title="チームプロフィール編集" />
-      <div className="max-w-4xl mx-auto py-10 px-4">
-        <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6">
-          <h1 className="text-2xl font-semibold text-center">チームプロフィール編集</h1>
+      <div className="max-w-3xl mx-auto py-10 px-4">
+        <form onSubmit={handleSubmit} encType="multipart/form-data" className="bg-white shadow rounded-lg p-6 space-y-6">
+          <h1 className="text-xl font-bold text-gray-800 border-b pb-2">チームプロフィール編集</h1>
 
           {/* チーム情報 */}
           <div>
-            <label className="block font-semibold">チーム名</label>
+            <label className="block font-semibold mb-1">チーム名</label>
             <input type="text" value={data.teamName} onChange={(e) => setData('teamName', e.target.value)} className="w-full border rounded px-3 py-2" />
-            {errors.teamName && <p className="text-sm text-red-500">{errors.teamName}</p>}
+            {errors.teamName && <p className="text-sm text-red-500 mt-1">{errors.teamName}</p>}
           </div>
 
           <div>
-            <label className="block font-semibold">都道府県</label>
+            <label className="block font-semibold mb-1">都道府県</label>
             <select value={data.prefecture} onChange={(e) => setData('prefecture', Number(e.target.value))} className="w-full border rounded px-3 py-2">
               <option value={0}>選択してください</option>
               {prefectures.map((pref) => (
                 <option key={pref.value} value={pref.value}>{pref.label}</option>
               ))}
             </select>
-            {errors.prefecture && <p className="text-sm text-red-500">{errors.prefecture}</p>}
+            {errors.prefecture && <p className="text-sm text-red-500 mt-1">{errors.prefecture}</p>}
           </div>
 
           <div>
-            <label className="block font-semibold">住所</label>
+            <label className="block font-semibold mb-1">住所</label>
             <input type="text" value={data.address} onChange={(e) => setData('address', e.target.value)} className="w-full border rounded px-3 py-2" />
-            {errors.address && <p className="text-sm text-red-500">{errors.address}</p>}
+            {errors.address && <p className="text-sm text-red-500 mt-1">{errors.address}</p>}
           </div>
 
           <div>
-            <label className="block font-semibold">よく使う施設名</label>
+            <label className="block font-semibold mb-1">よく使う施設名</label>
             <input type="text" value={data.favoriteFacility} onChange={(e) => setData('favoriteFacility', e.target.value)} className="w-full border rounded px-3 py-2" />
-            {errors.favoriteFacility && <p className="text-sm text-red-500">{errors.favoriteFacility}</p>}
+            {errors.favoriteFacility && <p className="text-sm text-red-500 mt-1">{errors.favoriteFacility}</p>}
           </div>
 
           <div>
-            <label className="block font-semibold">チーム紹介URL</label>
+            <label className="block font-semibold mb-1">チーム紹介URL</label>
             <input type="text" value={data.teamUrl} onChange={(e) => setData('teamUrl', e.target.value)} className="w-full border rounded px-3 py-2" />
-            {errors.teamUrl && <p className="text-sm text-red-500">{errors.teamUrl}</p>}
+            {errors.teamUrl && <p className="text-sm text-red-500 mt-1">{errors.teamUrl}</p>}
           </div>
 
           <div>
-            <label className="block font-semibold">チームロゴ画像</label>
+            <label className="block font-semibold mb-1">チームロゴ画像</label>
             {previewImage ? <img src={previewImage} className="w-32 h-32 object-contain mb-2" /> : team.image?.path_base64 && <img src={team.image.path_base64} className="w-32 h-32 object-contain mb-2" />}
             <input type="file" ref={imageInputRef} onChange={handleImageChange} className="w-full" />
-            {errors.teamMainImage && <p className="text-sm text-red-500">{errors.teamMainImage}</p>}
+            {errors.teamMainImage && <p className="text-sm text-red-500 mt-1">{errors.teamMainImage}</p>}
           </div>
 
           {/* アルバム表示 */}
@@ -286,9 +286,6 @@ export default function TeamEdit({ auth, team, albums, prefectures }: Props) {
                       }))}
                       className="w-full border rounded px-2 py-1"
                     />
-                    {errors[`albums.${index}.name`] && <p className="text-sm text-red-500">{errors[`albums.${index}.name`]}</p>}
-                    {errors[`albums.${index}`] && <p className="text-sm text-red-500">{errors[`albums.${index}`]}</p>}
-
                     {(album.existingImages ?? []).length > 0 && (
                       <div className="grid grid-cols-5 gap-2">
                         {(album.existingImages ?? []).map((img) => (
@@ -311,7 +308,6 @@ export default function TeamEdit({ auth, team, albums, prefectures }: Props) {
                       onChange={(e) => handleNewImages(albumId, Array.from(e.target.files || []))}
                       className="w-full"
                     />
-                    {errors[`albums.${index}.addImages.0`] && <p className="text-sm text-red-500">{errors[`albums.${index}.addImages.0`]}</p>}
                   </div>
                 )}
               </div>
