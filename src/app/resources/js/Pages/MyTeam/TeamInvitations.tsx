@@ -51,8 +51,8 @@ export default function TeamInvitations({
     router.post(route('myteam.markAsRead', id));
   };
 
-  // x秒後にsuccessメッセージを非表示
   const [showSuccess, setShowSuccess] = useState(!!message?.success);
+  const [tab, setTab] = useState<'sent' | 'received'>('sent');
 
   useEffect(() => {
     if (showSuccess) {
@@ -68,7 +68,6 @@ export default function TeamInvitations({
       <Head title="チーム招待状況" />
 
       <div className="max-w-7xl mx-auto py-8 px-4">
-        {/* メッセージの一時表示 */}
         {showSuccess && (
           <div className="mb-6 px-4 py-3 bg-green-100 border border-green-300 text-green-800 rounded-md shadow-sm transition-opacity duration-300 ease-in-out">
             {message?.success}
@@ -90,27 +89,50 @@ export default function TeamInvitations({
           </div>
         ) : (
           <>
-            <h2 className="text-lg font-semibold border-b pb-2 text-blue-700 mb-4">あなたが招待したチーム</h2>
-            <ul className="flex flex-wrap gap-6 justify-center">
-              {myTeamInvites.length > 0 ? (
-                myTeamInvites.map((invite) => (
-                  <InviteCard key={invite.id} invite={invite} inviteStatuses={inviteStatuses} isInviter={true} />
-                ))
-              ) : (
-                <p className="text-gray-500">まだ招待したチームはありません。</p>
-              )}
-            </ul>
+            <div className="flex justify-center gap-4 mb-6">
+              <button
+                onClick={() => setTab('sent')}
+                className={`px-4 py-2 rounded-md text-sm font-medium border-b-2 ${
+                  tab === 'sent' ? 'text-indigo-600 border-indigo-600' : 'text-gray-500 border-transparent'
+                }`}
+              >
+                送った招待
+              </button>
+              <button
+                onClick={() => setTab('received')}
+                className={`px-4 py-2 rounded-md text-sm font-medium border-b-2 ${
+                  tab === 'received' ? 'text-indigo-600 border-indigo-600' : 'text-gray-500 border-transparent'
+                }`}
+              >
+                受けた招待
+              </button>
+            </div>
 
-            <h2 className="text-lg font-semibold border-b pb-2 text-green-700 mt-12 mb-4">あなたを招待したチーム</h2>
-            <ul className="flex flex-wrap gap-6 justify-center">
-              {asGuestInvites.length > 0 ? (
-                asGuestInvites.map((invite) => (
-                  <InviteCard key={invite.id} invite={invite} inviteStatuses={inviteStatuses} isInviter={false} />
-                ))
-              ) : (
-                <p className="text-gray-500">まだ招待されているチームはありません。</p>
-              )}
-            </ul>
+            {tab === 'sent' ? (
+              <>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                  {myTeamInvites.length > 0 ? (
+                    myTeamInvites.map((invite) => (
+                      <InviteCard key={invite.id} invite={invite} inviteStatuses={inviteStatuses} isInviter={true} />
+                    ))
+                  ) : (
+                    <p className="text-gray-500">招待したチームはまだありません。</p>
+                  )}
+                </ul>
+              </>
+            ) : (
+              <>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                  {asGuestInvites.length > 0 ? (
+                    asGuestInvites.map((invite) => (
+                      <InviteCard key={invite.id} invite={invite} inviteStatuses={inviteStatuses} isInviter={false} />
+                    ))
+                  ) : (
+                    <p className="text-gray-500">招待されたチームはまだありません。</p>
+                  )}
+                </ul>
+              </>
+            )}
           </>
         )}
       </div>
