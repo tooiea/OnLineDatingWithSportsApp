@@ -254,6 +254,8 @@ return [
         'second_preferered_date' => '第二希望日',
         'third_preferered_date' => '第三希望日',
         'message' => 'メッセージ',
+        'position' => 'ポジション',
+        'handedness' => '利き手（利き足）'
     ],
 
 ];

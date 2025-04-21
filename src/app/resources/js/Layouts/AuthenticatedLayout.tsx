@@ -40,6 +40,9 @@ export default function AuthenticatedLayout({
                 <NavLink href={route('myteam.detail')} active={isActive('myteam.detail')}>
                   チームプロフィール
                 </NavLink>
+                <NavLink href={route('my-profile.detail')} active={isActive('my-profile.detail')}>
+                  マイプロフィール
+                </NavLink>
                 <NavLink href={route('logout')} method="post" as="button" active={false}>
                   ログアウト
                 </NavLink>
@@ -93,6 +96,9 @@ export default function AuthenticatedLayout({
             </ResponsiveNavLink>
             <ResponsiveNavLink href={route('myteam.detail')} active={isActive('myteam.detail')}>
               チームプロフィール
+            </ResponsiveNavLink>
+            <ResponsiveNavLink href={route('my-profile.detail')} active={isActive('my-profile.detail')}>
+              マイプロフィール
             </ResponsiveNavLink>
             <ResponsiveNavLink href={route('logout')} method="post" as="button">
               ログアウト

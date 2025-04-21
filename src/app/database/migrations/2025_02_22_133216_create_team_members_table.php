@@ -17,6 +17,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignIdFor(Team::class, 'team_id');
             $table->foreignIdFor(User::class, 'user_id');
+            $table->integer('position')->nullable();
+            $table->integer('handedness')->nullable();
             $table->timestampsTz(precision: 0);
         });
     }
