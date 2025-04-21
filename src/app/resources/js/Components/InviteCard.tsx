@@ -40,9 +40,8 @@ const renderDate = (label: string, date?: string, highlightDate?: string) => {
     <li className="flex gap-2 items-start text-xs">
       <span>{label}</span>
       <span
-        className={`flex flex-col ${
-          isPast ? 'line-through text-gray-400' : ''
-        } ${faded ? 'text-gray-400' : ''} ${isHighlight ? 'font-bold text-blue-700' : ''}`.trim()}
+        className={`flex flex-col ${isPast ? 'line-through text-gray-400' : ''
+          } ${faded ? 'text-gray-400' : ''} ${isHighlight ? 'font-bold text-blue-700' : ''}`.trim()}
       >
         <span>{getFormattedFullDateTime(date)}</span>
       </span>
@@ -76,32 +75,34 @@ const InviteCard: React.FC<InviteCardProps> = ({ invite, inviteStatuses, isInvit
   const deadlineLabel =
     invite.consent_status === 0
       ? getDeadlineLabel(
-          invite.first_preferered_date,
-          invite.second_preferered_date,
-          invite.third_preferered_date
-        )
+        invite.first_preferered_date,
+        invite.second_preferered_date,
+        invite.third_preferered_date
+      )
       : null;
 
   const detailRoute = isInviter
     ? route('myteam.consent_game.detail', invite.id)
     : invite.consent_status === 0
-    ? route('myteam.consent_game.reply.index', invite.id)
-    : route('myteam.consent_game.detail', invite.id);
+      ? route('myteam.consent_game.reply.index', invite.id)
+      : route('myteam.consent_game.detail', invite.id);
 
   return (
     <li className={`relative shadow rounded-xl w-full max-w-[420px] flex gap-4 p-4 bg-white min-h-[170px] ${invite.unread ? 'border-2 border-yellow-400 bg-yellow-50' : 'border'}`}>
-      {invite.unread && (
-        <div className="absolute top-0 right-0 m-1 bg-yellow-400 text-white text-xs font-bold px-2 py-1 rounded-full shadow">
-          新着
-        </div>
-      )}
 
       {invite.team.image && (
-        <img
-          src={invite.team.image.path_base64}
-          alt="チーム画像"
-          className="w-16 h-16 object-cover rounded"
-        />
+        <div className="relative w-16 h-16">
+          <img
+            src={invite.team.image.path_base64}
+            alt="チーム画像"
+            className="w-16 h-16 object-cover rounded"
+          />
+          {invite.unread && (
+            <div className="absolute -top-1 bg-yellow-400 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow z-10">
+              新着通知
+            </div>
+          )}
+        </div>
       )}
 
       <div className="flex-1 flex flex-col justify-between">
@@ -139,7 +140,7 @@ const InviteCard: React.FC<InviteCardProps> = ({ invite, inviteStatuses, isInvit
             href={detailRoute}
             className="text-sm text-indigo-600 hover:underline font-medium"
           >
-            {invite.consent_status === 0 ? '返事する' : '詳細を見る'}
+            {isInviter || invite.consent_status !== 0 ? '詳細を見る' : '返事する'}
           </Link>
         </div>
       </div>
