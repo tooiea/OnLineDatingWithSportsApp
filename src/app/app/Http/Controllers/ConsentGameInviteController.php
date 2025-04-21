@@ -31,7 +31,7 @@ class ConsentGameInviteController extends Controller
                 'id' => $guestTeam->id,
                 'name' => $guestTeam->name,
                 'url' => $guestTeam->url,
-                'image_path' => $guestTeam->image->getPathBase64Attribute(),
+                'image_path' => $guestTeam->image->path_base64,
             ],
             'old' => session()->getOldInput(),
         ]);

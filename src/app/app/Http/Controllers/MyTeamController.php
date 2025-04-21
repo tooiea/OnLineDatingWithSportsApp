@@ -86,7 +86,7 @@ class MyTeamController extends Controller
                     'images' => collect($album->image)->map(function ($image) {
                         return [
                             'id' => $image->id,
-                            'path_base64' => $image->getPathBase64Attribute(),
+                            'path_base64' => $image->path_base64,
                             'extension' => $image->extension,
                             'mime_type' => $image->mime_type,
                         ];
@@ -121,7 +121,7 @@ class MyTeamController extends Controller
                 'favoriteFacility' => $team->favorite_facility,
                 'image' => $team->image ? [
                     'id' => $team->image->id,
-                    'path_base64' => $team->image->getPathBase64Attribute(),
+                    'path_base64' => $team->image->path_base64,
                     'extension' => $team->image->extension,
                     'mime_type' => $team->image->mime_type,
                 ] : null,
@@ -133,7 +133,7 @@ class MyTeamController extends Controller
                     'images' => collect($album->image)->map(function ($image) {
                         return [
                             'id' => $image->id,
-                            'path_base64' => $image->getPathBase64Attribute(),
+                            'path_base64' => $image->path_base64,
                             'extension' => $image->extension,
                             'mime_type' => $image->mime_type,
                         ];

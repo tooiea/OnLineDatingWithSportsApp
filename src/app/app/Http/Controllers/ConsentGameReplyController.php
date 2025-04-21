@@ -67,19 +67,19 @@ class ConsentGameReplyController extends Controller
             'myTeam' => [
                 'id' => $myTeam->id,
                 'name' => $myTeam->name,
-                'image_path' => $myTeam->image->getPathBase64Attribute()
+                'image_path' => $myTeam->image->path_base64
             ],
             'consentGame' => [
                 'id' => $consentGame->id,
                 'invitee' => [
                     'id' => $consentGame->invitee->id,
                     'name' => $consentGame->invitee->name,
-                    'image_path' => $consentGame->invitee->image->getPathBase64Attribute()
+                    'image_path' => $consentGame->invitee->image->path_base64
                 ],
                 'guest' => [
                     'id' => $consentGame->guest->id,
                     'name' => $consentGame->guest->name,
-                    'image_path' => $consentGame->guest->image->getPathBase64Attribute()
+                    'image_path' => $consentGame->guest->image->path_base64
                 ],
                 'consent_status' => $consentGame->consent_status,
                 'consent_status_label' => $consentGame->consent_status->label(),
@@ -137,12 +137,12 @@ class ConsentGameReplyController extends Controller
                 'invitee' => [
                     'id' => $consentGame->invitee->id,
                     'name' => $consentGame->invitee->name,
-                    'image_path' => $consentGame->invitee->image->getPathBase64Attribute()
+                    'image_path' => $consentGame->invitee->image->path_base64
                 ],
                 'guest' => [
                     'id' => $consentGame->guest->id,
                     'name' => $consentGame->guest->name,
-                    'image_path' => $consentGame->guest->image->getPathBase64Attribute()
+                    'image_path' => $consentGame->guest->image->path_base64
                 ],
                 'consent_status' => $consentGame->consent_status->label(),
                 'game_date' => $consentGame->game_date,
