@@ -26,7 +26,7 @@ class TempTeamJoinController extends Controller
      */
     public function index(InvitationCodeRequest $request, string $invitation_code): Response
     {
-        return Inertia::render('Register/TeamJoinRegistrationForm', [
+        return Inertia::render('TempRegister/TeamJoinRegistrationForm', [
             'invitation_code' => $invitation_code,
             'old' => session()->getOldInput(),
         ]);
@@ -47,7 +47,7 @@ class TempTeamJoinController extends Controller
             email: $request->validated('email'),
             password: $request->validated('password'),
         )]);
-        return Inertia::render('Register/TeamJoinRegistrationConfirm', [
+        return Inertia::render('TempRegister/TeamJoinRegistrationConfirm', [
             'nickname' => $request->validated('nickname'),
             'email' => $request->validated('email'),
             'invitation_code' => $invitation_code,
@@ -109,7 +109,7 @@ class TempTeamJoinController extends Controller
             ]));
             $tempUser->temporaryRegistrationNotification($uuid, config('mail.from.address'));
         });
-        return Inertia::render('Register/TeamRegistrationComplete');
+        return Inertia::render('TempRegister/TeamRegistrationComplete');
     }
 
     /**
