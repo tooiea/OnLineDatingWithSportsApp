@@ -59,7 +59,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('home');
 
 // 認証必要
 Route::middleware('auth:user')->group(function () {
