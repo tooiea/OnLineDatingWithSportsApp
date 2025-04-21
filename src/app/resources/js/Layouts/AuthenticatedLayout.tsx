@@ -30,7 +30,7 @@ export default function AuthenticatedLayout({
             <div className="flex items-center">
               <Link href={route('my-profile.detail')} className="flex items-center gap-2">
                 <img
-                  src={user.image_path ?? '/images/default_profile.png'}
+                  src={user.image_path ?? '/images/logo.png'}
                   alt="プロフィール"
                   className="w-8 h-8 rounded-full border"
                 />

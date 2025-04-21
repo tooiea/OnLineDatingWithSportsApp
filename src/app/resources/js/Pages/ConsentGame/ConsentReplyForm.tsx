@@ -85,8 +85,9 @@ const ConsentReplyForm: React.FC<Props> = ({ consentGame, replyStatuses, old, er
     if (!date) return null;
     return (
       <div className="bg-white border rounded-xl shadow-sm px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <div className="font-semibold text-sm sm:text-base w-full sm:w-1/2">{label}：{getFormattedFullDateTime(date)}</div>
-        <div className="w-full sm:w-1/2">{renderRadioGroup(key)}</div>
+        <div className="font-semibold text-sm sm:text-base w-full sm:w-1/4">{label}</div>
+        <div className="text-sm sm:text-base w-full sm:w-1/2">{getFormattedFullDateTime(date)}</div>
+        <div className="w-full sm:w-1/4">{renderRadioGroup(key)}</div>
         {errors[key] && <div className="text-red-500 text-sm">{errors[key]}</div>}
       </div>
     );
