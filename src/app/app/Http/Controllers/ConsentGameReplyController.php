@@ -7,12 +7,16 @@ use App\Http\Requests\ConsentGameIdRequest;
 use App\Http\Requests\ConsentGameReplyMessageRequest;
 use App\Http\Requests\ConsentGameReplyRequest;
 use App\Models\ConsentGame;
+use App\Models\ConsentGameMarkNotificationAsRead;
 use App\Models\ConsentGameReply;
 use App\Models\Reply;
 use App\Models\Team;
+use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Concurrency;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -30,14 +34,34 @@ class ConsentGameReplyController extends Controller
     public function detail(ConsentGameIdRequest $request, string $consent_game_id): Response
     {
         $myTeam = Team::whereRelation('team_members', 'user_id', Auth::id())->firstOrFail();
+        $userId = Auth::id();
         $consentGame = ConsentGame::whereHas('invitee')
                     ->whereHas('guest')
                     ->where('id', $consent_game_id)
                     ->with([
                         'invitee',
                         'guest',
-                        'replies.message'
+                        'notification' => function ($query) use ($userId) {
+                            $query->where('senderable_type', User::class);
+                            $query->where('senderable_id', $userId);
+                            $query->whereNull('read_at');
+                        },
+                        'replies' => function ($query) {
+                            $query->orderBy('created_at');
+                        },
+                        'replies.message.notification' => function ($query) use ($userId) {
+                            $query->where('senderable_type', User::class);
+                            $query->where('senderable_id', $userId);
+                            $query->whereNull('read_at');
+                        },
                     ])->firstOrFail();
+
+        // 未読通知があれば、非同期でリクエスト
+        if (ConsentGame::hasUnreadNotification($consentGame)) {
+            Concurrency::defer([
+                fn () => ConsentGameMarkNotificationAsRead::consentGameMarkAsRead($consent_game_id, $userId)
+            ]);
+        }
 
         return Inertia::render('ConsentGame/ConsentDetail', [
             'myTeam' => [
@@ -84,7 +108,29 @@ class ConsentGameReplyController extends Controller
      */
     public function index(ConsentGameIdRequest $request, string $consent_game_id): Response
     {
-        $consentGame = ConsentGame::with(['invitee', 'guest'])->where('id', $consent_game_id)->firstOrFail();
+        $userId = Auth::id();
+        $consentGame = ConsentGame::with([
+                'invitee',
+                'guest',
+                'notification' => function ($query) use ($userId) {
+                    $query->where('senderable_type', User::class);
+                    $query->where('senderable_id', $userId);
+                    $query->whereNull('read_at');
+                },
+                'replies.message.notification' => function ($query) use ($userId) {
+                    $query->where('senderable_type', User::class);
+                    $query->where('senderable_id', $userId);
+                    $query->whereNull('read_at');
+                },
+            ])->where('id', $consent_game_id)->firstOrFail();
+
+        // 未読通知があれば、非同期でリクエスト
+        if (ConsentGame::hasUnreadNotification($consentGame)) {
+            Concurrency::defer([
+                fn () => ConsentGameMarkNotificationAsRead::consentGameMarkAsRead($consent_game_id, $userId)
+            ]);
+        }
+
         return Inertia::render('ConsentGame/ConsentReplyForm', [
             'consentGame' => [
                 'id' => $consentGame->id,
@@ -121,9 +167,9 @@ class ConsentGameReplyController extends Controller
     {
         $consentGame = ConsentGame::findorFail($consent_game_id);
         session(['consent_game_reply' => new ConsentGameReply(
-            first_preferered_date: $request->validated('first_preferered_date'),
-            second_preferered_date: $request->validated('second_preferered_date'),
-            third_preferered_date: $request->validated('third_preferered_date'),
+            first_preferered_date: (int)$request->validated('first_preferered_date'),
+            second_preferered_date: (int)$request->validated('second_preferered_date'),
+            third_preferered_date: (int)$request->validated('third_preferered_date'),
             message: $request->validated('message'),
         )]);
 
@@ -131,9 +177,9 @@ class ConsentGameReplyController extends Controller
         $opponentTeam = $consentGame->invitee()->where('id', '!=', $myTeam->id)->first() ?? $consentGame->guest()->where('id', '!=', $myTeam->id)->first();
         return Inertia::render('ConsentGame/ConsentReplyConfirm', [
             'form' => [
-                'first_preferered_date' => ConsentStatusTypeEnum::from($request->validated('first_preferered_date'))->replyLabel(),
-                'second_preferered_date' => ConsentStatusTypeEnum::from($request->validated('second_preferered_date'))->replyLabel(),
-                'third_preferered_date' => $request->validated('third_preferered_date') ? ConsentStatusTypeEnum::from($request->validated('third_preferered_date'))->replyLabel() : null,
+                'first_preferered_date' => ConsentStatusTypeEnum::from((int)$request->validated('first_preferered_date'))->replyLabel(),
+                'second_preferered_date' => ConsentStatusTypeEnum::from((int)$request->validated('second_preferered_date'))->replyLabel(),
+                'third_preferered_date' => $request->validated('third_preferered_date') ? ConsentStatusTypeEnum::from((int)$request->validated('third_preferered_date'))->replyLabel() : null,
                 'message' => $request->validated('message'),
             ],
             'consent_game' => [
@@ -190,16 +236,30 @@ class ConsentGameReplyController extends Controller
                 $consentGame->consent_status = $consentGameReply->status;
                 $consentGame->save();
 
-                $myTeam = Team::whereRelation('team_members', 'user_id', Auth::id())->firstOrFail();
-                $opponentTeam = $consentGame->invitee()->where('id', '!=', $myTeam->id)->first() ?? $consentGame->guest()->where('id', '!=', $myTeam->id)->first();
+                $myTeamId = Team::whereRelation('team_members', 'user_id', Auth::id())->firstOrFail()->id;
+                // 通知するチームの取得
+                $opponentTeam = $consentGame->invitee()->where('id', '!=', $myTeamId)->with('team_members')->first();
+                if (is_null($opponentTeam)) {
+                    $opponentTeam = $consentGame->guest()->where('id', '!=', $myTeamId)->with('team_members')->first();
+                }
+
+                // 所属中のチームメンバ全てに通知
+                foreach ($opponentTeam->team_members as $teamMember) {
+                    $consentGame->notification()->create([
+                        'senderable_type' => User::class,
+                        'senderable_id' => $teamMember->user_id,
+                    ]);
+                }
 
                 $reply = new Reply();
                 $reply->consent_game_id = $consentGame->id;
-                $reply->team_id = $myTeam->id;
+                $reply->team_id = $myTeamId;
                 $reply->save();
 
                 // メッセージがあれば登録
-                $consentGameReply->message ? $reply->message()->create(['message' => $consentGameReply->message]) : null;
+                if ($consentGameReply->message) {
+                    $reply->message()->create(['message' => $consentGameReply->message]);
+                }
                 session()->flash('flash_message', $opponentTeam->name . __('messages.success.reply'));
             });
         } catch (\Exception $e) {
@@ -222,16 +282,32 @@ class ConsentGameReplyController extends Controller
     public function replyMessage(ConsentGameReplyMessageRequest $request, string $consent_game_id): RedirectResponse
     {
         $validated = $request->validated();
-        $consentGame = ConsentGame::findOrFail($consent_game_id);
+        $myTeamId = Team::whereRelation('team_members', 'user_id', Auth::id())->firstOrFail()->id;
+        $consentGame = ConsentGame::with(['invitee', 'guest'])->findOrFail($consent_game_id);
+
+        // 通知するチームの取得
+        $opponentTeam = $consentGame->invitee()->where('id', '!=', $myTeamId)->with('team_members')->first();
+        if (is_null($opponentTeam)) {
+            $opponentTeam = $consentGame->guest()->where('id', '!=', $myTeamId)->with('team_members')->first();
+        }
 
         try {
             $reply = new Reply();
             $reply->consent_game_id = $consentGame->id;
-            $reply->team_id = Team::whereRelation('team_members', 'user_id', Auth::id())->firstOrFail()->id;
+            $reply->team_id = $myTeamId;
             $reply->save();
             $reply->message()->create([
                 'message' => $validated['message']
             ]);
+
+            // 所属中のチームメンバ全てに通知
+            foreach ($opponentTeam->team_members as $teamMember) {
+                $reply->message->notification()->create([
+                    'senderable_type' => User::class,
+                    'senderable_id' => $teamMember->user_id,
+                ]);
+            }
+
         } catch (\Exception $e) {
             Log::error('Reply registration failed: ' . $e->getMessage());
             return redirect()->route('myteam.consent_game.detail', [

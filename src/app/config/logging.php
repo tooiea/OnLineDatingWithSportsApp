@@ -127,6 +127,16 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'job' => [
+            'driver' => 'stack',
+            'channels' => ['single_job'],
+            'ignore_exceptions' => false,
+        ],
+        'single_job' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/job.log'),
+            'level' => 'debug',
+        ],
     ],
 
 ];

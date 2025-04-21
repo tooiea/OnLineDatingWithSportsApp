@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @property string $id
@@ -116,7 +117,19 @@ class ConsentGame extends Model
                     $query->orwhere('third_preferered_date', '>=', $now);
                 })
                 ->whereHas('guest')
-                ->with(['guest.image', 'notification'])
+                ->with([
+                    'guest.image',
+                    'notification' => function ($query) {
+                        $query->where('senderable_type', User::class);
+                        $query->where('senderable_id', Auth::id());
+                        $query->whereNull('read_at');
+                    },
+                    'replies.message.notification' => function ($query) {
+                        $query->where('senderable_type', User::class);
+                        $query->where('senderable_id', Auth::id());
+                        $query->whereNull('read_at');
+                    },
+                ])
                 ->orderByRaw("
                     LEAST(
                         first_preferered_date,
@@ -133,6 +146,7 @@ class ConsentGame extends Model
                     'first_preferered_date' => $invite->first_preferered_date,
                     'second_preferered_date' => $invite->second_preferered_date,
                     'third_preferered_date' => $invite->third_preferered_date,
+                    'unread' => self::hasUnreadNotification($invite),
                     'team' => [
                         'id' => $invite->guest->id,
                         'name' => $invite->guest->name,
@@ -159,7 +173,19 @@ class ConsentGame extends Model
                     $query->orwhere('third_preferered_date', '>=', $now);
                 })
                 ->whereHas('invitee')
-                ->with(['invitee.image', 'notification'])
+                ->with([
+                    'invitee.image',
+                    'notification' => function ($query) {
+                        $query->where('senderable_type', User::class);
+                        $query->where('senderable_id', Auth::id());
+                        $query->whereNull('read_at');
+                    },
+                    'replies.message.notification' => function ($query) {
+                            $query->where('senderable_type', User::class);
+                            $query->where('senderable_id', Auth::id());
+                            $query->whereNull('read_at');
+                    },
+                ])
                 ->orderByRaw("
                     LEAST(
                         first_preferered_date,
@@ -176,6 +202,7 @@ class ConsentGame extends Model
                     'first_preferered_date' => $invite->first_preferered_date,
                     'second_preferered_date' => $invite->second_preferered_date,
                     'third_preferered_date' => $invite->third_preferered_date,
+                    'unread' => self::hasUnreadNotification($invite),
                     'team' => [
                         'id' => $invite->invitee->id,
                         'name' => $invite->invitee->name,
@@ -184,5 +211,26 @@ class ConsentGame extends Model
                         ] : null,
                     ],
                 ]);
+    }
+
+    /**
+     * 未読の通知があるか
+     *
+     * @param ConsentGame $invite
+     * @return boolean
+     */
+    public static function hasUnreadNotification(ConsentGame $invite): bool
+    {
+        if (!empty($invite->notification)) {
+            return true;
+        }
+
+        foreach ($invite->replies as $reply) {
+            if ($reply->message && $reply->message->notification) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

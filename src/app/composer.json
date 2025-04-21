@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.10.1",
         "socialiteproviders/google": "^4.1",
         "socialiteproviders/line": "^4.1",
+        "spatie/fork": "^1.2",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {

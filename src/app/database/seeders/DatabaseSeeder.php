@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\ConsentGame;
 use App\Models\DummyImage;
 use App\Models\Team;
+use App\Models\TeamMember;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -36,10 +37,26 @@ class DatabaseSeeder extends Seeder
                 'extension' => 'png',
                 'mime_type' => 'image/png',
             ]);
+
+            // チームメンバー
+            $user = User::factory()->create();
+            $user->teamMember()->create([
+                'team_id' => $team->id,
+                'user_id' => $user->id,
+            ]);
         });
 
         $teams = Team::all();
-
+        $myUser = User::factory()->create([
+            'name' => 'watanabe',
+            'email' => 'tooiea1113@gmail.com',
+            'password'=> Hash::make('password'),
+            'last_login_at' => \Carbon\Carbon::now(),
+        ]);
+        $myUser->teamMember()->create([
+            'team_id' => Team::inRandomOrder()->first()->id,
+            'user_id' => $myUser->id,
+        ]);
         foreach ($teams as $team) {
             // チームアルバムの作成
             $album = $team->album()->create([
@@ -69,13 +86,17 @@ class DatabaseSeeder extends Seeder
                     'invitee_id' => $team->id,
                     'guest_id' => $invitee->id,
                 ]);
-                $consentGame->notification()->create([
-                    'notifiable_type' => Team::class,
-                    'notifiable_id' => $team->id,
-                    'senderable_type' => Team::class,
-                    'senderable_id' => $invitee->id,
-                    'read_at' => null
-                ]);
+
+                $teamMembers = TeamMember::where('team_id', $invitee->id)->inRandomOrder()->get();
+                foreach ($teamMembers as $teamMember) {
+                    $consentGame->notification()->create([
+                        'notifiable_type' => ConsentGame::class,
+                        'notifiable_id' => $consentGame->id,
+                        'senderable_type' => User::class,
+                        'senderable_id' => $teamMember->user_id,
+                        'read_at' => null
+                    ]);
+                }
             }
 
             // 招待を受ける側のデータを作成
@@ -84,32 +105,17 @@ class DatabaseSeeder extends Seeder
                     'invitee_id' => $guest->id,
                     'guest_id' => $team->id,
                 ]);
-                $consentGame->notification()->create([
-                    'notifiable_type' => Team::class,
-                    'notifiable_id' => $team->id,
-                    'senderable_type' => Team::class,
-                    'senderable_id' => $invitee->id,
-                    'read_at' => null
-                ]);
+                $teamMembers = TeamMember::where('team_id', $team->id)->inRandomOrder()->get();
+                foreach ($teamMembers as $teamMember) {
+                    $consentGame->notification()->create([
+                        'notifiable_type' => ConsentGame::class,
+                        'notifiable_id' => $consentGame->id,
+                        'senderable_type' => User::class,
+                        'senderable_id' => $teamMember->user_id,
+                        'read_at' => null
+                    ]);
+                }
             }
         }
-
-        User::factory(10)->create()->each(function ($user) {
-            $myTeamId = Team::inRandomOrder()->first()->id;
-            $user->teamMember()->create([
-                'team_id' => $myTeamId,
-                'user_id' => $user->id,
-            ]);
-        });
-        $user = User::factory()->create([
-            'name' => 'watanabe',
-            'email' => 'tooiea1113@gmail.com',
-            'password'=> Hash::make('password'),
-            'last_login_at' => \Carbon\Carbon::now(),
-        ]);
-        $user->teamMember()->create([
-            'team_id' => Team::inRandomOrder()->first()->id,
-            'user_id' => $user->id,
-        ]);
     }
 }

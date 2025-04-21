@@ -40,7 +40,9 @@ const renderDate = (label: string, date?: string, highlightDate?: string) => {
     <li className="flex items-center gap-2">
       <span className="font-semibold">{label}</span>
       <span
-        className={`$${isPast ? 'line-through text-gray-400' : ''} ${faded ? 'text-gray-400' : ''} ${isHighlight ? 'font-bold text-blue-700' : ''}`.trim()}
+        className={`${
+          isPast ? 'line-through text-gray-400' : ''
+        } ${faded ? 'text-gray-400' : ''} ${isHighlight ? 'font-bold text-blue-700' : ''}`.trim()}
       >
         {getFormattedFullDateTime(date)}
       </span>
@@ -80,15 +82,14 @@ const InviteCard: React.FC<InviteCardProps> = ({ invite, inviteStatuses, isInvit
         )
       : null;
 
-  // ルートの切り替え
   const detailRoute = isInviter
     ? route('myteam.consent_game.detail', invite.id)
     : invite.consent_status === 0
-      ? route('myteam.consent_game.reply.index', invite.id)
-      : route('myteam.consent_game.detail', invite.id);
+    ? route('myteam.consent_game.reply.index', invite.id)
+    : route('myteam.consent_game.detail', invite.id);
 
   return (
-    <li className="bg-blue-50 shadow rounded-xl w-[350px] flex flex-col min-h-[400px] p-6">
+    <li className="relative bg-blue-50 shadow rounded-xl w-[350px] flex flex-col min-h-[400px] p-6">
       <div className="flex-1 flex flex-col justify-between">
         <div>
           <div className="flex justify-between items-center mb-2">
@@ -98,13 +99,24 @@ const InviteCard: React.FC<InviteCardProps> = ({ invite, inviteStatuses, isInvit
             </span>
           </div>
 
-          {invite.team.image && (
-            <img
-              src={invite.team.image.path_base64}
-              alt="チーム画像"
-              className="w-full aspect-square object-cover rounded-xl mb-3"
-            />
-          )}
+          <div className="relative mb-3">
+            {invite.team.image && (
+              <>
+                <img
+                  src={invite.team.image.path_base64}
+                  alt="チーム画像"
+                  className="w-full aspect-square object-cover rounded-xl"
+                />
+                {invite.unread && (
+                  <div
+                    className="absolute top-0 left-0 w-full bg-yellow-500 text-white text-center text-sm font-bold py-2 rounded-t-xl z-10 shadow-md transition-opacity duration-500 animate-fade-in"
+                  >
+                    🔔 新着返信があります
+                  </div>
+                )}
+              </>
+            )}
+          </div>
 
           <h3 className="text-md font-semibold">希望日程</h3>
           <ul className="text-gray-600 space-y-1">
