@@ -30,11 +30,6 @@ class MyTeamController extends Controller
             $query->where('user_id', '=', Auth::id());
         })->first();
 
-        // チームを作らずに、直接ログインした場合
-        if (empty($myTeam)) {
-            // TODO チームに登録する処理から、チーム登録
-        }
-
         $myTeamInvites = ConsentGame::getMyTeamInvites($myTeam->id);
         $asGuestInvites = ConsentGame::getAsGuestInvites($myTeam->id);
 

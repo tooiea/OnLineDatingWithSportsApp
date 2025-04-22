@@ -11,14 +11,15 @@ use Inertia\Response;
 
 class TeamController extends Controller
 {
-    public function create()
+    /**
+     * ユーザ登録後、チーム登録がない場合
+     * チーム作成 or チームへ加入する選択する画面
+     *
+     * @return \Inertia\Response
+     */
+    public function index(): Response
     {
-        return view('team.create');
-    }
-
-    public function index()
-    {
-        return Inertia::render('Team/Index');
+        return Inertia::render('Register/TeamRegistrationSelect');
     }
 
     /**
