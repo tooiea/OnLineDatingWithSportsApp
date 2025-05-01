@@ -10,17 +10,26 @@ export default function AuthenticatedLayout({
   header,
   children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
-  const { url, component } = usePage();
-  const user = usePage().props.auth.user as {
+  const currentUrl = usePage().url;
+  const user = usePage().props.user as {
     name: string;
     email: string;
     image_path?: string;
     team?: { name: string };
   };
-
+  const routes = usePage().props.nav_routes as {
+    current: string;
+    home: string;
+    my_profile: string;
+    myteam_index: string;
+    team_list: string;
+    myteam_detail: string;
+    logout : string;
+  }
   const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-
-  const isActive = (routeName: string) => route().current(routeName);
+  const isActive = (routeName: keyof typeof routes) => {
+    return routes.current === routes[routeName];
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -28,7 +37,7 @@ export default function AuthenticatedLayout({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center">
-              <Link href={route('my-profile.detail')} className="flex items-center gap-2">
+              <Link href={routes.my_profile} className="flex items-center gap-2">
                 <img
                   src={user.image_path ?? '/images/logo.png'}
                   alt="プロフィール"
@@ -40,12 +49,12 @@ export default function AuthenticatedLayout({
               </Link>
             </div>
             <div className="hidden sm:flex items-center gap-6">
-              <NavLink href="" active={isActive('dashboard')}>ホーム</NavLink>
-              <NavLink href={route('myteam.index')} active={isActive('myteam.index')}>招待情報</NavLink>
-              <NavLink href={route('team.list')} active={isActive('team.list')}>検索</NavLink>
-              <NavLink href={route('myteam.detail')} active={isActive('myteam.detail')}>チーム情報</NavLink>
-              <NavLink href={route('my-profile.detail')} active={isActive('my-profile.detail')}>プロフィール</NavLink>
-              <NavLink href={route('logout')} method="post" as="button" active={false}>ログアウト</NavLink>
+              <NavLink href="" active={isActive('home')}>ホーム</NavLink>
+              <NavLink href={routes['myteam_index']} active={isActive('myteam_index')}>招待情報</NavLink>
+              <NavLink href={routes['team_list']} active={isActive('team_list')}>検索</NavLink>
+              <NavLink href={routes['myteam_detail']} active={isActive('myteam_detail')}>チーム情報</NavLink>
+              <NavLink href={routes['my_profile']} active={isActive('my_profile')}>プロフィール</NavLink>
+              <NavLink href={routes['logout']} method="post" as="button" active={false}>ログアウト</NavLink>
             </div>
             <div className="flex items-center gap-2 sm:hidden">
               <button
@@ -69,12 +78,12 @@ export default function AuthenticatedLayout({
 
         <div className={`absolute top-16 w-full bg-white shadow-md z-50 transition-opacity duration-300 ease-in-out ${showingNavigationDropdown ? 'block' : 'hidden'} sm:hidden`}>
           <div className="pt-2 pb-3 space-y-1">
-            <ResponsiveNavLink href="" active={isActive('dashboard')}>ホーム</ResponsiveNavLink>
-            <ResponsiveNavLink href={route('myteam.index')} active={isActive('myteam.index')}>Myチームトップ</ResponsiveNavLink>
-            <ResponsiveNavLink href={route('team.list')} active={isActive('team.list')}>チーム検索画面</ResponsiveNavLink>
-            <ResponsiveNavLink href={route('myteam.detail')} active={isActive('myteam.detail')}>チームプロフィール</ResponsiveNavLink>
-            <ResponsiveNavLink href={route('my-profile.detail')} active={isActive('my-profile.detail')}>マイプロフィール</ResponsiveNavLink>
-            <ResponsiveNavLink href={route('logout')} method="post" as="button">ログアウト</ResponsiveNavLink>
+            <ResponsiveNavLink href="" active={isActive('home')}>ホーム</ResponsiveNavLink>
+            <ResponsiveNavLink href={routes.myteam_index} active={isActive('myteam_index')}>Myチームトップ</ResponsiveNavLink>
+            <ResponsiveNavLink href={routes.team_list} active={isActive('team_list')}>チーム検索画面</ResponsiveNavLink>
+            <ResponsiveNavLink href={routes.myteam_detail} active={isActive('myteam_detail')}>チームプロフィール</ResponsiveNavLink>
+            <ResponsiveNavLink href={routes.my_profile} active={isActive('my_profile')}>マイプロフィール</ResponsiveNavLink>
+            <ResponsiveNavLink href={routes.logout} method="post" as="button">ログアウト</ResponsiveNavLink>
           </div>
         </div>
       </nav>

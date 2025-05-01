@@ -34,7 +34,6 @@ class MyTeamController extends Controller
         $asGuestInvites = ConsentGame::getAsGuestInvites($myTeam->id);
 
         return Inertia::render('MyTeam/TeamInvitations', [
-            'myTeam' => $myTeam,
             'myTeamInvites' => $myTeamInvites,
             'asGuestInvites' => $asGuestInvites,
             'session' => $request->session()->all(),
@@ -91,6 +90,10 @@ class MyTeamController extends Controller
             'message' => [
                 'success' => session('flash_message'),
             ],
+            'routes' => [
+                'invite_url' => route('temp_register.team.join.index', ['invitation_code' => $myTeam->code->code]),
+                'team_edit' => route('myteam.edit')
+            ]
         ]);
     }
 
@@ -139,6 +142,9 @@ class MyTeamController extends Controller
                 'value' => $item->value,
                 'label' => $item->label(),
             ]),
+            'routes' => [
+                'update' => route('myteam.update'),
+            ]
         ]);
     }
 

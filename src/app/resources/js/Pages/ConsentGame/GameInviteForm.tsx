@@ -13,9 +13,12 @@ interface Props {
   guestTeam: GuestTeam;
   old: Record<string, any>;
   errors: Record<string, string>;
+  routes: {
+    confirm: string;
+  }
 }
 
-export default function GameInviteForm({ guestTeam, old, errors }: Props) {
+export default function GameInviteForm({ guestTeam, old, errors, routes }: Props) {
   const { data, setData, post, processing } = useForm({
     first_preferered_date: old.first_preferered_date || '',
     second_preferered_date: old.second_preferered_date || '',
@@ -25,7 +28,7 @@ export default function GameInviteForm({ guestTeam, old, errors }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('team.invite_game.confirm', { id: guestTeam.id }));
+    post(routes.confirm);
   };
 
   return (

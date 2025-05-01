@@ -11,6 +11,9 @@ interface Props {
   message?: {
     success?: string;
   };
+  routes: {
+    edit: string;
+  }
 }
 
 export default function MyProfileShow({
@@ -19,6 +22,7 @@ export default function MyProfileShow({
   handednessLabel,
   imagePath,
   message,
+  routes
 }: Props) {
   const [visibleMessage, setVisibleMessage] = useState<string | null>(message?.success ?? null);
 
@@ -62,7 +66,7 @@ export default function MyProfileShow({
                 <p className="text-sm font-semibold text-gray-600">ニックネーム</p>
                 <div className="flex items-center gap-2">
                   <p className="text-gray-800">{nickname}</p>
-                  <Link href={route('my-profile.edit')} className="text-indigo-500 hover:text-indigo-700">
+                  <Link href={routes.edit} className="text-indigo-500 hover:text-indigo-700">
                     <Pencil size={16} />
                   </Link>
                 </div>

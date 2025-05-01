@@ -32,6 +32,9 @@ class MyProfileController extends Controller
             'message' => [
                 'success' => session('flash_message'),
             ],
+            'routes' => [
+                'edit' => route('my-profile.edit')
+            ]
         ]);
     }
 
@@ -62,6 +65,9 @@ class MyProfileController extends Controller
                 'position' => $user->teamMember->position,
                 'handedness' => $user->teamMember->handedness,
                 'image_path' => $user->image?->path_base64,
+            ],
+            'routes' => [
+                'update' => route('my-profile.update'),
             ]
         ]);
     }
