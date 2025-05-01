@@ -66,7 +66,7 @@ Route::get('/', function () {
 // 認証必要
 Route::middleware('auth:user')->group(function () {
     // チームなしユーザ(チーム作成 or チーム参加)
-    Route::prefix('register')->name('register.')->group(function() {
+    Route::middleware(['has_team'])->prefix('register')->name('register.')->group(function() {
         Route::prefix('team')->name('team.')->group(function() {
             // チーム登録選択(チーム作成 or チーム参加)
             Route::get('select', [TeamController::class, 'index'])->name('select');
