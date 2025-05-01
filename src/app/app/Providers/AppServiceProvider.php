@@ -26,6 +26,5 @@ class AppServiceProvider extends ServiceProvider
             return \App\Models\OpenApiSpec::findOrFail($value);
         });
         Model::shouldBeStrict();
-        Vite::prefetch(concurrency: 3);
     }
 }
