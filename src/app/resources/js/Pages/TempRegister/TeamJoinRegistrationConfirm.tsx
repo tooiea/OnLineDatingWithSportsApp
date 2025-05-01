@@ -4,21 +4,27 @@ import { Head, useForm } from '@inertiajs/react';
 interface Props {
   nickname: string;
   email: string;
-  invitation_code?: string;
+  routes: {
+    complete: string;
+    back: string;
+  };
 }
 
-export default function TeamJoinRegistrationConfirm(props: Props) {
-  const invitationCode = props.invitation_code || '';
+export default function TeamJoinRegistrationConfirm({
+    nickname,
+    email,
+    routes,
+}: Props) {
   const { post, processing } = useForm({});
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('temp_register.team.join.complete', { invitation_code: invitationCode }));
+    post(routes.complete);
   };
 
   const handleBack = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('temp_register.team.join.back', { invitation_code: invitationCode }));
+    post(routes.back);
   };
 
   return (
@@ -34,11 +40,11 @@ export default function TeamJoinRegistrationConfirm(props: Props) {
             <div className="space-y-3">
               <div>
                 <label className="font-semibold">ニックネーム</label>
-                <div className="text-gray-800">{props.nickname}</div>
+                <div className="text-gray-800">{nickname}</div>
               </div>
               <div>
                 <label className="font-semibold">メールアドレス</label>
-                <div className="text-gray-800">{props.email}</div>
+                <div className="text-gray-800">{email}</div>
               </div>
               <div>
                 <label className="font-semibold">パスワード</label>

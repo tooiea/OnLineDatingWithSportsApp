@@ -14,6 +14,9 @@ interface SportAffiliationType {
 interface Props {
   prefectures: Prefecture[];
   sports: SportAffiliationType[];
+  routes: {
+    confirm: string;
+  };
 }
 
 interface FormInputData {
@@ -26,7 +29,7 @@ interface FormInputData {
   address: string;
 }
 
-export default function TeamRegistrationForm({ prefectures, sports }: Props) {
+export default function TeamRegistrationForm({ prefectures, sports, routes }: Props) {
   const { props } = usePage();
   const old = props?.old as Partial<FormInputData> ?? {};
   const { data, setData, post, processing, errors } = useForm<FormInputData>({
@@ -40,7 +43,7 @@ export default function TeamRegistrationForm({ prefectures, sports }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('register.team.confirm'));
+    post(routes.confirm);
   };
 
   const renderError = (field: keyof typeof errors) =>

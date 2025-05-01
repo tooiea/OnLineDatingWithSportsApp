@@ -10,6 +10,10 @@ interface Props {
   prefectureLabel: string;
   address: string;
   teamLogoUrl?: string;
+  routes: {
+    complete: string;
+    back: string;
+  }
 }
 
 export default function TeamRegistrationConfirm({
@@ -19,19 +23,20 @@ export default function TeamRegistrationConfirm({
   prefectureLabel,
   address,
   teamLogoUrl,
+  routes
 }: Props) {
   const { post, processing } = useForm({});
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('register.team.complete'), {
+    post(routes.complete, {
       forceFormData: true,
     });
   };
 
   const handleBack = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('register.team.back'), {
+    post(routes.back, {
       forceFormData: true,
     });
   };

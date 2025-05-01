@@ -33,6 +33,9 @@ class TempTeamRegisterController extends Controller
             'prefectures' => Prefecture::list(),
             'sports' => SportAffiliationTypeEnum::list(),
             'old' => session()->getOldInput(),
+            'routes' => [
+                'confirm' => route('temp_register.team.confirm'),
+            ]
         ]);
     }
 
@@ -69,6 +72,10 @@ class TempTeamRegisterController extends Controller
             'prefecture' => $request->validated('prefecture'),
             'prefectureLabel' => Prefecture::from((int)$request->validated('prefecture'))->label(),
             'address' => $request->validated('address'),
+            'routes' => [
+                'complete' => route('temp_register.team.complete'),
+                'back' => route('temp_register.team.back'),
+            ]
         ]);
     }
 

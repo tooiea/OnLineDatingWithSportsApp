@@ -4,11 +4,17 @@ import { Head, useForm, usePage } from '@inertiajs/react';
 interface Props {
   invitation_code?: string;
   old?: Record<string, any>;
+  routes: {
+    confirm: string;
+  }
 }
 
-export default function TeamJoinRegistrationForm(props: Props) {
-  const invitationCode = props.invitation_code || '';
-  const old = props.old || {};
+export default function TeamJoinRegistrationForm({
+    invitation_code,
+    old,
+    routes,
+}: Props) {
+  const invitationCode = invitation_code || '';
 
   const {
     data,
@@ -17,8 +23,8 @@ export default function TeamJoinRegistrationForm(props: Props) {
     processing,
     errors,
   } = useForm({
-    nickname: old.nickname || '',
-    email: old.email || '',
+    nickname: old?.nickname || '',
+    email: old?.email || '',
     password: '',
     password2: '',
     invitation_code: invitationCode,
@@ -26,7 +32,7 @@ export default function TeamJoinRegistrationForm(props: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('temp_register.team.join.confirm', { invitation_code: invitationCode }) );
+    post(routes.confirm);
   };
 
   return (

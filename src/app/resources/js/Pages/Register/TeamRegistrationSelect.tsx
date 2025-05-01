@@ -1,13 +1,20 @@
 import React from 'react';
 import { router } from '@inertiajs/react';
 
-const TeamRegistrationSelect: React.FC = () => {
+interface Props {
+  routes: {
+    team_index: string;
+    team_join_index: string;
+  };
+}
+
+const TeamRegistrationSelect: React.FC<Props> = ({routes}) => {
   const handleCreateTeam = () => {
-    router.visit(route('register.team.index'));
+    router.visit(routes.team_index);
   };
 
   const handleJoinTeam = () => {
-    router.visit(route('register.team.join.index'));
+    router.visit(routes.team_join_index);
   };
 
   return (

@@ -12,6 +12,10 @@ interface Props {
   name: string;
   email: string;
   teamLogoUrl?: string;
+  routes: {
+    complete: string;
+    back: string;
+  }
 }
 
 export default function TeamRegistrationConfirm({
@@ -23,19 +27,20 @@ export default function TeamRegistrationConfirm({
   name,
   email,
   teamLogoUrl,
+  routes,
 }: Props) {
   const { post, processing } = useForm({});
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('temp_register.team.complete'), {
+    post(routes.complete, {
       forceFormData: true,
     });
   };
 
   const handleBack = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('temp_register.team.back'), {
+    post(routes.back, {
       forceFormData: true,
     });
   };

@@ -15,6 +15,9 @@ interface Props {
   prefectures: Prefecture[];
   sports: SportAffiliationType[];
   old?: Partial<FormInputData>;
+  routes: {
+    confirm: string;
+  }
 }
 
 interface FormInputData {
@@ -31,7 +34,7 @@ interface FormInputData {
   password2: string;
 }
 
-export default function TeamRegistrationForm({ prefectures, sports }: Props) {
+export default function TeamRegistrationForm({ prefectures, sports, routes }: Props) {
   const { props } = usePage();
   const old = props?.old as Partial<FormInputData> ?? {};
 
@@ -50,7 +53,7 @@ export default function TeamRegistrationForm({ prefectures, sports }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('temp_register.team.confirm'));
+    post(routes.confirm);
   };
 
   const renderError = (field: keyof typeof errors) =>

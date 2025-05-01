@@ -35,6 +35,9 @@ class TeamRegisterController extends Controller
             'prefectures' => Prefecture::list(),
             'sports' => SportAffiliationTypeEnum::list(),
             'old' => session()->getOldInput(),
+            'routes' => [
+                'confirm' => route('register.team.confirm')
+            ]
         ]);
     }
 
@@ -63,7 +66,11 @@ class TeamRegisterController extends Controller
             'teamUrl' => $request->validated('teamUrl'),
             'prefectureLabel' => Prefecture::from($request->validated('prefecture'))->label(),
             'address' => $request->validated('address'),
-            'teamLogoUrl' => $tempFile->pathFromBase64()
+            'teamLogoUrl' => $tempFile->pathFromBase64(),
+            'routes' => [
+                'complete' => route('register.team.complete'),
+                'back' => route('register.team.back')
+            ]
         ]);
     }
 

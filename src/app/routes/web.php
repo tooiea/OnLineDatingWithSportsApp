@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\ConsentGameInviteController;
 use App\Http\Controllers\ConsentGameReplyController;
 use App\Http\Controllers\MyProfileController;
@@ -20,6 +22,18 @@ use Inertia\Inertia;
 
 // 認証不要
 Route::middleware('custom_guest:user')->group(function () {
+    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+        ->name('password.request');
+
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->name('password.email');
+
+    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+        ->name('password.reset');
+
+    Route::post('reset-password', [NewPasswordController::class, 'store'])
+        ->name('password.store');
+
     Route::prefix('temp_register')->group(function () {
         // チーム登録 (仮登録)
         Route::prefix('team')->name('temp_register.team.')->group(function () {

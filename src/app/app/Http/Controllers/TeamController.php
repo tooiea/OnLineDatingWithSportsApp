@@ -19,7 +19,12 @@ class TeamController extends Controller
      */
     public function index(): Response
     {
-        return Inertia::render('Register/TeamRegistrationSelect');
+        return Inertia::render('Register/TeamRegistrationSelect',[
+            'routes' => [
+                'team_index' => route('register.team.index'),
+                'team_join_index' => route('register.team.join.index'),
+            ]
+        ]);
     }
 
     /**
@@ -59,9 +64,15 @@ class TeamController extends Controller
                 'logo' => $team->image ? $team->image->path_base64 : null,
                 'extension' => $team->image ? $team->image->mime_type : null,
                 'code' => $team->code,
+                'routes' => [
+                    'invite' => route('team.invite_game.index', $team->id),
+                ]
             ]),
             'filters' => compact('prefecture', 'address', 'teamName'),
             'myTeam' => $myTeam ?? null,
+            'routes' => [
+                'team_list' => route('team.list'),
+            ]
         ]);
     }
 }
