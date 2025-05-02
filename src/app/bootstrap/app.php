@@ -36,6 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'custom_guest' => \App\Http\Middleware\CustomRedirectIfAuthenticated::class,
             'no_team' => \App\Http\Middleware\RedirectIfDoesntHasTeam::class,
             'has_team' => \App\Http\Middleware\RedirectIfHasTeam::class,
+            'optional.auth' => \App\Http\Middleware\OptionalAuthenticate::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

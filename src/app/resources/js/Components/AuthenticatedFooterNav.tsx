@@ -13,9 +13,9 @@ interface Props {
   };
 }
 
-export default function MobileFooterNav({ routes }: Props) {
-  const isActive = (routeKey: keyof typeof routes) => {
-    return routes.current === routes[routeKey];
+export default function AuthenticatedFooterNav({ routes }: Props) {
+  const isActive = (routeName: keyof typeof routes) => {
+    return routes.current === routes[routeName];
   };
 
   const navItems = [
@@ -34,9 +34,7 @@ export default function MobileFooterNav({ routes }: Props) {
             key={item.label}
             href={item.href}
             className={`flex flex-col items-center justify-center flex-1 py-2 text-xs ${
-              isActive(item.routeKey as keyof typeof routes)
-                ? 'text-indigo-600'
-                : 'text-gray-500'
+              isActive(item.routeKey as keyof typeof routes) ? 'text-indigo-600' : 'text-gray-500'
             }`}
           >
             {item.icon}

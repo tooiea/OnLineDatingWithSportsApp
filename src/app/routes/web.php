@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\ConsentGameInviteController;
 use App\Http\Controllers\ConsentGameReplyController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MyProfileController;
 use App\Http\Controllers\MyTeamController;
 use App\Http\Controllers\Sns\GoogleLoginController;
@@ -15,10 +16,10 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TeamJoinController;
 use App\Http\Controllers\TeamRegisterController;
 use App\Http\Controllers\UsersController;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+
+Route::middleware(['optional.auth'])->get('/', [HomeController::class, 'index'])->name('home');
 
 // 認証不要
 Route::middleware('custom_guest:user')->group(function () {
@@ -67,15 +68,6 @@ Route::middleware('custom_guest:user')->group(function () {
     Route::get('google/login',[GoogleLoginController::class, 'redirectTo'])->name('google.login');
     Route::get('google/login/callback', [GoogleLoginController::class, 'callback'])->name('google.callback');
 });
-
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('home');
 
 // 認証必要
 Route::middleware('auth:user')->group(function () {

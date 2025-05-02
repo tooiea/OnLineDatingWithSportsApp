@@ -17,7 +17,7 @@ export default function AuthenticatedLayout({
     image_path?: string;
     team?: { name: string };
   };
-  const routes = usePage().props.nav_routes as {
+  const routes = usePage().props.auth_routes as {
     current: string;
     home: string;
     my_profile: string;
@@ -49,7 +49,7 @@ export default function AuthenticatedLayout({
               </Link>
             </div>
             <div className="hidden sm:flex items-center gap-6">
-              <NavLink href="" active={isActive('home')}>ホーム</NavLink>
+              <NavLink href={routes['home']} active={isActive('home')}>ホーム</NavLink>
               <NavLink href={routes['myteam_index']} active={isActive('myteam_index')}>招待情報</NavLink>
               <NavLink href={routes['team_list']} active={isActive('team_list')}>検索</NavLink>
               <NavLink href={routes['myteam_detail']} active={isActive('myteam_detail')}>チーム情報</NavLink>
@@ -90,7 +90,7 @@ export default function AuthenticatedLayout({
 
       <main className="pt-20 pb-20 px-4 sm:px-0">{children}</main>
 
-      {isMobile && <MobileFooterNav />}
+      {isMobile && <MobileFooterNav routes={routes} />}
     </div>
   );
 }

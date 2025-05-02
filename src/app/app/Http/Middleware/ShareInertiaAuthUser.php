@@ -18,8 +18,30 @@ class ShareInertiaAuthUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()) {
-            $user = $request->user()->loadMissing('teamMember.team');
+        $user = $request->user();
+
+        // 常に共通で渡す情報
+        Inertia::share([
+            'auth_routes' => $user ? [
+                'current' => url()->current(),
+                'home' => route('home'),
+                'team_list' => route('team.list'),
+                'myteam_index' => route('myteam.index'),
+                'myteam_detail' => route('myteam.detail'),
+                'my_profile' => route('my-profile.detail'),
+                'logout' => route('logout'),
+            ] : null,
+            'guest_routes' => !$user ? [
+                'login' => route('login.index'),
+                'password_email' => route('password.email'),
+                'password_reset' => route('password.store'),
+            ] : null,
+        ]);
+
+        // 認証済みユーザ情報がある場合のみ追加
+        if ($user) {
+            $user->loadMissing('teamMember.team');
+
             Inertia::share([
                 'user' => [
                     'name' => $user->name,
@@ -28,23 +50,6 @@ class ShareInertiaAuthUser
                     'team' => $user->teamMember?->team ? [
                         'name' => $user->teamMember->team->name,
                     ] : null,
-                ],
-                'nav_routes' => [
-                    'current' => url()->current(),
-                    'home' => '',
-                    'team_list' => route('team.list'),
-                    'myteam_index' => route('myteam.index'),
-                    'myteam_detail' => route('myteam.detail'),
-                    'my_profile' => route('my-profile.detail'),
-                    'logout' => route('logout'),
-                ],
-
-            ]);
-        } else {
-            Inertia::share([
-                'layout_routes'=> [
-                    'password_email' => route('password.email'),
-                    'password_reset' => route('password.store'),
                 ],
             ]);
         }
