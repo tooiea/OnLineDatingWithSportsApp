@@ -175,6 +175,9 @@ return [
     */
 
     'custom' => [
+        'invitation_code' => [
+            'exist_team_code' => ':attributeは存在しません',
+        ],
         'team_main_image' => [
             'required' => ':attributeを1点アップロードしてください',
             'max' => ' 2MB以下の画像を選択してください',
@@ -256,7 +259,8 @@ return [
         'third_preferered_date' => '第三希望日',
         'message' => 'メッセージ',
         'position' => 'ポジション',
-        'handedness' => '利き手（利き足）'
+        'handedness' => '利き手（利き足）',
+        'invitation_code' => '招待コード',
     ],
 
 ];
