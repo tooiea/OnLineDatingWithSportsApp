@@ -3,7 +3,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
 export default function ResetPassword({
@@ -20,10 +20,14 @@ export default function ResetPassword({
         password_confirmation: '',
     });
 
+    const routes = usePage().props.layout_routes as {
+        password_reset: string;
+    }
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('password.store'), {
+        post(routes.password_reset, {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };

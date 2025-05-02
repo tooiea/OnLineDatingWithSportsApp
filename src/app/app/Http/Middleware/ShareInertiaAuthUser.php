@@ -40,6 +40,13 @@ class ShareInertiaAuthUser
                 ],
 
             ]);
+        } else {
+            Inertia::share([
+                'layout_routes'=> [
+                    'password_email' => route('password.email'),
+                    'password_reset' => route('password.store'),
+                ],
+            ]);
         }
 
         return $next($request);
