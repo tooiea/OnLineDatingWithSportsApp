@@ -30,7 +30,7 @@ class ShareInertiaAuthUser
                     ] : null,
                 ],
                 'nav_routes' => [
-                    'current' => request()->getUri(),
+                    'current' => url()->current(),
                     'home' => '',
                     'team_list' => route('team.list'),
                     'myteam_index' => route('myteam.index'),
