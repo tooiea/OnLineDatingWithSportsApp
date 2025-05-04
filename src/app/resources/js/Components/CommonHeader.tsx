@@ -16,7 +16,7 @@ interface Props {
   };
 }
 
-export default function CommonHeader({routes}: Props) {
+export default function CommonHeader({ routes }: Props) {
   const user = usePage().props.user as {
     name?: string;
     email?: string;
@@ -26,7 +26,7 @@ export default function CommonHeader({routes}: Props) {
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const isActive = (routeName: keyof NonNullable<typeof routes>) => {
-      return routes?.current === routes?.[routeName];
+    return routes?.current === routes?.[routeName];
   };
 
   return (
@@ -41,8 +41,8 @@ export default function CommonHeader({routes}: Props) {
                 className="w-8 h-8 rounded-full border"
               />
               {user?.name && (
-                <span className="hidden sm:inline text-sm text-gray-700 font-medium">
-                  {user.name}{user?.team?.name && `：${user.team.name}`}
+                <span className="sm:inline text-sm text-gray-700 font-medium">
+                  {user.name}
                 </span>
               )}
             </Link>
@@ -75,30 +75,24 @@ export default function CommonHeader({routes}: Props) {
             </button>
           </div>
         </div>
-
-        {user?.team?.name && (
-          <div className="text-sm text-gray-700 text-center mt-1 sm:hidden">
-            {user.name}：{user.team.name}
-          </div>
-        )}
       </div>
 
       <div className={`absolute top-16 w-full bg-white shadow-md z-50 transition-opacity duration-300 ease-in-out ${dropdownOpen ? 'block' : 'hidden'} sm:hidden`}>
         <div className="pt-2 pb-3 space-y-1">
-        {user ? (
-          <>
+          {user ? (
+            <>
               <ResponsiveNavLink href={routes.home} active={isActive('home')}>ホーム</ResponsiveNavLink>
               <ResponsiveNavLink href={routes.myteam_index} active={isActive('myteam_index')}>Myチームトップ</ResponsiveNavLink>
               <ResponsiveNavLink href={routes.team_list} active={isActive('team_list')}>チーム検索画面</ResponsiveNavLink>
               <ResponsiveNavLink href={routes.myteam_detail} active={isActive('myteam_detail')}>チームプロフィール</ResponsiveNavLink>
               <ResponsiveNavLink href={routes.my_profile} active={isActive('my_profile')}>マイプロフィール</ResponsiveNavLink>
               <ResponsiveNavLink href={routes.logout} method="post" as="button">ログアウト</ResponsiveNavLink>
-          </>
-        ): (
-          <>
-            <ResponsiveNavLink href={routes.login} active={isActive('login')}>ログイン</ResponsiveNavLink>
-          </>
-        )}
+            </>
+          ) : (
+            <>
+              <ResponsiveNavLink href={routes.login} active={isActive('login')}>ログイン</ResponsiveNavLink>
+            </>
+          )}
         </div>
       </div>
     </nav>

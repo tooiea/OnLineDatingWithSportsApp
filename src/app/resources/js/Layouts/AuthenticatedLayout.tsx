@@ -24,7 +24,7 @@ export default function AuthenticatedLayout({
     myteam_index: string;
     team_list: string;
     myteam_detail: string;
-    logout : string;
+    logout: string;
   }
   const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
   const isActive = (routeName: keyof typeof routes) => {
@@ -43,8 +43,8 @@ export default function AuthenticatedLayout({
                   alt="プロフィール"
                   className="w-8 h-8 rounded-full border"
                 />
-                <span className="hidden sm:inline text-sm text-gray-700 font-medium">
-                  {user.name}{user.team?.name && `：${user.team.name}`}
+                <span className="sm:inline text-sm text-gray-700 font-medium">
+                  {user.name}
                 </span>
               </Link>
             </div>
@@ -68,12 +68,6 @@ export default function AuthenticatedLayout({
               </button>
             </div>
           </div>
-
-          {user.team?.name && (
-            <div className="text-sm text-gray-700 text-center mt-1 sm:hidden">
-              {user.name}：{user.team.name}
-            </div>
-          )}
         </div>
 
         <div className={`absolute top-16 w-full bg-white shadow-md z-50 transition-opacity duration-300 ease-in-out ${showingNavigationDropdown ? 'block' : 'hidden'} sm:hidden`}>
