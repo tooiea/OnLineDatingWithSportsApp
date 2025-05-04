@@ -20,7 +20,7 @@ export default function ResetPassword({
         password_confirmation: '',
     });
 
-    const routes = usePage().props.layout_routes as {
+    const routes = usePage().props.guest_routes as {
         password_reset: string;
     }
 

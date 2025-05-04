@@ -10,7 +10,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
         email: '',
     });
 
-    const routes = usePage().props.layout_routes as {
+    const routes = usePage().props.guest_routes as {
         password_email: string;
       }
 
