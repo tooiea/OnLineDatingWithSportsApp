@@ -3,6 +3,9 @@ import { Link, usePage } from '@inertiajs/react';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import MobileFooterNav from '@/Components/MobileFooterNav';
+import { useEffect } from 'react';
+import { router } from '@inertiajs/react';
+import RollingBallLoader from '@/Components/RollingBallLoader';
 
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
@@ -10,6 +13,7 @@ export default function AuthenticatedLayout({
   header,
   children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
+  const [loading, setLoading] = useState(false);
   const currentUrl = usePage().url;
   const user = usePage().props.user as {
     name: string;
@@ -31,8 +35,14 @@ export default function AuthenticatedLayout({
     return routes.current === routes[routeName];
   };
 
+  useEffect(() => {
+    router.on('start', () => setLoading(true));
+    router.on('finish', () => setLoading(false));
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-100">
+      {loading && <RollingBallLoader />}
       <nav className="bg-white border-b border-gray-200 fixed top-0 w-full z-50 shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
