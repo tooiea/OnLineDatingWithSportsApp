@@ -28,8 +28,10 @@
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.1",
+        "@lottiefiles/react-lottie-player": "^3.6.0",
         "components": "^0.1.0",
         "dayjs": "^1.11.13",
+        "lottie-react": "^2.4.1",
         "lucide-react": "^0.501.0",
         "react-hot-toast": "^2.5.2",
         "uuid": "^11.1.0"
