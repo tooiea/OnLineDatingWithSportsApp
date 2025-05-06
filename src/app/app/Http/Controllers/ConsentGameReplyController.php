@@ -95,9 +95,9 @@ class ConsentGameReplyController extends Controller
                 'third_preferered_date' => $consentGame->third_preferered_date,
                 'message' => $consentGame->message,
                 'created_at' => $consentGame->created_at,
-                'routes' => [
-                    'invite' => route('myteam.consent_game.reply.message', ['consent_game_id' => $consentGame->id])
-                ]
+            ],
+            'routes' => [
+                'invite' => route('myteam.consent_game.reply.message', ['consent_game_id' => $consentGame->id])
             ]
         ]);
     }
