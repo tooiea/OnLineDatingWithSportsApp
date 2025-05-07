@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\ConsentStatusTypeEnum;
+use App\Enums\SportAffiliationTypeEnum;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -104,10 +105,11 @@ class ConsentGame extends Model
     /**
      * My Teamで招待したチーム情報を取得する
      *
-     * @param int $teamId
-     * @return object
+     * @param string $teamId
+     * @param SportAffiliationTypeEnum $sportAffiliationType
+     * @return array
      */
-    public static function getMyTeamInvites($teamId)
+    public static function getMyTeamInvites(string $teamId, SportAffiliationTypeEnum $sportAffiliationType)
     {
         $now = CarbonImmutable::now();
         return self::where('invitee_id', $teamId)
@@ -116,7 +118,9 @@ class ConsentGame extends Model
                     $query->orwhere('second_preferered_date', '>=', $now);
                     $query->orwhere('third_preferered_date', '>=', $now);
                 })
-                ->whereHas('guest')
+                ->withWhereHas('guest', function ($query) use ($sportAffiliationType) {
+                    $query->where('sport_affiliation_type', '=', $sportAffiliationType);
+                })
                 ->with([
                     'guest.image',
                     'notification' => function ($query) {
@@ -163,10 +167,11 @@ class ConsentGame extends Model
     /**
      * ゲスト側で招待のあったチーム情報を取得
      *
-     * @param int $teamId
-     * @return object
+     * @param string $teamId
+     * @param SportAffiliationTypeEnum $sportAffiliationType
+     * @return array
      */
-    public static function getAsGuestInvites($teamId)
+    public static function getAsGuestInvites(string $teamId, SportAffiliationTypeEnum $sportAffiliationType)
     {
         $now = CarbonImmutable::now();
         return self::where('guest_id', $teamId)
@@ -175,7 +180,9 @@ class ConsentGame extends Model
                     $query->orwhere('second_preferered_date', '>=', $now);
                     $query->orwhere('third_preferered_date', '>=', $now);
                 })
-                ->whereHas('invitee')
+                ->withWhereHas('invitee', function ($query) use ($sportAffiliationType) {
+                    $query->where('sport_affiliation_type', '=', $sportAffiliationType);
+                })
                 ->with([
                     'invitee.image',
                     'notification' => function ($query) {

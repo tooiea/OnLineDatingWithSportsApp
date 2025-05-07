@@ -35,12 +35,14 @@ class ConsentGameReplyController extends Controller
     {
         $myTeam = Team::whereRelation('team_members', 'user_id', Auth::id())->firstOrFail();
         $userId = Auth::id();
-        $consentGame = ConsentGame::whereHas('invitee')
-                    ->whereHas('guest')
-                    ->where('id', $consent_game_id)
+        $consentGame = ConsentGame::where('id', $consent_game_id)
+                    ->withWhereHas('invitee', function ($query) use ($myTeam) {
+                        $query->where('sport_affiliation_type', '=', $myTeam->sport_affiliation_type);
+                    })
+                    ->withWhereHas('guest', function ($query) use ($myTeam) {
+                        $query->where('sport_affiliation_type', '=', $myTeam->sport_affiliation_type);
+                    })
                     ->with([
-                        'invitee',
-                        'guest',
                         'notification' => function ($query) use ($userId) {
                             $query->where('senderable_type', User::class);
                             $query->where('senderable_id', $userId);

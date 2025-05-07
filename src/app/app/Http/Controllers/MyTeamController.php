@@ -26,12 +26,9 @@ class MyTeamController extends Controller
      */
     public function index(Request $request): Response
     {
-        $myTeam = Team::whereHas('team_members', function ($query) {
-            $query->where('user_id', '=', Auth::id());
-        })->first();
-
-        $myTeamInvites = ConsentGame::getMyTeamInvites($myTeam->id);
-        $asGuestInvites = ConsentGame::getAsGuestInvites($myTeam->id);
+        $myTeam = Team::whereRelation('team_members', 'user_id', '=', Auth::id())->firstOrFail();
+        $myTeamInvites = ConsentGame::getMyTeamInvites($myTeam->id, $myTeam->sport_affiliation_type);
+        $asGuestInvites = ConsentGame::getAsGuestInvites($myTeam->id, $myTeam->sport_affiliation_type);
 
         return Inertia::render('MyTeam/TeamInvitations', [
             'myTeamInvites' => $myTeamInvites,
@@ -105,9 +102,7 @@ class MyTeamController extends Controller
     public function edit(): Response
     {
         $userId = Auth::id();
-        $team = Team::whereHas('team_members', function ($query) use ($userId) {
-            $query->where('user_id', '=', $userId);
-        })->with('album.image')->first();
+        $team = Team::whereRelation('team_members', 'user_id', '=', $userId)->with('album.image')->firstOrFail();
 
         return Inertia::render('MyTeam/TeamEdit', [
             'team' => [
@@ -158,9 +153,7 @@ class MyTeamController extends Controller
     {
         DB::transaction(function () use ($request) {
             // チーム情報更新
-            $team = Team::whereHas('team_members', function ($query) {
-                $query->where('user_id', '=', Auth::id());
-            })->with('album.image')->first();
+            $team = Team::whereRelation('team_members', 'user_id', '=', Auth::id())->with('album.image')->firstOrFail();
             $team->name = $request->input('teamName');
             $team->prefecture_code = $request->input('prefecture');
             $team->address = $request->input('address');
