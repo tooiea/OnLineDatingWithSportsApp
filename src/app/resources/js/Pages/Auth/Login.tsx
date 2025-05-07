@@ -130,6 +130,7 @@ export default function Login({
                     href={routes.temp_register_team}
                     className="ml-2 text-sm font-medium text-indigo-600 hover:text-indigo-500"
                 >
+                    <br className="sm:hidden" />
                     新しくチームを作成
                 </Link>
             </div>
