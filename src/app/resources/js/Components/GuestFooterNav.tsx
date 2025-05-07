@@ -1,9 +1,15 @@
 import { Link } from '@inertiajs/react';
+import CommonHeader from './CommonHeader';
 
 interface Props {
   routes: {
     current: string;
     home: string;
+    my_profile: string;
+    myteam_index: string;
+    team_list: string;
+    myteam_detail: string;
+    logout: string;
     login: string;
   };
 }
@@ -19,12 +25,7 @@ export default function GuestLayout({ routes }: Props) {
 
   return (
     <div className="bg-gray-50 text-gray-800">
-      <nav className="flex items-center justify-between px-4 py-3 bg-white shadow fixed top-0 w-full z-50">
-        <Link href="/" className="flex items-center gap-2">
-          <img src="/images/logo.png" alt="OLDWS" className="h-8 w-8" />
-          <span className="font-bold text-blue-700 text-sm">OLDWS</span>
-        </Link>
-      </nav>
+      <CommonHeader routes={routes} />
 
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-md z-50 sm:hidden">
         <div className="flex justify-center py-2">

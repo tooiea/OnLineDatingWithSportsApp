@@ -19,6 +19,11 @@ interface Props {
     current: string;
     home: string;
     login: string;
+    logout: string;
+    my_profile: string;
+    myteam_index: string;
+    team_list: string;
+    myteam_detail: string;
   }
 }
 export default function Login({

@@ -59,6 +59,7 @@ export default function CommonHeader({ routes }: Props) {
               </>
             ) : (
               <>
+                <NavLink href={routes.home} active={isActive('home')}>ホーム</NavLink>
                 <NavLink href={routes.login} active={isActive('login')}>ログイン</NavLink>
               </>
             )}
@@ -90,6 +91,7 @@ export default function CommonHeader({ routes }: Props) {
             </>
           ) : (
             <>
+              <ResponsiveNavLink href={routes.home} active={isActive('home')}>ホーム</ResponsiveNavLink>
               <ResponsiveNavLink href={routes.login} active={isActive('login')}>ログイン</ResponsiveNavLink>
             </>
           )}
