@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class TempTeamJoinRequest extends InvitationCodeRequest
 {
+    protected $redirectRoute = ''; // 継承したルートを上書き
     /**
      * Determine if the user is authorized to make this request.
      */

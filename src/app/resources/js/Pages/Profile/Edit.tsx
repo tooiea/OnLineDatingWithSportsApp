@@ -17,12 +17,16 @@ interface Props {
     handedness: number | null;
     image_path: string | null;
   };
+  routes: {
+    update: string;
+  }
 }
 
 export default function ProfileEdit({
   positionOptions,
   handednessOptions,
   userProfile,
+  routes,
 }: Props) {
   interface FormData {
     [key: string]: string | number | boolean | File | null;
@@ -73,7 +77,7 @@ export default function ProfileEdit({
       formData.append('image', data.image);
     }
 
-    router.post(route('my-profile.update'), formData, {
+    router.post(routes.update, formData, {
       forceFormData: true,
     });
   };

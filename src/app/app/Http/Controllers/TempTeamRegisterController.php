@@ -29,10 +29,13 @@ class TempTeamRegisterController extends Controller
      */
     public function index(): Response
     {
-        return Inertia::render('Register/TeamRegistrationForm', [
+        return Inertia::render('TempRegister/TeamRegistrationForm', [
             'prefectures' => Prefecture::list(),
             'sports' => SportAffiliationTypeEnum::list(),
             'old' => session()->getOldInput(),
+            'routes' => [
+                'confirm' => route('temp_register.team.confirm'),
+            ]
         ]);
     }
 
@@ -60,7 +63,7 @@ class TempTeamRegisterController extends Controller
         );
         // セッションへ保存
         session(['temp_team_register.form' => $tempTeamRegister]);
-        return Inertia::render('Register/TeamRegistrationConfirm', [
+        return Inertia::render('TempRegister/TeamRegistrationConfirm', [
             'sportAffiliationType' => $request->validated('sportAffiliationType'),
             'sportAffiliationLabel' => SportAffiliationTypeEnum::from((int)$request->validated('sportAffiliationType'))->label(),
             'teamName' => $request->validated('teamName'),
@@ -69,6 +72,10 @@ class TempTeamRegisterController extends Controller
             'prefecture' => $request->validated('prefecture'),
             'prefectureLabel' => Prefecture::from((int)$request->validated('prefecture'))->label(),
             'address' => $request->validated('address'),
+            'routes' => [
+                'complete' => route('temp_register.team.complete'),
+                'back' => route('temp_register.team.back'),
+            ]
         ]);
     }
 
@@ -132,6 +139,6 @@ class TempTeamRegisterController extends Controller
             $tempUser->temporaryRegistrationNotification($uuid, config('mail.from.address'));
         });
 
-        return Inertia::render('Register/TeamRegistrationComplete');
+        return Inertia::render('TempRegister/TeamRegistrationComplete');
     }
 }

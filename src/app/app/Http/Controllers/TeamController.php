@@ -11,14 +11,20 @@ use Inertia\Response;
 
 class TeamController extends Controller
 {
-    public function create()
+    /**
+     * ユーザ登録後、チーム登録がない場合
+     * チーム作成 or チームへ加入する選択する画面
+     *
+     * @return \Inertia\Response
+     */
+    public function index(): Response
     {
-        return view('team.create');
-    }
-
-    public function index()
-    {
-        return Inertia::render('Team/Index');
+        return Inertia::render('Register/TeamRegistrationSelect',[
+            'routes' => [
+                'team_index' => route('register.team.index'),
+                'team_join_index' => route('register.team.join.index'),
+            ]
+        ]);
     }
 
     /**
@@ -58,9 +64,15 @@ class TeamController extends Controller
                 'logo' => $team->image ? $team->image->path_base64 : null,
                 'extension' => $team->image ? $team->image->mime_type : null,
                 'code' => $team->code,
+                'routes' => [
+                    'invite' => route('team.invite_game.index', $team->id),
+                ]
             ]),
             'filters' => compact('prefecture', 'address', 'teamName'),
             'myTeam' => $myTeam ?? null,
+            'routes' => [
+                'team_list' => route('team.list'),
+            ]
         ]);
     }
 }

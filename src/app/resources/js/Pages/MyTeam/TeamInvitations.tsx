@@ -28,6 +28,7 @@ interface InviteData {
   unread?: boolean;
   team: Team;
   game_date?: string | null;
+  route: string;
 }
 
 interface Props extends PageProps {
@@ -41,16 +42,11 @@ interface Props extends PageProps {
 }
 
 export default function TeamInvitations({
-  myTeam,
   myTeamInvites,
   asGuestInvites,
   inviteStatuses,
   message,
 }: Props) {
-  const markAsRead = (id: string) => {
-    router.post(route('myteam.markAsRead', id));
-  };
-
   const [showSuccess, setShowSuccess] = useState(!!message?.success);
   const [tab, setTab] = useState<'sent' | 'received'>('sent');
 
@@ -74,67 +70,50 @@ export default function TeamInvitations({
           </div>
         )}
 
-        {!myTeam ? (
-          <div className="bg-white shadow-md rounded-lg p-6 text-center">
-            <h2 className="text-xl font-semibold">チームに所属していません</h2>
-            <p className="text-gray-500">まずはチームを登録するか、招待を受け取って参加しましょう。</p>
-            <div className="mt-4">
-              <Link
-                href={route('new_team.index')}
-                className="bg-green-500 text-white px-4 py-2 rounded-md shadow hover:bg-green-600"
-              >
-                チームを登録する
-              </Link>
-            </div>
+        <>
+          <div className="flex justify-center gap-4 mb-6">
+            <button
+              onClick={() => setTab('sent')}
+              className={`px-4 py-2 rounded-md text-sm font-medium border-b-2 ${tab === 'sent' ? 'text-indigo-600 border-indigo-600' : 'text-gray-500 border-transparent'
+                }`}
+            >
+              送った招待
+            </button>
+            <button
+              onClick={() => setTab('received')}
+              className={`px-4 py-2 rounded-md text-sm font-medium border-b-2 ${tab === 'received' ? 'text-indigo-600 border-indigo-600' : 'text-gray-500 border-transparent'
+                }`}
+            >
+              受けた招待
+            </button>
           </div>
-        ) : (
-          <>
-            <div className="flex justify-center gap-4 mb-6">
-              <button
-                onClick={() => setTab('sent')}
-                className={`px-4 py-2 rounded-md text-sm font-medium border-b-2 ${
-                  tab === 'sent' ? 'text-indigo-600 border-indigo-600' : 'text-gray-500 border-transparent'
-                }`}
-              >
-                送った招待
-              </button>
-              <button
-                onClick={() => setTab('received')}
-                className={`px-4 py-2 rounded-md text-sm font-medium border-b-2 ${
-                  tab === 'received' ? 'text-indigo-600 border-indigo-600' : 'text-gray-500 border-transparent'
-                }`}
-              >
-                受けた招待
-              </button>
-            </div>
 
-            {tab === 'sent' ? (
-              <>
-                <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                  {myTeamInvites.length > 0 ? (
-                    myTeamInvites.map((invite) => (
-                      <InviteCard key={invite.id} invite={invite} inviteStatuses={inviteStatuses} isInviter={true} />
-                    ))
-                  ) : (
-                    <p className="text-gray-500">招待したチームはまだありません。</p>
-                  )}
-                </ul>
-              </>
-            ) : (
-              <>
-                <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                  {asGuestInvites.length > 0 ? (
-                    asGuestInvites.map((invite) => (
-                      <InviteCard key={invite.id} invite={invite} inviteStatuses={inviteStatuses} isInviter={false} />
-                    ))
-                  ) : (
-                    <p className="text-gray-500">招待されたチームはまだありません。</p>
-                  )}
-                </ul>
-              </>
-            )}
-          </>
-        )}
+          {tab === 'sent' ? (
+            <>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                {myTeamInvites.length > 0 ? (
+                  myTeamInvites.map((invite) => (
+                    <InviteCard key={invite.id} invite={invite} inviteStatuses={inviteStatuses} isInviter={true} route={invite.route} />
+                  ))
+                ) : (
+                  <p className="text-gray-500">招待したチームはまだありません。</p>
+                )}
+              </ul>
+            </>
+          ) : (
+            <>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                {asGuestInvites.length > 0 ? (
+                  asGuestInvites.map((invite) => (
+                    <InviteCard key={invite.id} invite={invite} inviteStatuses={inviteStatuses} isInviter={false} route={invite.route} />
+                  ))
+                ) : (
+                  <p className="text-gray-500">招待されたチームはまだありません。</p>
+                )}
+              </ul>
+            </>
+          )}
+        </>
       </div>
     </AuthenticatedLayout>
   );

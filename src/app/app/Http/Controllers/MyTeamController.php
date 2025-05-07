@@ -30,16 +30,10 @@ class MyTeamController extends Controller
             $query->where('user_id', '=', Auth::id());
         })->first();
 
-        // チームを作らずに、直接ログインした場合
-        if (empty($myTeam)) {
-            // TODO チームに登録する処理から、チーム登録
-        }
-
         $myTeamInvites = ConsentGame::getMyTeamInvites($myTeam->id);
         $asGuestInvites = ConsentGame::getAsGuestInvites($myTeam->id);
 
         return Inertia::render('MyTeam/TeamInvitations', [
-            'myTeam' => $myTeam,
             'myTeamInvites' => $myTeamInvites,
             'asGuestInvites' => $asGuestInvites,
             'session' => $request->session()->all(),
@@ -96,6 +90,10 @@ class MyTeamController extends Controller
             'message' => [
                 'success' => session('flash_message'),
             ],
+            'routes' => [
+                'invite_url' => route('temp_register.team.join.index', ['invitation_code' => $myTeam->code->code]),
+                'team_edit' => route('myteam.edit')
+            ]
         ]);
     }
 
@@ -144,6 +142,9 @@ class MyTeamController extends Controller
                 'value' => $item->value,
                 'label' => $item->label(),
             ]),
+            'routes' => [
+                'update' => route('myteam.update'),
+            ]
         ]);
     }
 

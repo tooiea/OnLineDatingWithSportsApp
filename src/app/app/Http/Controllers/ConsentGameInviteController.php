@@ -34,6 +34,9 @@ class ConsentGameInviteController extends Controller
                 'image_path' => $guestTeam->image->path_base64,
             ],
             'old' => session()->getOldInput(),
+            'routes' => [
+                'confirm' => route('team.invite_game.confirm', ['team_id' => $guestTeam->id])
+            ]
         ]);
     }
 
@@ -58,7 +61,10 @@ class ConsentGameInviteController extends Controller
             'second_preferered_date' => $request->validated('second_preferered_date'),
             'third_preferered_date' => $request->validated('third_preferered_date'),
             'message' => $request->validated('message'),
-            'team_id' => $guestTeam->id,
+            'routes' => [
+                'complete' => route('team.invite_game.complete', ['team_id' => $guestTeam->id]),
+                'back' => route('team.invite_game.back', ['team_id' => $guestTeam->id])
+            ]
         ]);
     }
 

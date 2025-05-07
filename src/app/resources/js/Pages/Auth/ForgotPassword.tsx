@@ -2,7 +2,7 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
 export default function ForgotPassword({ status }: { status?: string }) {
@@ -10,10 +10,14 @@ export default function ForgotPassword({ status }: { status?: string }) {
         email: '',
     });
 
+    const routes = usePage().props.guest_routes as {
+        password_email: string;
+      }
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route('password.email'));
+        post(routes.password_email);
     };
 
     return (
@@ -21,9 +25,9 @@ export default function ForgotPassword({ status }: { status?: string }) {
             <Head title="Forgot Password" />
 
             <div className="mb-4 text-sm text-gray-600">
-                Forgot your password? No problem. Just let us know your email
-                address and we will email you a password reset link that will
-                allow you to choose a new one.
+            パスワードをお忘れですか？
+            ご登録のメールアドレスを入力していただければ、
+            新しいパスワードを設定できるリンクをメールでお送りします。
             </div>
 
             {status && (

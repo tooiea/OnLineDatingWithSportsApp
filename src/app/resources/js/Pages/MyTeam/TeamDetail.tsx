@@ -40,9 +40,19 @@ interface Props extends PageProps {
   message?: {
     success?: string;
   };
+  routes: {
+    invite_url: string;
+    team_edit: string;
+  };
 }
 
-export default function TeamDetail({ myTeam, teamMembersNumber, albums, message }: Props) {
+export default function TeamDetail({
+  myTeam,
+  teamMembersNumber,
+  albums,
+  message,
+  routes
+}: Props) {
   const [copySuccess, setCopySuccess] = useState(false);
   const [visibleMessage, setVisibleMessage] = useState<string | null>(message?.success ?? null);
 
@@ -54,15 +64,9 @@ export default function TeamDetail({ myTeam, teamMembersNumber, albums, message 
     }
   }, [message]);
 
-  const inviteUrl = myTeam?.team?.code
-    ? route('temp_register.team.join.index', myTeam.team.code)
-    : '';
-
-  const teamEditUrl = route('myteam.edit');
-
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(inviteUrl);
+      await navigator.clipboard.writeText(routes.invite_url);
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 3000);
     } catch (error) {
@@ -94,7 +98,7 @@ export default function TeamDetail({ myTeam, teamMembersNumber, albums, message 
                 <p className="text-sm font-semibold text-gray-600">チーム名</p>
                 <div className="flex items-center gap-2">
                   <p className="text-gray-800 break-all">{myTeam.team.name}</p>
-                  <Link href={teamEditUrl} className="text-indigo-500 hover:text-indigo-700">
+                  <Link href={routes.team_edit} className="text-indigo-500 hover:text-indigo-700">
                     <Pencil size={16} />
                   </Link>
                 </div>
@@ -133,11 +137,10 @@ export default function TeamDetail({ myTeam, teamMembersNumber, albums, message 
 
               <div>
                 <p className="text-sm font-semibold text-gray-600">他選手の招待URL</p>
-                {inviteUrl ? (
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
-                      value={inviteUrl}
+                      value={routes.invite_url}
                       readOnly
                       className="flex-1 border border-gray-300 rounded-md px-2 py-1 text-sm"
                     />
@@ -148,9 +151,6 @@ export default function TeamDetail({ myTeam, teamMembersNumber, albums, message 
                       コピー
                     </button>
                   </div>
-                ) : (
-                  <p className="text-gray-500 text-sm">招待URLが設定されていません。</p>
-                )}
                 {copySuccess && <p className="text-green-600 text-sm mt-2">コピーしました</p>}
               </div>
             </div>

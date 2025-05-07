@@ -2,13 +2,11 @@
 declare(strict_types=1);
 namespace App\Http\Requests;
 
-use App\Enums\Prefecture;
-use App\Enums\SportAffiliationTypeEnum;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class TempTeamRegisterRequest extends FormRequest
+class TempTeamRegisterRequest extends TeamRegisterRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +23,7 @@ class TempTeamRegisterRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'nickname' => [
                 'bail',
                 'required',
@@ -52,40 +50,7 @@ class TempTeamRegisterRequest extends FormRequest
                 'required',
                 'same:password'
             ],
-            'sportAffiliationType' => [
-                'bail',
-                'required',
-                Rule::enum(SportAffiliationTypeEnum::class)
-            ],
-            'teamName' => [
-                'bail',
-                'required',
-                'max:50'
-            ],
-            'teamLogo' => [
-                'bail',
-                'required',
-                'max:2048',
-                'file',
-                'image',
-                'mimetypes:image/jpeg,image/jpg,image/png',
-            ],
-            'teamUrl' => [
-                'nullable',
-                'bail',
-                'url',
-                'max:255'
-            ],
-            'prefecture' => [
-                'bail',
-                'required',
-                Rule::enum(Prefecture::class),
-            ],
-            'address' => [
-                'bail',
-                'required',
-                'max:50'
-            ],
         ];
+        return array_merge($rules, parent::rules());
     }
 }

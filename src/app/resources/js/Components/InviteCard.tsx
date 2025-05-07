@@ -29,6 +29,7 @@ export interface InviteCardProps {
   invite: InviteData;
   inviteStatuses: Record<number, string>;
   isInviter?: boolean;
+  route: string;
 }
 
 const renderDate = (label: string, date?: string, highlightDate?: string) => {
@@ -71,7 +72,7 @@ const getDeadlineLabel = (
   return null;
 };
 
-const InviteCard: React.FC<InviteCardProps> = ({ invite, inviteStatuses, isInviter }) => {
+const InviteCard: React.FC<InviteCardProps> = ({ invite, inviteStatuses, isInviter, route }) => {
   const deadlineLabel =
     invite.consent_status === 0
       ? getDeadlineLabel(
@@ -80,12 +81,6 @@ const InviteCard: React.FC<InviteCardProps> = ({ invite, inviteStatuses, isInvit
         invite.third_preferered_date
       )
       : null;
-
-  const detailRoute = isInviter
-    ? route('myteam.consent_game.detail', invite.id)
-    : invite.consent_status === 0
-      ? route('myteam.consent_game.reply.index', invite.id)
-      : route('myteam.consent_game.detail', invite.id);
 
   return (
     <li className={`relative shadow rounded-xl w-full max-w-[420px] flex gap-4 p-4 bg-white min-h-[170px] ${invite.unread ? 'border-2 border-yellow-400 bg-yellow-50' : 'border'}`}>
@@ -137,7 +132,7 @@ const InviteCard: React.FC<InviteCardProps> = ({ invite, inviteStatuses, isInvit
           ) : <span />}  {/* スペース確保 */}
 
           <Link
-            href={detailRoute}
+            href={route}
             className="text-sm text-indigo-600 hover:underline font-medium"
           >
             {isInviter || invite.consent_status !== 0 ? '詳細を見る' : '返事する'}

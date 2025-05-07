@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
                 'codeable_id' => $team->id,
                 'codeable_type' => Team::class,
                 'code' => fake()->unique()->regexify('[A-Za-z0-9]{40}'),
-                'expired_at' => \Carbon\Carbon::now()->addDay(7),
+                'expired_at' => \Carbon\Carbon::now()->addYear(),
             ]);
 
             // 画像の保存パス

@@ -95,6 +95,9 @@ class ConsentGameReplyController extends Controller
                 'third_preferered_date' => $consentGame->third_preferered_date,
                 'message' => $consentGame->message,
                 'created_at' => $consentGame->created_at,
+            ],
+            'routes' => [
+                'invite' => route('myteam.consent_game.reply.message', ['consent_game_id' => $consentGame->id])
             ]
         ]);
     }
@@ -150,6 +153,9 @@ class ConsentGameReplyController extends Controller
                 'second_preferered_date' => $consentGame->second_preferered_date,
                 'third_preferered_date' => $consentGame->third_preferered_date,
                 'message' => $consentGame->message,
+                'routes' => [
+                   'reply' => route('myteam.consent_game.reply.confirm', ['consent_game_id' => $consentGame->id]),
+                ]
             ],
             'replyStatuses' => ConsentStatusTypeEnum::replyList(),
             'old' => session()->getOldInput(),
@@ -189,6 +195,10 @@ class ConsentGameReplyController extends Controller
                 'second_preferered_date' => $consentGame->second_preferered_date,
                 'third_preferered_date' => $consentGame->third_preferered_date,
             ],
+            'routes' => [
+                'complete' => route('myteam.consent_game.reply.complete', ['consent_game_id' => $consentGame->id]),
+                'back' => route('myteam.consent_game.reply.back', ['consent_game_id' => $consentGame->id]),
+            ]
         ]);
     }
 

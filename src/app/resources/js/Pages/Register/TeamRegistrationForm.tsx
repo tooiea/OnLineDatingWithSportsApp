@@ -14,27 +14,24 @@ interface SportAffiliationType {
 interface Props {
   prefectures: Prefecture[];
   sports: SportAffiliationType[];
-  old?: Partial<FormInputData>;
+  routes: {
+    confirm: string;
+  };
 }
 
 interface FormInputData {
-  [key: string]: any;
+  [key: string]: string | number | File | null | '';
   sportAffiliationType: number | '';
   teamName: string;
   teamLogo: File | null;
   teamUrl: string;
   prefecture: number | '';
   address: string;
-  nickname: string;
-  email: string;
-  password: string;
-  password2: string;
 }
 
-export default function TeamRegistrationForm({ prefectures, sports }: Props) {
+export default function TeamRegistrationForm({ prefectures, sports, routes }: Props) {
   const { props } = usePage();
   const old = props?.old as Partial<FormInputData> ?? {};
-
   const { data, setData, post, processing, errors } = useForm<FormInputData>({
     sportAffiliationType: old.sportAffiliationType ?? '',
     teamName: old.teamName ?? '',
@@ -42,15 +39,11 @@ export default function TeamRegistrationForm({ prefectures, sports }: Props) {
     teamUrl: old.teamUrl ?? '',
     prefecture: old.prefecture ?? '',
     address: old.address ?? '',
-    nickname: old.nickname ?? '',
-    email: old.email ?? '',
-    password: '',
-    password2: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('temp_register.team.confirm'));
+    post(routes.confirm);
   };
 
   const renderError = (field: keyof typeof errors) =>
@@ -62,7 +55,7 @@ export default function TeamRegistrationForm({ prefectures, sports }: Props) {
 
       <div className="text-center mb-10">
         <h1 className="text-3xl font-bold text-indigo-700">🏅 チーム登録フォーム</h1>
-        <p className="mt-2 text-gray-600">仲間と出会い、目標を共有しよう！</p>
+        <p className="mt-2 text-gray-600">チームの基本情報を入力してください</p>
       </div>
 
       <form
@@ -70,59 +63,6 @@ export default function TeamRegistrationForm({ prefectures, sports }: Props) {
         encType="multipart/form-data"
         className="max-w-2xl mx-auto space-y-8"
       >
-        {/* ユーザー情報 */}
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <h2 className="text-lg font-bold text-gray-700 mb-4">👤 ユーザー情報</h2>
-
-          <label className="block mb-2 font-semibold">ニックネーム</label>
-          <input
-            type="text"
-            name="nickname"
-            placeholder="例：ニックネーム"
-            value={data.nickname}
-            onChange={e => setData('nickname', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('nickname')}
-
-          <label className="block mt-4 mb-2 font-semibold">メールアドレス</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="例：example@example.com"
-            value={data.email}
-            onChange={e => setData('email', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('email')}
-
-          <label className="block mt-4 mb-2 font-semibold">パスワード</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="8文字以上で設定してください"
-            value={data.password}
-            onChange={e => setData('password', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          <p className="text-sm text-gray-500 mt-1">
-            ※8文字以上、英大文字・小文字・数字・記号（@、#、$、-、_）をそれぞれ1文字以上含めてください
-          </p>
-          {renderError('password')}
-
-          <label className="block mt-4 mb-2 font-semibold">パスワード（再入力）</label>
-          <input
-            type="password"
-            name="password2"
-            placeholder="もう一度パスワードを入力"
-            value={data.password2}
-            onChange={e => setData('password2', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('password2')}
-        </div>
-
-        {/* チーム情報 */}
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-lg font-bold text-gray-700 mb-4">🏆 チーム情報</h2>
 

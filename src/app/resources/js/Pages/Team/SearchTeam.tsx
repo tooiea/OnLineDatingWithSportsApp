@@ -15,6 +15,9 @@ interface Team {
     logo?: string;
     address: string;
     extension?: string;
+    routes: {
+      invite: string;
+    }
 }
 
 interface PaginationLink {
@@ -28,16 +31,19 @@ interface Props extends Record<string, unknown> {
     teams: { data: Team[]; links: PaginationLink[]; total: number };
     filters: { prefecture?: number; address?: string; teamName?: string };
     myTeam?: any;
+    routes: {
+      team_list: string;
+    }
 }
 
-export default function SearchTeam({ teams, filters, prefectures }: PageProps<Props>) {
+export default function SearchTeam({ teams, filters, prefectures, routes }: PageProps<Props>) {
     const [prefecture, setPrefecture] = React.useState(filters.prefecture || '');
     const [address, setAddress] = React.useState(filters.address || '');
     const [teamName, setTeamName] = React.useState(filters.teamName || '');
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        router.get(route('team.list'), { prefecture, address, teamName });
+        router.get(routes.team_list, { prefecture, address, teamName });
     };
 
     return (
@@ -112,7 +118,7 @@ export default function SearchTeam({ teams, filters, prefectures }: PageProps<Pr
                                         <div className="text-gray-500 text-xs text-center mb-2 leading-tight">{team.address}</div>
                                     )}
                                     <div className="mt-auto">
-                                        <Link href={route('team.invite_game.index', team.id)}
+                                        <Link href={team.routes.invite}
                                             className="inline-block px-4 py-1.5 bg-gray-100 text-gray-700 text-xs font-medium rounded-md hover:bg-gray-200 transition">
                                             マッチする
                                         </Link>

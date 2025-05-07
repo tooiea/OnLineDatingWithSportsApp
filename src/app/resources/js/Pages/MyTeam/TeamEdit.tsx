@@ -43,6 +43,9 @@ interface Props extends PageProps {
   team: Team;
   albums: Album[];
   prefectures: Prefecture[];
+  routes: {
+    update: string;
+  }
 }
 
 interface FormDataType {
@@ -55,7 +58,12 @@ interface FormDataType {
   [key: string]: any;
 }
 
-export default function TeamEdit({ auth, team, albums, prefectures }: Props) {
+export default function TeamEdit({
+  team,
+  albums,
+  prefectures,
+  routes
+}: Props) {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -190,7 +198,7 @@ export default function TeamEdit({ auth, team, albums, prefectures }: Props) {
       albumIndex++;
     });
 
-    router.post(route('myteam.update'), formData, {
+    router.post(routes.update, formData, {
       forceFormData: true,
       onError: (errors) => {
         Object.entries(errors).forEach(([key, message]) => {

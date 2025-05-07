@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\ConsentGame;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ConsentGameInviteRequest extends ConsentGameTeamIdRequest
 {
@@ -28,18 +29,18 @@ class ConsentGameInviteRequest extends ConsentGameTeamIdRequest
                 'date',
                 'different:second_preferered_date',
                 'different:third_preferered_date',
-                'after:today',
+                Rule::date()->afterOrEqual(today()->addDays(7)),
             ],
             'second_preferered_date' => [
                 'required',
                 'date',
                 'different:third_preferered_date',
-                'after:today',
+                Rule::date()->afterOrEqual(today()->addDays(7)),
             ],
             'third_preferered_date' => [
                 'nullable',
                 'date',
-                'after:today',
+                Rule::date()->afterOrEqual(today()->addDays(7)),
             ],
             'message' => [
                 'nullable',

@@ -7,20 +7,29 @@ interface Props {
   second_preferered_date: string;
   third_preferered_date?: string;
   message?: string;
-  team_id: number;
+  routes: {
+    complete: string;
+    back: string;
+  }
 }
 
-export default function InviteGameConfirm({ first_preferered_date, second_preferered_date, third_preferered_date, message, team_id }: Props) {
+export default function InviteGameConfirm({
+  first_preferered_date,
+  second_preferered_date,
+  third_preferered_date,
+  message,
+  routes,
+}: Props) {
   const { post } = useForm({});
 
   const handleBack = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('team.invite_game.back', { id: team_id }));
+    post(routes.back);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('team.invite_game.complete', { id: team_id }));
+    post(routes.complete);
   };
 
   return (

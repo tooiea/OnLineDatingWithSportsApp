@@ -28,6 +28,9 @@ interface ConsentGame {
   second_preferered_date: string;
   third_preferered_date?: string | null;
   message?: string;
+  routes: {
+    reply: string;
+  }
 }
 
 interface Props {
@@ -37,7 +40,12 @@ interface Props {
   errors: Record<string, string>;
 }
 
-const ConsentReplyForm: React.FC<Props> = ({ consentGame, replyStatuses, old, errors }) => {
+const ConsentReplyForm: React.FC<Props> = ({
+  consentGame,
+  replyStatuses,
+  old,
+  errors
+}) => {
   const filteredStatuses = replyStatuses.filter(status => status.label !== '連絡未');
 
   const { data, setData, post } = useForm({
@@ -49,7 +57,7 @@ const ConsentReplyForm: React.FC<Props> = ({ consentGame, replyStatuses, old, er
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('myteam.consent_game.reply.confirm', consentGame.id));
+    post(consentGame.routes.reply);
   };
 
   const renderRadioGroup = (key: keyof typeof data) => (
@@ -61,8 +69,8 @@ const ConsentReplyForm: React.FC<Props> = ({ consentGame, replyStatuses, old, er
         const labelClass = isAccepted
           ? 'bg-green-100 text-green-800 border border-green-300'
           : isDeclined
-          ? 'bg-red-100 text-red-800 border border-red-300'
-          : 'bg-gray-100 text-gray-800 border border-gray-300';
+            ? 'bg-red-100 text-red-800 border border-red-300'
+            : 'bg-gray-100 text-gray-800 border border-gray-300';
 
         return (
           <label key={id} className={`inline-flex items-center gap-1 px-2 py-1 rounded text-sm ${labelClass}`}>
@@ -84,12 +92,14 @@ const ConsentReplyForm: React.FC<Props> = ({ consentGame, replyStatuses, old, er
   const renderWishRow = (label: string, key: keyof typeof data, date: string | null | undefined) => {
     if (!date) return null;
     return (
-      <div className="bg-white border rounded-xl shadow-sm px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <div className="font-semibold text-sm sm:text-base w-full sm:w-1/4">{label}</div>
-        <div className="text-sm sm:text-base w-full sm:w-1/2">{getFormattedFullDateTime(date)}</div>
-        <div className="w-full sm:w-1/4">{renderRadioGroup(key)}</div>
-        {errors[key] && <div className="text-red-500 text-sm">{errors[key]}</div>}
-      </div>
+      <>
+        <div className="bg-white border rounded-xl shadow-sm px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div className="font-semibold text-sm sm:text-base w-full sm:w-1/4">{label}</div>
+          <div className="text-sm sm:text-base w-full sm:w-1/2">{getFormattedFullDateTime(date)}</div>
+          <div className="w-full sm:w-1/4">{renderRadioGroup(key)}</div>
+        </div>
+        {errors[key] && <p className="text-red-500 text-sm px-3">{errors[key]}</p>}
+      </>
     );
   };
 

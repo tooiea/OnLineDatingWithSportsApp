@@ -46,9 +46,12 @@ interface MyTeam {
 interface Props {
   myTeam: MyTeam;
   consentGame: ConsentGame;
+  routes: {
+    invite: string;
+  }
 }
 
-const ConsentDetail: React.FC<Props> = ({ myTeam, consentGame }) => {
+const ConsentDetail: React.FC<Props> = ({ myTeam, consentGame, routes }) => {
   const isInviter = consentGame.invitee.id === myTeam.id;
   const targetTeam = isInviter ? consentGame.guest : consentGame.invitee;
 
@@ -59,7 +62,7 @@ const ConsentDetail: React.FC<Props> = ({ myTeam, consentGame }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('myteam.consent_game.reply.message', consentGame.id), {
+    post(routes.invite, {
       preserveScroll: true,
       onSuccess: () => {
         setData('message', '');

@@ -21,6 +21,13 @@ class UserLoginController extends Controller
         return Inertia::render('Auth/Login', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
+            'routes' => [
+                'email_login' => route('email_login.login'),
+                'password_request' => route('password.request'),
+                'google_login' => route('google.login'),
+                'line_login' => route('line.login'),
+                'temp_register_team' => route('temp_register.team.index'),
+            ]
         ]);
     }
 

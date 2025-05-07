@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\ConsentGameInviteController;
 use App\Http\Controllers\ConsentGameReplyController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MyProfileController;
 use App\Http\Controllers\MyTeamController;
 use App\Http\Controllers\Sns\GoogleLoginController;
@@ -10,14 +13,28 @@ use App\Http\Controllers\TempTeamJoinController;
 use App\Http\Controllers\TempTeamRegisterController;
 use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TeamJoinController;
+use App\Http\Controllers\TeamRegisterController;
 use App\Http\Controllers\UsersController;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+
+Route::middleware(['optional.auth'])->get('/', [HomeController::class, 'index'])->name('home');
 
 // 認証不要
 Route::middleware('custom_guest:user')->group(function () {
+    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+        ->name('password.request');
+
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->name('password.email');
+
+    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+        ->name('password.reset');
+
+    Route::post('reset-password', [NewPasswordController::class, 'store'])
+        ->name('password.store');
+
     Route::prefix('temp_register')->group(function () {
         // チーム登録 (仮登録)
         Route::prefix('team')->name('temp_register.team.')->group(function () {
@@ -52,25 +69,31 @@ Route::middleware('custom_guest:user')->group(function () {
     Route::get('google/login/callback', [GoogleLoginController::class, 'callback'])->name('google.callback');
 });
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('home');
-
 // 認証必要
 Route::middleware('auth:user')->group(function () {
     // チームなしユーザ(チーム作成 or チーム参加)
-    Route::prefix('new_team')->name('new_team.')->group(function() {
-        Route::get('/', [TeamController::class, 'create'])->name('index');
-        Route::post('confirm', [TeamController::class, 'confirm'])->name('confirm');
-        Route::post('complete', [TeamController::class, 'creacompletete'])->name('complete');
+    Route::middleware(['has_team'])->prefix('register')->name('register.')->group(function() {
+        Route::prefix('team')->name('team.')->group(function() {
+            // チーム登録選択(チーム作成 or チーム参加)
+            Route::get('select', [TeamController::class, 'index'])->name('select');
+
+            // チーム作成
+            Route::get('/', [TeamRegisterController::class, 'index'])->name('index');
+            Route::post('confirm', [TeamRegisterController::class, 'confirm'])->name('confirm');
+            Route::post('back', [TeamRegisterController::class, 'back'])->name('back');
+            Route::post('complete', [TeamRegisterController::class, 'complete'])->name('complete');
+
+            // チームに参加
+            Route::prefix('join')->name('join.')->group(function() {
+                Route::get('/', [TeamJoinController::class, 'index'])->name('index');
+                Route::post('confirm', [TeamJoinController::class, 'confirm'])->name('confirm');
+                Route::post('back', [TeamJoinController::class, 'back'])->name('back');
+                Route::post('complete', [TeamJoinController::class, 'complete'])->name('complete');
+            });
+        });
     });
 
-    Route::prefix('myteam')->name('myteam.')->group(function () {
+    Route::middleware(['no_team'])->prefix('myteam')->name('myteam.')->group(function () {
         // チームプロフィール
         Route::get('/', [MyTeamController::class, 'index'])->name('index');
         Route::get('detail', [MyTeamController::class, 'detail'])->name('detail');
@@ -88,7 +111,7 @@ Route::middleware('auth:user')->group(function () {
         });
     });
 
-    Route::prefix('teams')->name('team.')->group(function () {
+    Route::middleware(['no_team'])->prefix('teams')->name('team.')->group(function () {
         // チーム一覧
         Route::get('/', [TeamController::class, 'list'])->name('list');
 
@@ -108,7 +131,7 @@ Route::middleware('auth:user')->group(function () {
     });
 
     // マイプロフィール
-    Route::name('my-profile.')->group(function () {
+    Route::middleware(['no_team'])->name('my-profile.')->group(function () {
         Route::get('my-profile', [MyProfileController::class, 'detail'])->name('detail');
         Route::get('my-profile/edit', [MyProfileController::class, 'edit'])->name('edit');
         Route::post('my-profile/edit', [MyProfileController::class, 'update'])->name('update');

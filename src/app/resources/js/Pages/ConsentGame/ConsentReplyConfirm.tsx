@@ -22,9 +22,13 @@ interface Props {
     second_preferered_date: string | null;
     third_preferered_date?: string | null;
   };
+  routes: {
+    complete: string;
+    back: string;
+  }
 }
 
-const ConsentReplyConfirm: React.FC<Props> = ({ form, consent_game }) => {
+const ConsentReplyConfirm: React.FC<Props> = ({ form, consent_game, routes }) => {
   const { post } = useForm({});
   const isAccepted = (reply: string | null | undefined) => reply === '受諾';
 
@@ -38,12 +42,12 @@ const ConsentReplyConfirm: React.FC<Props> = ({ form, consent_game }) => {
 
   const handleBack = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('myteam.consent_game.reply.back', consent_game.id));
+    post(routes.back);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('myteam.consent_game.reply.complete', consent_game.id));
+    post(routes.complete);
   };
 
   return (

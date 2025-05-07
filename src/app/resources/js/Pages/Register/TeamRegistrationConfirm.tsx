@@ -9,9 +9,11 @@ interface Props {
   prefecture: string;
   prefectureLabel: string;
   address: string;
-  name: string;
-  email: string;
   teamLogoUrl?: string;
+  routes: {
+    complete: string;
+    back: string;
+  }
 }
 
 export default function TeamRegistrationConfirm({
@@ -20,22 +22,21 @@ export default function TeamRegistrationConfirm({
   teamUrl,
   prefectureLabel,
   address,
-  name,
-  email,
   teamLogoUrl,
+  routes
 }: Props) {
   const { post, processing } = useForm({});
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('temp_register.team.complete'), {
+    post(routes.complete, {
       forceFormData: true,
     });
   };
 
   const handleBack = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('temp_register.team.back'), {
+    post(routes.back, {
       forceFormData: true,
     });
   };
@@ -47,24 +48,6 @@ export default function TeamRegistrationConfirm({
       <h1 className="text-2xl font-bold text-center mb-8">チーム登録内容の確認</h1>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-lg font-semibold border-b pb-2 mb-4">👤 ユーザー情報</h2>
-          <div className="space-y-3">
-            <div>
-              <label className="font-semibold">ニックネーム</label>
-              <div className="text-gray-800">{name}</div>
-            </div>
-            <div>
-              <label className="font-semibold">メールアドレス</label>
-              <div className="text-gray-800">{email}</div>
-            </div>
-            <div>
-              <label className="font-semibold">パスワード</label>
-              <div className="text-gray-400">********</div>
-            </div>
-          </div>
-        </div>
-
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-lg font-semibold border-b pb-2 mb-4">🏆 チーム情報</h2>
           <div className="space-y-3">

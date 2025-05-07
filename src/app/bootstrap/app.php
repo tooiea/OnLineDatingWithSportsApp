@@ -33,7 +33,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->replace(SetCacheHeaders::class, CustomSetCacheHeaders::class);
         $middleware->redirectGuestsTo(fn () => route('login.index'));
         $middleware->alias([
-            'custom_guest' => \App\Http\Middleware\CustomRedirectIfAuthenticated::class
+            'custom_guest' => \App\Http\Middleware\CustomRedirectIfAuthenticated::class,
+            'no_team' => \App\Http\Middleware\RedirectIfDoesntHasTeam::class,
+            'has_team' => \App\Http\Middleware\RedirectIfHasTeam::class,
+            'optional.auth' => \App\Http\Middleware\OptionalAuthenticate::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

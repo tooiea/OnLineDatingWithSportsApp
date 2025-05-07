@@ -13,9 +13,12 @@ interface Props {
   guestTeam: GuestTeam;
   old: Record<string, any>;
   errors: Record<string, string>;
+  routes: {
+    confirm: string;
+  }
 }
 
-export default function GameInviteForm({ guestTeam, old, errors }: Props) {
+export default function GameInviteForm({ guestTeam, old, errors, routes }: Props) {
   const { data, setData, post, processing } = useForm({
     first_preferered_date: old.first_preferered_date || '',
     second_preferered_date: old.second_preferered_date || '',
@@ -25,8 +28,15 @@ export default function GameInviteForm({ guestTeam, old, errors }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('team.invite_game.confirm', { id: guestTeam.id }));
+    post(routes.confirm);
   };
+
+  // 本日より7日後のISO文字列（ローカルタイム考慮）
+  const now = new Date();
+  now.setDate(now.getDate() + 7);
+  const timezoneOffset = now.getTimezoneOffset() * 60000;
+  now.setHours(0, 0, 0, 0);
+  const localISOTime = new Date(now.getTime() - timezoneOffset).toISOString().slice(0, 16);
 
   return (
     <AuthenticatedLayout>
@@ -74,12 +84,14 @@ export default function GameInviteForm({ guestTeam, old, errors }: Props) {
             <h3 className="text-lg font-semibold border-b pb-2 mb-4">📅 招待希望日程</h3>
             <p className="text-sm text-gray-600 mb-4">
               ※以下の第一希望から第三希望の日程を選択してください。
+              <br/> ※本日より7日以上先を指定してください。
             </p>
             <div className="space-y-4">
               <div>
                 <label className="font-semibold">第一希望日程</label>
                 <input
                   type="datetime-local"
+                  min={localISOTime}
                   className={`w-full border rounded px-3 py-2 ${errors.first_preferered_date ? 'border-red-500' : ''}`}
                   value={data.first_preferered_date}
                   onChange={e => setData('first_preferered_date', e.target.value)}
@@ -93,6 +105,7 @@ export default function GameInviteForm({ guestTeam, old, errors }: Props) {
                 <label className="font-semibold">第二希望日程</label>
                 <input
                   type="datetime-local"
+                  min={localISOTime}
                   className={`w-full border rounded px-3 py-2 ${errors.second_preferered_date ? 'border-red-500' : ''}`}
                   value={data.second_preferered_date}
                   onChange={e => setData('second_preferered_date', e.target.value)}
@@ -106,6 +119,7 @@ export default function GameInviteForm({ guestTeam, old, errors }: Props) {
                 <label className="font-semibold">第三希望日程</label>
                 <input
                   type="datetime-local"
+                  min={localISOTime}
                   className={`w-full border rounded px-3 py-2 ${errors.third_preferered_date ? 'border-red-500' : ''}`}
                   value={data.third_preferered_date}
                   onChange={e => setData('third_preferered_date', e.target.value)}

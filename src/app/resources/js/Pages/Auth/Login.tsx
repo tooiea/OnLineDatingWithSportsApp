@@ -7,13 +7,22 @@ import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
+interface Props {
+  status?: string;
+  canResetPassword: boolean;
+  routes: {
+    email_login: string;
+    password_request: string;
+    line_login: string;
+    google_login: string;
+    temp_register_team: string;
+  }
+}
 export default function Login({
     status,
     canResetPassword,
-}: {
-    status?: string;
-    canResetPassword: boolean;
-}) {
+    routes,
+}: Props) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -22,7 +31,7 @@ export default function Login({
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('email_login.login'), {
+        post(routes.email_login, {
             onFinish: () => reset('password'),
         });
     };
@@ -77,7 +86,7 @@ export default function Login({
                 {canResetPassword && (
                     <div className="mt-4 text-center">
                         <Link
-                            href={route('password.request')}
+                            href={routes.password_request}
                             className="text-sm text-gray-600 underline hover:text-gray-900"
                         >
                             パスワードをお忘れですか？
@@ -100,10 +109,10 @@ export default function Login({
             </div>
 
             <div className="mt-4 flex justify-center gap-4">
-                <a href={route('google.login')}>
+                <a href={routes.google_login}>
                     <img src="/images/btn_google_signin_dark_normal_web@2x.png" alt="google" className="h-10" />
                 </a>
-                <a href={route('line.login')}>
+                <a href={routes.line_login}>
                     <img src="/images/btn_login_base.png" alt="line" className="h-10" />
                 </a>
             </div>
@@ -111,7 +120,7 @@ export default function Login({
             <div className="mt-6 text-center">
                 <span className="text-sm text-gray-600">アカウントをお持ちではありませんか？</span>
                 <Link
-                    href={route('temp_register.team.index')}
+                    href={routes.temp_register_team}
                     className="ml-2 text-sm font-medium text-indigo-600 hover:text-indigo-500"
                 >
                     新しくチームを作成

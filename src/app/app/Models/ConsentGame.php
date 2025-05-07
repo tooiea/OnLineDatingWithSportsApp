@@ -154,6 +154,9 @@ class ConsentGame extends Model
                             'path_base64' => $invite->guest->image->path_base64,
                         ] : null,
                     ],
+                    'route' => route('myteam.consent_game.detail', [
+                        'consent_game_id' => $invite->id,
+                    ])
                 ]);
     }
 
@@ -210,6 +213,13 @@ class ConsentGame extends Model
                             'path_base64' => $invite->invitee->image->path_base64,
                         ] : null,
                     ],
+                    'route' => $invite->consent_status === ConsentStatusTypeEnum::WAIT
+                        ? route('myteam.consent_game.reply.index', [
+                            'consent_game_id' => $invite->id,
+                        ])
+                        : route('myteam.consent_game.detail', [
+                            'consent_game_id' => $invite->id,
+                        ]),
                 ]);
     }
 
