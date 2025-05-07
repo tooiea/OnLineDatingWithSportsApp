@@ -77,8 +77,12 @@ class DatabaseSeeder extends Seeder
             }
 
             // 招待するチームを取得
-            $invitees = Team::where('id', '!=', $team->id)->inRandomOrder()->take(3)->get();
-            $guests = Team::where('id', '!=', $team->id)->inRandomOrder()->take(3)->get();
+            $invitees = Team::where('id', '!=', $team->id)
+                ->where('sport_affiliation_type', '=', $team->sport_affiliation_type)
+                ->inRandomOrder()->take(3)->get();
+            $guests = Team::where('id', '!=', $team->id)
+                ->where('sport_affiliation_type', '=', $team->sport_affiliation_type)
+                ->inRandomOrder()->take(3)->get();
 
             // 招待を送る側のデータを作成
             foreach ($invitees as $invitee) {
