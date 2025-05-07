@@ -9,7 +9,7 @@ interface Props {
   prefecture: string;
   prefectureLabel: string;
   address: string;
-  name: string;
+  nickname: string;
   email: string;
   teamLogoUrl?: string;
   routes: {
@@ -24,7 +24,7 @@ export default function TeamRegistrationConfirm({
   teamUrl,
   prefectureLabel,
   address,
-  name,
+  nickname,
   email,
   teamLogoUrl,
   routes,
@@ -57,7 +57,7 @@ export default function TeamRegistrationConfirm({
           <div className="space-y-3">
             <div>
               <label className="font-semibold">ニックネーム</label>
-              <div className="text-gray-800">{name}</div>
+              <div className="text-gray-800">{nickname}</div>
             </div>
             <div>
               <label className="font-semibold">メールアドレス</label>
