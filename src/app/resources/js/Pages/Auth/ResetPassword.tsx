@@ -25,6 +25,11 @@ export default function ResetPassword({
         current: string;
         home: string;
         login: string;
+        logout: string;
+        my_profile: string;
+        myteam_index: string;
+        team_list: string;
+        myteam_detail: string;
     }
 
     const submit: FormEventHandler = (e) => {

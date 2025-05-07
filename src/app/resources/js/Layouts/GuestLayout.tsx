@@ -1,12 +1,15 @@
 import GuestFooterNav from '@/Components/GuestFooterNav';
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link } from '@inertiajs/react';
 import { PropsWithChildren } from 'react';
 
 interface Props extends PropsWithChildren {
   routes: {
     current: string;
     home: string;
+    my_profile: string;
+    myteam_index: string;
+    team_list: string;
+    myteam_detail: string;
+    logout: string;
     login: string;
   };
 }
