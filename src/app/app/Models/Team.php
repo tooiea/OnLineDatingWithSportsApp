@@ -116,7 +116,7 @@ class Team extends Model
     {
         return self::whereRelation('team_members', function ($query) use ($userId) {
             $query->where('user_id', '=', $userId);
-        })->with('album.image')->first();
+        })->with('album.image')->firstOrFail();
     }
 
     /**
@@ -140,7 +140,8 @@ class Team extends Model
         $teamName ? $team->where('name', 'like', '%' . $teamName . '%') : null;
 
         // 自チームを除外
-        $myTeam ? $team->where('id', '<>', $myTeam->id) : null;
+        $team->where('id', '<>', $myTeam->id);
+        $team->where('sport_affiliation_type', '=', $myTeam->sport_affiliation_type);
         $teams = $team->with(['code', 'image'])->paginate($pageNum);
 
         // ページネーションのクエリパラメータを設定

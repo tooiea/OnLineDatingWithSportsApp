@@ -36,10 +36,7 @@ class TeamJoinController extends Controller
     public function confirm(TeamJoinRequest $request): Response
     {
         session(['invitation_code' => $request->validated('invitation_code')]);
-
-        $team = Team::whereHas('code', function ($query) use ($request) {
-            $query->where('code', $request->validated('invitation_code'));
-        })->first();
+        $team = Team::whereRelation('code', 'code', '=', $request->validated('invitation_code'))->firstOrFail();
 
         return Inertia::render('Register/TeamJoinRegistrationConfirm', [
             'team' => [
@@ -72,9 +69,7 @@ class TeamJoinController extends Controller
      */
     public function complete(Request $request): RedirectResponse
     {
-        $team = Team::whereHas('code', function ($query) use ($request) {
-            $query->where('code', $request->session()->pull('invitation_code'));
-        })->first();
+        $team = Team::whereRelation('code', 'code', '=', $request->session()->pull('invitation_code'))->firstOrFail();
 
         // チームにユーザを追加
         $team->team_members()->create([

@@ -28,7 +28,7 @@ class TeamFactory extends Factory
     {
         return [
             'name' => $this->baseballTeam(),
-            'sport_affiliation_type' => 1,
+            'sport_affiliation_type' => fake()->randomElement([1, 2, 3]),
             'prefecture_code' => fake()->numberBetween(1, 47),
             'address' => fake()->city() . fake()->streetAddress(),
             'favorite_facility' => fake()->streetName() . ' ' . fake()->randomElement(self::$teamNames),
