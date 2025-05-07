@@ -22,6 +22,7 @@ class UserLoginController extends Controller
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
             'routes' => [
+                'home' => route('home'),
                 'email_login' => route('email_login.login'),
                 'password_request' => route('password.request'),
                 'google_login' => route('google.login'),

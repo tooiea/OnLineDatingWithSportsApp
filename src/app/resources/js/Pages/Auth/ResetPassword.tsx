@@ -22,6 +22,9 @@ export default function ResetPassword({
 
     const routes = usePage().props.guest_routes as {
         password_reset: string;
+        current: string;
+        home: string;
+        login: string;
     }
 
     const submit: FormEventHandler = (e) => {
@@ -33,7 +36,7 @@ export default function ResetPassword({
     };
 
     return (
-        <GuestLayout>
+        <GuestLayout routes={routes}>
             <Head title="Reset Password" />
 
             <form onSubmit={submit}>

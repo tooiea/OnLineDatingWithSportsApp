@@ -12,7 +12,10 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
     const routes = usePage().props.guest_routes as {
         password_email: string;
-      }
+        current: string;
+        home: string;
+        login: string;
+    };
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -21,7 +24,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
     };
 
     return (
-        <GuestLayout>
+        <GuestLayout routes={routes}>
             <Head title="Forgot Password" />
 
             <div className="mb-4 text-sm text-gray-600">

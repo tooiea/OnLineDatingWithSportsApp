@@ -16,6 +16,9 @@ interface Props {
     line_login: string;
     google_login: string;
     temp_register_team: string;
+    current: string;
+    home: string;
+    login: string;
   }
 }
 export default function Login({
@@ -47,7 +50,7 @@ export default function Login({
     }, [status]);
 
     return (
-        <GuestLayout>
+        <GuestLayout routes={routes}>
             <Head title="Log in" />
 
             {/* 🔔 トーストを描画 */}
@@ -101,7 +104,6 @@ export default function Login({
                 </div>
             </form>
 
-            {/* ソーシャルログインなどはそのまま */}
             <div className="mt-6 flex items-center">
                 <hr className="flex-grow border-t border-gray-300" />
                 <span className="mx-2 text-sm text-gray-500">または</span>
