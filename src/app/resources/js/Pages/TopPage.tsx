@@ -21,11 +21,10 @@ export default function TopPage({ isAuthenticated, routes }: Props) {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="min-h-screen bg-white text-gray-800 font-sans pb-20 pt-16">
+    <div className="min-h-screen bg-[#f2f6f9] text-gray-800 font-sans pb-20 pt-16">
       <CommonHeader routes={routes} />
 
-      {/* ヒーローセクション */}
-      <section className="text-center py-10 bg-gradient-to-b from-blue-100 to-white">
+      <section className="text-center py-10 bg-gradient-to-b from-blue-200 to-[#f2f6f9]">
         <h1 className="text-xl font-bold mb-4 text-blue-800">
           スポーツが人を寄り添わせ、<br className="sm:hidden" />優しさで温かな絆を紡ぐ
         </h1>
@@ -33,23 +32,22 @@ export default function TopPage({ isAuthenticated, routes }: Props) {
           {isAuthenticated ? (
             <a
               href={routes.team_list}
-              className="bg-blue-600 text-white px-4 py-2 rounded-full"
+              className="bg-blue-600 text-white font-semibold px-8 py-2 rounded-full"
             >
               チームを探す
             </a>
           ) : (
             <a
               href={routes.temp_register_team}
-              className="bg-green-600 text-white px-4 py-2 rounded-full"
+              className="bg-blue-600 text-white font-semibold px-8 py-2 rounded-full"
             >
-              登録して始める
+              仮登録して始める
             </a>
           )}
         </div>
       </section>
 
-      {/* 特長セクション */}
-      <section className="px-4 py-10 bg-gray-50">
+      <section className="px-4 py-10 bg-[#f2f6f9]">
         <h2 className="text-base font-bold text-center mb-6 text-blue-800">OLDWS の使い方</h2>
         <div className="max-w-xl mx-auto space-y-6">
           <FeatureItem icon="⚽" title="気軽に試合へ参加" desc="チームに招待されて、気軽にスポーツの試合に参加できます。" />
@@ -58,31 +56,37 @@ export default function TopPage({ isAuthenticated, routes }: Props) {
         </div>
       </section>
 
-      {/* 招待・登録選択：未ログイン時のみ */}
       {!isAuthenticated && (
-        <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 pb-10 max-w-4xl mx-auto">
-          <div className="bg-blue-50 p-4 rounded-xl text-center shadow-sm">
-            <h3 className="font-bold mb-2 text-blue-800">チームから招待された方</h3>
-            <p className="text-sm text-gray-700">招待URLより登録後、チームに参加できます</p>
+        <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 pb-10 max-w-4xl mx-auto bg-[#f2f6f9]">
+          <div className="bg-yellow-50 border border-yellow-200 p-6 rounded-2xl text-center shadow-sm flex flex-col justify-between">
+            <div>
+              <h3 className="font-bold mb-2 text-yellow-900 text-base sm:text-lg">チームから招待された方</h3>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                招待URLより登録後、チームに参加できます
+              </p>
+            </div>
           </div>
-          <div className="bg-blue-50 p-4 rounded-xl text-center shadow-sm">
-            <h3 className="font-bold mb-2 text-blue-800">チームを登録して始める</h3>
+          <div className="bg-yellow-50 border border-yellow-200 p-6 rounded-2xl text-center shadow-sm flex flex-col justify-between">
+            <div>
+              <h3 className="font-bold mb-2 text-yellow-900 text-base sm:text-lg">チームを登録して始める</h3>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                自分のチームを作って、他のチームとつながろう
+              </p>
+            </div>
             <a
               href={routes.temp_register_team}
-              className="bg-green-600 text-white w-full inline-block py-2 mt-2 rounded"
+              className="bg-blue-600 text-white px-6 py-2 mt-4 inline-block rounded-full text-sm font-semibold shadow hover:bg-blue-700"
             >
-              仮登録する
+              仮登録して始める
             </a>
           </div>
         </section>
       )}
 
-      {/* フッター */}
-      <footer className="text-center text-xs text-gray-500 py-4 border-t">
+      <footer className="text-center text-xs text-gray-500 py-4 bg-gray-100 border-t">
         © {currentYear} OLDWS / お問い合わせ | 利用規約 | プライバシー
       </footer>
 
-      {/* スマホ用フッターメニュー */}
       {isAuthenticated ? (
         <MobileFooterNav routes={routes} />
       ) : (

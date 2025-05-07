@@ -1,19 +1,27 @@
+import GuestFooterNav from '@/Components/GuestFooterNav';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link } from '@inertiajs/react';
 import { PropsWithChildren } from 'react';
 
-export default function Guest({ children }: PropsWithChildren) {
-    return (
-        <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0">
-            <div>
-                <Link href="/">
-                    <ApplicationLogo className="h-20 w-20 fill-current text-gray-500" />
-                </Link>
-            </div>
+interface Props extends PropsWithChildren {
+  routes: {
+    current: string;
+    home: string;
+    login: string;
+  };
+}
 
-            <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
-                {children}
-            </div>
+export default function GuestLayout({ children, routes }: Props) {
+  return (
+    <div className="flex flex-col min-h-screen bg-gray-100">
+
+      <main className="flex-grow flex justify-center items-start pt-32 pb-20 sm:pt-20">
+        <div className="w-full max-w-md rounded-2xl bg-white px-6 py-6 shadow-md">
+          {children}
         </div>
-    );
+      </main>
+
+      <GuestFooterNav routes={routes} />
+    </div>
+  );
 }
