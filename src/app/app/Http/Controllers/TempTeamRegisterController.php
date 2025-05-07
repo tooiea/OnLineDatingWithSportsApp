@@ -64,6 +64,8 @@ class TempTeamRegisterController extends Controller
         // セッションへ保存
         session(['temp_team_register.form' => $tempTeamRegister]);
         return Inertia::render('TempRegister/TeamRegistrationConfirm', [
+            'nickname' => $request->validated('nickname'),
+            'email' => $request->validated('email'),
             'sportAffiliationType' => $request->validated('sportAffiliationType'),
             'sportAffiliationLabel' => SportAffiliationTypeEnum::from((int)$request->validated('sportAffiliationType'))->label(),
             'teamName' => $request->validated('teamName'),
