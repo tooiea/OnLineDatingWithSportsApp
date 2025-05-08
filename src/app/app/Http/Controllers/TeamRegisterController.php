@@ -36,7 +36,8 @@ class TeamRegisterController extends Controller
             'sports' => SportAffiliationTypeEnum::list(),
             'old' => session()->getOldInput(),
             'routes' => [
-                'confirm' => route('register.team.confirm')
+                'confirm' => route('register.team.confirm'),
+                'select' => route('register.team.select'),
             ]
         ]);
     }
