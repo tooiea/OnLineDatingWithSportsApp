@@ -52,6 +52,9 @@ export default function AuthenticatedLayout({
                   src={user.image_path ?? '/images/logo.webp'}
                   alt="プロフィール"
                   className="w-8 h-8 rounded-full border"
+                  loading="lazy"
+                  width={32}
+                  height={32}
                 />
                 <span className="sm:inline text-sm text-gray-700 font-medium">
                   {user.name}

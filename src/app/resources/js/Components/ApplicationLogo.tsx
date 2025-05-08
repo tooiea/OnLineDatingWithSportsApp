@@ -8,6 +8,9 @@ export default function ApplicationLogo({ className }: Props) {
             src='/images/logo.webp'
             alt="OLDWS ロゴ"
             className={className || 'h-12 w-12'}
+            loading="lazy"
+            width={32}
+            height={32}
         />
     );
 }

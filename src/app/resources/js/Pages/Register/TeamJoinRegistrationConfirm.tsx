@@ -36,7 +36,7 @@ const TeamJoinRegistrationConfirm: React.FC<Props> = ({ team, routes }) => {
 
       <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full z-10">
         <div className="text-center mb-6">
-          <img src="/images/logo.webp" alt="OLDWS Logo" className="mx-auto w-20 mb-2" />
+          <img src="/images/logo.webp" alt="OLDWS Logo" className="mx-auto w-20 mb-2" loading="lazy" width={32} height={32}/>
           <h2 className="text-xl font-bold text-green-600">✅ 確認画面</h2>
           <p className="text-sm text-gray-600 mt-2">以下のチームで登録しますか？</p>
         </div>
