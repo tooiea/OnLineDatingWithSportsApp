@@ -36,7 +36,7 @@ export default function CommonHeader({ routes }: Props) {
           <div className="flex items-center">
             <Link href={routes?.my_profile || '/'} className="flex items-center gap-2">
               <img
-                src={user?.image_path ?? '/images/logo.png'}
+                src={user?.image_path ?? '/images/logo.webp'}
                 alt="プロフィール"
                 className="w-8 h-8 rounded-full border"
               />

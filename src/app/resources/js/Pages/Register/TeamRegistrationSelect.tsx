@@ -44,7 +44,7 @@ const TeamRegistrationSelect: React.FC<Props> = ({routes}) => {
       {/* メインコンテンツ */}
       <div className="text-center space-y-6 z-10">
         <img
-          src="/images/logo.png"
+          src="/images/logo.webp"
           alt="OLDWS Logo"
           className="mx-auto w-20 md:w-28"
         />
