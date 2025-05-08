@@ -39,6 +39,9 @@ export default function CommonHeader({ routes }: Props) {
                 src={user?.image_path ?? '/images/logo.webp'}
                 alt="プロフィール"
                 className="w-8 h-8 rounded-full border"
+                loading="lazy"
+                width={32}
+                height={32}
               />
               {user?.name && (
                 <span className="sm:inline text-sm text-gray-700 font-medium">

@@ -47,6 +47,9 @@ const TeamRegistrationSelect: React.FC<Props> = ({routes}) => {
           src="/images/logo.webp"
           alt="OLDWS Logo"
           className="mx-auto w-20 md:w-28"
+          loading="lazy"
+          width={32}
+          height={32}
         />
         <h1 className="text-xl md:text-3xl font-extrabold text-gray-800">
           ようこそ、<span className="text-blue-700">OLDWS</span>へ！<br />

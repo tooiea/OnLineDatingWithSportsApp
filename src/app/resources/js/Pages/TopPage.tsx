@@ -83,7 +83,7 @@ export default function TopPage({ isAuthenticated, routes }: Props) {
         </section>
       )}
 
-      <footer className="text-center text-xs text-gray-500 py-4 bg-gray-100 border-t">
+      <footer className="text-center text-xs text-[#474F61] py-4 bg-gray-100 border-t">
         © {currentYear} OLDWS / お問い合わせ | 利用規約 | プライバシー
       </footer>
 
