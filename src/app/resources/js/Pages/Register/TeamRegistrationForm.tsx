@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm, Head, usePage } from '@inertiajs/react';
+import { useForm, Head, usePage, router } from '@inertiajs/react';
 
 interface Prefecture {
   id: number;
@@ -16,6 +16,7 @@ interface Props {
   sports: SportAffiliationType[];
   routes: {
     confirm: string;
+    select: string;
   };
 }
 
@@ -46,11 +47,15 @@ export default function TeamRegistrationForm({ prefectures, sports, routes }: Pr
     post(routes.confirm);
   };
 
+  const handleselect = () => {
+    router.visit(routes.select);
+  };
+
   const renderError = (field: keyof typeof errors) =>
     errors[field] && <p className="text-red-500 text-sm mt-1">{errors[field]}</p>;
 
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen py-10 px-4">
+    <div className="bg-gradient-to-br from-blue-100 to-green-100 min-h-screen py-10 px-4">
       <Head title="チーム登録フォーム" />
 
       <div className="text-center mb-10">
@@ -139,16 +144,23 @@ export default function TeamRegistrationForm({ prefectures, sports, routes }: Pr
             className="w-full border-gray-300 rounded-md shadow-sm"
           />
           {renderError('address')}
-        </div>
 
-        <div className="text-center">
           <button
             type="submit"
             disabled={processing}
-            className="mt-8 w-full max-w-sm bg-gradient-to-r from-indigo-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300"
+            className="mt-8 w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-full hover:bg-indigo-700 shadow-md transition duration-300"
           >
-            🚀 チームを作成する
+            確認する
           </button>
+
+          <button
+            type="button"
+            onClick={handleselect}
+            className="mt-8 w-full border border-gray-400 text-gray-700 font-bold py-2 px-4 rounded-full hover:bg-gray-100 shadow-sm transition duration-300"
+          >
+            ← 登録方法の選択に戻る
+          </button>
+
         </div>
       </form>
     </div>
