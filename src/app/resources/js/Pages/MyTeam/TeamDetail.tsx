@@ -93,64 +93,64 @@ export default function TeamDetail({
           <h3 className="text-xl font-bold border-b pb-3 mb-6">チームプロフィール詳細</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-            <div className="space-y-4">
-              <div>
-                <p className="text-sm font-semibold text-gray-600">チーム名</p>
+            <div className="space-y-4 divide-y divide-gray-200">
+              <div className="pt-0">
+                <p className="text-xs text-gray-500 mb-1">チーム名</p>
                 <div className="flex items-center gap-2">
-                  <p className="text-gray-800 break-all">{myTeam.team.name}</p>
+                  <p className="text-gray-800 font-medium">{myTeam.team.name}</p>
                   <Link href={routes.team_edit} className="text-indigo-500 hover:text-indigo-700">
                     <Pencil size={16} />
                   </Link>
                 </div>
               </div>
 
-              <div>
-                <p className="text-sm font-semibold text-gray-600">都道府県</p>
-                <p className="text-gray-800">{myTeam.team.prefectureLabel}</p>
+              <div className="pt-4">
+                <p className="text-xs text-gray-500 mb-1">都道府県</p>
+                <p className="text-gray-800 font-medium">{myTeam.team.prefectureLabel}</p>
               </div>
 
-              <div>
-                <p className="text-sm font-semibold text-gray-600">住所</p>
-                <p className="text-gray-800">{myTeam.team.address || '-'}</p>
+              <div className="pt-4">
+                <p className="text-xs text-gray-500 mb-1">住所</p>
+                <p className="text-gray-800 font-medium">{myTeam.team.address || '-'}</p>
               </div>
 
-              <div>
-                <p className="text-sm font-semibold text-gray-600">よく使う施設名</p>
-                <p className="text-gray-800">{myTeam.team.favoriteFacility || '-'}</p>
+              <div className="pt-4">
+                <p className="text-xs text-gray-500 mb-1">よく使う施設名</p>
+                <p className="text-gray-800 font-medium">{myTeam.team.favoriteFacility || '-'}</p>
               </div>
 
-              <div>
-                <p className="text-sm font-semibold text-gray-600">登録人数</p>
-                <p className="text-gray-800">{teamMembersNumber}人</p>
+              <div className="pt-4">
+                <p className="text-xs text-gray-500 mb-1">登録人数</p>
+                <p className="text-gray-800 font-medium">{teamMembersNumber}人</p>
               </div>
 
-              <div>
-                <p className="text-sm font-semibold text-gray-600">チーム紹介URL</p>
+              <div className="pt-4">
+                <p className="text-xs text-gray-500 mb-1">チーム紹介URL</p>
                 {myTeam.team.team_url ? (
-                  <a href={myTeam.team.team_url} className="text-indigo-500 hover:underline break-all">
+                  <a href={myTeam.team.team_url} className="text-indigo-500 hover:underline break-all font-medium">
                     {myTeam.team.team_url}
                   </a>
                 ) : (
-                  <p className="text-gray-500">-</p>
+                  <p className="text-gray-400 font-medium">-</p>
                 )}
               </div>
 
-              <div>
-                <p className="text-sm font-semibold text-gray-600">他選手の招待URL</p>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      value={routes.invite_url}
-                      readOnly
-                      className="flex-1 border border-gray-300 rounded-md px-2 py-1 text-sm"
-                    />
-                    <button
-                      onClick={handleCopy}
-                      className="px-3 py-1 text-sm bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200"
-                    >
-                      コピー
-                    </button>
-                  </div>
+              <div className="pt-4">
+                <p className="text-xs text-gray-500 mb-1">他選手の招待URL</p>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={routes.invite_url}
+                    readOnly
+                    className="flex-1 border border-gray-300 rounded-md px-2 py-1 text-sm text-gray-700"
+                  />
+                  <button
+                    onClick={handleCopy}
+                    className="px-3 py-1 text-sm bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200"
+                  >
+                    コピー
+                  </button>
+                </div>
                 {copySuccess && <p className="text-green-600 text-sm mt-2">コピーしました</p>}
               </div>
             </div>

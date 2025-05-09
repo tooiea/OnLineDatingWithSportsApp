@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { PageProps } from '@/types';
 import React, { useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import LabelBlock from '@/Components/LabelBlock';
 
 interface TeamImage {
   id: number;
@@ -175,10 +176,8 @@ export default function TeamEdit({
     const formData = new FormData();
 
     Object.entries(data).forEach(([key, value]) => {
-      if (key === 'teamMainImage') {
-        if (value instanceof File) {
-          formData.append('teamMainImage', value);
-        }
+      if (key === 'teamMainImage' && value instanceof File) {
+        formData.append('teamMainImage', value);
       } else {
         formData.append(key, String(value ?? ''));
       }
@@ -201,9 +200,7 @@ export default function TeamEdit({
     router.post(routes.update, formData, {
       forceFormData: true,
       onError: (errors) => {
-        Object.entries(errors).forEach(([key, message]) => {
-          setError(key as keyof FormDataType, message);
-        });
+        Object.entries(errors).forEach(([key, message]) => setError(key as keyof FormDataType, message));
       },
     });
   };
@@ -215,46 +212,51 @@ export default function TeamEdit({
         <form onSubmit={handleSubmit} encType="multipart/form-data" className="bg-white shadow rounded-lg p-6 space-y-6">
           <h1 className="text-xl font-bold text-gray-800 border-b pb-2">チームプロフィール編集</h1>
 
-          {/* チーム情報 */}
           <div>
-            <label className="block font-semibold mb-1">チーム名</label>
-            <input type="text" value={data.teamName} onChange={(e) => setData('teamName', e.target.value)} className="w-full border rounded px-3 py-2" />
+            <LabelBlock label="チーム名" required >
+              <input type="text" value={data.teamName} onChange={(e) => setData('teamName', e.target.value)} className="w-full border rounded px-3 py-2" />
+            </LabelBlock>
             {errors.teamName && <p className="text-sm text-red-500 mt-1">{errors.teamName}</p>}
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">都道府県</label>
-            <select value={data.prefecture} onChange={(e) => setData('prefecture', Number(e.target.value))} className="w-full border rounded px-3 py-2">
-              <option value={0}>選択してください</option>
-              {prefectures.map((pref) => (
-                <option key={pref.value} value={pref.value}>{pref.label}</option>
-              ))}
-            </select>
+            <LabelBlock label="都道府県" required >
+              <select value={data.prefecture} onChange={(e) => setData('prefecture', Number(e.target.value))} className="w-full border rounded px-3 py-2">
+                <option value={0}>選択してください</option>
+                {prefectures.map((pref) => (
+                  <option key={pref.value} value={pref.value}>{pref.label}</option>
+                ))}
+              </select>
+            </LabelBlock>
             {errors.prefecture && <p className="text-sm text-red-500 mt-1">{errors.prefecture}</p>}
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">住所</label>
-            <input type="text" value={data.address} onChange={(e) => setData('address', e.target.value)} className="w-full border rounded px-3 py-2" />
+            <LabelBlock label="住所" required >
+              <input type="text" value={data.address} onChange={(e) => setData('address', e.target.value)} className="w-full border rounded px-3 py-2" />
+            </LabelBlock>
             {errors.address && <p className="text-sm text-red-500 mt-1">{errors.address}</p>}
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">よく使う施設名</label>
-            <input type="text" value={data.favoriteFacility} onChange={(e) => setData('favoriteFacility', e.target.value)} className="w-full border rounded px-3 py-2" />
+            <LabelBlock label="よく使う施設名"  >
+              <input type="text" value={data.favoriteFacility} onChange={(e) => setData('favoriteFacility', e.target.value)} className="w-full border rounded px-3 py-2" />
+            </LabelBlock>
             {errors.favoriteFacility && <p className="text-sm text-red-500 mt-1">{errors.favoriteFacility}</p>}
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">チーム紹介URL</label>
-            <input type="text" value={data.teamUrl} onChange={(e) => setData('teamUrl', e.target.value)} className="w-full border rounded px-3 py-2" />
+            <LabelBlock label="チーム紹介URL" >
+              <input type="text" value={data.teamUrl} onChange={(e) => setData('teamUrl', e.target.value)} className="w-full border rounded px-3 py-2" />
+            </LabelBlock>
             {errors.teamUrl && <p className="text-sm text-red-500 mt-1">{errors.teamUrl}</p>}
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">チームロゴ画像</label>
-            {previewImage ? <img src={previewImage} className="w-32 h-32 object-contain mb-2" /> : team.image?.path_base64 && <img src={team.image.path_base64} className="w-32 h-32 object-contain mb-2" />}
-            <input type="file" ref={imageInputRef} onChange={handleImageChange} className="w-full" />
+            <LabelBlock label="チームロゴ画像" required description='PNG、JPG、JPEG形式の拡張子'>
+              {previewImage ? <img src={previewImage} className="w-32 h-32 object-contain mb-2" /> : team.image?.path_base64 && <img src={team.image.path_base64} className="w-32 h-32 object-contain mb-2" />}
+              <input type="file" ref={imageInputRef} onChange={handleImageChange} className="w-full" />
+            </LabelBlock>
             {errors.teamMainImage && <p className="text-sm text-red-500 mt-1">{errors.teamMainImage}</p>}
           </div>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
+import LabelBlock from '@/Components/LabelBlock';
 
 interface Props {
   nickname: string;
@@ -28,7 +29,7 @@ export default function TeamJoinRegistrationConfirm({
   };
 
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen py-10 px-4">
+    <div className="bg-gradient-to-br from-blue-100 to-green-100 min-h-screen py-10 px-4">
       <Head title="登録内容の確認" />
 
       <div className="container mx-auto max-w-xl">
@@ -39,16 +40,13 @@ export default function TeamJoinRegistrationConfirm({
             <h2 className="text-lg font-semibold border-b pb-2 mb-4">👤 ユーザー情報</h2>
             <div className="space-y-3">
               <div>
-                <label className="font-semibold">ニックネーム</label>
-                <div className="text-gray-800">{nickname}</div>
+                <LabelBlock label='ニックネーム'>{nickname}</LabelBlock>
               </div>
               <div>
-                <label className="font-semibold">メールアドレス</label>
-                <div className="text-gray-800">{email}</div>
+                <LabelBlock label='メールアドレス'>{email}</LabelBlock>
               </div>
               <div>
-                <label className="font-semibold">パスワード</label>
-                <div className="text-gray-400">********</div>
+                <LabelBlock label='パスワード'>********</LabelBlock>
               </div>
             </div>
           </div>

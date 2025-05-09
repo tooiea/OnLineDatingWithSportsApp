@@ -1,5 +1,6 @@
 import React from 'react';
 import { Head, useForm, router } from '@inertiajs/react';
+import LabelBlock from '@/Components/LabelBlock';
 
 interface FormInput {
   teamUrl: string;
@@ -45,27 +46,23 @@ export default function TeamJoinRegistrationForm({ routes }: Props) {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="text-left">
-            <label htmlFor="teamUrl" className="block text-sm font-medium text-gray-700">
-              招待URL
-            </label>
-            <input
-              type="url"
-              name="teamUrl"
-              id="teamUrl"
-              value={data.teamUrl}
-              onChange={e => setData('teamUrl', e.target.value)}
-              placeholder="例)https://oldws.sakura.ne.jp/temp_register/team/join/1234567890xxxx"
-              className={`mt-1 w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.teamUrl || errors.invitation_code ? 'border-red-500' : ''
-              }`}
-            />
-            {errors.teamUrl && (
-              <p className="text-sm text-red-500 mt-1">{errors.teamUrl}</p>
-            )}
-            {errors.invitation_code && (
-              <p className="text-sm text-red-500 mt-1">{errors.invitation_code}</p>
-            )}
-            <small className="text-gray-500">招待用のURLを貼り付けてください</small>
+            <LabelBlock label='招待URL' required description='例)https://oldws.net/temp_register/team/join/xxx'>
+              <input
+                type="url"
+                name="teamUrl"
+                id="teamUrl"
+                value={data.teamUrl}
+                onChange={e => setData('teamUrl', e.target.value)}
+                className={`mt-1 w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 ${errors.teamUrl || errors.invitation_code ? 'border-red-500' : ''
+                  }`}
+              />
+              {errors.teamUrl && (
+                <p className="text-sm text-red-500 mt-1">{errors.teamUrl}</p>
+              )}
+              {errors.invitation_code && (
+                <p className="text-sm text-red-500 mt-1">{errors.invitation_code}</p>
+              )}
+            </LabelBlock>
           </div>
 
           <button

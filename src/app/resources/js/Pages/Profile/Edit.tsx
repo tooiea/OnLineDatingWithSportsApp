@@ -2,6 +2,7 @@ import { useForm, router } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
+import LabelBlock from '@/Components/LabelBlock';
 
 interface Option {
   value: number;
@@ -96,85 +97,89 @@ export default function ProfileEdit({
           </h1>
 
           <div>
-            <label className="block font-semibold mb-1">ニックネーム</label>
-            <input
-              type="text"
-              value={data.nickname}
-              onChange={(e) => setData('nickname', e.target.value)}
-              className="w-full border rounded px-3 py-2"
-            />
+            <LabelBlock label='ニックネーム' required>
+              <input
+                type="text"
+                value={data.nickname}
+                onChange={(e) => setData('nickname', e.target.value)}
+                className="w-full border rounded px-3 py-2"
+              />
+            </LabelBlock>
             {errors.nickname && (
               <p className="text-sm text-red-500 mt-1">{errors.nickname}</p>
             )}
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">ポジション</label>
-            <select
-              value={data.position ?? ''}
-              onChange={(e) =>
-                setData('position', e.target.value === '' ? null : Number(e.target.value))
-              }
-              className="w-full border rounded px-3 py-2"
-            >
-              <option value="">選択してください</option>
-              {positionOptions.map((p) => (
-                <option key={p.value} value={p.value}>
-                  {p.label}
-                </option>
-              ))}
-            </select>
+            <LabelBlock label='ポジション'>
+              <select
+                value={data.position ?? ''}
+                onChange={(e) =>
+                  setData('position', e.target.value === '' ? null : Number(e.target.value))
+                }
+                className="w-full border rounded px-3 py-2"
+              >
+                <option value="">選択してください</option>
+                {positionOptions.map((p) => (
+                  <option key={p.value} value={p.value}>
+                    {p.label}
+                  </option>
+                ))}
+              </select>
+            </LabelBlock>
             {errors.position && (
               <p className="text-sm text-red-500 mt-1">{errors.position}</p>
             )}
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">利き手</label>
-            <select
-              value={data.handedness ?? ''}
-              onChange={(e) =>
-                setData('handedness', e.target.value === '' ? null : Number(e.target.value))
-              }
-              className="w-full border rounded px-3 py-2"
-            >
-              <option value="">選択してください</option>
-              {handednessOptions.map((h) => (
-                <option key={h.value} value={h.value}>
-                  {h.label}
-                </option>
-              ))}
-            </select>
+            <LabelBlock label='利き手'>
+              <select
+                value={data.handedness ?? ''}
+                onChange={(e) =>
+                  setData('handedness', e.target.value === '' ? null : Number(e.target.value))
+                }
+                className="w-full border rounded px-3 py-2"
+              >
+                <option value="">選択してください</option>
+                {handednessOptions.map((h) => (
+                  <option key={h.value} value={h.value}>
+                    {h.label}
+                  </option>
+                ))}
+              </select>
+            </LabelBlock>
             {errors.handedness && (
               <p className="text-sm text-red-500 mt-1">{errors.handedness}</p>
             )}
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">プロフィール画像</label>
-            {previewImage && (
-              <div className="mb-2">
-                <img
-                  src={previewImage}
-                  alt="プロフィール画像"
-                  className="w-32 h-32 object-contain border rounded mb-2"
-                />
-                <button
-                  type="button"
-                  onClick={handleImageDelete}
-                  className="text-sm text-red-600 hover:underline"
-                >
-                  画像を削除
-                </button>
-              </div>
-            )}
-            <input
-              type="file"
-              ref={imageInputRef}
-              accept="image/*"
-              onChange={handleImageChange}
-              className="w-full"
-            />
+            <LabelBlock label='プロフィール画像' description='PNG、JPG、JPEG形式の拡張子' >
+              {previewImage && (
+                <div className="mb-2">
+                  <img
+                    src={previewImage}
+                    alt="プロフィール画像"
+                    className="w-32 h-32 object-contain border rounded mb-2"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleImageDelete}
+                    className="text-sm text-red-600 hover:underline"
+                  >
+                    画像を削除
+                  </button>
+                </div>
+              )}
+              <input
+                type="file"
+                ref={imageInputRef}
+                accept="image/*"
+                onChange={handleImageChange}
+                className="w-full"
+              />
+            </LabelBlock>
             {errors.image && (
               <p className="text-sm text-red-500 mt-1">{errors.image}</p>
             )}

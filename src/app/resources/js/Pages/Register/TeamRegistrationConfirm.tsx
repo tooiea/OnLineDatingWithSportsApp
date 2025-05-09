@@ -1,5 +1,6 @@
 import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
+import LabelBlock from '@/Components/LabelBlock';
 
 interface Props {
   sportAffiliationType: string;
@@ -52,24 +53,19 @@ export default function TeamRegistrationConfirm({
           <h2 className="text-lg font-semibold border-b pb-2 mb-4">🏆 チーム情報</h2>
           <div className="space-y-3">
             <div>
-              <label className="font-semibold">スポーツ種別</label>
-              <div className="text-gray-800">{sportAffiliationLabel}</div>
+              <LabelBlock label='スポーツ種別'>{sportAffiliationLabel}</LabelBlock>
             </div>
             <div>
-              <label className="font-semibold">チーム名</label>
-              <div className="text-gray-800">{teamName}</div>
+              <LabelBlock label='チーム名'>{teamName}</LabelBlock>
             </div>
             <div>
-              <label className="font-semibold">チーム紹介SNS</label>
-              <div className="text-blue-600 underline break-all">{teamUrl}</div>
+              <LabelBlock label='チーム紹介SNS'>{teamUrl}</LabelBlock>
             </div>
             <div>
-              <label className="font-semibold">活動エリア（都道府県）</label>
-              <div className="text-gray-800">{prefectureLabel}</div>
+              <LabelBlock label='活動エリア（都道府県）'>{prefectureLabel}</LabelBlock>
             </div>
             <div>
-              <label className="font-semibold">市町村区</label>
-              <div className="text-gray-800">{address}</div>
+              <LabelBlock label='市町村区'>{address}</LabelBlock>
             </div>
             {teamLogoUrl && (
               <div>

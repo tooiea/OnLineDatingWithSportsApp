@@ -8,23 +8,23 @@ import { FormEventHandler, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 interface Props {
-  status?: string;
-  canResetPassword: boolean;
-  routes: {
-    email_login: string;
-    password_request: string;
-    line_login: string;
-    google_login: string;
-    temp_register_team: string;
-    current: string;
-    home: string;
-    login: string;
-    logout: string;
-    my_profile: string;
-    myteam_index: string;
-    team_list: string;
-    myteam_detail: string;
-  }
+    status?: string;
+    canResetPassword: boolean;
+    routes: {
+        email_login: string;
+        password_request: string;
+        line_login: string;
+        google_login: string;
+        temp_register_team: string;
+        current: string;
+        home: string;
+        login: string;
+        logout: string;
+        my_profile: string;
+        myteam_index: string;
+        team_list: string;
+        myteam_detail: string;
+    }
 }
 export default function Login({
     status,
@@ -48,9 +48,9 @@ export default function Login({
     useEffect(() => {
         if (status) {
             toast.custom(
-                <div className="bg-green-100 text-green-800 px-4 py-2 rounded shadow text-sm" dangerouslySetInnerHTML={{ __html: status }} />,
+                <div className="bg-green-100 text-green-800 px-4 py-3 rounded shadow text-sm" dangerouslySetInnerHTML={{ __html: status }} />,
                 { duration: 5000 }
-              );
+            );
         }
     }, [status]);
 
@@ -59,7 +59,15 @@ export default function Login({
             <Head title="Log in" />
 
             {/* 🔔 トーストを描画 */}
-            <Toaster position="top-center" reverseOrder={false} />
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                toastOptions={{
+                    className: '',
+                    style: {
+                        marginTop: '4rem',
+                    },
+                }} />
 
             <form onSubmit={submit}>
                 <div>

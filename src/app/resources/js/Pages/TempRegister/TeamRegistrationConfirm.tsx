@@ -1,5 +1,6 @@
 import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
+import LabelBlock from '@/Components/LabelBlock';
 
 interface Props {
   sportAffiliationType: string;
@@ -46,7 +47,7 @@ export default function TeamRegistrationConfirm({
   };
 
   return (
-    <div className="container py-10 px-4 mx-auto max-w-3xl">
+    <div className="bg-gradient-to-br from-blue-100 to-green-100 py-10 px-4 mx-auto max-w-3xl">
       <Head title="登録内容の確認" />
 
       <h1 className="text-2xl font-bold text-center mb-8">チーム登録内容の確認</h1>
@@ -54,56 +55,44 @@ export default function TeamRegistrationConfirm({
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-lg font-semibold border-b pb-2 mb-4">👤 ユーザー情報</h2>
-          <div className="space-y-3">
-            <div>
-              <label className="font-semibold">ニックネーム</label>
-              <div className="text-gray-800">{nickname}</div>
-            </div>
-            <div>
-              <label className="font-semibold">メールアドレス</label>
-              <div className="text-gray-800">{email}</div>
-            </div>
-            <div>
-              <label className="font-semibold">パスワード</label>
-              <div className="text-gray-400">********</div>
-            </div>
+          <div className="space-y-4">
+            <LabelBlock label="ニックネーム">{nickname}</LabelBlock>
+            <LabelBlock label="メールアドレス">{email}</LabelBlock>
+            <LabelBlock label="パスワード">
+              <span className="text-gray-400">********</span>
+            </LabelBlock>
           </div>
         </div>
 
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-lg font-semibold border-b pb-2 mb-4">🏆 チーム情報</h2>
-          <div className="space-y-3">
-            <div>
-              <label className="font-semibold">スポーツ種別</label>
-              <div className="text-gray-800">{sportAffiliationLabel}</div>
-            </div>
-            <div>
-              <label className="font-semibold">チーム名</label>
-              <div className="text-gray-800">{teamName}</div>
-            </div>
-            <div>
-              <label className="font-semibold">チーム紹介SNS</label>
-              <div className="text-blue-600 underline break-all">{teamUrl}</div>
-            </div>
-            <div>
-              <label className="font-semibold">活動エリア（都道府県）</label>
-              <div className="text-gray-800">{prefectureLabel}</div>
-            </div>
-            <div>
-              <label className="font-semibold">市町村区</label>
-              <div className="text-gray-800">{address}</div>
-            </div>
+          <div className="space-y-4">
+            <LabelBlock label="スポーツ種別">{sportAffiliationLabel}</LabelBlock>
+            <LabelBlock label="チーム名">{teamName}</LabelBlock>
+            <LabelBlock label="チーム紹介SNS">
+              {teamUrl ? (
+              <a
+                href={teamUrl}
+                className="text-blue-600 underline break-all"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {teamUrl}
+              </a>
+              ) : (
+                <span className="text-gray-400">-</span>
+              )}
+            </LabelBlock>
+            <LabelBlock label="活動エリア（都道府県）">{prefectureLabel}</LabelBlock>
+            <LabelBlock label="市町村区">{address}</LabelBlock>
             {teamLogoUrl && (
-              <div>
-                <label className="font-semibold">チームロゴ</label>
-                <div>
-                  <img
-                    src={teamLogoUrl}
-                    alt="Team Logo"
-                    className="w-32 h-auto mt-2 border rounded"
-                  />
-                </div>
-              </div>
+              <LabelBlock label="チームロゴ">
+                <img
+                  src={teamLogoUrl}
+                  alt="Team Logo"
+                  className="w-32 h-auto mt-2 border rounded"
+                />
+              </LabelBlock>
             )}
           </div>
         </div>

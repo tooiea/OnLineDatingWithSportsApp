@@ -1,6 +1,7 @@
 import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import getFormattedFullDateTime from '@/Components/FormattedFullDateTime';
+import LabelBlock from '@/Components/LabelBlock';
 
 interface Props {
   first_preferered_date: string;
@@ -44,20 +45,16 @@ export default function InviteGameConfirm({
 
           <div className="space-y-3 text-gray-800">
             <div>
-              <label className="font-semibold">第一希望日程</label>
-              <div>{getFormattedFullDateTime(first_preferered_date)}</div>
+              <LabelBlock label='第一希望日程'>{getFormattedFullDateTime(first_preferered_date)}</LabelBlock>
             </div>
             <div>
-              <label className="font-semibold">第二希望日程</label>
-              <div>{getFormattedFullDateTime(second_preferered_date)}</div>
+              <LabelBlock label='第二希望日程'>{getFormattedFullDateTime(second_preferered_date)}</LabelBlock>
             </div>
             <div>
-              <label className="font-semibold">第三希望日程</label>
-              <div>{getFormattedFullDateTime(third_preferered_date)}</div>
+              <LabelBlock label='第三希望日程'>{getFormattedFullDateTime(third_preferered_date)}</LabelBlock>
             </div>
             <div>
-              <label className="font-semibold">メッセージ</label>
-              <div className="whitespace-pre-wrap">{message || '—'}</div>
+              <LabelBlock label='メッセージ'>{message || '—'}</LabelBlock>
             </div>
           </div>
         </div>

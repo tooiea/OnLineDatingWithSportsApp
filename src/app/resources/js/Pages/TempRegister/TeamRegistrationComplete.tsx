@@ -1,29 +1,44 @@
 import React from 'react';
 import { Head, Link } from '@inertiajs/react';
+import { CheckCircle } from 'lucide-react';
 
 export default function TeamRegistrationComplete() {
   return (
-    <div className="container py-10 px-4 mx-auto max-w-2xl">
+    <div className="bg-gradient-to-br from-blue-100 to-green-100 min-h-screen py-16 px-4 flex items-center justify-center">
       <Head title="仮登録完了" />
 
-      <div className="bg-green-100 border border-green-400 text-green-700 rounded-lg shadow-md">
-        <div className="bg-green-500 text-white text-center py-4 rounded-t-lg">
-          <h2 className="text-xl font-bold">仮登録完了です</h2>
+      <div className="bg-white/80 backdrop-blur-md border border-green-200 rounded-xl shadow-lg max-w-lg w-full px-6 py-10 text-center space-y-6">
+        <div className="flex justify-center">
+          <CheckCircle className="w-12 h-12 text-green-600" />
         </div>
 
-        <div className="p-6 text-center space-y-4">
-          <h4 className="text-lg font-semibold">仮登録いただきありがとうございました。</h4>
-          <p>入力されたメールアドレスへ本登録用のURLを送信しております。</p>
-          <p>
-            メールに記載のURLより、ユーザ本登録が完了となりますので
-            <span className="font-bold">1時間以内</span>に本登録をお願い致します。
-          </p>
+        <h2 className="text-2xl font-bold text-green-700">仮登録が完了しました</h2>
 
-          <div className="mt-6">
-            <Link href="/" className="text-blue-600 hover:underline">
-              トップページへ戻る
-            </Link>
-          </div>
+        <p className="text-gray-700 font-semibold">
+          ご登録ありがとうございます。
+        </p>
+
+        <p className="text-gray-600">
+          ご入力いただいたメールアドレス宛に、<br />
+          本登録用のURLをお送りしました。
+        </p>
+
+        <p className="text-gray-600">
+          記載されたURLをクリックし、<br />
+          <span className="font-bold text-green-700">60分以内に</span>本登録を完了してください。
+        </p>
+
+        <p className="text-sm text-gray-500">
+          ※ メールが届かない場合は、迷惑メールフォルダもご確認ください。
+        </p>
+
+        <div>
+          <Link
+            href="/"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md shadow transition"
+          >
+            トップページへ戻る
+          </Link>
         </div>
       </div>
     </div>

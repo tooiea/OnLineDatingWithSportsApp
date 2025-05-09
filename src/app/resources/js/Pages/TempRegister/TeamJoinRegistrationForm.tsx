@@ -1,5 +1,7 @@
 import React from 'react';
 import { Head, useForm, usePage } from '@inertiajs/react';
+import LabelBlock from '@/Components/LabelBlock';
+import PasswordInput from '@/Components/PasswordInput';
 
 interface Props {
   invitation_code?: string;
@@ -10,9 +12,9 @@ interface Props {
 }
 
 export default function TeamJoinRegistrationForm({
-    invitation_code,
-    old,
-    routes,
+  invitation_code,
+  old,
+  routes,
 }: Props) {
   const invitationCode = invitation_code || '';
 
@@ -36,7 +38,7 @@ export default function TeamJoinRegistrationForm({
   };
 
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen py-10 px-4">
+    <div className="bg-gradient-to-br from-blue-100 to-green-100 min-h-screen py-10 px-4">
       <Head title="チーム登録フォーム" />
 
       <div className="text-center mb-10">
@@ -48,78 +50,56 @@ export default function TeamJoinRegistrationForm({
         onSubmit={handleSubmit}
         className="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-md space-y-6"
       >
-        <h2 className="text-lg font-bold text-gray-700">👤 ユーザー情報</h2>
-
-        <input type="hidden" name="invitation_code" value={data.invitation_code} />
+        <h2 className="text-lg font-bold text-gray-700 mb-4">👤 ユーザー情報</h2>
 
         <div>
-          <label htmlFor="nickname" className="block font-semibold mb-1">
-            ニックネーム
-          </label>
-          <input
-            type="text"
-            id="nickname"
-            name="nickname"
-            value={data.nickname}
-            onChange={e => setData('nickname', e.target.value)}
-            placeholder="例：nickname"
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          <p className="text-sm text-gray-500 mt-1">※本名での登録はご遠慮願います</p>
-          {errors.nickname && <p className="text-sm text-red-500 mt-1">{errors.nickname}</p>}
+          <LabelBlock label="ニックネーム" required description='例：オーディー'>
+            <input
+              type="text"
+              id="nickname"
+              name="nickname"
+              value={data.nickname}
+              onChange={e => setData('nickname', e.target.value)}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            />
+            {errors.nickname && <p className="text-sm text-red-500 mt-1">{errors.nickname}</p>}
+          </LabelBlock>
         </div>
 
         <div>
-          <label htmlFor="email" className="block font-semibold mb-1">
-            メールアドレス
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={data.email}
-            onChange={e => setData('email', e.target.value)}
-            placeholder="例：example@example.com"
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          <p className="text-sm text-gray-500 mt-1">使用可能なメールアドレスを入力してください</p>
-          {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
+          <LabelBlock label="メールアドレス" required description='例：example@example.com'>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={data.email}
+              onChange={e => setData('email', e.target.value)}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            />
+            {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
+          </LabelBlock>
         </div>
 
         <div>
-          <label htmlFor="password" className="block font-semibold mb-1">
-            パスワード
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={data.password}
-            onChange={e => setData('password', e.target.value)}
-            placeholder="例：passW0rd"
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          <p className="text-sm text-gray-500 mt-1">
-            半角英数字の小文字・大文字を最低1字含み、8文字以上で入力してください
-          </p>
-          {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password}</p>}
+          <LabelBlock label='パスワード' required description='半角英数字の小文字・大文字を最低1字含み、8文字以上で入力してください'>
+            <PasswordInput
+              name="password"
+              value={data.password}
+              onChange={e => setData('password', e.target.value)}
+            />
+            {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password}</p>}
+          </LabelBlock>
         </div>
 
         <div>
-          <label htmlFor="password2" className="block font-semibold mb-1">
-            パスワード：再入力
-          </label>
-          <input
-            type="password"
-            id="password2"
-            name="password2"
-            value={data.password2}
-            onChange={e => setData('password2', e.target.value)}
-            placeholder="例：passW0rd"
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          <p className="text-sm text-gray-500 mt-1">上記のパスワードと同じ入力をしてください</p>
-          {errors.password2 && <p className="text-sm text-red-500 mt-1">{errors.password2}</p>}
+          <LabelBlock label='パスワード：再入力' required description='上記のパスワードと同じ入力をしてください'>
+            <PasswordInput
+              name="password2"
+              value={data.password2}
+              onChange={e => setData('password2', e.target.value)}
+            />
+            {errors.password2 && <p className="text-sm text-red-500 mt-1">{errors.password2}</p>}
+          </LabelBlock>
         </div>
 
         <div className="text-center">

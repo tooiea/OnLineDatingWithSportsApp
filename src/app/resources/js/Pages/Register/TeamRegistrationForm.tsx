@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm, Head, usePage, router } from '@inertiajs/react';
+import LabelBlock from '@/Components/LabelBlock';
 
 interface Prefecture {
   id: number;
@@ -71,79 +72,82 @@ export default function TeamRegistrationForm({ prefectures, sports, routes }: Pr
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-lg font-bold text-gray-700 mb-4">🏆 チーム情報</h2>
 
-          <label className="block mb-2 font-semibold">スポーツ種別</label>
-          <select
-            name="sportAffiliationType"
-            value={data.sportAffiliationType}
-            onChange={e => setData('sportAffiliationType', parseInt(e.target.value) || '')}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          >
-            <option value="">選択してください</option>
-            {sports.map(sport => (
-              <option key={sport.value} value={sport.value}>
-                {sport.label}
-              </option>
-            ))}
-          </select>
-          {renderError('sportAffiliationType')}
+          <LabelBlock label='スポーツ種別' required>
+            <select
+              name="sportAffiliationType"
+              value={data.sportAffiliationType}
+              onChange={e => setData('sportAffiliationType', parseInt(e.target.value) || '')}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            >
+              <option value="">選択してください</option>
+              {sports.map(sport => (
+                <option key={sport.value} value={sport.value}>
+                  {sport.label}
+                </option>
+              ))}
+            </select>
+            {renderError('sportAffiliationType')}
+          </LabelBlock>
 
-          <label className="block mt-4 mb-2 font-semibold">チーム名</label>
-          <input
-            type="text"
-            name="teamName"
-            placeholder="例：チーム名"
-            value={data.teamName}
-            onChange={e => setData('teamName', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('teamName')}
+          <LabelBlock label='チーム名' required description='例：チーム名'>
+            <input
+              type="text"
+              name="teamName"
+              value={data.teamName}
+              onChange={e => setData('teamName', e.target.value)}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            />
+            {renderError('teamName')}
+          </LabelBlock>
 
-          <label className="block mt-4 mb-2 font-semibold">チームロゴ画像</label>
-          <input
-            type="file"
-            name="teamLogo"
-            onChange={e => setData('teamLogo', e.target.files?.[0] || null)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('teamLogo')}
+          <LabelBlock label='チームロゴ画像' required description='PNG, JPG, PNG、JPG、JPEG形式の拡張子'>
+            <input
+              type="file"
+              name="teamLogo"
+              onChange={e => setData('teamLogo', e.target.files?.[0] || null)}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            />
+            {renderError('teamLogo')}
+          </LabelBlock>
 
-          <label className="block mt-4 mb-2 font-semibold">チーム紹介SNS</label>
-          <input
-            type="url"
-            name="teamUrl"
-            placeholder="例：https://facebook.com/example/"
-            value={data.teamUrl}
-            onChange={e => setData('teamUrl', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('teamUrl')}
+          <LabelBlock label='チーム紹介SNS' description='例：https://facebook.com/example/'>
+            <input
+              type="url"
+              name="teamUrl"
+              value={data.teamUrl}
+              onChange={e => setData('teamUrl', e.target.value)}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            />
+            {renderError('teamUrl')}
+          </LabelBlock>
 
-          <label className="block mt-4 mb-2 font-semibold">活動エリア（都道府県）</label>
-          <select
-            name="prefecture"
-            value={data.prefecture}
-            onChange={e => setData('prefecture', parseInt(e.target.value) || '')}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          >
-            <option value="">選択してください</option>
-            {prefectures.map(pref => (
-              <option key={pref.id} value={pref.id}>
-                {pref.name}
-              </option>
-            ))}
-          </select>
-          {renderError('prefecture')}
+          <LabelBlock label='活動エリア（都道府県）' required>
+            <select
+              name="prefecture"
+              value={data.prefecture}
+              onChange={e => setData('prefecture', parseInt(e.target.value) || '')}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            >
+              <option value="">選択してください</option>
+              {prefectures.map(pref => (
+                <option key={pref.id} value={pref.id}>
+                  {pref.name}
+                </option>
+              ))}
+            </select>
+            {renderError('prefecture')}
+          </LabelBlock>
 
-          <label className="block mt-4 mb-2 font-semibold">市町村区</label>
-          <input
-            type="text"
-            name="address"
-            placeholder="例：宮崎市"
-            value={data.address}
-            onChange={e => setData('address', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('address')}
+          <LabelBlock label='市町村区' required description='例：新宿区'>
+            <input
+              type="text"
+              name="address"
+              value={data.address}
+              onChange={e => setData('address', e.target.value)}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            />
+            {renderError('address')}
+          </LabelBlock>
 
           <button
             type="submit"
