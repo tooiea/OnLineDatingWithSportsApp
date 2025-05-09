@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm, Head, usePage } from '@inertiajs/react';
 import LabelBlock from '@/Components/LabelBlock';
 import PasswordInput from '@/Components/PasswordInput';
+import PasswordStrengthCheck from '@/Components/PasswordStrengthCheck';
 
 interface Prefecture {
   id: number;
@@ -106,6 +107,7 @@ export default function TeamRegistrationForm({ prefectures, sports, routes }: Pr
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData('password', e.target.value)}
               name="password"
             />
+            <PasswordStrengthCheck password={data.password} />
             {renderError('password')}
           </LabelBlock>
 
@@ -115,6 +117,7 @@ export default function TeamRegistrationForm({ prefectures, sports, routes }: Pr
               value={data.password2}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData('password2', e.target.value)}
             />
+            <PasswordStrengthCheck password={data.password2} />
             {renderError('password2')}
           </LabelBlock>
         </div>

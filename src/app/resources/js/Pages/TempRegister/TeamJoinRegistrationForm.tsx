@@ -2,6 +2,7 @@ import React from 'react';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import LabelBlock from '@/Components/LabelBlock';
 import PasswordInput from '@/Components/PasswordInput';
+import PasswordStrengthCheck from '@/Components/PasswordStrengthCheck';
 
 interface Props {
   invitation_code?: string;
@@ -87,6 +88,7 @@ export default function TeamJoinRegistrationForm({
               value={data.password}
               onChange={e => setData('password', e.target.value)}
             />
+            <PasswordStrengthCheck password={data.password} />
             {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password}</p>}
           </LabelBlock>
         </div>
@@ -98,6 +100,7 @@ export default function TeamJoinRegistrationForm({
               value={data.password2}
               onChange={e => setData('password2', e.target.value)}
             />
+            <PasswordStrengthCheck password={data.password2} />
             {errors.password2 && <p className="text-sm text-red-500 mt-1">{errors.password2}</p>}
           </LabelBlock>
         </div>
