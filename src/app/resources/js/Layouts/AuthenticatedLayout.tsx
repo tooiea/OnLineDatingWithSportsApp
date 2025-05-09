@@ -41,8 +41,31 @@ export default function AuthenticatedLayout({
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 relative overflow-hidden">
+
       {loading && <RollingBallLoader />}
+
+      <img
+        src="/images/ball-soccer.png"
+        alt="Soccer Ball"
+        className="absolute top-16 left-2 w-14 md:w-18 lg:w-24 opacity-30 pointer-events-none"
+      />
+      <img
+        src="/images/ball-baseball.png"
+        alt="Baseball"
+        className="absolute top-16 right-2 w-12 md:w-16 lg:w-20 opacity-30 pointer-events-none"
+      />
+      <img
+        src="/images/ball-volleyball.png"
+        alt="Volleyball"
+        className="absolute bottom-14 left-6 w-14 md:w-18 lg:w-24 opacity-30 pointer-events-none"
+      />
+      <img
+        src="/images/ball-basketball.png"
+        alt="Basketball"
+        className="absolute bottom-14 right-6 w-14 md:w-18 lg:w-24 opacity-30 pointer-events-none"
+      />
+
       <nav className="bg-white border-b border-gray-200 fixed top-0 w-full z-50 shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">

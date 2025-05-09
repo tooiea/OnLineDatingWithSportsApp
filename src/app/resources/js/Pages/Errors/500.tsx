@@ -9,11 +9,9 @@ export default function InternalServerError() {
   return (
     <>
       <Head title="サーバーエラー" />
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 text-gray-700 px-4 text-center">
-        <h1 className="text-6xl font-bold text-red-600 mb-6">500</h1>
-        <h2 className="text-2xl font-semibold mb-4">サーバーエラーが発生しました</h2>
-        <p className="mb-8">{errorMessage}</p>
-        <div className="text-indigo-700 text-xl font-bold mb-6">
+      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-100 to-green-100 px-4 text-center">
+        <p className="text-xl text-red-600 font-semibold mb-4">500. {errorMessage}</p>
+        <div className="text-indigo-700 text-m font-bold mb-6">
           OnLine Dating With Sports
         </div>
         <a

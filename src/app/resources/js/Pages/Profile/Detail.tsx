@@ -13,7 +13,7 @@ interface Props {
   };
   routes: {
     edit: string;
-  }
+  };
 }
 
 export default function MyProfileShow({
@@ -22,7 +22,7 @@ export default function MyProfileShow({
   handednessLabel,
   imagePath,
   message,
-  routes
+  routes,
 }: Props) {
   const [visibleMessage, setVisibleMessage] = useState<string | null>(message?.success ?? null);
 
@@ -36,6 +36,7 @@ export default function MyProfileShow({
   return (
     <AuthenticatedLayout>
       <Head title="マイプロフィール" />
+
       <div className="max-w-4xl mx-auto py-10 px-4">
         {visibleMessage && (
           <div className="mb-6 px-4 py-3 bg-green-100 border border-green-300 text-green-800 rounded-md shadow-sm transition-opacity duration-500 ease-in-out">
@@ -43,43 +44,43 @@ export default function MyProfileShow({
           </div>
         )}
 
-        <div className="bg-white shadow rounded-lg p-6">
-          <h1 className="text-xl font-bold text-gray-800 mb-6">マイプロフィール</h1>
+        <div className="bg-white shadow-lg rounded-xl p-6 md:p-8">
+          <h3 className="text-xl font-bold border-b pb-3 mb-6">マイプロフィール</h3>
 
-          <div className="flex flex-col md:flex-row items-start gap-6">
-            <div className="flex justify-center md:block md:w-1/3">
-              {imagePath ? (
+          <div className="grid grid-cols-1 gap-4">
+            {imagePath ? (
+              <div className="w-full flex justify-center">
                 <img
                   src={imagePath}
                   alt="プロフィール画像"
-                  className="w-40 h-40 object-cover border rounded"
+                  className="w-40 h-40 object-cover rounded-lg border"
                 />
-              ) : (
+              </div>
+            ) : (
+              <div className="w-full flex justify-center">
                 <div className="w-40 h-40 bg-gray-100 border rounded flex items-center justify-center text-gray-400">
                   No Image
                 </div>
-              )}
-            </div>
+              </div>
+            )}
 
-            <div className="flex-1 space-y-4">
-              <div>
-                <p className="text-sm font-semibold text-gray-600">ニックネーム</p>
+            <div className="space-y-4 text-sm text-gray-800">
+              <div className="border-t pt-4">
+                <div className="text-xs text-gray-500">ニックネーム</div>
                 <div className="flex items-center gap-2">
-                  <p className="text-gray-800">{nickname}</p>
+                  <div className="font-medium">{nickname}</div>
                   <Link href={routes.edit} className="text-indigo-500 hover:text-indigo-700">
                     <Pencil size={16} />
                   </Link>
                 </div>
               </div>
-
-              <div>
-                <p className="text-sm font-semibold text-gray-600">ポジション</p>
-                <p className="text-gray-800">{positionLabel ?? '未設定'}</p>
+              <div className="border-t pt-4">
+                <div className="text-xs text-gray-500">ポジション</div>
+                <div className="font-medium">{positionLabel ?? '未設定'}</div>
               </div>
-
-              <div>
-                <p className="text-sm font-semibold text-gray-600">利き手</p>
-                <p className="text-gray-800">{handednessLabel ?? '未設定'}</p>
+              <div className="border-t pt-4">
+                <div className="text-xs text-gray-500">利き手</div>
+                <div className="font-medium">{handednessLabel ?? '未設定'}</div>
               </div>
             </div>
           </div>

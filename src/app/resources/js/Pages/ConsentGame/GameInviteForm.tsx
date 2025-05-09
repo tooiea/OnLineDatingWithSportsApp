@@ -1,6 +1,7 @@
 import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import LabelBlock from '@/Components/LabelBlock';
 
 interface GuestTeam {
   id: number;
@@ -84,49 +85,52 @@ export default function GameInviteForm({ guestTeam, old, errors, routes }: Props
             <h3 className="text-lg font-semibold border-b pb-2 mb-4">📅 招待希望日程</h3>
             <p className="text-sm text-gray-600 mb-4">
               ※以下の第一希望から第三希望の日程を選択してください。
-              <br/> ※本日より7日以上先を指定してください。
+              <br /> ※本日より7日以上先を指定してください。
             </p>
             <div className="space-y-4">
               <div>
-                <label className="font-semibold">第一希望日程</label>
-                <input
-                  type="datetime-local"
-                  min={localISOTime}
-                  className={`w-full border rounded px-3 py-2 ${errors.first_preferered_date ? 'border-red-500' : ''}`}
-                  value={data.first_preferered_date}
-                  onChange={e => setData('first_preferered_date', e.target.value)}
-                />
-                {errors.first_preferered_date && (
-                  <p className="text-sm text-red-500">{errors.first_preferered_date}</p>
-                )}
+                <LabelBlock label='第一希望日程' required>
+                  <input
+                    type="datetime-local"
+                    min={localISOTime}
+                    className={`w-full border rounded px-3 py-2 ${errors.first_preferered_date ? 'border-red-500' : ''}`}
+                    value={data.first_preferered_date}
+                    onChange={e => setData('first_preferered_date', e.target.value)}
+                  />
+                  {errors.first_preferered_date && (
+                    <p className="text-sm text-red-500">{errors.first_preferered_date}</p>
+                  )}
+                </LabelBlock>
               </div>
 
               <div>
-                <label className="font-semibold">第二希望日程</label>
-                <input
-                  type="datetime-local"
-                  min={localISOTime}
-                  className={`w-full border rounded px-3 py-2 ${errors.second_preferered_date ? 'border-red-500' : ''}`}
-                  value={data.second_preferered_date}
-                  onChange={e => setData('second_preferered_date', e.target.value)}
-                />
-                {errors.second_preferered_date && (
-                  <p className="text-sm text-red-500">{errors.second_preferered_date}</p>
-                )}
+                <LabelBlock label='第二希望日程' required>
+                  <input
+                    type="datetime-local"
+                    min={localISOTime}
+                    className={`w-full border rounded px-3 py-2 ${errors.second_preferered_date ? 'border-red-500' : ''}`}
+                    value={data.second_preferered_date}
+                    onChange={e => setData('second_preferered_date', e.target.value)}
+                  />
+                  {errors.second_preferered_date && (
+                    <p className="text-sm text-red-500">{errors.second_preferered_date}</p>
+                  )}
+                </LabelBlock>
               </div>
 
               <div>
-                <label className="font-semibold">第三希望日程</label>
-                <input
-                  type="datetime-local"
-                  min={localISOTime}
-                  className={`w-full border rounded px-3 py-2 ${errors.third_preferered_date ? 'border-red-500' : ''}`}
-                  value={data.third_preferered_date}
-                  onChange={e => setData('third_preferered_date', e.target.value)}
-                />
-                {errors.third_preferered_date && (
-                  <p className="text-sm text-red-500">{errors.third_preferered_date}</p>
-                )}
+                <LabelBlock label='第三希望日程'>
+                  <input
+                    type="datetime-local"
+                    min={localISOTime}
+                    className={`w-full border rounded px-3 py-2 ${errors.third_preferered_date ? 'border-red-500' : ''}`}
+                    value={data.third_preferered_date}
+                    onChange={e => setData('third_preferered_date', e.target.value)}
+                  />
+                  {errors.third_preferered_date && (
+                    <p className="text-sm text-red-500">{errors.third_preferered_date}</p>
+                  )}
+                </LabelBlock>
               </div>
 
               <div>

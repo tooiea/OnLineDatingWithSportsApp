@@ -1,5 +1,7 @@
 import React from 'react';
 import { useForm, Head, usePage } from '@inertiajs/react';
+import LabelBlock from '@/Components/LabelBlock';
+import PasswordInput from '@/Components/PasswordInput';
 
 interface Prefecture {
   id: number;
@@ -17,7 +19,7 @@ interface Props {
   old?: Partial<FormInputData>;
   routes: {
     confirm: string;
-  }
+  };
 }
 
 interface FormInputData {
@@ -60,7 +62,7 @@ export default function TeamRegistrationForm({ prefectures, sports, routes }: Pr
     errors[field] && <p className="text-red-500 text-sm mt-1">{errors[field]}</p>;
 
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen py-10 px-4">
+    <div className="bg-gradient-to-br from-blue-100 to-green-100 min-h-screen py-10 px-4">
       <Head title="チーム登録フォーム" />
 
       <div className="text-center mb-10">
@@ -68,140 +70,130 @@ export default function TeamRegistrationForm({ prefectures, sports, routes }: Pr
         <p className="mt-2 text-gray-600">仲間と出会い、目標を共有しよう！</p>
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        encType="multipart/form-data"
-        className="max-w-2xl mx-auto space-y-8"
-      >
-        {/* ユーザー情報 */}
+      <form onSubmit={handleSubmit} encType="multipart/form-data" className="max-w-2xl mx-auto space-y-8">
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-lg font-bold text-gray-700 mb-4">👤 ユーザー情報</h2>
 
-          <label className="block mb-2 font-semibold">ニックネーム</label>
-          <input
-            type="text"
-            name="nickname"
-            placeholder="例：ニックネーム"
-            value={data.nickname}
-            onChange={e => setData('nickname', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('nickname')}
+          <LabelBlock label="ニックネーム" required description="例：オーディー">
+            <input
+              type="text"
+              name="nickname"
+              value={data.nickname}
+              onChange={(e) => setData('nickname', e.target.value)}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            />
+            {renderError('nickname')}
+          </LabelBlock>
 
-          <label className="block mt-4 mb-2 font-semibold">メールアドレス</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="例：example@example.com"
-            value={data.email}
-            onChange={e => setData('email', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('email')}
+          <LabelBlock label="メールアドレス" required description="例：example@oldws.net">
+            <input
+              type="email"
+              name="email"
+              value={data.email}
+              onChange={(e) => setData('email', e.target.value)}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            />
+            {renderError('email')}
+          </LabelBlock>
 
-          <label className="block mt-4 mb-2 font-semibold">パスワード</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="8文字以上で設定してください"
-            value={data.password}
-            onChange={e => setData('password', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          <p className="text-sm text-gray-500 mt-1">
-            ※8文字以上、英大文字・小文字・数字・記号（@、#、$、-、_）をそれぞれ1文字以上含めてください
-          </p>
-          {renderError('password')}
+          <LabelBlock
+            label="パスワード"
+            required
+            description="英大文字・小文字・数字・記号（@、#、$、-、_）を1文字ずつ含む8文字以上"
+          >
+            <PasswordInput
+              value={data.password}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData('password', e.target.value)}
+              name="password"
+            />
+            {renderError('password')}
+          </LabelBlock>
 
-          <label className="block mt-4 mb-2 font-semibold">パスワード（再入力）</label>
-          <input
-            type="password"
-            name="password2"
-            placeholder="もう一度パスワードを入力"
-            value={data.password2}
-            onChange={e => setData('password2', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('password2')}
+          <LabelBlock label="パスワード（再入力）" required description="もう一度パスワードを入力">
+            <PasswordInput
+              name="password2"
+              value={data.password2}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData('password2', e.target.value)}
+            />
+            {renderError('password2')}
+          </LabelBlock>
         </div>
 
-        {/* チーム情報 */}
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-lg font-bold text-gray-700 mb-4">🏆 チーム情報</h2>
 
-          <label className="block mb-2 font-semibold">スポーツ種別</label>
-          <select
-            name="sportAffiliationType"
-            value={data.sportAffiliationType}
-            onChange={e => setData('sportAffiliationType', parseInt(e.target.value) || '')}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          >
-            <option value="">選択してください</option>
-            {sports.map(sport => (
-              <option key={sport.value} value={sport.value}>
-                {sport.label}
-              </option>
-            ))}
-          </select>
-          {renderError('sportAffiliationType')}
+          <LabelBlock label="スポーツ種別" required>
+            <select
+              name="sportAffiliationType"
+              value={data.sportAffiliationType}
+              onChange={(e) => setData('sportAffiliationType', parseInt(e.target.value) || '')}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            >
+              <option value="">選択してください</option>
+              {sports.map(sport => (
+                <option key={sport.value} value={sport.value}>{sport.label}</option>
+              ))}
+            </select>
+            {renderError('sportAffiliationType')}
+          </LabelBlock>
 
-          <label className="block mt-4 mb-2 font-semibold">チーム名</label>
-          <input
-            type="text"
-            name="teamName"
-            placeholder="例：チーム名"
-            value={data.teamName}
-            onChange={e => setData('teamName', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('teamName')}
+          <LabelBlock label="チーム名" required description="例：OLDWS">
+            <input
+              type="text"
+              name="teamName"
+              value={data.teamName}
+              onChange={(e) => setData('teamName', e.target.value)}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            />
+            {renderError('teamName')}
+          </LabelBlock>
 
-          <label className="block mt-4 mb-2 font-semibold">チームロゴ画像</label>
-          <input
-            type="file"
-            name="teamLogo"
-            onChange={e => setData('teamLogo', e.target.files?.[0] || null)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('teamLogo')}
+          <LabelBlock label="チームロゴ画像" required description="PNG、JPG、JPEG形式の拡張子">
+            <input
+              type="file"
+              name="teamLogo"
+              onChange={(e) => setData('teamLogo', e.target.files?.[0] || null)}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            />
+            {renderError('teamLogo')}
+          </LabelBlock>
 
-          <label className="block mt-4 mb-2 font-semibold">チーム紹介SNS</label>
-          <input
-            type="url"
-            name="teamUrl"
-            placeholder="例：https://facebook.com/example/"
-            value={data.teamUrl}
-            onChange={e => setData('teamUrl', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('teamUrl')}
+          <LabelBlock label="チーム紹介SNS" description="例：https://facebook.com/example">
+            <input
+              type="url"
+              name="teamUrl"
+              value={data.teamUrl}
+              onChange={(e) => setData('teamUrl', e.target.value)}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            />
+            {renderError('teamUrl')}
+          </LabelBlock>
 
-          <label className="block mt-4 mb-2 font-semibold">活動エリア（都道府県）</label>
-          <select
-            name="prefecture"
-            value={data.prefecture}
-            onChange={e => setData('prefecture', parseInt(e.target.value) || '')}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          >
-            <option value="">選択してください</option>
-            {prefectures.map(pref => (
-              <option key={pref.id} value={pref.id}>
-                {pref.name}
-              </option>
-            ))}
-          </select>
-          {renderError('prefecture')}
+          <LabelBlock label="活動エリア（都道府県）" required>
+            <select
+              name="prefecture"
+              value={data.prefecture}
+              onChange={(e) => setData('prefecture', parseInt(e.target.value) || '')}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            >
+              <option value="">選択してください</option>
+              {prefectures.map(pref => (
+                <option key={pref.id} value={pref.id}>{pref.name}</option>
+              ))}
+            </select>
+            {renderError('prefecture')}
+          </LabelBlock>
 
-          <label className="block mt-4 mb-2 font-semibold">市町村区</label>
-          <input
-            type="text"
-            name="address"
-            placeholder="例：宮崎市"
-            value={data.address}
-            onChange={e => setData('address', e.target.value)}
-            className="w-full border-gray-300 rounded-md shadow-sm"
-          />
-          {renderError('address')}
+          <LabelBlock label="市町村区" required description="例：新宿区">
+            <input
+              type="text"
+              name="address"
+              value={data.address}
+              onChange={(e) => setData('address', e.target.value)}
+              className="w-full border-gray-300 rounded-md shadow-sm"
+            />
+            {renderError('address')}
+          </LabelBlock>
         </div>
 
         <div className="text-center">
