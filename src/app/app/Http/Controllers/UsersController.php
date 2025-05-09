@@ -89,7 +89,8 @@ class UsersController extends Controller
                 $user->registrationNotification([
                     'name' => $user->name,
                     'teamName' => $team->name,
-                    'admin' => config('mail.from.address')
+                    'admin' => config('mail.from.address'),
+                    'url' => config('app.url'),
                 ]);
              });
         } catch (Exception $e) {
