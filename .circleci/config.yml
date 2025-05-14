@@ -1,0 +1,66 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5
+
+jobs:
+  build-node:
+    executor: node/default
+    working_directory: ~/project/src/app
+    steps:
+      - checkout:
+          path: ~/project
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          name: ビルド実行
+          command: npm run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  build-php:
+    docker:
+      - image: cimg/php:8.2
+    working_directory: ~/project/src/app
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Composer install（本番用）
+          command: composer install --no-dev -o
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  deploy:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: 秘密鍵をセット
+          command: |
+            mkdir -p ~/.ssh
+            echo "$SAKURA_SSH_KEY" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keyscan "$SAKURA_SSH_HOST" >> ~/.ssh/known_hosts
+      - run:
+          name: Laravel本体をアップロード
+          command: |
+            scp -r -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ~/project/src/app/* $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/laravel-app/
+workflows:
+  version: 2
+  full_deploy:
+    jobs:
+      - build-node
+      - build-php:
+          requires:
+            - build-node
+      - deploy:
+          requires:
+            - build-php
+          context: SAKURA_SSH
