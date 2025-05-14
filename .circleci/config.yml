@@ -1,11 +1,10 @@
-# This config was automatically generated from your source code
-# Stacks detected: cicd:github-actions:.github/workflows,deps:node:src/app,deps:php:src/app
 version: 2.1
+
 orbs:
   node: circleci/node@5
+
 jobs:
   build-node:
-    # Build node project
     executor: node/default
     working_directory: ~/project/src/app
     steps:
@@ -14,33 +13,54 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
+          name: ビルド実行
           command: npm run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  build-php:
+    docker:
+      - image: cimg/php:8.2
+    working_directory: ~/project/src/app
+    steps:
+      - attach_workspace:
+          at: ~/project
       - run:
-          name: Create the ~/artifacts directory if it doesn't exist
-          command: mkdir -p ~/artifacts
-      # Copy output to artifacts dir
-      - run:
-          name: Copy artifacts
-          command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
-      - store_artifacts:
-          path: ~/artifacts
-          destination: node-build
+          name: Composer install（本番用）
+          command: composer install --no-dev -o
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
   deploy:
-    # This is an example deploy job, not actually used by the workflow
     docker:
       - image: cimg/base:stable
     steps:
-      # Replace this with steps to deploy to users
+      - attach_workspace:
+          at: ~/project
       - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          name: 秘密鍵をセット
+          command: |
+            mkdir -p ~/.ssh
+            echo "$SAKURA_SSH_KEY" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keyscan "$SAKURA_SSH_HOST" >> ~/.ssh/known_hosts
       - run:
-          name: found github actions config
-          command: ':'
+          name: Laravel本体をアップロード
+          command: |
+            scp -r -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ~/project/src/app/* $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/laravel-app/
 workflows:
-  build:
+  version: 2
+  full_deploy:
     jobs:
       - build-node
-    # - deploy:
-    #     requires:
-    #       - build-node
+      - build-php:
+          requires:
+            - build-node
+      - deploy:
+          requires:
+            - build-php
+          context: SAKURA_SSH
