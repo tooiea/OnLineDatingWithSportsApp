@@ -131,11 +131,11 @@ export default function SearchTeam({ teams, filters, prefectures, routes }: Page
                     </div>
 
                     {teams.links && (
-                        <div className="mt-6 flex justify-center gap-1 flex-wrap text-sm">
+                        <div className="mt-6 flex justify-center gap-2 flex-wrap text-sm">
                             {teams.links.filter(link => link.url !== null).map((link, index) => (
                                 <span
                                     key={index}
-                                    className={`px-2 py-1 rounded-md border ${link.active ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                                    className={`px-3 py-1 rounded-full border text-sm ${link.active ? 'bg-indigo-600 text-white font-bold shadow-md' : 'bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50'}`}
                                 >
                                     {link.active ? (
                                         <span dangerouslySetInnerHTML={{ __html: link.label }} />
