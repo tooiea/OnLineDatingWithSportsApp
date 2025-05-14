@@ -20,7 +20,7 @@ export default function PasswordStrengthCheck({ password }: Props) {
   return (
     <p className={`text-sm mt-2 ${isValid === null ? 'text-gray-500' : isValid ? 'text-green-600' : 'text-red-500'}`}>
       {isValid === null
-        ? '※ 8文字以上で入力してください'
+        ? ''
         : isValid
           ? '✅ 条件を満たしています'
           : '❌ 小文字・大文字・数字・記号（@ # $ - _）を含む8文字以上にしてください'}

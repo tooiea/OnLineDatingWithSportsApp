@@ -1,23 +1,34 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers\Sns;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Carbon\CarbonImmutable;
+use Illuminate\Http\RedirectResponse as HttpRedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class LineLoginController extends Controller
 {
-    public function redirectTo()
+    /**
+     * リダイレクト
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function redirectTo():RedirectResponse
     {
         return Socialite::driver('line')->redirect();
     }
 
-    public function callback()
+    /**
+     * コールバック処理
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function callback(): HttpRedirectResponse
     {
         try {
             $loggeInUserByLine = Socialite::driver('line')->user();
@@ -48,6 +59,7 @@ class LineLoginController extends Controller
             return redirect()->intended(route('team.list', absolute: false));
         } catch (\Exception $e) {
             Log::error($e->getMessage());
+            return redirect()->route('login.index')->with('status', 'LINEログインに失敗しました。');
         }
     }
 }
