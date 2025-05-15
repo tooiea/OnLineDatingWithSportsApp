@@ -53,12 +53,20 @@ jobs:
               -e "ssh -o StrictHostKeyChecking=no" \
               ~/project/src/app/ \
               $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/laravel-app/
+
       - run:
           name: www に Laravel public の全内容を配置
           command: |
             rsync -avz --delete \
               -e "ssh -o StrictHostKeyChecking=no" \
               ~/project/src/app/public/ \
+              $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/www/
+
+      - run:
+          name: www/index.php をリポジトリから配置
+          command: |
+            scp -o StrictHostKeyChecking=no \
+              ~/project/src/app/www/index.php \
               $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/www/
 
 workflows:
