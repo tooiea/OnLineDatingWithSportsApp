@@ -52,20 +52,20 @@ class TeamRegisterController extends Controller
     {
         $tempFile = new TempFile($request->file('teamLogo'));
         $teamRegister = new TeamRegister(
-            sportAffiliationType: $request->validated('sportAffiliationType'),
+            sportAffiliationType: (int)$request->validated('sportAffiliationType'),
             teamName: $request->validated('teamName'),
             tempFile: $tempFile,
             teamUrl: $request->validated('teamUrl'),
-            prefecture: $request->validated('prefecture'),
+            prefecture: (int)$request->validated('prefecture'),
             address: $request->validated('address'),
         );
 
         session(['team_register.form' => $teamRegister]);
         return Inertia::render('Register/TeamRegistrationConfirm', [
-            'sportAffiliationLabel' => SportAffiliationTypeEnum::from($request->validated('sportAffiliationType'))->label(),
+            'sportAffiliationLabel' => SportAffiliationTypeEnum::from((int)$request->validated('sportAffiliationType'))->label(),
             'teamName' => $request->validated('teamName'),
             'teamUrl' => $request->validated('teamUrl'),
-            'prefectureLabel' => Prefecture::from($request->validated('prefecture'))->label(),
+            'prefectureLabel' => Prefecture::from((int)$request->validated('prefecture'))->label(),
             'address' => $request->validated('address'),
             'teamLogoUrl' => $tempFile->pathFromBase64(),
             'routes' => [
