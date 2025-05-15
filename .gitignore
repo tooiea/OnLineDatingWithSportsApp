@@ -1,3 +1,4 @@
 .core/vendor
 .core/composer.json
 .core/composer.lock
+.app/public/index.php
