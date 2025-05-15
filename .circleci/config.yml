@@ -46,10 +46,11 @@ jobs:
           command: sudo apt-get update && sudo apt-get install -y rsync
 
       - run:
-          name: Laravel本体をrsyncで反映
+          name: Laravel本体をrsyncで反映（storage配下を除外）
           command: |
             rsync -avz --delete \
               --exclude '.env' \
+              --exclude 'storage/' \
               -e "ssh -o StrictHostKeyChecking=no" \
               ~/project/src/app/ \
               $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/laravel-app/
