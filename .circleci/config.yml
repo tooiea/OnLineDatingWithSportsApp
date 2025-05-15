@@ -56,20 +56,20 @@ jobs:
               $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/laravel-app/
 
       - run:
-          name: www に Laravel public の全内容を配置
+          name: www/oldws/ に Laravel public の全内容を配置
           command: |
             rsync -avz --delete \
               -e "ssh -o StrictHostKeyChecking=no" \
               ~/project/src/app/public/ \
-              $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/www/
+              $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/www/oldws/
 
       - run:
-          name: www 以下をすべて配置（src/www）
+          name: www/oldws/ 以下をすべて配置（src/www）
           command: |
             rsync -avz \
               -e "ssh -o StrictHostKeyChecking=no" \
-              ~/project/src/www/ \
-              $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/www/
+              ~/project/src/www/oldws/ \
+              $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/www/oldws/
 
 workflows:
   version: 2
