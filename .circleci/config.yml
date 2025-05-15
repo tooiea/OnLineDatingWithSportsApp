@@ -63,10 +63,11 @@ jobs:
               $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/www/
 
       - run:
-          name: www/index.php をリポジトリから配置
+          name: www 以下をすべて配置（src/www）
           command: |
-            scp -o StrictHostKeyChecking=no \
-              ~/project/src/www/index.php \
+            rsync -avz \
+              -e "ssh -o StrictHostKeyChecking=no" \
+              ~/project/src/www/ \
               $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/www/
 
 workflows:
