@@ -1,4 +1,2 @@
-.core/vendor
-.core/composer.json
-.core/composer.lock
-.app/public/index.php
+src/app/public/index.php
+src/app/public/.htaccess

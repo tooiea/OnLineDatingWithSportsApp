@@ -18,6 +18,17 @@
         AddOutputFilterByType DEFLATE font/woff2
     </IfModule>
 
+    <IfModule mod_expires.c>
+        ExpiresActive On
+        ExpiresByType image/webp "access plus 1 year"
+        ExpiresByType image/png "access plus 1 year"
+        ExpiresByType application/javascript "access plus 1 week"
+    </IfModule>
+
+    # 対象が oldws.sakura.ne.jp の場合にリダイレクト
+    RewriteCond %{HTTP_HOST} ^oldws\.sakura\.ne\.jp$ [NC]
+    RewriteRule ^(.*)$ https://oldws.net/$1 [R=301,L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
