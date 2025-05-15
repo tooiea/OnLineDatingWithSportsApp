@@ -42,6 +42,9 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
+          name: Install rsync
+          command: sudo apt-get update && sudo apt-get install -y rsync
+      - run:
           name: Laravel本体をrsyncで反映
           command: |
             rsync -avz --delete \
