@@ -1,3 +1,4 @@
+src/app/public/.htaccess
+src/app/public/index.php
 ./docker_*
 .vscode
-.app/public/index.php
