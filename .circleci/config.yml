@@ -13,7 +13,7 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          name: ビルド実行
+          name: Viteビルド
           command: npm run build
       - persist_to_workspace:
           root: ~/project
@@ -42,9 +42,34 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          name: Laravel本体をアップロード
+          name: Laravel本体をrsyncで反映
           command: |
-            scp -r -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ~/project/src/app/* $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/laravel-app/
+            rsync -avz --delete \
+              --exclude '.env' \
+              -e "ssh -o StrictHostKeyChecking=no" \
+              ~/project/src/app/ \
+              $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/laravel-app/
+      - run:
+          name: build ディレクトリのみ rsync
+          command: |
+            rsync -avz --delete \
+              -e "ssh -o StrictHostKeyChecking=no" \
+              ~/project/src/app/public/build/ \
+              $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/www/build/
+      - run:
+          name: mix-manifest.json を設置
+          command: |
+            scp -o StrictHostKeyChecking=no \
+              ~/project/src/app/public/mix-manifest.json \
+              $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/www/
+      - run:
+          name: favicon や robots.txt も更新
+          command: |
+            scp -o StrictHostKeyChecking=no \
+              ~/project/src/app/public/favicon.ico \
+              ~/project/src/app/public/robots.txt \
+              $SAKURA_SSH_USER@$SAKURA_SSH_HOST:/home/$SAKURA_SSH_USER/www/
+
 workflows:
   version: 2
   full_deploy:
